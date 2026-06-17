@@ -189,7 +189,8 @@ function computeTicket(t) {
       const status = comboStatus(c);
       // manualOdds only meaningful when single combo (full parlay) — apply to product
       const oddsProduct = g.manualOdds != null ? Number(g.manualOdds) : comboOdds(c);
-      const ret = stakePer * oddsProduct;
+      // 運彩每組組合的彩金各自四捨五入至個位數後才加總
+      const ret = Math.round(stakePer * oddsProduct);
       gStaked += stakePer;
       gPotential += ret;
       if (status === 'win') { gReturn += ret; wonCount++; }
