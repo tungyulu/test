@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>世界盃運彩投注紀錄</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Noto Sans TC', sans-serif; }
+    .tabular { font-variant-numeric: tabular-nums; }
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 border-b border-white/10">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <div class="flex items-center gap-3">
+        <div class="bg-white/10 rounded-2xl p-3"><i data-lucide="trophy" class="w-7 h-7 text-amber-400"></i></div>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-black tracking-tight">世界盃運彩投注紀錄</h1>
+          <p class="text-slate-400 text-sm mt-0.5">複式 / 系統串關 · 自動計算回本與盈虧</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-6 space-y-6">
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="grid grid-cols-2 lg:grid-cols-4 gap-3"></section>
+
+    <!-- Toolbar -->
+    <div class="flex flex-wrap items-center gap-2">
+      <button onclick="openTicketForm()" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2 rounded-xl text-sm transition">
+        <i data-lucide="plus" class="w-4 h-4"></i> 新增注單
+      </button>
+      <button onclick="exportJSON()" class="inline-flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-2 rounded-xl text-sm transition">
+        <i data-lucide="download" class="w-4 h-4"></i> 匯出 JSON
+      </button>
+      <label class="inline-flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-2 rounded-xl text-sm cursor-pointer transition">
+        <i data-lucide="upload" class="w-4 h-4"></i> 匯入 JSON
+        <input type="file" accept="application/json" class="hidden" onchange="importJSON(event)" />
+      </label>
+      <button onclick="exportCSV()" class="inline-flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 px-3 py-2 rounded-xl text-sm transition">
+        <i data-lucide="table" class="w-4 h-4"></i> 匯出 CSV
+      </button>
+      <button onclick="resetSeed()" class="inline-flex items-center gap-1.5 text-slate-400 hover:text-rose-400 px-3 py-2 rounded-xl text-sm transition ml-auto">
+        <i data-lucide="rotate-ccw" class="w-4 h-4"></i> 重設為範例資料
+      </button>
+    </div>
+
+    <!-- Tickets -->
+    <section id="tickets" class="space-y-5"></section>
+
+    <p class="text-center text-slate-600 text-xs pt-4">資料自動儲存於此瀏覽器（localStorage）。換裝置請用「匯出 JSON」備份。</p>
+  </main>
+
+  <!-- Ticket Form Modal -->
+  <div id="ticketModal" x-cloak class="fixed inset-0 z-50 hidden items-start justify-center overflow-y-auto bg-black/70 p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-2xl w-full max-w-2xl my-8 shadow-2xl">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-white/10">
+        <h2 id="formTitle" class="font-bold text-lg">新增注單</h2>
+        <button onclick="closeTicketForm()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-5 space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <label class="block">
+            <span class="text-xs text-slate-400">日期</span>
+            <input id="f_date" type="date" class="mt-1 w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-sm" />
+          </label>
+          <label class="block">
+            <span class="text-xs text-slate-400">標籤 / 備註</span>
+            <input id="f_label" type="text" placeholder="例：今日 4 場複式" class="mt-1 w-full bg-slate-800 border border-white/10 rounded-lg px-3 py-2 text-sm" />
+          </label>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-bold">選項（每一場 = 一腳）</span>
+            <button onclick="addSelectionRow()" class="text-indigo-400 hover:text-indigo-300 text-xs inline-flex items-center gap-1"><i data-lucide="plus" class="w-3.5 h-3.5"></i>新增一腳</button>
+          </div>
+          <div id="f_selections" class="space-y-2"></div>
+        </div>
+
+        <div>
+          <div class="text-sm font-bold mb-2">串關設定（要買哪些關數、每注金額）</div>
+          <div id="f_groups" class="space-y-2"></div>
+          <p class="text-xs text-slate-500 mt-1">勾選關數後填每注金額。串 k 關的組合數 = C(腳數, k)。可選填「總賠率」覆蓋（個別賠率不明時用，例如昨天 4 串 1 總賠率 1.72）。</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2 px-5 py-4 border-t border-white/10">
+        <button onclick="closeTicketForm()" class="px-4 py-2 rounded-xl text-sm bg-white/5 hover:bg-white/10 border border-white/10">取消</button>
+        <button onclick="saveTicket()" class="px-4 py-2 rounded-xl text-sm bg-indigo-600 hover:bg-indigo-500 font-bold">儲存注單</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ---------- storage ----------
+const STORAGE_KEY = 'wc-betting-tracker-v1';
+const RESULTS = ['pending','win','lose','void'];
+const RESULT_LABEL = { pending:'未定', win:'贏', lose:'輸', void:'平退' };
+
+function seedData() {
+  return [
+    {
+      id: 't1', date: '2026-06-16', label: '昨天 4 串 1（獨贏）',
+      selections: [
+        { key:'A', match:'法國', pick:'獨贏', odds:null, result:'win' },
+        { key:'B', match:'挪威', pick:'獨贏', odds:null, result:'win' },
+        { key:'C', match:'阿根廷', pick:'獨贏', odds:null, result:'win' },
+        { key:'D', match:'奧地利', pick:'獨贏', odds:null, result:'win' },
+      ],
+      groups: [ { size:4, stakePer:100, manualOdds:1.72 } ],
+    },
+    {
+      id: 't2', date: '2026-06-17', label: '今日 4 場複式',
+      selections: [
+        { key:'A', match:'剛果 vs 葡萄牙', pick:'葡萄牙 讓2分', odds:1.70, result:'pending' },
+        { key:'B', match:'克羅埃西亞 vs 英格蘭', pick:'和局', odds:3.10, result:'pending' },
+        { key:'C', match:'巴拿馬 vs 迦納', pick:'迦納贏', odds:1.50, result:'pending' },
+        { key:'D', match:'哥倫比亞 vs 烏茲別克', pick:'哥倫比亞贏', odds:1.18, result:'pending' },
+      ],
+      groups: [
+        { size:1, stakePer:10 },
+        { size:2, stakePer:10 },
+        { size:3, stakePer:10 },
+        { size:4, stakePer:30 },
+      ],
+    },
+  ];
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  const seed = seedData();
+  save(seed);
+  return seed;
+}
+function save(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+let tickets = load();
+
+// ---------- combinatorics ----------
+function combinations(arr, k) {
+  const res = [];
+  (function pick(start, combo) {
+    if (combo.length === k) { res.push(combo.slice()); return; }
+    for (let i = start; i < arr.length; i++) { combo.push(arr[i]); pick(i + 1, combo); combo.pop(); }
+  })(0, []);
+  return res;
+}
+function nCk(n, k) { return combinations([...Array(n).keys()], k).length; }
+
+// status of a combo given its selections: 'win' | 'lose' | 'pending'
+function comboStatus(sels) {
+  if (sels.some(s => s.result === 'lose')) return 'lose';
+  if (sels.some(s => s.result === 'pending')) return 'pending';
+  return 'win'; // all win or void
+}
+// effective product of odds; void => odds 1
+function comboOdds(sels) {
+  return sels.reduce((p, s) => p * (s.result === 'void' ? 1 : (Number(s.odds) || 0)), 1);
+}
+
+// compute one ticket
+function computeTicket(t) {
+  const sels = t.selections;
+  let staked = 0, returned = 0, pendingStake = 0, potential = 0;
+  const groupRows = [];
+
+  for (const g of t.groups) {
+    const combos = combinations(sels, g.size);
+    const stakePer = Number(g.stakePer) || 0;
+    let gStaked = 0, gReturn = 0, gPotential = 0, gPending = 0;
+    let wonCount = 0, lostCount = 0, pendCount = 0;
+    const comboDetails = [];
+
+    for (const c of combos) {
+      const status = comboStatus(c);
+      // manualOdds only meaningful when single combo (full parlay) — apply to product
+      const oddsProduct = g.manualOdds != null ? Number(g.manualOdds) : comboOdds(c);
+      const ret = stakePer * oddsProduct;
+      gStaked += stakePer;
+      gPotential += ret;
+      if (status === 'win') { gReturn += ret; wonCount++; }
+      else if (status === 'lose') { lostCount++; }
+      else { gPending += stakePer; pendCount++; }
+      comboDetails.push({ keys: c.map(s => s.key).join(''), odds: oddsProduct, stake: stakePer, ret, status });
+    }
+    staked += gStaked; returned += gReturn; pendingStake += gPending; potential += gPotential;
+    groupRows.push({ size: g.size, count: combos.length, stakePer, manualOdds: g.manualOdds,
+      gStaked, gReturn, gPotential, gPending, wonCount, lostCount, pendCount, comboDetails });
+  }
+
+  const settledStake = staked - pendingStake;
+  const allSettled = sels.every(s => s.result !== 'pending');
+  const profit = returned - staked;          // 已實現盈虧（未定組合的注金已算成本，回本為 0）
+  return { staked, returned, pendingStake, settledStake, potential, profit, allSettled, groupRows };
+}
+
+// ---------- formatting ----------
+const fmt = n => (Math.round(n * 100) / 100).toLocaleString('en-US', { maximumFractionDigits: 2 });
+const signed = n => (n >= 0 ? '+' : '') + fmt(n);
+
+// ---------- render ----------
+function render() {
+  renderDashboard();
+  renderTickets();
+  if (window.lucide) lucide.createIcons();
+}
+
+function renderDashboard() {
+  let staked = 0, returned = 0, pending = 0, openTickets = 0;
+  for (const t of tickets) {
+    const c = computeTicket(t);
+    staked += c.staked; returned += c.returned; pending += c.pendingStake;
+    if (!c.allSettled) openTickets++;
+  }
+  const profit = returned - staked;
+  const roi = staked ? (profit / staked) * 100 : 0;
+  const cards = [
+    { label: '總投注', value: fmt(staked), icon: 'wallet', tone: 'text-slate-100' },
+    { label: '總回本', value: fmt(returned), icon: 'coins', tone: 'text-amber-300' },
+    { label: '盈虧', value: signed(profit), icon: profit >= 0 ? 'trending-up' : 'trending-down', tone: profit >= 0 ? 'text-emerald-400' : 'text-rose-400' },
+    { label: 'ROI', value: signed(roi) + '%', icon: 'percent', tone: roi >= 0 ? 'text-emerald-400' : 'text-rose-400' },
+  ];
+  document.getElementById('dashboard').innerHTML = cards.map(c => `
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+      <div class="flex items-center justify-between text-slate-400">
+        <span class="text-xs">${c.label}</span><i data-lucide="${c.icon}" class="w-4 h-4"></i>
+      </div>
+      <div class="mt-1 text-2xl font-black tabular ${c.tone}">${c.value}</div>
+    </div>`).join('') +
+    (openTickets ? `<div class="col-span-2 lg:col-span-4 text-xs text-slate-500">尚有 ${openTickets} 張注單未結算。</div>` : '');
+}
+
+const statusBadge = s => {
+  const map = {
+    win: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+    lose: 'bg-rose-500/15 text-rose-300 border-rose-500/30',
+    pending: 'bg-slate-500/15 text-slate-300 border-slate-500/30',
+    void: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
+  };
+  return `<span class="text-[11px] px-1.5 py-0.5 rounded border ${map[s]}">${RESULT_LABEL[s]}</span>`;
+};
+
+function renderTickets() {
+  const el = document.getElementById('tickets');
+  if (!tickets.length) { el.innerHTML = `<p class="text-center text-slate-500 py-10">尚無注單，按「新增注單」開始。</p>`; return; }
+
+  el.innerHTML = tickets.map((t, ti) => {
+    const c = computeTicket(t);
+    const selRows = t.selections.map(s => `
+      <div class="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
+        <span class="w-6 text-center font-bold text-indigo-300">${s.key}</span>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm truncate">${s.match}</div>
+          <div class="text-xs text-slate-400 truncate">${s.pick}${s.odds != null ? ' · 賠率 ' + fmt(s.odds) : ''}</div>
+        </div>
+        <div class="flex gap-1">
+          ${RESULTS.map(r => `<button onclick="setResult('${t.id}','${s.key}','${r}')"
+            class="text-[11px] px-1.5 py-0.5 rounded border transition ${s.result===r ? activeResultClass(r) : 'border-white/10 text-slate-400 hover:bg-white/5'}">${RESULT_LABEL[r]}</button>`).join('')}
+        </div>
+      </div>`).join('');
+
+    const groupRows = c.groupRows.map(g => {
+      const statusTxt = g.pendCount ? `<span class="text-slate-400">進行中 (${g.wonCount}過/${g.lostCount}失/${g.pendCount}待)</span>`
+        : `<span class="${g.gReturn>0?'text-emerald-300':'text-rose-300'}">${g.wonCount} 注過關</span>`;
+      const retCell = c.allSettled || g.pendCount===0
+        ? `<span class="${g.gReturn>0?'text-amber-300 font-bold':''}">${fmt(g.gReturn)}</span>`
+        : `<span class="text-slate-400">/ ${fmt(g.gPotential)}</span>`;
+      return `<tr class="border-b border-white/5">
+        <td class="py-1.5 pr-2">串 ${g.size} 關${g.manualOdds!=null?` <span class="text-[11px] text-slate-500">(總賠率 ${fmt(g.manualOdds)})</span>`:''}</td>
+        <td class="py-1.5 px-2 text-right tabular">${g.count}</td>
+        <td class="py-1.5 px-2 text-right tabular">${fmt(g.stakePer)}</td>
+        <td class="py-1.5 px-2 text-right tabular">${fmt(g.gStaked)}</td>
+        <td class="py-1.5 px-2 text-right tabular">${retCell}</td>
+        <td class="py-1.5 pl-2 text-right text-xs">${statusTxt}</td>
+      </tr>`;
+    }).join('');
+
+    return `
+    <article class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 bg-white/5">
+        <div>
+          <div class="font-bold">${t.label || '注單'}</div>
+          <div class="text-xs text-slate-400">${t.date} · ${t.selections.length} 腳 · ${t.groups.length} 種關數</div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button onclick="editTicket('${t.id}')" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/10"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+          <button onclick="deleteTicket('${t.id}')" class="p-2 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-white/10"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+      <div class="px-4 py-2">${selRows}</div>
+      <div class="px-4 pb-3 overflow-x-auto">
+        <table class="w-full text-sm min-w-[460px]">
+          <thead><tr class="text-xs text-slate-400 border-b border-white/10">
+            <th class="text-left font-medium py-1.5 pr-2">關數</th>
+            <th class="text-right font-medium py-1.5 px-2">組合數</th>
+            <th class="text-right font-medium py-1.5 px-2">每注</th>
+            <th class="text-right font-medium py-1.5 px-2">投注</th>
+            <th class="text-right font-medium py-1.5 px-2">回本${c.allSettled?'':' / 潛在'}</th>
+            <th class="text-right font-medium py-1.5 pl-2">狀態</th>
+          </tr></thead>
+          <tbody>${groupRows}</tbody>
+        </table>
+      </div>
+      <div class="px-4 py-3 border-t border-white/10 flex flex-wrap gap-x-6 gap-y-1 text-sm">
+        <span class="text-slate-400">總投注 <b class="text-slate-100 tabular">${fmt(c.staked)}</b></span>
+        <span class="text-slate-400">${c.allSettled?'回本':'已實得'} <b class="text-amber-300 tabular">${fmt(c.returned)}</b></span>
+        ${c.pendingStake?`<span class="text-slate-400">未定注金 <b class="tabular">${fmt(c.pendingStake)}</b></span>`:''}
+        <span class="text-slate-400 ml-auto">${c.allSettled?'盈虧':'目前盈虧'} <b class="${c.profit>=0?'text-emerald-400':'text-rose-400'} tabular">${signed(c.profit)}</b></span>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function activeResultClass(r) {
+  return { win:'bg-emerald-500 border-emerald-500 text-white', lose:'bg-rose-500 border-rose-500 text-white',
+    pending:'bg-slate-500 border-slate-500 text-white', void:'bg-amber-500 border-amber-500 text-white' }[r];
+}
+
+// ---------- actions ----------
+function setResult(ticketId, key, result) {
+  const t = tickets.find(x => x.id === ticketId); if (!t) return;
+  const s = t.selections.find(x => x.key === key); if (!s) return;
+  s.result = result; save(tickets); render();
+}
+function deleteTicket(id) {
+  if (!confirm('確定刪除這張注單？')) return;
+  tickets = tickets.filter(t => t.id !== id); save(tickets); render();
+}
+function resetSeed() {
+  if (!confirm('將清除目前資料並還原成範例（昨天 + 今天）。確定？')) return;
+  tickets = seedData(); save(tickets); render();
+}
+
+// ---------- form ----------
+let editingId = null;
+function openTicketForm() {
+  editingId = null;
+  document.getElementById('formTitle').textContent = '新增注單';
+  document.getElementById('f_date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('f_label').value = '';
+  document.getElementById('f_selections').innerHTML = '';
+  addSelectionRow(); addSelectionRow();
+  renderGroupOptions();
+  showModal();
+}
+function editTicket(id) {
+  const t = tickets.find(x => x.id === id); if (!t) return;
+  editingId = id;
+  document.getElementById('formTitle').textContent = '編輯注單';
+  document.getElementById('f_date').value = t.date;
+  document.getElementById('f_label').value = t.label || '';
+  document.getElementById('f_selections').innerHTML = '';
+  t.selections.forEach(s => addSelectionRow(s));
+  renderGroupOptions(t.groups);
+  showModal();
+}
+function showModal() {
+  const m = document.getElementById('ticketModal');
+  m.classList.remove('hidden'); m.classList.add('flex');
+  if (window.lucide) lucide.createIcons();
+}
+function closeTicketForm() {
+  const m = document.getElementById('ticketModal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+
+function addSelectionRow(s) {
+  const wrap = document.getElementById('f_selections');
+  const row = document.createElement('div');
+  row.className = 'sel-row grid grid-cols-12 gap-2 items-center';
+  row.innerHTML = `
+    <input class="sel-match col-span-5 bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm" placeholder="比賽（如 巴拿馬 vs 迦納）" value="${s?escapeAttr(s.match):''}">
+    <input class="sel-pick col-span-4 bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm" placeholder="玩法（如 迦納贏）" value="${s?escapeAttr(s.pick):''}">
+    <input class="sel-odds col-span-2 bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm" type="number" step="0.01" placeholder="賠率" value="${s&&s.odds!=null?s.odds:''}">
+    <button onclick="this.parentElement.remove();syncGroupCounts()" class="col-span-1 text-slate-500 hover:text-rose-400 flex justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>`;
+  // preserve result on edit
+  row.dataset.result = s ? s.result : 'pending';
+  row.dataset.key = s ? s.key : '';
+  wrap.appendChild(row);
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', syncGroupCounts));
+  if (window.lucide) lucide.createIcons();
+  syncGroupCounts();
+}
+
+function renderGroupOptions(existing) {
+  const wrap = document.getElementById('f_groups');
+  const n = Math.max(getFormSelections().length, 1);
+  let html = '';
+  for (let k = 1; k <= Math.max(n, 4); k++) {
+    const ex = existing && existing.find(g => g.size === k);
+    const on = ex ? 'checked' : '';
+    html += `
+      <div class="grp-row flex items-center gap-2 text-sm" data-size="${k}">
+        <label class="flex items-center gap-2 w-28">
+          <input type="checkbox" class="grp-on accent-indigo-500" ${on} onchange="syncGroupCounts()"> 串 ${k} 關
+        </label>
+        <span class="grp-count text-xs text-slate-500 w-20"></span>
+        <input class="grp-stake bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm w-24" type="number" step="0.01" placeholder="每注" value="${ex?ex.stakePer:''}">
+        <input class="grp-manual bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm w-28" type="number" step="0.01" placeholder="總賠率(選填)" value="${ex&&ex.manualOdds!=null?ex.manualOdds:''}">
+      </div>`;
+  }
+  wrap.innerHTML = html;
+  syncGroupCounts();
+}
+
+function getFormSelections() {
+  return [...document.querySelectorAll('.sel-row')].map(r => ({
+    match: r.querySelector('.sel-match').value.trim(),
+    pick: r.querySelector('.sel-pick').value.trim(),
+    odds: r.querySelector('.sel-odds').value === '' ? null : Number(r.querySelector('.sel-odds').value),
+    result: r.dataset.result || 'pending',
+    key: r.dataset.key || '',
+  })).filter(s => s.match || s.pick);
+}
+
+function syncGroupCounts() {
+  const n = getFormSelections().length;
+  document.querySelectorAll('.grp-row').forEach(row => {
+    const k = Number(row.dataset.size);
+    const cnt = k <= n ? nCk(n, k) : 0;
+    row.querySelector('.grp-count').textContent = cnt ? `${cnt} 組` : '—';
+    row.classList.toggle('opacity-40', cnt === 0);
+  });
+}
+
+function saveTicket() {
+  const sels = getFormSelections();
+  if (sels.length < 1) { alert('請至少填一腳'); return; }
+  // assign keys A, B, C...
+  sels.forEach((s, i) => { s.key = String.fromCharCode(65 + i); });
+
+  const groups = [];
+  document.querySelectorAll('.grp-row').forEach(row => {
+    if (!row.querySelector('.grp-on').checked) return;
+    const size = Number(row.dataset.size);
+    if (size > sels.length) return;
+    const stakePer = Number(row.querySelector('.grp-stake').value) || 0;
+    const manualRaw = row.querySelector('.grp-manual').value;
+    const g = { size, stakePer };
+    if (manualRaw !== '') g.manualOdds = Number(manualRaw);
+    groups.push(g);
+  });
+  if (!groups.length) { alert('請至少勾選一種關數並填每注金額'); return; }
+
+  const data = {
+    date: document.getElementById('f_date').value || new Date().toISOString().slice(0,10),
+    label: document.getElementById('f_label').value.trim(),
+    selections: sels, groups,
+  };
+
+  if (editingId) {
+    const t = tickets.find(x => x.id === editingId);
+    Object.assign(t, data);
+  } else {
+    tickets.push({ id: 't' + Date.now(), ...data });
+  }
+  save(tickets); closeTicketForm(); render();
+}
+
+// ---------- import/export ----------
+function exportJSON() {
+  downloadFile('betting-' + new Date().toISOString().slice(0,10) + '.json', JSON.stringify(tickets, null, 2), 'application/json');
+}
+function importJSON(e) {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      if (!Array.isArray(data)) throw new Error('格式錯誤');
+      tickets = data; save(tickets); render();
+      alert('匯入成功');
+    } catch (err) { alert('匯入失敗：' + err.message); }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+function exportCSV() {
+  const rows = [['日期','標籤','腳','比賽','玩法','賠率','賽果','關數','組合數','每注','投注','回本','狀態']];
+  for (const t of tickets) {
+    const c = computeTicket(t);
+    t.selections.forEach((s, i) => {
+      rows.push([t.date, t.label, s.key, s.match, s.pick, s.odds ?? '', RESULT_LABEL[s.result], i===0?'明細見下':'', '', '', '', '', '']);
+    });
+    c.groupRows.forEach(g => {
+      rows.push([t.date, t.label, '', '', '串'+g.size+'關', g.manualOdds ?? '', '', g.size, g.count, g.stakePer, g.gStaked, g.gReturn, `${g.wonCount}過/${g.lostCount}失/${g.pendCount}待`]);
+    });
+    rows.push([t.date, t.label, '小計','','','','','','', '', c.staked, c.returned, '盈虧 '+signed(c.profit)]);
+  }
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadFile('betting-' + new Date().toISOString().slice(0,10) + '.csv', '﻿' + csv, 'text/csv');
+}
+function downloadFile(name, content, type) {
+  const blob = new Blob([content], { type });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  URL.revokeObjectURL(a.href);
+}
+function escapeAttr(s) { return String(s ?? '').replace(/"/g, '&quot;'); }
+
+// init
+render();
+</script>
+</body>
+</html>
