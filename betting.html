@@ -122,16 +122,44 @@ function seedData() {
     {
       id: 't2', date: '2026-06-17', label: '今日 4 場複式',
       selections: [
-        { key:'A', match:'剛果 vs 葡萄牙', pick:'葡萄牙 讓2分', odds:1.70, result:'pending' },
-        { key:'B', match:'克羅埃西亞 vs 英格蘭', pick:'和局', odds:3.10, result:'pending' },
-        { key:'C', match:'巴拿馬 vs 迦納', pick:'迦納贏', odds:1.50, result:'pending' },
-        { key:'D', match:'哥倫比亞 vs 烏茲別克', pick:'哥倫比亞贏', odds:1.18, result:'pending' },
+        { key:'A', match:'剛果 vs 葡萄牙', pick:'葡萄牙 讓2分', odds:1.70, result:'lose' },
+        { key:'B', match:'克羅埃西亞 vs 英格蘭', pick:'和局', odds:3.10, result:'lose' },
+        { key:'C', match:'巴拿馬 vs 迦納', pick:'迦納贏', odds:1.50, result:'win' },
+        { key:'D', match:'哥倫比亞 vs 烏茲別克', pick:'哥倫比亞贏', odds:1.18, result:'win' },
       ],
       groups: [
         { size:1, stakePer:10 },
         { size:2, stakePer:10 },
         { size:3, stakePer:10 },
         { size:4, stakePer:30 },
+      ],
+    },
+    {
+      id: 't3', date: '2026-06-18', label: '今天 4 場複式（票根）',
+      selections: [
+        { key:'A', match:'南非 @ 捷克', pick:'總分大小 小2.5', odds:1.78, result:'win' },
+        { key:'B', match:'波蘭 @ 瑞士', pick:'不讓分 和局', odds:3.80, result:'lose' },
+        { key:'C', match:'卡達 @ 加拿大', pick:'不讓分 加拿大', odds:1.26, result:'win' },
+        { key:'D', match:'南韓 @ 墨西哥', pick:'不讓分 和局', odds:2.55, result:'lose' },
+      ],
+      groups: [
+        { size:1, stakePer:10 },
+        { size:3, stakePer:10 },
+        { size:4, stakePer:20 },
+      ],
+    },
+    {
+      id: 't4', date: '2026-06-19', label: '今天 4 場複式（票根）',
+      selections: [
+        { key:'A', match:'澳洲 @ 美國', pick:'不讓分 美國', odds:1.26, result:'pending' },
+        { key:'B', match:'摩洛哥 @ 蘇格蘭', pick:'不讓分 摩洛哥', odds:1.35, result:'pending' },
+        { key:'C', match:'海地 @ 巴西', pick:'讓分3:0 巴西3:0', odds:2.30, result:'pending' },
+        { key:'D', match:'巴拉圭 @ 土耳其', pick:'不讓分 和局', odds:2.65, result:'pending' },
+      ],
+      groups: [
+        { size:2, stakePer:10 },
+        { size:3, stakePer:10 },
+        { size:4, stakePer:10 },
       ],
     },
   ];
@@ -161,18 +189,15 @@ function combinations(arr, k) {
 }
 function nCk(n, k) { return combinations([...Array(n).keys()], k).length; }
 
-// status of a combo given its selections: 'win' | 'lose' | 'pending'
 function comboStatus(sels) {
   if (sels.some(s => s.result === 'lose')) return 'lose';
   if (sels.some(s => s.result === 'pending')) return 'pending';
-  return 'win'; // all win or void
+  return 'win';
 }
-// effective product of odds; void => odds 1
 function comboOdds(sels) {
   return sels.reduce((p, s) => p * (s.result === 'void' ? 1 : (Number(s.odds) || 0)), 1);
 }
 
-// compute one ticket
 function computeTicket(t) {
   const sels = t.selections;
   let staked = 0, returned = 0, pendingStake = 0, potential = 0;
@@ -183,11 +208,9 @@ function computeTicket(t) {
     const stakePer = Number(g.stakePer) || 0;
     let gStaked = 0, gReturn = 0, gPotential = 0, gPending = 0;
     let wonCount = 0, lostCount = 0, pendCount = 0;
-    const comboDetails = [];
 
     for (const c of combos) {
       const status = comboStatus(c);
-      // manualOdds only meaningful when single combo (full parlay) — apply to product
       const oddsProduct = g.manualOdds != null ? Number(g.manualOdds) : comboOdds(c);
       // 運彩每組組合的彩金各自四捨五入至個位數後才加總
       const ret = Math.round(stakePer * oddsProduct);
@@ -196,17 +219,15 @@ function computeTicket(t) {
       if (status === 'win') { gReturn += ret; wonCount++; }
       else if (status === 'lose') { lostCount++; }
       else { gPending += stakePer; pendCount++; }
-      comboDetails.push({ keys: c.map(s => s.key).join(''), odds: oddsProduct, stake: stakePer, ret, status });
     }
     staked += gStaked; returned += gReturn; pendingStake += gPending; potential += gPotential;
     groupRows.push({ size: g.size, count: combos.length, stakePer, manualOdds: g.manualOdds,
-      gStaked, gReturn, gPotential, gPending, wonCount, lostCount, pendCount, comboDetails });
+      gStaked, gReturn, gPotential, gPending, wonCount, lostCount, pendCount });
   }
 
-  const settledStake = staked - pendingStake;
+  const profit = returned - staked;
   const allSettled = sels.every(s => s.result !== 'pending');
-  const profit = returned - staked;          // 已實現盈虧（未定組合的注金已算成本，回本為 0）
-  return { staked, returned, pendingStake, settledStake, potential, profit, allSettled, groupRows };
+  return { staked, returned, pendingStake, potential, profit, allSettled, groupRows };
 }
 
 // ---------- formatting ----------
@@ -221,10 +242,10 @@ function render() {
 }
 
 function renderDashboard() {
-  let staked = 0, returned = 0, pending = 0, openTickets = 0;
+  let staked = 0, returned = 0, openTickets = 0;
   for (const t of tickets) {
     const c = computeTicket(t);
-    staked += c.staked; returned += c.returned; pending += c.pendingStake;
+    staked += c.staked; returned += c.returned;
     if (!c.allSettled) openTickets++;
   }
   const profit = returned - staked;
@@ -263,12 +284,12 @@ function renderTickets() {
     const c = computeTicket(t);
     const selRows = t.selections.map(s => `
       <div class="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
-        <span class="w-6 text-center font-bold text-indigo-300">${s.key}</span>
+        <span class="w-6 text-center font-bold text-indigo-300 text-sm shrink-0">${s.key}</span>
         <div class="flex-1 min-w-0">
           <div class="text-sm truncate">${s.match}</div>
           <div class="text-xs text-slate-400 truncate">${s.pick}${s.odds != null ? ' · 賠率 ' + fmt(s.odds) : ''}</div>
         </div>
-        <div class="flex gap-1">
+        <div class="flex gap-1 shrink-0">
           ${RESULTS.map(r => `<button onclick="setResult('${t.id}','${s.key}','${r}')"
             class="text-[11px] px-1.5 py-0.5 rounded border transition ${s.result===r ? activeResultClass(r) : 'border-white/10 text-slate-400 hover:bg-white/5'}">${RESULT_LABEL[r]}</button>`).join('')}
         </div>
@@ -277,7 +298,7 @@ function renderTickets() {
     const groupRows = c.groupRows.map(g => {
       const statusTxt = g.pendCount ? `<span class="text-slate-400">進行中 (${g.wonCount}過/${g.lostCount}失/${g.pendCount}待)</span>`
         : `<span class="${g.gReturn>0?'text-emerald-300':'text-rose-300'}">${g.wonCount} 注過關</span>`;
-      const retCell = c.allSettled || g.pendCount===0
+      const retCell = (c.allSettled || g.pendCount===0)
         ? `<span class="${g.gReturn>0?'text-amber-300 font-bold':''}">${fmt(g.gReturn)}</span>`
         : `<span class="text-slate-400">/ ${fmt(g.gPotential)}</span>`;
       return `<tr class="border-b border-white/5">
@@ -342,7 +363,7 @@ function deleteTicket(id) {
   tickets = tickets.filter(t => t.id !== id); save(tickets); render();
 }
 function resetSeed() {
-  if (!confirm('將清除目前資料並還原成範例（昨天 + 今天）。確定？')) return;
+  if (!confirm('將清除目前資料並還原成範例。確定？')) return;
   tickets = seedData(); save(tickets); render();
 }
 
@@ -388,7 +409,6 @@ function addSelectionRow(s) {
     <input class="sel-pick col-span-4 bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm" placeholder="玩法（如 迦納贏）" value="${s?escapeAttr(s.pick):''}">
     <input class="sel-odds col-span-2 bg-slate-800 border border-white/10 rounded-lg px-2 py-1.5 text-sm" type="number" step="0.01" placeholder="賠率" value="${s&&s.odds!=null?s.odds:''}">
     <button onclick="this.parentElement.remove();syncGroupCounts()" class="col-span-1 text-slate-500 hover:text-rose-400 flex justify-center"><i data-lucide="x" class="w-4 h-4"></i></button>`;
-  // preserve result on edit
   row.dataset.result = s ? s.result : 'pending';
   row.dataset.key = s ? s.key : '';
   wrap.appendChild(row);
@@ -441,7 +461,6 @@ function syncGroupCounts() {
 function saveTicket() {
   const sels = getFormSelections();
   if (sels.length < 1) { alert('請至少填一腳'); return; }
-  // assign keys A, B, C...
   sels.forEach((s, i) => { s.key = String.fromCharCode(65 + i); });
 
   const groups = [];
@@ -495,7 +514,7 @@ function exportCSV() {
   for (const t of tickets) {
     const c = computeTicket(t);
     t.selections.forEach((s, i) => {
-      rows.push([t.date, t.label, s.key, s.match, s.pick, s.odds ?? '', RESULT_LABEL[s.result], i===0?'明細見下':'', '', '', '', '', '']);
+      rows.push([t.date, t.label, s.key, s.match, s.pick, s.odds ?? '', RESULT_LABEL[s.result], '', '', '', '', '', '']);
     });
     c.groupRows.forEach(g => {
       rows.push([t.date, t.label, '', '', '串'+g.size+'關', g.manualOdds ?? '', '', g.size, g.count, g.stakePer, g.gStaked, g.gReturn, `${g.wonCount}過/${g.lostCount}失/${g.pendCount}待`]);
