@@ -39,23 +39,20 @@
         </div>
     </header>
 
-    <!-- 手機版頂部橫向快速跳轉籤條（電腦版隱藏，改用左側側欄） -->
+    <!-- 手機版頂部橫向 Day 切換 Tab（電腦版隱藏，改用左側側欄） -->
     <nav class="md:hidden sticky top-0 z-40 bg-[#FDFBF7]/90 backdrop-blur border-b border-gray-200/80">
-        <div class="flex gap-2 overflow-x-auto px-4 py-2.5">
-            <a href="index.html" class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#C05A3C] text-white text-sm font-medium transition-colors">
-                <i data-lucide="house" class="w-3.5 h-3.5"></i> 其他小工具
+        <div class="flex gap-2 overflow-x-auto px-3 py-2 tab-scroll" style="-ms-overflow-style:none;scrollbar-width:none;">
+            <a href="index.html" class="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-sm font-medium text-gray-500 transition-colors">
+                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
             </a>
-            <a href="#flight-info" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-medium text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">
-                <i data-lucide="plane" class="w-3.5 h-3.5"></i> 航班
-            </a>
-            <a href="#day-1" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D1</a>
-            <a href="#day-2" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D2</a>
-            <a href="#day-3" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D3</a>
-            <a href="#day-4" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D4</a>
-            <a href="#day-5" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D5</a>
-            <a href="#day-6" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D6</a>
-            <a href="#day-7" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D7</a>
-            <a href="#day-8" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D8</a>
+            <button data-day="day-1" onclick="selectDay('day-1')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D1</span><span class="text-[10px] mt-0.5 day-tab-date">11/07</span></button>
+            <button data-day="day-2" onclick="selectDay('day-2')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D2</span><span class="text-[10px] mt-0.5 day-tab-date">11/08</span></button>
+            <button data-day="day-3" onclick="selectDay('day-3')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D3</span><span class="text-[10px] mt-0.5 day-tab-date">11/09</span></button>
+            <button data-day="day-4" onclick="selectDay('day-4')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D4</span><span class="text-[10px] mt-0.5 day-tab-date">11/10</span></button>
+            <button data-day="day-5" onclick="selectDay('day-5')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D5</span><span class="text-[10px] mt-0.5 day-tab-date">11/11</span></button>
+            <button data-day="day-6" onclick="selectDay('day-6')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D6</span><span class="text-[10px] mt-0.5 day-tab-date">11/12</span></button>
+            <button data-day="day-7" onclick="selectDay('day-7')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D7</span><span class="text-[10px] mt-0.5 day-tab-date">11/13</span></button>
+            <button data-day="day-8" onclick="selectDay('day-8')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D8</span><span class="text-[10px] mt-0.5 day-tab-date">11/14</span></button>
         </div>
     </nav>
 
@@ -546,6 +543,43 @@
     <script>
         lucide.createIcons();
 
+        // ---- 手機 Day Tab 切換 ----
+        let mobileActiveDay = 'day-1';
+
+        function applyMobileView() {
+            const isMobile = window.innerWidth < 768;
+            document.querySelectorAll('[id^="day-"]').forEach(el => {
+                el.style.display = (isMobile && el.id !== mobileActiveDay) ? 'none' : '';
+            });
+            document.querySelectorAll('.day-tab').forEach(btn => {
+                const active = btn.dataset.day === mobileActiveDay;
+                btn.classList.toggle('bg-[#C05A3C]', active);
+                btn.classList.toggle('border-[#C05A3C]', active);
+                btn.classList.toggle('text-white', active);
+                btn.classList.toggle('bg-white', !active);
+                btn.classList.toggle('border-gray-200', !active);
+                btn.classList.toggle('text-gray-700', !active);
+                const dateSpan = btn.querySelector('.day-tab-date');
+                if (dateSpan) dateSpan.classList.toggle('text-white/70', active);
+            });
+        }
+
+        function selectDay(id) {
+            mobileActiveDay = id;
+            applyMobileView();
+            if (window.innerWidth < 768) {
+                const el = document.getElementById(id);
+                if (el && window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    gsap.fromTo(el, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power2.out' });
+                }
+                const btn = document.querySelector(`[data-day="${id}"]`);
+                if (btn) btn.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' });
+            }
+        }
+
+        window.addEventListener('resize', applyMobileView);
+        applyMobileView();
+
         // GSAP 動畫：進場 + 捲動逐張淡入。尊重 prefers-reduced-motion。
         gsap.registerPlugin(ScrollTrigger);
 
@@ -555,10 +589,11 @@
             {
                 animate: "(prefers-reduced-motion: no-preference)",
                 reduce: "(prefers-reduced-motion: reduce)",
-                canHover: "(hover: hover) and (pointer: fine)"
+                canHover: "(hover: hover) and (pointer: fine)",
+                mobile: "(max-width: 767px)"
             },
             (ctx) => {
-                const { reduce, canHover } = ctx.conditions;
+                const { reduce, canHover, mobile } = ctx.conditions;
                 const dayRows = gsap.utils.toArray('[id^="day-"]');
 
                 if (reduce) {
@@ -592,19 +627,25 @@
                     y: 24, autoAlpha: 0, delay: 0.5, stagger: 0.15
                 });
 
-                // 3) 每日卡片：捲動進入視窗時逐張交錯淡入
-                gsap.set(dayRows, { autoAlpha: 0, y: 48 });
-                ScrollTrigger.batch(dayRows, {
-                    start: "top 85%",
-                    once: true,
-                    onEnter: (batch) =>
-                        gsap.to(batch, {
-                            autoAlpha: 1,
-                            y: 0,
-                            stagger: 0.15,
-                            overwrite: true
-                        })
-                });
+                // 3a) 桌面：捲動進入視窗時逐張交錯淡入
+                if (!mobile) {
+                    gsap.set(dayRows, { autoAlpha: 0, y: 48 });
+                    ScrollTrigger.batch(dayRows, {
+                        start: "top 85%",
+                        once: true,
+                        onEnter: (batch) =>
+                            gsap.to(batch, {
+                                autoAlpha: 1,
+                                y: 0,
+                                stagger: 0.15,
+                                overwrite: true
+                            })
+                    });
+                } else {
+                    // 3b) 手機：只動畫第一張（其餘已被 display:none 隱藏）
+                    const firstEl = document.getElementById(mobileActiveDay);
+                    if (firstEl) gsap.fromTo(firstEl, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.35 });
+                }
 
                 // 4) 卡片 hover 微互動：僅在有滑鼠的裝置啟用，觸控不卡 hover 狀態
                 let cleanupHover;
