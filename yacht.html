@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>快艇骰子</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Noto Sans TC', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div id="app"></div>
+
+  <script>
+  gsap.registerPlugin(SplitText);
+
+  // ─── SVG Dice Faces ──────────────────────────────────────────────────────────
+
+  const PIP = (cx, cy) => `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#1e293b"/>`;
+
+  const PIPS = {
+    1: [PIP(30,30)],
+    2: [PIP(15,15), PIP(45,45)],
+    3: [PIP(15,15), PIP(30,30), PIP(45,45)],
+    4: [PIP(15,15), PIP(45,15), PIP(15,45), PIP(45,45)],
+    5: [PIP(15,15), PIP(45,15), PIP(30,30), PIP(15,45), PIP(45,45)],
+    6: [PIP(15,12), PIP(45,12), PIP(15,30), PIP(45,30), PIP(15,48), PIP(45,48)],
+  };
+
+  function dieSVG(value, held, index) {
+    const bg     = held ? '#fef3c7' : '#ffffff';
+    const border = held ? '#f59e0b' : '#94a3b8';
+    const bw     = held ? '3'       : '2';
+    const pips   = value ? PIPS[value].join('') : '';
+    return `<svg id="die-svg-${index}" width="60" height="60" viewBox="0 0 60 60"
+        xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <rect x="2" y="2" width="56" height="56" rx="10" ry="10"
+        fill="${bg}" stroke="${border}" stroke-width="${bw}"/>
+      ${value ? pips : '<text x="30" y="36" text-anchor="middle" font-size="22" fill="#cbd5e1">?</text>'}
+    </svg>`;
+  }
+
+  // ─── State ───────────────────────────────────────────────────────────────────
+
+  const CATEGORIES = [
+    { id:'ones',          label:'一點',   section:'upper' },
+    { id:'twos',          label:'二點',   section:'upper' },
+    { id:'threes',        label:'三點',   section:'upper' },
+    { id:'fours',         label:'四點',   section:'upper' },
+    { id:'fives',         label:'五點',   section:'upper' },
+    { id:'sixes',         label:'六點',   section:'upper' },
+    { id:'threeOfAKind',  label:'三同',   section:'lower' },
+    { id:'fourOfAKind',   label:'四同',   section:'lower' },
+    { id:'fullHouse',     label:'葫蘆',   section:'lower' },
+    { id:'smallStraight', label:'小順',   section:'lower' },
+    { id:'largeStraight', label:'大順',   section:'lower' },
+    { id:'yacht',         label:'快艇',   section:'lower' },
+    { id:'chance',        label:'機會',   section:'lower' },
+  ];
+
+  function blankScorecard() {
+    const sc = {};
+    CATEGORIES.forEach(c => sc[c.id] = null);
+    return sc;
+  }
+
+  function blankDice() {
+    return Array.from({length:5}, () => ({value:null, held:false}));
+  }
+
+  let state = { phase: 'menu' };
+
+  function initState(mode) {
+    const names = mode === '1p' ? ['玩家', 'CPU'] : ['玩家一', '玩家二'];
+    state = {
+      phase: 'playing',
+      mode,
+      players: names.map((name, i) => ({
+        name,
+        scorecard: blankScorecard(),
+        isCpu: mode === '1p' && i === 1,
+      })),
+      currentPlayerIndex: 0,
+      round: 1,
+      dice: blankDice(),
+      rollsLeft: 3,
+      rollPhase: false,
+      cpuThinking: false,
+    };
+  }
+
+  // ─── Scoring ─────────────────────────────────────────────────────────────────
+
+  function tally(values) {
+    const counts = {};
+    values.forEach(v => counts[v] = (counts[v] || 0) + 1);
+    return counts;
+  }
+
+  function sum(values) { return values.reduce((a,b) => a+b, 0); }
+
+  function hasConsecutiveRun(sorted, len) {
+    let run = 1;
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i] === sorted[i-1] + 1) {
+        run++;
+        if (run >= len) return true;
+      } else if (sorted[i] !== sorted[i-1]) {
+        run = 1;
+      }
+    }
+    return run >= len;
+  }
+
+  function score(categoryId, dice) {
+    const values = dice.map(d => d.value);
+    if (values.some(v => v === null)) return 0;
+    const counts   = tally(values);
+    const maxCount = Math.max(...Object.values(counts));
+    const totalSum = sum(values);
+
+    switch (categoryId) {
+      case 'ones':   return sum(values.filter(v => v===1));
+      case 'twos':   return sum(values.filter(v => v===2));
+      case 'threes': return sum(values.filter(v => v===3));
+      case 'fours':  return sum(values.filter(v => v===4));
+      case 'fives':  return sum(values.filter(v => v===5));
+      case 'sixes':  return sum(values.filter(v => v===6));
+      case 'threeOfAKind':  return maxCount >= 3 ? totalSum : 0;
+      case 'fourOfAKind':   return maxCount >= 4 ? totalSum : 0;
+      case 'fullHouse': {
+        const vals = Object.values(counts);
+        return (vals.includes(3) && vals.includes(2)) ? 25 : 0;
+      }
+      case 'smallStraight': {
+        const uniq = [...new Set(values)].sort((a,b) => a-b);
+        return hasConsecutiveRun(uniq, 4) ? 30 : 0;
+      }
+      case 'largeStraight': {
+        const uniq = [...new Set(values)].sort((a,b) => a-b);
+        return (uniq.length === 5 && hasConsecutiveRun(uniq, 5)) ? 40 : 0;
+      }
+      case 'yacht': return maxCount === 5 ? 50 : 0;
+      case 'chance': return totalSum;
+      default: return 0;
+    }
+  }
+
+  function computeScoreboard(scorecard) {
+    const upperIds      = CATEGORIES.filter(c=>c.section==='upper').map(c=>c.id);
+    const lowerIds      = CATEGORIES.filter(c=>c.section==='lower').map(c=>c.id);
+    const upperFilled   = upperIds.filter(id => scorecard[id] !== null);
+    const upperSubtotal = upperFilled.reduce((a,id) => a + scorecard[id], 0);
+    const upperDone     = upperFilled.length === upperIds.length;
+    const upperBonus    = upperSubtotal >= 63 ? 35 : 0;
+    const lowerFilled   = lowerIds.filter(id => scorecard[id] !== null);
+    const lowerSubtotal = lowerFilled.reduce((a,id) => a + scorecard[id], 0);
+    return { upperSubtotal, upperBonus, upperDone, lowerSubtotal,
+             grandTotal: upperSubtotal + upperBonus + lowerSubtotal };
+  }
+
+  // ─── Game Actions ─────────────────────────────────────────────────────────────
+
+  function rollDice() {
+    if (state.rollsLeft <= 0) return;
+    const rolling = [];
+    state.dice.forEach((d, i) => {
+      if (!d.held) { d.value = Math.ceil(Math.random() * 6); rolling.push(i); }
+    });
+    state.rollsLeft--;
+    state.rollPhase = true;
+    _pendingRollAnim = rolling;
+    render();
+  }
+
+  function toggleHold(i) {
+    if (!state.rollPhase || state.rollsLeft <= 0) return;
+    state.dice[i].held = !state.dice[i].held;
+    const isNowHeld = state.dice[i].held;
+    render();
+    animateHoldToggle(i, isNowHeld);
+  }
+
+  function selectCategory(categoryId) {
+    const player = state.players[state.currentPlayerIndex];
+    if (player.scorecard[categoryId] !== null) return;
+    if (!state.rollPhase) return;
+
+    _pendingScoreAnim = { categoryId, playerIndex: state.currentPlayerIndex };
+    player.scorecard[categoryId] = score(categoryId, state.dice);
+    state.dice      = blankDice();
+    state.rollsLeft = 3;
+    state.rollPhase = false;
+
+    const allDone = state.players.every(p => CATEGORIES.every(c => p.scorecard[c.id] !== null));
+    if (allDone) { state.phase = 'gameover'; render(); return; }
+
+    state.currentPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+    if (state.currentPlayerIndex === 0) state.round++;
+    render();
+
+    if (state.players[state.currentPlayerIndex].isCpu) {
+      state.cpuThinking = true;
+      render();
+      cpuTurn();
+    }
+  }
+
+  function startGame(mode) { initState(mode); render(); }
+  function resetGame()     { state = { phase: 'menu' }; render(); }
+
+  // ─── CPU Strategy ─────────────────────────────────────────────────────────────
+
+  function selectDiceToHold(categoryId, dice) {
+    const values = dice.map(d => d.value);
+    const counts = tally(values);
+    switch (categoryId) {
+      case 'ones':   return dice.map(d => d.value === 1);
+      case 'twos':   return dice.map(d => d.value === 2);
+      case 'threes': return dice.map(d => d.value === 3);
+      case 'fours':  return dice.map(d => d.value === 4);
+      case 'fives':  return dice.map(d => d.value === 5);
+      case 'sixes':  return dice.map(d => d.value === 6);
+      case 'yacht': case 'threeOfAKind': case 'fourOfAKind': {
+        const best = Object.entries(counts).sort((a,b) => b[1]-a[1])[0][0];
+        return dice.map(d => String(d.value) === best);
+      }
+      case 'fullHouse': {
+        const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+        const keep = new Set(sorted.slice(0,2).map(e=>e[0]));
+        return dice.map(d => keep.has(String(d.value)));
+      }
+      case 'smallStraight': case 'largeStraight': {
+        const uniq = [...new Set(values)].sort((a,b)=>a-b);
+        let bestRun = [], curRun = [uniq[0]];
+        for (let i=1; i<uniq.length; i++) {
+          if (uniq[i] === uniq[i-1]+1) curRun.push(uniq[i]);
+          else { if (curRun.length > bestRun.length) bestRun=curRun; curRun=[uniq[i]]; }
+        }
+        if (curRun.length > bestRun.length) bestRun = curRun;
+        const keepSet = new Set(bestRun);
+        const held = []; const used = new Set();
+        dice.forEach((d,i) => {
+          if (keepSet.has(d.value) && !used.has(d.value)) { used.add(d.value); held[i]=true; }
+          else held[i]=false;
+        });
+        return held;
+      }
+      case 'chance': return dice.map(d => d.value >= 4);
+      default: return dice.map(() => false);
+    }
+  }
+
+  function cpuTurn() {
+    const player = state.players[state.currentPlayerIndex];
+    function bestAvailableCategory() {
+      let best = null, bestScore = -1;
+      CATEGORIES.forEach(c => {
+        if (player.scorecard[c.id] !== null) return;
+        const s = score(c.id, state.dice);
+        if (s > bestScore) { bestScore = s; best = c.id; }
+      });
+      return best;
+    }
+    function doReroll(rerollsLeft) {
+      if (rerollsLeft <= 0 || state.rollsLeft <= 0) {
+        setTimeout(() => { state.cpuThinking = false; selectCategory(bestAvailableCategory()); }, 350);
+        return;
+      }
+      setTimeout(() => {
+        const cat = bestAvailableCategory();
+        const holdMask = selectDiceToHold(cat, state.dice);
+        state.dice.forEach((d,i) => { d.held = holdMask[i]; });
+        rollDice();
+        doReroll(rerollsLeft - 1);
+      }, 450);
+    }
+    setTimeout(() => { rollDice(); doReroll(2); }, 350);
+  }
+
+  // ─── GSAP Animations ─────────────────────────────────────────────────────────
+
+  let _prevPhase       = null;
+  let _transitioning   = false;
+  let _pendingRollAnim  = [];
+  let _pendingScoreAnim = null; // { categoryId, playerIndex }
+
+  function animateMenuIn() {
+    gsap.from('#menu-card', { opacity: 0, y: 50, duration: 0.5, ease: 'back.out(1.4)' });
+
+    const split = SplitText.create('#menu-title', { type: 'chars' });
+    gsap.from(split.chars, {
+      opacity: 0, y: -24,
+      rotation: gsap.utils.wrap([-14, 14]),
+      stagger: { each: 0.04, from: 'center' },
+      duration: 0.45, ease: 'back.out(2)', delay: 0.12,
+    });
+
+    gsap.from('#menu-subtitle', { opacity: 0, duration: 0.4, delay: 0.48 });
+    gsap.from('.menu-btn', {
+      opacity: 0, y: 18, stagger: 0.12,
+      duration: 0.4, delay: 0.6, ease: 'power2.out',
+    });
+  }
+
+  function animateDiceRoll(indices) {
+    indices.forEach(i => {
+      const el = document.getElementById(`die-svg-${i}`);
+      if (!el) return;
+      gsap.killTweensOf(el);
+      gsap.timeline()
+        .to(el, { rotation: -22, scaleX: 1.18, scaleY: 0.82, y: -7, duration: 0.07, ease: 'power2.in' })
+        .to(el, { rotation:  16, scaleX: 0.85, scaleY: 1.18, y:  4, duration: 0.09 })
+        .to(el, { rotation:  -9, scaleX: 1.09, scaleY: 0.93, y: -3, duration: 0.07 })
+        .to(el, { rotation:   4, scaleX: 0.97, scaleY: 1.04, y:  1, duration: 0.07 })
+        .to(el, { rotation:   0, scaleX: 1,    scaleY: 1,    y:  0, duration: 0.13, ease: 'back.out(1.8)' });
+    });
+  }
+
+  function animateHoldToggle(index, isNowHeld) {
+    const el = document.getElementById(`die-svg-${index}`);
+    if (!el) return;
+    if (isNowHeld) {
+      gsap.timeline()
+        .to(el, { scale: 0.78, duration: 0.1,  ease: 'power2.in' })
+        .to(el, { scale: 1.14, duration: 0.15, ease: 'power2.out' })
+        .to(el, { scale: 1,    duration: 0.12, ease: 'back.out(2)' });
+    } else {
+      gsap.fromTo(el, { scale: 1.1 }, { scale: 1, duration: 0.2, ease: 'power2.out' });
+    }
+  }
+
+  function animateScoreCell() {
+    if (!_pendingScoreAnim) return;
+    const { categoryId, playerIndex } = _pendingScoreAnim;
+    _pendingScoreAnim = null;
+    const row = document.querySelector(`tr[data-cat="${categoryId}"]`);
+    if (!row) return;
+    const tds  = row.querySelectorAll('td');
+    const cell = tds[playerIndex + 1]; // td[0] = label
+    if (!cell) return;
+    gsap.fromTo(cell,
+      { backgroundColor: '#a5f3fc', scale: 1.18 },
+      { backgroundColor: 'transparent', scale: 1, duration: 0.75, ease: 'power2.out' }
+    );
+  }
+
+  function animateGameoverIn() {
+    gsap.from('#winner-card',   { opacity: 0, y: -30, duration: 0.5, ease: 'back.out(1.4)', delay: 0.05 });
+    gsap.from('#winner-trophy', { scale: 0, rotation: -50, duration: 0.6, ease: 'back.out(2)',  delay: 0.1  });
+    gsap.from('#winner-msg',    { opacity: 0, y: 16,  duration: 0.45, ease: 'power2.out',     delay: 0.32 });
+
+    const rows = document.querySelectorAll('#score-table tbody tr');
+    gsap.from(rows, {
+      opacity: 0, x: -28, stagger: 0.03,
+      duration: 0.3, delay: 0.45, ease: 'power2.out',
+    });
+
+    gsap.from('.grand-total-cell', {
+      backgroundColor: '#6ee7b7', scale: 1.15,
+      duration: 0.7, delay: 1.1, ease: 'power2.out', stagger: 0.1,
+    });
+
+    gsap.from('#replay-btn', {
+      opacity: 0, scale: 0.82,
+      duration: 0.45, delay: 1.0, ease: 'back.out(1.5)',
+    });
+  }
+
+  // ─── Render ───────────────────────────────────────────────────────────────────
+
+  function doRender(app) {
+    _prevPhase = state.phase;
+
+    if (state.phase === 'menu') {
+      app.innerHTML = renderMenu();
+      animateMenuIn();
+
+    } else if (state.phase === 'playing') {
+      app.innerHTML = renderPlaying();
+      if (_pendingRollAnim.length > 0) {
+        animateDiceRoll(_pendingRollAnim);
+        _pendingRollAnim = [];
+      }
+      animateScoreCell();
+      if (state.cpuThinking) {
+        const ind = document.getElementById('cpu-indicator');
+        if (ind) gsap.to(ind, { opacity: 0.35, duration: 0.55, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+      }
+
+    } else if (state.phase === 'gameover') {
+      app.innerHTML = renderGameover();
+      animateGameoverIn();
+    }
+  }
+
+  function render() {
+    const app = document.getElementById('app');
+    const phaseChanged = _prevPhase !== null && _prevPhase !== state.phase;
+
+    if (phaseChanged && !_transitioning) {
+      _transitioning = true;
+      gsap.killTweensOf(app);
+      gsap.to(app, {
+        opacity: 0, duration: 0.18, ease: 'power2.in',
+        onComplete: () => {
+          _transitioning = false;
+          doRender(app);
+          gsap.to(app, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+        },
+      });
+    } else {
+      doRender(app);
+    }
+  }
+
+  // ─── Menu ─────────────────────────────────────────────────────────────────────
+
+  function renderMenu() {
+    return `
+    <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 px-4">
+      <div id="menu-card" class="bg-white rounded-2xl shadow-xl p-10 max-w-sm w-full text-center">
+        <div class="text-6xl mb-4">🎲</div>
+        <h1 id="menu-title" class="text-3xl font-bold text-indigo-700 mb-2">快艇骰子</h1>
+        <p id="menu-subtitle" class="text-gray-500 text-sm mb-8">仿世界遊戲大全51・5顆骰子・13回合</p>
+        <div class="flex flex-col gap-3">
+          <button class="menu-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl transition"
+            onclick="startGame('1p')">單人遊戲（對戰 CPU）</button>
+          <button class="menu-btn w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl transition"
+            onclick="startGame('2p')">雙人遊戲</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ─── Playing ──────────────────────────────────────────────────────────────────
+
+  function renderPlaying() {
+    const { players, currentPlayerIndex, round, dice, rollsLeft, rollPhase, cpuThinking } = state;
+    const currentPlayer = players[currentPlayerIndex];
+    const canRoll = rollsLeft > 0 && !cpuThinking;
+    const canHold = rollPhase && rollsLeft > 0 && !cpuThinking;
+
+    const diceHTML = dice.map((d, i) => {
+      const holdLabel = d.held
+        ? `<div class="text-xs text-amber-600 font-bold mt-1">保留</div>`
+        : `<div class="text-xs text-gray-300 mt-1">‧</div>`;
+      const cursor = canHold ? 'cursor-pointer' : 'cursor-default';
+      const ring   = d.held ? 'ring-2 ring-amber-400 rounded-xl' : '';
+      return `
+        <div class="flex flex-col items-center ${cursor} select-none"
+          onclick="${canHold ? `toggleHold(${i})` : ''}">
+          <div class="${ring}">${dieSVG(d.value, d.held, i)}</div>
+          ${holdLabel}
+        </div>`;
+    }).join('');
+
+    const scoreRows = CATEGORIES.map(cat => {
+      let p0cell = '', p1cell = '';
+      players.forEach((p, pi) => {
+        const filled    = p.scorecard[cat.id] !== null;
+        const isCurrent = pi === currentPlayerIndex;
+        if (filled) {
+          const cls  = isCurrent ? 'font-semibold text-indigo-700' : 'text-gray-600';
+          const cell = `<td class="text-center py-1 px-2 ${cls}">${p.scorecard[cat.id]}</td>`;
+          if (pi===0) p0cell=cell; else p1cell=cell;
+        } else if (isCurrent && rollPhase && !cpuThinking) {
+          const preview = score(cat.id, dice);
+          const cell = `<td class="text-center py-1 px-2 text-gray-400 italic cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 rounded transition-colors"
+            onclick="selectCategory('${cat.id}')">${preview}</td>`;
+          if (pi===0) p0cell=cell; else p1cell=cell;
+        } else {
+          const cell = `<td class="text-center py-1 px-2 text-gray-300">—</td>`;
+          if (pi===0) p0cell=cell; else p1cell=cell;
+        }
+      });
+      const border = cat.id === 'sixes' ? 'border-b-2 border-indigo-200' : '';
+      return `<tr class="${border}" data-cat="${cat.id}">
+        <td class="py-1 px-2 text-gray-700 text-sm font-medium whitespace-nowrap">${cat.label}</td>
+        ${p0cell}${p1cell}
+      </tr>`;
+    }).join('');
+
+    const bonusCells = players.map((p, pi) => {
+      const { upperSubtotal, upperBonus, upperDone } = computeScoreboard(p.scorecard);
+      const isCurrent = pi === currentPlayerIndex;
+      let content;
+      if (upperBonus > 0) content = `<span class="text-green-600 font-bold">+35 ✓</span>`;
+      else if (upperDone) content = `<span class="text-gray-400">—</span>`;
+      else                content = `<span class="${isCurrent?'text-indigo-500':'text-gray-400'}">${upperSubtotal}/63</span>`;
+      return `<td class="text-center py-1 px-2 text-sm">${content}</td>`;
+    }).join('');
+
+    const upperSubCells = players.map(p => {
+      const { upperSubtotal } = computeScoreboard(p.scorecard);
+      return `<td class="text-center py-1 px-2 text-gray-600 text-sm">${upperSubtotal}</td>`;
+    }).join('');
+
+    const totalCells = players.map(p => {
+      const { grandTotal } = computeScoreboard(p.scorecard);
+      return `<td class="text-center py-1 px-2 font-bold text-indigo-700">${grandTotal}</td>`;
+    }).join('');
+
+    const colHeaders = players.map((p, pi) => {
+      const bg = pi === currentPlayerIndex
+        ? 'bg-indigo-100 text-indigo-800 font-bold' : 'bg-gray-50 text-gray-600';
+      return `<th class="text-center py-2 px-3 text-sm rounded-t-lg ${bg}">${p.name}</th>`;
+    }).join('');
+
+    return `
+    <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 pb-8">
+      <div class="bg-white shadow-sm px-4 py-3 flex items-center justify-between">
+        <h1 class="text-lg font-bold text-indigo-700">🎲 快艇骰子</h1>
+        <span class="text-sm text-gray-500">第 ${round}/13 回合・${currentPlayer.name}的回合</span>
+      </div>
+
+      ${cpuThinking ? `
+      <div id="cpu-indicator" class="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-amber-700 text-sm font-medium">
+        🤖 CPU 思考中…
+      </div>` : ''}
+
+      <div class="max-w-2xl mx-auto px-4 mt-6">
+        <div class="bg-white rounded-2xl shadow p-5 mb-4">
+          <div class="flex justify-center gap-3 mb-4 flex-wrap">${diceHTML}</div>
+          <div class="flex items-center justify-center gap-4">
+            <button onclick="${canRoll ? 'rollDice()' : ''}" ${canRoll ? '' : 'disabled'}
+              class="px-6 py-2 rounded-xl font-bold text-white transition
+                ${canRoll ? 'bg-indigo-600 hover:bg-indigo-700 active:scale-95' : 'bg-gray-300 cursor-not-allowed'}">
+              擲骰
+            </button>
+            <span class="text-sm text-gray-500">剩餘 <span class="font-bold text-indigo-600">${rollsLeft}</span> 次</span>
+          </div>
+          ${!rollPhase && !cpuThinking ? `<p class="text-center text-xs text-gray-400 mt-2">請先擲骰，再選擇計分類別</p>` : ''}
+          ${rollPhase && !cpuThinking  ? `<p class="text-center text-xs text-indigo-400 mt-2">點選骰子可保留，點計分格登記分數</p>` : ''}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr>
+                  <th class="text-left py-2 px-2 text-gray-500 font-normal text-xs bg-gray-50">類別</th>
+                  ${colHeaders}
+                </tr>
+              </thead>
+              <tbody>
+                ${scoreRows}
+                <tr class="bg-gray-50 border-t-2 border-gray-200">
+                  <td class="py-1 px-2 text-xs text-gray-500 font-medium">上區小計</td>${upperSubCells}
+                </tr>
+                <tr class="bg-green-50">
+                  <td class="py-1 px-2 text-xs text-gray-500 font-medium">上區獎勵</td>${bonusCells}
+                </tr>
+                <tr class="bg-indigo-50 border-t border-indigo-100">
+                  <td class="py-1 px-2 text-xs font-bold text-indigo-700">總計</td>${totalCells}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ─── Game Over ────────────────────────────────────────────────────────────────
+
+  function renderGameover() {
+    const { players } = state;
+    const totals   = players.map(p => computeScoreboard(p.scorecard));
+    const maxTotal = Math.max(...totals.map(t => t.grandTotal));
+    const isWinner = totals.map(t => t.grandTotal === maxTotal);
+    const isTie    = isWinner.every(Boolean);
+
+    const colHeaders = players.map((p, pi) => {
+      const cls = isWinner[pi] ? 'bg-green-100 text-green-800 font-bold' : 'bg-gray-50 text-gray-600';
+      return `<th class="text-center py-2 px-3 text-sm ${cls}">
+        ${p.name}${isWinner[pi] ? (isTie ? ' 🤝' : ' 🏆') : ''}
+      </th>`;
+    }).join('');
+
+    const scoreRows = CATEGORIES.map(cat => {
+      const cells = players.map((p, pi) => {
+        const cls = isWinner[pi] ? 'bg-green-50 font-semibold text-green-800' : 'text-gray-600';
+        return `<td class="text-center py-1 px-2 ${cls}">${p.scorecard[cat.id] ?? 0}</td>`;
+      }).join('');
+      const border = cat.id === 'sixes' ? 'border-b-2 border-indigo-200' : '';
+      return `<tr class="${border}">
+        <td class="py-1 px-2 text-gray-700 text-sm font-medium whitespace-nowrap">${cat.label}</td>
+        ${cells}
+      </tr>`;
+    }).join('');
+
+    const summaryRows = [
+      { label:'上區小計', fn: t => t.upperSubtotal },
+      { label:'上區獎勵', fn: t => t.upperBonus > 0 ? '+35' : '—' },
+      { label:'下區小計', fn: t => t.lowerSubtotal },
+    ].map(row => {
+      const cells = totals.map((t, pi) => {
+        const cls = isWinner[pi] ? 'bg-green-50 font-semibold text-green-800' : 'text-gray-600';
+        return `<td class="text-center py-1 px-2 ${cls}">${row.fn(t)}</td>`;
+      }).join('');
+      return `<tr class="bg-gray-50">
+        <td class="py-1 px-2 text-xs text-gray-500">${row.label}</td>${cells}
+      </tr>`;
+    }).join('');
+
+    const grandCells = totals.map((t, pi) => {
+      const cls = isWinner[pi]
+        ? 'grand-total-cell bg-green-100 font-bold text-green-800 text-base'
+        : 'grand-total-cell font-bold text-gray-600';
+      return `<td class="text-center py-2 px-2 ${cls}">${t.grandTotal}</td>`;
+    }).join('');
+
+    const winnerMsg = isTie
+      ? '平局！勢均力敵！'
+      : `${players[isWinner.indexOf(true)].name} 獲勝！🎉`;
+
+    return `
+    <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 pb-8">
+      <div class="bg-white shadow-sm px-4 py-3 text-center">
+        <h1 class="text-lg font-bold text-indigo-700">🎲 遊戲結束</h1>
+      </div>
+      <div class="max-w-2xl mx-auto px-4 mt-6">
+        <div id="winner-card" class="bg-white rounded-2xl shadow-xl p-6 mb-4 text-center">
+          <div id="winner-trophy" class="text-4xl mb-2">${isTie ? '🤝' : '🏆'}</div>
+          <h2 id="winner-msg" class="text-2xl font-bold text-indigo-700">${winnerMsg}</h2>
+        </div>
+        <div class="bg-white rounded-2xl shadow overflow-hidden mb-4">
+          <div class="overflow-x-auto">
+            <table id="score-table" class="w-full text-sm">
+              <thead>
+                <tr>
+                  <th class="text-left py-2 px-2 text-gray-500 font-normal text-xs bg-gray-50">類別</th>
+                  ${colHeaders}
+                </tr>
+              </thead>
+              <tbody>
+                ${scoreRows}${summaryRows}
+                <tr class="border-t-2 border-indigo-200">
+                  <td class="py-2 px-2 text-sm font-bold text-indigo-700">總計</td>
+                  ${grandCells}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="text-center">
+          <button id="replay-btn" onclick="resetGame()"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-10 rounded-xl transition active:scale-95">
+            再玩一次
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ─── Boot ─────────────────────────────────────────────────────────────────────
+  render();
+  </script>
+</body>
+</html>
