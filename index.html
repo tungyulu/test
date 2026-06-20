@@ -8,96 +8,259 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Noto Sans TC', sans-serif; }
+    :root {
+      --bg:         #080C14;
+      --surface:    #0D1422;
+      --border:     #1A2540;
+      --border-hi:  #2D4470;
+      --ink:        #CBD5E1;
+      --ink-dim:    #475569;
+      --cyan:       #22D3EE;
+      --cyan-glow:  rgba(34, 211, 238, 0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100svh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* dot-grid — engineering-paper atmosphere */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(34,211,238,0.055) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .site-wrap { position: relative; z-index: 1; }
+
+    /* ── Header ── */
+    .site-header {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 4rem 2rem 2.5rem;
+    }
+
+    .header-tag {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+      opacity: 0.85;
+    }
+
+    .site-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #F1F5F9;
+    }
+
+    .header-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    /* ── Card grid ── */
+    .card-grid {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 2rem 2rem 6rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .site-header { padding-top: 2.5rem; }
+    }
+
+    /* ── Nav card ── */
+    .nav-card {
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    /* top-edge cyan beam — the signature hover moment */
+    .nav-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--cyan) 50%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .nav-card:hover,
+    .nav-card:focus-visible {
+      border-color: var(--border-hi);
+    }
+
+    .nav-card:hover::before,
+    .nav-card:focus-visible::before {
+      opacity: 1;
+    }
+
+    .nav-card:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .card-type {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--cyan);
+      margin-bottom: 1.25rem;
+      opacity: 0.65;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 0.875rem;
+      user-select: none;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #F1F5F9;
+      margin-bottom: 0.375rem;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.8125rem;
+      color: var(--ink-dim);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 1.25rem;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--cyan);
+      opacity: 0;
+      transform: translateX(-5px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .nav-card:hover .card-cta,
+    .nav-card:focus-visible .card-cta {
+      opacity: 1;
+      transform: translateX(0);
+    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
+<body>
 
-  <!-- Header -->
-  <header class="bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950 border-b border-white/10">
-    <div class="max-w-4xl mx-auto px-6 py-10 text-center">
-      <h1 class="text-3xl sm:text-4xl font-black tracking-tight">我的小工具</h1>
-      <p class="text-slate-400 text-sm mt-2">選擇想前往的頁面</p>
-    </div>
-  </header>
+  <div class="site-wrap">
 
-  <!-- Card Grid -->
-  <main class="max-w-4xl mx-auto px-6 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <header class="site-header">
+      <p class="header-tag">// personal toolkit</p>
+      <h1 class="site-title">我的小工具</h1>
+      <hr class="header-rule" />
+    </header>
 
-      <!-- Card 1: Autumn Road Trip -->
-      <a href="trip.html"
-        class="nav-card bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3 transition active:scale-95 no-underline hover:border-white/20">
-        <div class="text-4xl">🍁</div>
-        <div>
-          <h2 class="text-lg font-bold text-slate-100">Autumn Road Trip</h2>
-          <p class="text-sm text-slate-400 mt-1">東京→熱海→河口湖 秋季紅葉巡航・8日行程</p>
-        </div>
-        <div class="mt-auto text-indigo-400 text-sm font-medium">前往 →</div>
-      </a>
+    <main>
+      <nav class="card-grid" aria-label="工具頁面導覽">
 
-      <!-- Card 2: Sports Betting Tracker -->
-      <a href="betting.html"
-        class="nav-card bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3 transition active:scale-95 no-underline hover:border-white/20">
-        <div class="text-4xl">🏆</div>
-        <div>
-          <h2 class="text-lg font-bold text-slate-100">運彩投注紀錄</h2>
-          <p class="text-sm text-slate-400 mt-1">世界盃複式串關・盈虧自動計算</p>
-        </div>
-        <div class="mt-auto text-indigo-400 text-sm font-medium">前往 →</div>
-      </a>
+        <a href="trip.html" class="nav-card">
+          <span class="card-type">[ TRAVEL ]</span>
+          <span class="card-icon" aria-hidden="true">🍁</span>
+          <h2 class="card-title">Autumn Road Trip</h2>
+          <p class="card-desc">東京→熱海→河口湖 秋季紅葉自駕巡航 · 8天7夜完整行程</p>
+          <span class="card-cta">open →</span>
+        </a>
 
-      <!-- Card 3: Yacht Dice -->
-      <a href="yacht.html"
-        class="nav-card bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3 transition active:scale-95 no-underline hover:border-white/20">
-        <div class="text-4xl">🎲</div>
-        <div>
-          <h2 class="text-lg font-bold text-slate-100">快艇骰子</h2>
-          <p class="text-sm text-slate-400 mt-1">5顆骰子・13類別・支援雙人與 CPU 對戰</p>
-        </div>
-        <div class="mt-auto text-indigo-400 text-sm font-medium">前往 →</div>
-      </a>
+        <a href="betting.html" class="nav-card">
+          <span class="card-type">[ TRACKER ]</span>
+          <span class="card-icon" aria-hidden="true">🏆</span>
+          <h2 class="card-title">運彩投注紀錄</h2>
+          <p class="card-desc">世界盃複式串關 · 盈虧自動計算 · 本機儲存</p>
+          <span class="card-cta">open →</span>
+        </a>
 
-    </div>
-  </main>
+        <a href="yacht.html" class="nav-card">
+          <span class="card-type">[ GAME ]</span>
+          <span class="card-icon" aria-hidden="true">🎲</span>
+          <h2 class="card-title">快艇骰子</h2>
+          <p class="card-desc">5顆骰子 · 13類別計分 · 支援雙人與 CPU 對戰</p>
+          <span class="card-cta">open →</span>
+        </a>
+
+      </nav>
+    </main>
+
+  </div>
 
   <script>
   // Entrance animation + hover — respects prefers-reduced-motion
-  // Uses window.matchMedia directly to avoid gsap.matchMedia object-form
-  // firing the callback once per matching condition (which caused duplicate
-  // stagger tweens and the broken mid-animation state).
+  // Uses window.matchMedia directly (not gsap.matchMedia object form) to avoid
+  // duplicate stagger tweens from multiple condition-match callbacks.
   (function () {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canHover      = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-    if (reducedMotion) return; // cards already visible; no animation needed
+    if (reducedMotion) return;
 
-    // Pre-hide cards synchronously to avoid a flash before animating
-    gsap.set('.nav-card', { autoAlpha: 0, y: 32 });
+    const header = document.querySelector('.site-header');
+    const cards  = document.querySelectorAll('.nav-card');
 
-    // Stagger entrance — explicit to/from states, no CSS-read ambiguity
-    gsap.to('.nav-card', {
+    gsap.set(header, { autoAlpha: 0, y: 20 });
+    gsap.set(cards,  { autoAlpha: 0, y: 28 });
+
+    gsap.to(header, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+    gsap.to(cards, {
       autoAlpha: 1,
       y: 0,
-      stagger: 0.12,
-      duration: 0.5,
+      stagger: 0.1,
+      duration: 0.55,
       ease: 'power2.out',
+      delay: 0.2,
     });
 
-    // Hover lift (pointer devices only)
     if (canHover) {
-      document.querySelectorAll('.nav-card').forEach(card => {
+      cards.forEach(card => {
         card.addEventListener('mouseenter', () => gsap.to(card, {
-          y: -6, scale: 1.03,
-          boxShadow: '0 16px 40px rgba(79,70,229,0.30)',
-          duration: 0.25, overwrite: 'auto',
+          y: -5, scale: 1.02,
+          boxShadow: '0 16px 40px rgba(34, 211, 238, 0.10)',
+          duration: 0.22, overwrite: 'auto',
         }));
         card.addEventListener('mouseleave', () => gsap.to(card, {
           y: 0, scale: 1,
           boxShadow: '0 0px 0px rgba(0,0,0,0)',
-          duration: 0.25, overwrite: 'auto',
+          duration: 0.22, overwrite: 'auto',
         }));
       });
     }
