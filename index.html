@@ -39,10 +39,27 @@
         </div>
     </header>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 pb-12 flex flex-col md:flex-row gap-8">
+    <!-- 手機版頂部橫向快速跳轉籤條（電腦版隱藏，改用左側側欄） -->
+    <nav class="md:hidden sticky top-0 z-40 bg-[#FDFBF7]/90 backdrop-blur border-b border-gray-200/80">
+        <div class="flex gap-2 overflow-x-auto px-4 py-2.5">
+            <a href="#flight-info" class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-medium text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">
+                <i data-lucide="plane" class="w-3.5 h-3.5"></i> 航班
+            </a>
+            <a href="#day-1" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D1</a>
+            <a href="#day-2" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D2</a>
+            <a href="#day-3" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D3</a>
+            <a href="#day-4" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D4</a>
+            <a href="#day-5" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D5</a>
+            <a href="#day-6" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D6</a>
+            <a href="#day-7" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D7</a>
+            <a href="#day-8" class="shrink-0 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-bold text-gray-600 active:bg-[#C05A3C] active:text-white transition-colors">D8</a>
+        </div>
+    </nav>
 
-        <!-- 左側固定目錄導覽 (Sidebar) -->
-        <aside class="w-full md:w-64 shrink-0">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 md:-mt-10 relative z-20 pb-12 flex flex-col md:flex-row gap-8">
+
+        <!-- 左側固定目錄導覽 (Sidebar) — 僅電腦版顯示 -->
+        <aside class="hidden md:block md:w-64 shrink-0">
             <div class="bg-white rounded-2xl p-6 card-shadow sticky top-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">快速跳轉</h3>
                 <nav class="space-y-2">
@@ -82,7 +99,7 @@
         <main class="flex-1 min-w-0">
 
             <!-- 航班資訊卡片 -->
-            <section id="flight-info" class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8 scroll-mt-6">
+            <section id="flight-info" class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8 scroll-mt-20 md:scroll-mt-6">
                 <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
                     <i data-lucide="plane" class="w-6 h-6 accent-color"></i>
                     <h2 class="text-2xl font-bold text-gray-800">Flight Info 航班資訊</h2>
@@ -121,7 +138,7 @@
 
             <!-- 行程總覽 -->
             <section class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-100 pb-4 sticky top-0 bg-white z-30 pt-4 -mt-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-100 pb-4 static md:sticky md:top-0 bg-white z-30 pt-4 -mt-4">
                     <div class="flex items-center gap-3">
                         <i data-lucide="map" class="w-6 h-6 accent-color"></i>
                         <h2 class="text-2xl font-bold text-gray-800">Itinerary 每日排程 (Final)</h2>
@@ -333,14 +350,15 @@
         mm.add(
             {
                 animate: "(prefers-reduced-motion: no-preference)",
-                reduce: "(prefers-reduced-motion: reduce)"
+                reduce: "(prefers-reduced-motion: reduce)",
+                canHover: "(hover: hover) and (pointer: fine)"
             },
             (ctx) => {
-                const { reduce } = ctx.conditions;
+                const { reduce, canHover } = ctx.conditions;
                 const dayRows = gsap.utils.toArray('[id^="day-"]');
 
                 if (reduce) {
-                    // 偏好減少動態：直接顯示，不做位移動畫
+                    // 偏好減少動態：直接顯示，不做位移 / 視差 / hover 動畫
                     gsap.set(dayRows, { clearProps: "all" });
                     return;
                 }
@@ -350,6 +368,18 @@
                 // 1) 頁首進場
                 gsap.from("header h1", { y: 30, autoAlpha: 0, duration: 0.9 });
                 gsap.from("header p", { y: 20, autoAlpha: 0, delay: 0.25, duration: 0.9 });
+
+                // 1b) 頁首視差：文字層隨捲動慢速下移，背景不動 → 景深感
+                gsap.to("header .relative.z-10", {
+                    yPercent: 40,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "header",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
 
                 // 2) 側欄 + 航班卡進場
                 gsap.from("aside .sticky", { x: -30, autoAlpha: 0, delay: 0.2 });
@@ -372,8 +402,36 @@
                         })
                 });
 
+                // 4) 卡片 hover 微互動：僅在有滑鼠的裝置啟用，觸控不卡 hover 狀態
+                let cleanupHover;
+                if (canHover) {
+                    // hover 目標為卡片內層，與 reveal（整列）不同元素，互不干擾
+                    const cards = gsap.utils.toArray('[id^="day-"] > div:last-child');
+                    const onEnter = (e) => gsap.to(e.currentTarget, {
+                        y: -6, scale: 1.02,
+                        boxShadow: "0 14px 32px rgba(192, 90, 60, 0.18)",
+                        duration: 0.3, overwrite: "auto"
+                    });
+                    const onLeave = (e) => gsap.to(e.currentTarget, {
+                        y: 0, scale: 1,
+                        boxShadow: "0 0px 0px rgba(0, 0, 0, 0)",
+                        duration: 0.3, overwrite: "auto"
+                    });
+                    cards.forEach((c) => {
+                        c.addEventListener("mouseenter", onEnter);
+                        c.addEventListener("mouseleave", onLeave);
+                    });
+                    // matchMedia 不自動清理手動監聽，條件變更時於回傳函式中移除
+                    cleanupHover = () => cards.forEach((c) => {
+                        c.removeEventListener("mouseenter", onEnter);
+                        c.removeEventListener("mouseleave", onLeave);
+                    });
+                }
+
                 // 圖片/字體載入後重新計算觸發點
                 ScrollTrigger.refresh();
+
+                return () => { if (cleanupHover) cleanupHover(); };
             }
         );
     </script>
