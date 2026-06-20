@@ -15,6 +15,8 @@
     body { font-family: 'Noto Sans TC', sans-serif; }
     .tabular { font-variant-numeric: tabular-nums; }
     [x-cloak] { display: none !important; }
+    .tab-scroll::-webkit-scrollbar { display: none; }
+    .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen">
@@ -179,6 +181,7 @@ function load() {
 function save(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
 
 let tickets = load();
+let selectedTicketId = tickets.length ? tickets[tickets.length - 1].id : null;
 
 // ---------- combinatorics ----------
 function combinations(arr, k) {
@@ -280,75 +283,122 @@ const statusBadge = s => {
   return `<span class="text-[11px] px-1.5 py-0.5 rounded border ${map[s]}">${RESULT_LABEL[s]}</span>`;
 };
 
+function ticketStatusDot(t) {
+  const c = computeTicket(t);
+  if (!c.allSettled) return 'bg-slate-400';
+  return c.profit >= 0 ? 'bg-emerald-400' : 'bg-rose-400';
+}
+
+function renderTicketArticle(t) {
+  const c = computeTicket(t);
+  const selRows = t.selections.map(s => `
+    <div class="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
+      <span class="w-6 text-center font-bold text-indigo-300 text-sm shrink-0">${s.key}</span>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm truncate">${s.match}</div>
+        <div class="text-xs text-slate-400 truncate">${s.pick}${s.odds != null ? ' · 賠率 ' + fmt(s.odds) : ''}</div>
+      </div>
+      <div class="flex gap-1 shrink-0">
+        ${RESULTS.map(r => `<button onclick="setResult('${t.id}','${s.key}','${r}')"
+          class="text-[11px] px-1.5 py-0.5 rounded border transition ${s.result===r ? activeResultClass(r) : 'border-white/10 text-slate-400 hover:bg-white/5'}">${RESULT_LABEL[r]}</button>`).join('')}
+      </div>
+    </div>`).join('');
+
+  const groupRows = c.groupRows.map(g => {
+    const statusTxt = g.pendCount ? `<span class="text-slate-400">進行中 (${g.wonCount}過/${g.lostCount}失/${g.pendCount}待)</span>`
+      : `<span class="${g.gReturn>0?'text-emerald-300':'text-rose-300'}">${g.wonCount} 注過關</span>`;
+    const retCell = (c.allSettled || g.pendCount===0)
+      ? `<span class="${g.gReturn>0?'text-amber-300 font-bold':''}">${fmt(g.gReturn)}</span>`
+      : `<span class="text-slate-400">/ ${fmt(g.gPotential)}</span>`;
+    return `<tr class="border-b border-white/5">
+      <td class="py-1.5 pr-2">串 ${g.size} 關${g.manualOdds!=null?` <span class="text-[11px] text-slate-500">(總賠率 ${fmt(g.manualOdds)})</span>`:''}</td>
+      <td class="py-1.5 px-2 text-right tabular">${g.count}</td>
+      <td class="py-1.5 px-2 text-right tabular">${fmt(g.stakePer)}</td>
+      <td class="py-1.5 px-2 text-right tabular">${fmt(g.gStaked)}</td>
+      <td class="py-1.5 px-2 text-right tabular">${retCell}</td>
+      <td class="py-1.5 pl-2 text-right text-xs">${statusTxt}</td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <article class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 bg-white/5">
+      <div>
+        <div class="font-bold">${t.label || '注單'}</div>
+        <div class="text-xs text-slate-400">${t.date} · ${t.selections.length} 腳 · ${t.groups.length} 種關數</div>
+      </div>
+      <div class="flex items-center gap-1">
+        <button onclick="editTicket('${t.id}')" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/10"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+        <button onclick="deleteTicket('${t.id}')" class="p-2 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-white/10"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>
+    </div>
+    <div class="px-4 py-2">${selRows}</div>
+    <div class="px-4 pb-3 overflow-x-auto">
+      <table class="w-full text-sm min-w-[460px]">
+        <thead><tr class="text-xs text-slate-400 border-b border-white/10">
+          <th class="text-left font-medium py-1.5 pr-2">關數</th>
+          <th class="text-right font-medium py-1.5 px-2">組合數</th>
+          <th class="text-right font-medium py-1.5 px-2">每注</th>
+          <th class="text-right font-medium py-1.5 px-2">投注</th>
+          <th class="text-right font-medium py-1.5 px-2">回本${c.allSettled?'':' / 潛在'}</th>
+          <th class="text-right font-medium py-1.5 pl-2">狀態</th>
+        </tr></thead>
+        <tbody>${groupRows}</tbody>
+      </table>
+    </div>
+    <div class="px-4 py-3 border-t border-white/10 flex flex-wrap gap-x-6 gap-y-1 text-sm">
+      <span class="text-slate-400">總投注 <b class="text-slate-100 tabular">${fmt(c.staked)}</b></span>
+      <span class="text-slate-400">${c.allSettled?'回本':'已實得'} <b class="text-amber-300 tabular">${fmt(c.returned)}</b></span>
+      ${c.pendingStake?`<span class="text-slate-400">未定注金 <b class="tabular">${fmt(c.pendingStake)}</b></span>`:''}
+      <span class="text-slate-400 ml-auto">${c.allSettled?'盈虧':'目前盈虧'} <b class="${c.profit>=0?'text-emerald-400':'text-rose-400'} tabular">${signed(c.profit)}</b></span>
+    </div>
+  </article>`;
+}
+
 function renderTickets() {
   const el = document.getElementById('tickets');
-  if (!tickets.length) { el.innerHTML = `<p class="text-center text-slate-500 py-10">尚無注單，按「新增注單」開始。</p>`; return; }
+  if (!tickets.length) {
+    selectedTicketId = null;
+    el.innerHTML = `<p class="text-center text-slate-500 py-10">尚無注單，按「新增注單」開始。</p>`;
+    return;
+  }
 
-  el.innerHTML = tickets.map((t, ti) => {
-    const c = computeTicket(t);
-    const selRows = t.selections.map(s => `
-      <div class="flex items-center gap-2 py-1.5 border-b border-white/5 last:border-0">
-        <span class="w-6 text-center font-bold text-indigo-300 text-sm shrink-0">${s.key}</span>
-        <div class="flex-1 min-w-0">
-          <div class="text-sm truncate">${s.match}</div>
-          <div class="text-xs text-slate-400 truncate">${s.pick}${s.odds != null ? ' · 賠率 ' + fmt(s.odds) : ''}</div>
-        </div>
-        <div class="flex gap-1 shrink-0">
-          ${RESULTS.map(r => `<button onclick="setResult('${t.id}','${s.key}','${r}')"
-            class="text-[11px] px-1.5 py-0.5 rounded border transition ${s.result===r ? activeResultClass(r) : 'border-white/10 text-slate-400 hover:bg-white/5'}">${RESULT_LABEL[r]}</button>`).join('')}
-        </div>
-      </div>`).join('');
+  // 確保 selectedTicketId 指向一張存在的票
+  if (!tickets.find(t => t.id === selectedTicketId)) {
+    selectedTicketId = tickets[tickets.length - 1].id;
+  }
 
-    const groupRows = c.groupRows.map(g => {
-      const statusTxt = g.pendCount ? `<span class="text-slate-400">進行中 (${g.wonCount}過/${g.lostCount}失/${g.pendCount}待)</span>`
-        : `<span class="${g.gReturn>0?'text-emerald-300':'text-rose-300'}">${g.wonCount} 注過關</span>`;
-      const retCell = (c.allSettled || g.pendCount===0)
-        ? `<span class="${g.gReturn>0?'text-amber-300 font-bold':''}">${fmt(g.gReturn)}</span>`
-        : `<span class="text-slate-400">/ ${fmt(g.gPotential)}</span>`;
-      return `<tr class="border-b border-white/5">
-        <td class="py-1.5 pr-2">串 ${g.size} 關${g.manualOdds!=null?` <span class="text-[11px] text-slate-500">(總賠率 ${fmt(g.manualOdds)})</span>`:''}</td>
-        <td class="py-1.5 px-2 text-right tabular">${g.count}</td>
-        <td class="py-1.5 px-2 text-right tabular">${fmt(g.stakePer)}</td>
-        <td class="py-1.5 px-2 text-right tabular">${fmt(g.gStaked)}</td>
-        <td class="py-1.5 px-2 text-right tabular">${retCell}</td>
-        <td class="py-1.5 pl-2 text-right text-xs">${statusTxt}</td>
-      </tr>`;
-    }).join('');
+  const tabsHtml = `
+    <div class="tab-scroll flex gap-2 overflow-x-auto pb-1">
+      ${tickets.map(t => {
+        const active = t.id === selectedTicketId;
+        const dot = ticketStatusDot(t);
+        return `<button onclick="selectTicket('${t.id}')" data-tid="${t.id}"
+          class="flex-none flex flex-col items-start px-3 py-2 rounded-xl border text-left transition min-w-[120px] max-w-[180px]
+                 ${active ? 'bg-indigo-600 border-indigo-500' : 'bg-white/5 border-white/10 hover:bg-white/10'}">
+          <span class="flex items-center gap-1.5 w-full">
+            <span class="w-1.5 h-1.5 rounded-full flex-none ${dot}"></span>
+            <span class="text-sm font-bold truncate ${active ? 'text-white' : 'text-slate-200'}">${t.label || '注單'}</span>
+          </span>
+          <span class="text-xs mt-0.5 ${active ? 'text-indigo-200' : 'text-slate-500'}">${t.date}</span>
+        </button>`;
+      }).join('')}
+    </div>`;
 
-    return `
-    <article class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-      <div class="flex items-center justify-between px-4 py-3 bg-white/5">
-        <div>
-          <div class="font-bold">${t.label || '注單'}</div>
-          <div class="text-xs text-slate-400">${t.date} · ${t.selections.length} 腳 · ${t.groups.length} 種關數</div>
-        </div>
-        <div class="flex items-center gap-1">
-          <button onclick="editTicket('${t.id}')" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/10"><i data-lucide="pencil" class="w-4 h-4"></i></button>
-          <button onclick="deleteTicket('${t.id}')" class="p-2 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-white/10"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-        </div>
-      </div>
-      <div class="px-4 py-2">${selRows}</div>
-      <div class="px-4 pb-3 overflow-x-auto">
-        <table class="w-full text-sm min-w-[460px]">
-          <thead><tr class="text-xs text-slate-400 border-b border-white/10">
-            <th class="text-left font-medium py-1.5 pr-2">關數</th>
-            <th class="text-right font-medium py-1.5 px-2">組合數</th>
-            <th class="text-right font-medium py-1.5 px-2">每注</th>
-            <th class="text-right font-medium py-1.5 px-2">投注</th>
-            <th class="text-right font-medium py-1.5 px-2">回本${c.allSettled?'':' / 潛在'}</th>
-            <th class="text-right font-medium py-1.5 pl-2">狀態</th>
-          </tr></thead>
-          <tbody>${groupRows}</tbody>
-        </table>
-      </div>
-      <div class="px-4 py-3 border-t border-white/10 flex flex-wrap gap-x-6 gap-y-1 text-sm">
-        <span class="text-slate-400">總投注 <b class="text-slate-100 tabular">${fmt(c.staked)}</b></span>
-        <span class="text-slate-400">${c.allSettled?'回本':'已實得'} <b class="text-amber-300 tabular">${fmt(c.returned)}</b></span>
-        ${c.pendingStake?`<span class="text-slate-400">未定注金 <b class="tabular">${fmt(c.pendingStake)}</b></span>`:''}
-        <span class="text-slate-400 ml-auto">${c.allSettled?'盈虧':'目前盈虧'} <b class="${c.profit>=0?'text-emerald-400':'text-rose-400'} tabular">${signed(c.profit)}</b></span>
-      </div>
-    </article>`;
-  }).join('');
+  const t = tickets.find(x => x.id === selectedTicketId);
+  el.innerHTML = tabsHtml + renderTicketArticle(t);
+
+  // 讓選中的 tab 捲入可見區
+  const activeTab = el.querySelector(`[data-tid="${selectedTicketId}"]`);
+  if (activeTab) activeTab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+}
+
+function selectTicket(id) {
+  selectedTicketId = id;
+  renderTickets();
+  if (window.lucide) lucide.createIcons();
+  if (window.__animateTicket) window.__animateTicket();
+  if (window.__bindHover) window.__bindHover();
 }
 
 function activeResultClass(r) {
@@ -364,11 +414,15 @@ function setResult(ticketId, key, result) {
 }
 function deleteTicket(id) {
   if (!confirm('確定刪除這張注單？')) return;
-  tickets = tickets.filter(t => t.id !== id); save(tickets); render();
+  tickets = tickets.filter(t => t.id !== id);
+  if (selectedTicketId === id) selectedTicketId = tickets.length ? tickets[tickets.length - 1].id : null;
+  save(tickets); render();
 }
 function resetSeed() {
   if (!confirm('將清除目前資料並還原成範例。確定？')) return;
-  tickets = seedData(); save(tickets); render();
+  tickets = seedData();
+  selectedTicketId = tickets[tickets.length - 1].id;
+  save(tickets); render();
 }
 
 // ---------- form ----------
@@ -497,8 +551,11 @@ function saveTicket() {
   if (editingId) {
     const t = tickets.find(x => x.id === editingId);
     Object.assign(t, data);
+    selectedTicketId = editingId;
   } else {
-    tickets.push({ id: 't' + Date.now(), ...data });
+    const newId = 't' + Date.now();
+    tickets.push({ id: newId, ...data });
+    selectedTicketId = newId;
   }
   save(tickets); closeTicketForm(); render();
 }
@@ -514,7 +571,9 @@ function importJSON(e) {
     try {
       const data = JSON.parse(reader.result);
       if (!Array.isArray(data)) throw new Error('格式錯誤');
-      tickets = data; save(tickets); render();
+      tickets = data;
+      selectedTicketId = tickets.length ? tickets[tickets.length - 1].id : null;
+      save(tickets); render();
       alert('匯入成功');
     } catch (err) { alert('匯入失敗：' + err.message); }
     e.target.value = '';
@@ -549,66 +608,48 @@ render();
 </script>
 
 <script>
-// ---------- GSAP 動畫：進場 + 視差 + 捲動逐張淡入 + hover。尊重 prefers-reduced-motion ----------
+// ---------- GSAP 動畫：進場 + 視差 + hover。尊重 prefers-reduced-motion ----------
 gsap.registerPlugin(ScrollTrigger);
 
 const mm = gsap.matchMedia();
 
-// 跨多次重繪的動畫狀態
 let firstPaint = true;
 let reduceMotion = false;
 let canHoverDevice = false;
-let ticketTriggers = [];
 
-// 票卡 hover 微互動：每次重繪 DOM 都會重建，故重綁；舊節點被替換後監聽自然失效
 function bindTicketHover() {
   if (!canHoverDevice || reduceMotion) return;
-  gsap.utils.toArray('#tickets > article').forEach((card) => {
-    card.addEventListener('mouseenter', () => gsap.to(card, {
-      y: -4, scale: 1.01,
-      boxShadow: '0 16px 36px rgba(79, 70, 229, 0.28)',
-      duration: 0.3, overwrite: 'auto'
-    }));
-    card.addEventListener('mouseleave', () => gsap.to(card, {
-      y: 0, scale: 1,
-      boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
-      duration: 0.3, overwrite: 'auto'
-    }));
-  });
+  const card = document.querySelector('#tickets > article');
+  if (!card) return;
+  card.addEventListener('mouseenter', () => gsap.to(card, {
+    y: -4, scale: 1.01,
+    boxShadow: '0 16px 36px rgba(79, 70, 229, 0.28)',
+    duration: 0.3, overwrite: 'auto'
+  }));
+  card.addEventListener('mouseleave', () => gsap.to(card, {
+    y: 0, scale: 1,
+    boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+    duration: 0.3, overwrite: 'auto'
+  }));
 }
 
-// 儀表板數字進場（僅首繪 stagger，避免每次切換賽果都重播造成干擾）
-function revealDashboard() {
+function animateTicketIn() {
   if (reduceMotion) return;
-  gsap.from('#dashboard > div', {
-    y: 16, autoAlpha: 0, duration: 0.5, stagger: 0.08, overwrite: true
-  });
+  const card = document.querySelector('#tickets > article');
+  if (card) gsap.fromTo(card,
+    { autoAlpha: 0, x: 18 },
+    { autoAlpha: 1, x: 0, duration: 0.32, ease: 'power2.out' }
+  );
 }
 
-// 票卡捲動逐張淡入（僅首繪）；先清掉殘留觸發器避免指向已替換節點
-function revealTickets() {
-  ticketTriggers.forEach(st => st.kill());
-  ticketTriggers = [];
-  const cards = gsap.utils.toArray('#tickets > article');
-  if (!cards.length) return;
-  if (reduceMotion) { gsap.set(cards, { clearProps: 'all' }); return; }
-  gsap.set(cards, { autoAlpha: 0, y: 40 });
-  ScrollTrigger.batch(cards, {
-    start: 'top 88%',
-    once: true,
-    onEnter: (batch) => gsap.to(batch, {
-      autoAlpha: 1, y: 0, stagger: 0.12, overwrite: true
-    })
-  }).forEach(st => ticketTriggers.push(st));
-}
+// selectTicket() 呼叫這兩個 hook
+window.__animateTicket = animateTicketIn;
+window.__bindHover = bindTicketHover;
 
-// 後續重繪（使用者操作後）：不重播進場，僅清理殘留觸發器 + 重綁 hover + 刷新觸發點
+// 後續重繪（setResult / deleteTicket 等）：重綁 hover，不重播進場
 window.__afterRender = function () {
   if (firstPaint) return;
-  ticketTriggers.forEach(st => st.kill());
-  ticketTriggers = [];
   bindTicketHover();
-  ScrollTrigger.refresh();
 };
 
 mm.add(
@@ -621,7 +662,6 @@ mm.add(
     canHoverDevice = ctx.conditions.canHover;
 
     if (reduceMotion) {
-      // 偏好減少動態：直接顯示，不做進場 / 視差 / hover
       gsap.set('#dashboard > div, #tickets > article', { clearProps: 'all' });
       firstPaint = false;
       return;
@@ -634,7 +674,7 @@ mm.add(
     gsap.from('header h1', { y: 24, autoAlpha: 0, delay: 0.1, duration: 0.8 });
     gsap.from('header p', { y: 16, autoAlpha: 0, delay: 0.22, duration: 0.8 });
 
-    // 1b) 頁首視差：內容層隨捲動慢速下移 → 景深感
+    // 1b) 頁首視差
     gsap.to('header > div', {
       yPercent: 30, ease: 'none',
       scrollTrigger: { trigger: 'header', start: 'top top', end: 'bottom top', scrub: true }
@@ -643,9 +683,9 @@ mm.add(
     // 2) 工具列進場
     gsap.from('main > div.flex', { y: 20, autoAlpha: 0, delay: 0.2 });
 
-    // 3) 儀表板 + 票卡
-    revealDashboard();
-    revealTickets();
+    // 3) 儀表板 stagger + 票卡進場
+    gsap.from('#dashboard > div', { y: 16, autoAlpha: 0, duration: 0.5, stagger: 0.08 });
+    animateTicketIn();
     bindTicketHover();
 
     firstPaint = false;
