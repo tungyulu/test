@@ -294,19 +294,22 @@
   function animateMenuIn() {
     gsap.from('#menu-card', { opacity: 0, y: 50, duration: 0.5, ease: 'back.out(1.4)' });
 
-    const split = SplitText.create('#menu-title', { type: 'chars' });
-    gsap.from(split.chars, {
-      opacity: 0, y: -24,
-      rotation: gsap.utils.wrap([-14, 14]),
-      stagger: { each: 0.04, from: 'center' },
-      duration: 0.45, ease: 'back.out(2)', delay: 0.12,
-    });
+    try {
+      const split = SplitText.create('#menu-title', { type: 'chars' });
+      gsap.from(split.chars, {
+        opacity: 0, y: -24,
+        rotation: gsap.utils.wrap([-14, 14]),
+        stagger: { each: 0.04, from: 'center' },
+        duration: 0.45, ease: 'back.out(2)', delay: 0.12,
+      });
+    } catch(e) {}
 
     gsap.from('#menu-subtitle', { opacity: 0, duration: 0.4, delay: 0.48 });
-    gsap.from('.menu-btn', {
-      opacity: 0, y: 18, stagger: 0.12,
-      duration: 0.4, delay: 0.6, ease: 'power2.out',
-    });
+    // fromTo guarantees buttons reach opacity:1 even if earlier animation steps fail
+    gsap.fromTo('.menu-btn',
+      { opacity: 0, y: 18 },
+      { opacity: 1, y: 0, stagger: 0.12, duration: 0.4, delay: 0.6, ease: 'power2.out', clearProps: 'opacity,y' }
+    );
   }
 
   function animateDiceRoll(indices) {
