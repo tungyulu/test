@@ -31,3 +31,8 @@ Both pages load from CDN — no local dependencies to install:
 - Tailwind CSS (`cdn.tailwindcss.com`)
 - Lucide icons (`unpkg.com/lucide@latest`)
 - Google Fonts — Noto Sans TC
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->
