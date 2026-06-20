@@ -45,6 +45,10 @@
             <a href="index.html" class="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-sm font-medium text-gray-500 transition-colors">
                 <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
             </a>
+            <button data-day="flight-info" onclick="selectDay('flight-info')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[52px]">
+                <i data-lucide="plane" class="w-3.5 h-3.5"></i>
+                <span class="text-[10px] mt-0.5 day-tab-date">航班</span>
+            </button>
             <button data-day="day-1" onclick="selectDay('day-1')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D1</span><span class="text-[10px] mt-0.5 day-tab-date">11/07</span></button>
             <button data-day="day-2" onclick="selectDay('day-2')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D2</span><span class="text-[10px] mt-0.5 day-tab-date">11/08</span></button>
             <button data-day="day-3" onclick="selectDay('day-3')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D3</span><span class="text-[10px] mt-0.5 day-tab-date">11/09</span></button>
@@ -548,6 +552,10 @@
 
         function applyMobileView() {
             const isMobile = window.innerWidth < 768;
+            // 航班區塊：手機版只在 flight-info tab 時顯示
+            const flightEl = document.getElementById('flight-info');
+            if (flightEl) flightEl.style.display = (isMobile && mobileActiveDay !== 'flight-info') ? 'none' : '';
+            // 每日行程區塊
             document.querySelectorAll('[id^="day-"]').forEach(el => {
                 el.style.display = (isMobile && el.id !== mobileActiveDay) ? 'none' : '';
             });
@@ -620,12 +628,14 @@
                     }
                 });
 
-                // 2) 側欄 + 航班卡進場
+                // 2) 側欄 + 航班卡進場（手機版航班藏在 tab 裡，跳過）
                 gsap.from("aside .sticky", { x: -30, autoAlpha: 0, delay: 0.2 });
-                gsap.from("#flight-info", { y: 40, autoAlpha: 0, delay: 0.35 });
-                gsap.from("#flight-info .bg-gray-50", {
-                    y: 24, autoAlpha: 0, delay: 0.5, stagger: 0.15
-                });
+                if (!mobile) {
+                    gsap.from("#flight-info", { y: 40, autoAlpha: 0, delay: 0.35 });
+                    gsap.from("#flight-info .bg-gray-50", {
+                        y: 24, autoAlpha: 0, delay: 0.5, stagger: 0.15
+                    });
+                }
 
                 // 3a) 桌面：捲動進入視窗時逐張交錯淡入
                 if (!mobile) {
