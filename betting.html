@@ -223,10 +223,10 @@ function seedData() {
     {
       id: 't5', date: '2026-06-20', label: '荷蘭/厄瓜多/日本/德國 · 3/4關',
       selections: [
-        { key:'A', match:'瑞典 @ 荷蘭', pick:'總分大小 大2.5', odds:1.43, result:'pending' },
-        { key:'B', match:'古拉索 @ 厄瓜多', pick:'讓分2:0 厄瓜多2:0', odds:1.90, result:'pending' },
-        { key:'C', match:'日本 @ 突尼西亞', pick:'不讓分 日本', odds:1.20, result:'pending' },
-        { key:'D', match:'象牙海岸 @ 德國', pick:'讓分1:0 德國1:0', odds:1.40, result:'pending' },
+        { key:'A', match:'瑞典 @ 荷蘭', pick:'總分大小 大2.5', odds:1.43, result:'win' },
+        { key:'B', match:'古拉索 @ 厄瓜多', pick:'讓分2:0 厄瓜多2:0', odds:1.90, result:'lose' },
+        { key:'C', match:'日本 @ 突尼西亞', pick:'不讓分 日本', odds:1.20, result:'win' },
+        { key:'D', match:'象牙海岸 @ 德國', pick:'讓分1:0 德國1:0', odds:1.40, result:'void' },
       ],
       groups: [
         { size:3, stakePer:20 },
@@ -236,8 +236,8 @@ function seedData() {
     {
       id: 't6', date: '2026-06-20', label: '日本×突尼西亞 · 單關2注',
       selections: [
-        { key:'A', match:'日本 @ 突尼西亞', pick:'讓分2:0 日本2:0', odds:3.90, result:'pending' },
-        { key:'B', match:'日本 @ 突尼西亞', pick:'正確比數 2:1', odds:5.15, result:'pending' },
+        { key:'A', match:'日本 @ 突尼西亞', pick:'讓分2:0 日本2:0', odds:3.90, result:'win' },
+        { key:'B', match:'日本 @ 突尼西亞', pick:'正確比數 2:1', odds:5.15, result:'lose' },
       ],
       groups: [
         { size:1, stakePer:50 },
