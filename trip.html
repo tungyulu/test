@@ -10,22 +10,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <style>
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #FDFBF7;
             color: #3E3A39;
-            scroll-behavior: smooth;
         }
         .accent-color { color: #C05A3C; }
         .bg-accent { background-color: #C05A3C; }
         .card-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
-        .transition-all { transition: all 0.3s ease; }
 
         /* 隱藏滾動條但保留功能 */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+
+        /* 手機 Day Tab 列：完全隱藏橫向捲軸 */
+        .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .tab-scroll::-webkit-scrollbar { display: none; }
+
+        /* 列印：拿掉導覽與地圖，讓行程卡片乾淨連續輸出 */
+        @media print {
+            .day-tab-nav, aside, iframe, .mobile-day-nav { display: none !important; }
+            header { height: auto !important; padding: 1.5rem 0; background: #fff !important; }
+            header .absolute { display: none !important; }
+            header h1, header p { color: #3E3A39 !important; opacity: 1 !important; visibility: visible !important; transform: none !important; }
+            [id^="day-"] { display: flex !important; opacity: 1 !important; visibility: visible !important; transform: none !important; break-inside: avoid; }
+            #flight-info, #pretrip-checklist { display: block !important; opacity: 1 !important; visibility: visible !important; transform: none !important; }
+            .card-shadow { box-shadow: none !important; border: 1px solid #e5e7eb; }
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen">
@@ -40,23 +54,23 @@
     </header>
 
     <!-- 手機版頂部橫向 Day 切換 Tab（電腦版隱藏，改用左側側欄） -->
-    <nav class="md:hidden sticky top-0 z-40 bg-[#FDFBF7]/90 backdrop-blur border-b border-gray-200/80">
-        <div class="flex gap-2 overflow-x-auto px-3 py-2 tab-scroll" style="-ms-overflow-style:none;scrollbar-width:none;">
-            <a href="index.html" class="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-sm font-medium text-gray-500 transition-colors">
+    <nav class="day-tab-nav md:hidden sticky top-0 z-40 bg-[#FDFBF7]/90 backdrop-blur border-b border-gray-200/80">
+        <div class="flex gap-2 overflow-x-auto px-3 py-2 tab-scroll">
+            <a href="index.html" aria-label="返回小工具" class="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-sm font-medium text-gray-500 transition-colors">
                 <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
             </a>
-            <button data-day="flight-info" onclick="selectDay('flight-info')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[52px]">
+            <button aria-pressed="false" data-day="flight-info" onclick="selectDay('flight-info')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[52px]">
                 <i data-lucide="plane" class="w-3.5 h-3.5"></i>
                 <span class="text-[10px] mt-0.5 day-tab-date">航班</span>
             </button>
-            <button data-day="day-1" onclick="selectDay('day-1')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D1</span><span class="text-[10px] mt-0.5 day-tab-date">11/07</span></button>
-            <button data-day="day-2" onclick="selectDay('day-2')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D2</span><span class="text-[10px] mt-0.5 day-tab-date">11/08</span></button>
-            <button data-day="day-3" onclick="selectDay('day-3')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D3</span><span class="text-[10px] mt-0.5 day-tab-date">11/09</span></button>
-            <button data-day="day-4" onclick="selectDay('day-4')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D4</span><span class="text-[10px] mt-0.5 day-tab-date">11/10</span></button>
-            <button data-day="day-5" onclick="selectDay('day-5')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D5</span><span class="text-[10px] mt-0.5 day-tab-date">11/11</span></button>
-            <button data-day="day-6" onclick="selectDay('day-6')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D6</span><span class="text-[10px] mt-0.5 day-tab-date">11/12</span></button>
-            <button data-day="day-7" onclick="selectDay('day-7')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D7</span><span class="text-[10px] mt-0.5 day-tab-date">11/13</span></button>
-            <button data-day="day-8" onclick="selectDay('day-8')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D8</span><span class="text-[10px] mt-0.5 day-tab-date">11/14</span></button>
+            <button aria-pressed="false" data-day="day-1" onclick="selectDay('day-1')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D1</span><span class="text-[10px] mt-0.5 day-tab-date">11/07</span></button>
+            <button aria-pressed="false" data-day="day-2" onclick="selectDay('day-2')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D2</span><span class="text-[10px] mt-0.5 day-tab-date">11/08</span></button>
+            <button aria-pressed="false" data-day="day-3" onclick="selectDay('day-3')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D3</span><span class="text-[10px] mt-0.5 day-tab-date">11/09</span></button>
+            <button aria-pressed="false" data-day="day-4" onclick="selectDay('day-4')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D4</span><span class="text-[10px] mt-0.5 day-tab-date">11/10</span></button>
+            <button aria-pressed="false" data-day="day-5" onclick="selectDay('day-5')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D5</span><span class="text-[10px] mt-0.5 day-tab-date">11/11</span></button>
+            <button aria-pressed="false" data-day="day-6" onclick="selectDay('day-6')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D6</span><span class="text-[10px] mt-0.5 day-tab-date">11/12</span></button>
+            <button aria-pressed="false" data-day="day-7" onclick="selectDay('day-7')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D7</span><span class="text-[10px] mt-0.5 day-tab-date">11/13</span></button>
+            <button aria-pressed="false" data-day="day-8" onclick="selectDay('day-8')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D8</span><span class="text-[10px] mt-0.5 day-tab-date">11/14</span></button>
         </div>
     </nav>
 
@@ -143,6 +157,48 @@
                 </div>
             </section>
 
+            <!-- 行前確認清單 -->
+            <section id="pretrip-checklist" class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8 scroll-mt-20 md:scroll-mt-6">
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                    <i data-lucide="list-checks" class="w-6 h-6 accent-color"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">Checklist 行前確認清單</h2>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-8 gap-y-3">
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>駕照日文譯本</strong>：監理站申請，日本租車與路檢必備，台灣駕照正本也要一起帶。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>ETC 卡加租</strong>：取車時向租車公司加租，高速過路費還車時一次結算，免收費站找現金。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>富士急樂園營運確認</strong>：D3（11/09）出發前一天上官網確認無檢修休園，可先買絕叫優先券。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>紅葉迴廊點燈確認</strong>：D2（11/08）夜楓，行前查當年度點燈日期與結束時間。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>備妥千元鈔現金</strong>：蘆之湖 Skyline 通行費（¥1,000）僅收現金。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>橫濱飯店過夜停車</strong>：D4 車停飯店，確認車位與費用（約 ¥1,500–3,000／晚）。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>還車安排</strong>：D5 早上還車，確認租車點開門時間，還車前在附近加油站加滿油。</span>
+                    </label>
+                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                        <span><strong>餐廳與觀景台預約</strong>：D6 銀座鐵板燒、D7 澀谷燒肉與 Shibuya Sky 皆需提前預約。</span>
+                    </label>
+                </div>
+            </section>
+
             <!-- 行程總覽 -->
             <section class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-100 pb-4 static md:sticky md:top-0 bg-white z-30 pt-4 -mt-4">
@@ -170,8 +226,8 @@
                             <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
                                 <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="train" class="w-3 h-3"></i> N'EX 成田特快 · 直達橫濱 (出關約需1-1.5hr)</div>
                                 <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• <strong>42號:</strong> 17:45 發車 ➔ 19:19 (橫濱)</li>
-                                    <li>• <strong>46號:</strong> 18:45 發車 ➔ 20:19 (橫濱)</li>
+                                    <li>• <strong>42號:</strong> 17:45 發車 ➔ 19:19 (橫濱) <span class="text-xs text-gray-400">（16:50 落地後 55 分內出關偏緊，趕上算賺到）</span></li>
+                                    <li>• <strong>46號:</strong> 18:45 發車 ➔ 20:19 (橫濱) <span class="text-[#C05A3C] font-medium">← 主推</span></li>
                                     <li>• <strong>50號:</strong> 19:45 發車 ➔ 21:20 (橫濱)</li>
                                 </ul>
                             </div>
@@ -203,9 +259,9 @@
                                     橫濱取車 ➔ 東名高速 (海老名SA休息) ➔ 小田原厚木道路 ➔ <strong>小田原</strong>(午餐) ➔ 箱根新道 ➔ <strong>蘆之湖 Skyline</strong>(操駕體驗) ➔ 東富士五湖道路 ➔ <strong>河口湖</strong>
                                 </p>
                                 <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
-                                    <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                                    <iframe width="100%" height="100%" loading="lazy" title="Day 2 自駕路線地圖：橫濱—海老名—蘆之湖 Skyline—河口湖"
                                     src="https://maps.google.com/maps?saddr=Yokohama&daddr=Ebina+SA+to:Ashinoko+Skyline+to:Kawaguchiko,Yamanashi&output=embed"
-                                    class="absolute inset-0 grayscale-[20%] contrast-125"></iframe>
+                                    class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
                                 </div>
                             </div>
 
@@ -273,9 +329,9 @@
                                     河口湖(出發) ➔ <strong>富士急樂園</strong>(暢玩四大絕叫) ➔ 東富士五湖道路 ➔ <strong>御殿場</strong> ➔ 國道 138 號 / 箱根峠 ➔ 熱海峠 ➔ <strong>熱海</strong>(海景溫泉 + 鐵板燒)
                                 </p>
                                 <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
-                                    <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                                    <iframe width="100%" height="100%" loading="lazy" title="Day 3 自駕路線地圖：河口湖—富士急樂園—御殿場—熱海"
                                     src="https://maps.google.com/maps?saddr=Kawaguchiko,Yamanashi&daddr=Fuji-Q+Highland+to:Gotemba+to:Atami,Shizuoka&output=embed"
-                                    class="absolute inset-0 grayscale-[20%] contrast-125"></iframe>
+                                    class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
                                 </div>
                             </div>
 
@@ -305,14 +361,15 @@
 
                             <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
                                 <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="route" class="w-3 h-3"></i> 下山順遊備選 · 河口湖→御殿場→熱海沿途</div>
+                                <p class="text-xs text-emerald-700 mb-2.5">⚠️ 11 月中日落約 16:35，15:30 離園後天黑前大約只夠停留一站——賞景型景點請擇一，逛街型不受影響。</p>
                                 <ul class="text-sm text-gray-600 space-y-2.5">
                                     <li>
                                         <a href="https://www.google.com/maps/search/?api=1&query=山中湖+パノラマ台+三国峠" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">山中湖 パノラマ台 / 三國峠 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 富士山＋山中湖絕景，三國峠是經典跑山＋芒草道拍照點，愛開車必收。</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">💡 富士山＋山中湖絕景，三國峠是經典跑山＋芒草道拍照點，愛開車必收。<span class="text-emerald-700 font-medium">賞景型，需天黑前。</span></p>
                                     </li>
                                     <li>
                                         <a href="https://www.google.com/maps/search/?api=1&query=御殿場プレミアム・アウトレット" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">御殿場 Premium Outlets <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 日本最大級 outlet，正對富士山，購物與用餐補給一次搞定。</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">💡 日本最大級 outlet，正對富士山，購物與用餐補給一次搞定。<span class="text-emerald-700 font-medium">營業到晚上，天黑後照樣逛。</span></p>
                                     </li>
                                     <li>
                                         <a href="https://www.google.com/maps/search/?api=1&query=富士スピードウェイ" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">富士スピードウェイ <i data-lucide="map-pin" class="w-3 h-3"></i></a>
@@ -320,11 +377,11 @@
                                     </li>
                                     <li>
                                         <a href="https://www.google.com/maps/search/?api=1&query=三島スカイウォーク" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">三島スカイウォーク <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 日本最長人行吊橋，富士山＋駿河灣展望，箱根往熱海途中順遊。</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">💡 日本最長人行吊橋，富士山＋駿河灣展望，箱根往熱海途中順遊。<span class="text-emerald-700 font-medium">賞景型，需天黑前。</span></p>
                                     </li>
                                     <li>
                                         <a href="https://www.google.com/maps/search/?api=1&query=十国峠ケーブルカー" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">十國峠 纜車 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 熱海峠附近，360° 眺望富士山與相模灣，接近熱海的最後一個展望點。</p>
+                                        <p class="text-xs text-gray-500 mt-0.5">💡 熱海峠附近，360° 眺望富士山與相模灣，接近熱海的最後一個展望點。<span class="text-emerald-700 font-medium">賞景型，需天黑前（纜車收班早，出發前查末班）。</span></p>
                                     </li>
                                 </ul>
                             </div>
@@ -373,9 +430,9 @@
                                     熱海 ➔ 國道 135 號 ➔ <strong>國道 134 號 (相模灣海岸線)</strong> ➔ 鎌倉高校前(平交道) ➔ 鎌倉大佛 ➔ 橫濱橫須賀道路 ➔ <strong>橫濱</strong>
                                 </p>
                                 <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
-                                    <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                                    <iframe width="100%" height="100%" loading="lazy" title="Day 4 自駕路線地圖：熱海—江之島—鎌倉—橫濱"
                                     src="https://maps.google.com/maps?saddr=Atami,Shizuoka&daddr=Enoshima,Kanagawa+to:Kotoku-in,Kamakura+to:Yokohama&output=embed"
-                                    class="absolute inset-0 grayscale-[20%] contrast-125"></iframe>
+                                    class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
                                 </div>
                             </div>
 
@@ -387,6 +444,7 @@
                                     <li>• <strong>輕鬆版：</strong>熱海 → 小田原 → 鎌倉 → 東京（行程鬆、好控還車時間）。</li>
                                     <li>• <strong>充實版：</strong>熱海 → 江之島 → 鎌倉 → 橫濱晚餐 → 東京（多收江之島與橫濱）。</li>
                                     <li>• <strong>想開得順：</strong>小田原往東可走「西湘バイパス（西湘 Bypass）」海岸快速道，比普通國道舒服。</li>
+                                    <li>• ⚠️ <strong>鎌倉高校前平交道：</strong>周邊幾乎無停車場、違停取締嚴格；建議車停江之島停車場，搭江之電一站（江ノ島 → 鎌倉高校前）往返再取車。</li>
                                     <li>• ⚠️ 週二傍晚首都高遇下班尖峰（17:30–19:30）易塞；若趕還車，橫濱晚餐拖到 20:00 後再回市區還車更輕鬆。</li>
                                 </ul>
                             </div>
@@ -689,16 +747,21 @@
     </div>
 
     <script>
-        lucide.createIcons();
+        // CDN 載入失敗時不讓整段 script 掛掉（Tab 切換等純 DOM 功能仍可用）
+        if (window.lucide) lucide.createIcons();
 
         // ---- 手機 Day Tab 切換 ----
-        let mobileActiveDay = 'day-1';
+        const DAY_ORDER = ['flight-info', 'day-1', 'day-2', 'day-3', 'day-4', 'day-5', 'day-6', 'day-7', 'day-8'];
+        const initialHash = location.hash.slice(1);
+        let mobileActiveDay = DAY_ORDER.includes(initialHash) ? initialHash : 'day-1';
 
         function applyMobileView() {
             const isMobile = window.innerWidth < 768;
-            // 航班區塊：手機版只在 flight-info tab 時顯示
-            const flightEl = document.getElementById('flight-info');
-            if (flightEl) flightEl.style.display = (isMobile && mobileActiveDay !== 'flight-info') ? 'none' : '';
+            // 航班與行前清單區塊：手機版只在 flight-info tab 時顯示
+            ['flight-info', 'pretrip-checklist'].forEach(sectionId => {
+                const el = document.getElementById(sectionId);
+                if (el) el.style.display = (isMobile && mobileActiveDay !== 'flight-info') ? 'none' : '';
+            });
             // 每日行程區塊
             document.querySelectorAll('[id^="day-"]').forEach(el => {
                 el.style.display = (isMobile && el.id !== mobileActiveDay) ? 'none' : '';
@@ -713,13 +776,20 @@
                 btn.classList.toggle('text-gray-700', !active);
                 const dateSpan = btn.querySelector('.day-tab-date');
                 if (dateSpan) dateSpan.classList.toggle('text-white/70', active);
+                btn.setAttribute('aria-pressed', String(active));
             });
         }
 
-        function selectDay(id) {
+        function selectDay(id, scrollToTop) {
             mobileActiveDay = id;
+            // 同步網址 hash，讓特定天可以直接分享（replaceState 不觸發原生錨點跳轉）
+            history.replaceState(null, '', '#' + id);
             applyMobileView();
             if (window.innerWidth < 768) {
+                if (scrollToTop) {
+                    const tabNav = document.querySelector('.day-tab-nav');
+                    window.scrollTo({ top: tabNav ? tabNav.offsetTop : 0, behavior: 'auto' });
+                }
                 const el = document.getElementById(id);
                 if (el && window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                     gsap.fromTo(el, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power2.out' });
@@ -729,10 +799,33 @@
             }
         }
 
+        // ---- 手機版：卡片底部「上一天 / 下一天」導覽 ----
+        const dayLabel = (id) => id === 'flight-info' ? '航班' : 'D' + id.split('-')[1];
+        DAY_ORDER.forEach((id, i) => {
+            const host = document.getElementById(id);
+            if (!host) return;
+            // flight-info 是整個 section；day 卡片內容在最後一個子 div
+            const card = id === 'flight-info' ? host : host.querySelector(':scope > div:last-child');
+            if (!card) return;
+            const prev = DAY_ORDER[i - 1];
+            const next = DAY_ORDER[i + 1];
+            const nav = document.createElement('div');
+            nav.className = 'mobile-day-nav md:hidden flex justify-between gap-3 mt-4 pt-3 border-t border-gray-200/80';
+            nav.innerHTML =
+                (prev
+                    ? `<button onclick="selectDay('${prev}', true)" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-gray-600">← ${dayLabel(prev)}</button>`
+                    : '<span></span>') +
+                (next
+                    ? `<button onclick="selectDay('${next}', true)" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#C05A3C] text-white text-sm font-medium">${dayLabel(next)} →</button>`
+                    : '<span></span>');
+            card.appendChild(nav);
+        });
+
         window.addEventListener('resize', applyMobileView);
         applyMobileView();
 
         // GSAP 動畫：進場 + 捲動逐張淡入。尊重 prefers-reduced-motion。
+        if (window.gsap && window.ScrollTrigger) {
         gsap.registerPlugin(ScrollTrigger);
 
         const mm = gsap.matchMedia();
@@ -748,9 +841,30 @@
                 const { reduce, canHover, mobile } = ctx.conditions;
                 const dayRows = gsap.utils.toArray('[id^="day-"]');
 
+                // 側欄 scroll-spy：捲到哪個區塊，側欄對應連結高亮（非動畫，reduce 也啟用）
+                if (!mobile) {
+                    const spyLinks = new Map();
+                    document.querySelectorAll('aside nav a[href^="#"]').forEach((a) =>
+                        spyLinks.set(a.getAttribute('href').slice(1), a));
+                    spyLinks.forEach((link, id) => {
+                        const el = document.getElementById(id);
+                        if (!el) return;
+                        ScrollTrigger.create({
+                            trigger: el,
+                            start: 'top center',
+                            end: 'bottom center',
+                            onToggle: (self) => {
+                                link.classList.toggle('bg-[#C05A3C]/10', self.isActive);
+                                link.classList.toggle('text-[#C05A3C]', self.isActive);
+                            }
+                        });
+                    });
+                }
+
                 if (reduce) {
                     // 偏好減少動態：直接顯示，不做位移 / 視差 / hover 動畫
-                    gsap.set(dayRows, { clearProps: "all" });
+                    // 只清動畫相關屬性，保留 applyMobileView 設定的 display
+                    gsap.set(dayRows, { clearProps: "opacity,visibility,transform" });
                     return;
                 }
 
@@ -827,12 +941,13 @@
                     });
                 }
 
-                // 圖片/字體載入後重新計算觸發點
-                ScrollTrigger.refresh();
-
                 return () => { if (cleanupHover) cleanupHover(); };
             }
         );
+
+        // 圖片/字體全部載入後重新計算 ScrollTrigger 觸發點
+        window.addEventListener('load', () => ScrollTrigger.refresh());
+        }
     </script>
 </body>
 </html>
