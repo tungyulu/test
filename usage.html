@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code Usage</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:         #080C14;
+      --surface:    #0D1422;
+      --border:     #1A2540;
+      --border-hi:  #2D4470;
+      --ink:        #CBD5E1;
+      --ink-dim:    #475569;
+      --cyan:       #22D3EE;
+      --cyan-glow:  rgba(34, 211, 238, 0.10);
+      --yellow:     #FBBF24;
+      --red:        #F87171;
+      --track:      #16203A;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100svh;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* dot-grid — engineering-paper atmosphere */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(34,211,238,0.055) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .site-wrap { position: relative; z-index: 1; max-width: 44rem; margin: 0 auto; padding: 0 1.5rem 5rem; }
+
+    /* ── Header ── */
+    .site-header { padding: 3.5rem 0 1.75rem; }
+
+    .header-tag {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.12em;
+      color: var(--cyan);
+      margin: 0 0 0.875rem;
+      opacity: 0.85;
+    }
+
+    .site-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2rem, 6vw, 3.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #F1F5F9;
+      margin: 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 1rem;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .back-link:hover, .back-link:focus-visible { color: var(--cyan); }
+
+    .header-rule { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0 0; }
+
+    /* ── Panels(共用卡片外觀) ── */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.375rem 1.5rem;
+      margin-top: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .panel-label {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--cyan);
+      opacity: 0.65;
+      text-transform: uppercase;
+      margin: 0 0 0.875rem;
+    }
+
+    /* ── Usage 卡 ── */
+    .usage-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .usage-title { font-size: 0.9375rem; font-weight: 700; color: #F1F5F9; margin: 0; }
+    .usage-pct {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .usage-pct .unit { font-size: 0.6875rem; color: var(--ink-dim); margin-left: 0.3rem; }
+
+    .bar-track {
+      height: 8px;
+      background: var(--track);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease;
+    }
+    .lv-ok  .bar-fill { background: var(--cyan); }
+    .lv-ok  .usage-pct { color: var(--cyan); }
+    .lv-warn .bar-fill { background: var(--yellow); }
+    .lv-warn .usage-pct { color: var(--yellow); }
+    .lv-crit .bar-fill { background: var(--red); }
+    .lv-crit .usage-pct { color: var(--red); }
+
+    .usage-reset {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      color: var(--ink-dim);
+      margin: 0.625rem 0 0;
+    }
+
+    /* ── 警告 / 錯誤 ── */
+    .notice { border-color: rgba(251, 191, 36, 0.35); }
+    .notice p { margin: 0; font-size: 0.8125rem; line-height: 1.65; color: var(--yellow); }
+    .notice.error { border-color: rgba(248, 113, 113, 0.4); }
+    .notice.error p { color: var(--red); }
+
+    /* ── Token / CORS 指引卡 ── */
+    .guide p { font-size: 0.8125rem; line-height: 1.8; color: var(--ink); margin: 0 0 0.75rem; }
+    .guide p:last-child { margin-bottom: 0; }
+    .guide code, .guide pre {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.75rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+    .guide code { padding: 0.1rem 0.4rem; }
+    .guide pre { padding: 0.75rem 1rem; overflow-x: auto; margin: 0.25rem 0 0.75rem; color: var(--cyan); }
+    .dim-note { color: var(--ink-dim); font-size: 0.75rem; }
+
+    .token-row { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .token-input {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--ink);
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.75rem;
+      padding: 0.6rem 0.8rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .token-input:focus { border-color: var(--cyan); }
+
+    .btn {
+      background: transparent;
+      border: 1px solid var(--border-hi);
+      border-radius: 8px;
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn:hover, .btn:focus-visible { border-color: var(--cyan); background: var(--cyan-glow); }
+    .btn:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+    .btn.subtle { color: var(--ink-dim); border-color: var(--border); }
+    .btn.subtle:hover, .btn.subtle:focus-visible { color: var(--red); border-color: rgba(248,113,113,0.4); background: transparent; }
+
+    /* ── 狀態列 ── */
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.625rem 1rem;
+      margin-top: 1.25rem;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.6875rem;
+      color: var(--ink-dim);
+    }
+    .status-bar .grow { flex: 1; }
+    .status-bar select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--ink);
+      font-family: inherit;
+      font-size: inherit;
+      padding: 0.3rem 0.5rem;
+      outline: none;
+    }
+    .status-bar select:focus { border-color: var(--cyan); }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 600px) {
+      .site-header { padding-top: 2.25rem; }
+      .token-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="site-wrap">
+
+    <header class="site-header">
+      <p class="header-tag">// usage monitor</p>
+      <h1 class="site-title">📊 Claude Code Usage</h1>
+      <a href="index.html" class="back-link">← back to hub</a>
+      <hr class="header-rule" />
+    </header>
+
+    <main>
+      <!-- 載入中 -->
+      <section id="loading" class="panel">
+        <p class="panel-label">[ STATUS ]</p>
+        <p style="margin:0; font-size:0.8125rem; color:var(--ink-dim);">載入中…</p>
+      </section>
+
+      <!-- usage 卡片(JS 動態填入) -->
+      <section id="cards"></section>
+
+      <!-- 更新失敗但仍有上次資料 -->
+      <section id="warning" class="panel notice hidden">
+        <p id="warning-text"></p>
+      </section>
+
+      <!-- 完全無資料的錯誤 -->
+      <section id="error" class="panel notice error hidden">
+        <p id="error-text"></p>
+      </section>
+
+      <!-- 直連模式:貼 token -->
+      <section id="token-card" class="panel guide hidden">
+        <p class="panel-label">[ SETUP · 直連模式 ]</p>
+        <p>這個頁面不是由本機伺服器提供,需要你的 Claude OAuth access token 才能直接向 Anthropic API 查詢用量。</p>
+        <p class="dim-note">token 位置:<code>~/.claude/.credentials.json</code> → <code>claudeAiOauth.accessToken</code>。只會存在這台瀏覽器的 localStorage,不會傳到其他地方。</p>
+        <div class="token-row">
+          <input id="token-input" class="token-input" type="password" placeholder="貼上 access token…" autocomplete="off" />
+          <button id="token-save" class="btn" type="button">儲存並查詢</button>
+        </div>
+      </section>
+
+      <!-- 直連模式被 CORS 擋下的指引 -->
+      <section id="cors-card" class="panel guide hidden">
+        <p class="panel-label">[ GUIDE · 改用本機伺服器 ]</p>
+        <p>瀏覽器的 CORS 政策擋下了對 Anthropic API 的直接請求(這是 API 端的限制,不是 token 的問題)。改用本機伺服器模式最可靠:</p>
+        <pre>node usage-dashboard.js --serve</pre>
+        <p>然後打開 <code>http://localhost:8787</code> — 伺服器會自動讀取本機的 Claude Code 憑證,免貼 token。</p>
+        <p class="dim-note">usage-dashboard.js 就在這個 repo 的根目錄,需要 Node.js 18+。</p>
+      </section>
+
+      <!-- 狀態列 -->
+      <div id="status-bar" class="status-bar hidden">
+        <span id="status-updated">更新於 —</span>
+        <span id="status-mode"></span>
+        <span class="grow"></span>
+        <label>自動刷新
+          <select id="interval-select">
+            <option value="1">1 分鐘</option>
+            <option value="5">5 分鐘</option>
+            <option value="15">15 分鐘</option>
+          </select>
+        </label>
+        <span id="status-next">下次 —</span>
+        <button id="refresh-btn" class="btn" type="button">重新整理</button>
+        <button id="token-clear" class="btn subtle hidden" type="button">清除 token</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ---------- 常數 / 狀態 ----------
+    var API_URL = 'https://api.anthropic.com/api/oauth/usage';
+    var TOKEN_KEY = 'claude-usage-token';
+    var INTERVAL_KEY = 'claude-usage-interval';
+
+    var mode = null;          // 'server' | 'direct'
+    var lastItems = null;     // 上次成功解析的 limits
+    var lastError = null;
+    var lastOk = 0;
+    var lastFetch = 0;
+    var fetching = false;
+    var corsBlocked = false;
+    var needToken = false;
+
+    var intervalMin = Number(localStorage.getItem(INTERVAL_KEY)) || 1;
+    if ([1, 5, 15].indexOf(intervalMin) < 0) intervalMin = 1;
+
+    var $ = function (id) { return document.getElementById(id); };
+
+    // ---------- 時間格式(同 usage-dashboard.js) ----------
+    var TZ = Intl.DateTimeFormat().resolvedOptions().timeZone || 'local';
+    function lowerAmPm(s) { return s.replace(/\s?([AP])M/i, function (_, g) { return g.toLowerCase() + 'm'; }); }
+    function fmtReset(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      var now = new Date();
+      var timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
+      var label = d.toDateString() === now.toDateString()
+        ? lowerAmPm(d.toLocaleTimeString('en-US', timeOpts))
+        : lowerAmPm(d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }));
+      return 'Resets ' + label + ' (' + TZ + ')';
+    }
+    function fmtDuration(ms) {
+      if (ms < 0) ms = 0;
+      var totalMin = Math.floor(ms / 60000);
+      var h = Math.floor(totalMin / 60), m = totalMin % 60, s = Math.floor(ms / 1000) % 60;
+      if (h > 0) return h + 'h ' + m + 'm';
+      if (m > 0) return m + 'm';
+      return s + 's';
+    }
+
+    // ---------- 解析(同 usage-dashboard.js:優先 limits[],退回 five_hour/seven_day) ----------
+    function normalizeUsage(j) {
+      var items = [];
+      if (Array.isArray(j.limits) && j.limits.length) {
+        j.limits.forEach(function (l) {
+          var label;
+          if (l.kind === 'session' || l.group === 'session') label = 'Current session';
+          else if (l.kind === 'weekly_all') label = 'Current week (all models)';
+          else if (l.kind === 'weekly_scoped') {
+            var m = l.scope && l.scope.model && l.scope.model.display_name;
+            label = 'Current week (' + (m || 'scoped') + ')';
+          } else label = l.kind || l.group || 'limit';
+          items.push({ label: label, percent: Number(l.percent) || 0, resetsAt: l.resets_at });
+        });
+      } else {
+        if (j.five_hour) items.push({ label: 'Current session', percent: Number(j.five_hour.utilization) || 0, resetsAt: j.five_hour.resets_at });
+        if (j.seven_day) items.push({ label: 'Current week (all models)', percent: Number(j.seven_day.utilization) || 0, resetsAt: j.seven_day.resets_at });
+      }
+      return items;
+    }
+
+    function severity(p) {
+      if (p >= 95) return 'lv-crit';
+      if (p >= 80) return 'lv-warn';
+      return 'lv-ok';
+    }
+
+    // ---------- 抓資料 ----------
+    function applySuccess(items) {
+      lastItems = items;
+      lastError = null;
+      corsBlocked = false;
+      needToken = false;
+      lastOk = Date.now();
+    }
+
+    function applyError(msg) { lastError = msg; }
+
+    function fetchServer() {
+      return fetch('/api/usage', { cache: 'no-store' }).then(function (res) {
+        return res.json().then(function (j) {
+          if (res.ok && j.items) applySuccess(j.items);
+          else applyError(j.error || ('伺服器回應 ' + res.status));
+        });
+      }).catch(function () {
+        applyError('本機伺服器沒有回應(node usage-dashboard.js --serve 是否還在跑?)');
+      });
+    }
+
+    function fetchDirect() {
+      var tok = localStorage.getItem(TOKEN_KEY);
+      if (!tok) { needToken = true; return Promise.resolve(); }
+      return fetch(API_URL, {
+        headers: {
+          Authorization: 'Bearer ' + tok,
+          Accept: 'application/json',
+          'anthropic-beta': 'oauth-2025-04-20',
+        },
+      }).then(function (res) {
+        if (res.status === 401 || res.status === 403) {
+          needToken = true;
+          applyError('授權失敗 (' + res.status + '),token 可能已過期 — 請重新貼上新的 token');
+          return;
+        }
+        if (!res.ok) { applyError('API 回應 ' + res.status); return; }
+        return res.json().then(function (j) { applySuccess(normalizeUsage(j)); });
+      }).catch(function () {
+        // fetch 在 CORS / 網路失敗時拋 TypeError
+        corsBlocked = true;
+        applyError('請求被瀏覽器擋下(CORS)或網路錯誤');
+      });
+    }
+
+    // 第一次呼叫時偵測模式:同源 /api/usage 回 JSON → 本機伺服器模式
+    function detectMode() {
+      if (location.protocol === 'file:') { mode = 'direct'; return Promise.resolve(); }
+      return fetch('/api/usage', { cache: 'no-store' }).then(function (res) {
+        var ct = res.headers.get('content-type') || '';
+        mode = ct.indexOf('application/json') >= 0 ? 'server' : 'direct';
+      }).catch(function () { mode = 'direct'; });
+    }
+
+    function doFetch() {
+      if (fetching) return Promise.resolve();
+      fetching = true;
+      var pre = mode ? Promise.resolve() : detectMode();
+      return pre
+        .then(function () { return mode === 'server' ? fetchServer() : fetchDirect(); })
+        .then(function () { lastFetch = Date.now(); fetching = false; render(); })
+        .catch(function () { lastFetch = Date.now(); fetching = false; render(); });
+    }
+
+    // ---------- 畫面 ----------
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+      });
+    }
+
+    function renderCards() {
+      var host = $('cards');
+      if (!lastItems) { host.innerHTML = ''; return; }
+      var html = lastItems.map(function (item) {
+        var p = Math.max(0, Math.min(100, item.percent));
+        var lv = severity(p);
+        return '' +
+          '<article class="panel usage-card ' + lv + '">' +
+            '<div class="usage-head">' +
+              '<h2 class="usage-title">' + esc(item.label) + '</h2>' +
+              '<span class="usage-pct">' + p + '%<span class="unit">used</span></span>' +
+            '</div>' +
+            '<div class="bar-track"><div class="bar-fill" data-pct="' + p + '"></div></div>' +
+            (item.resetsAt ? '<p class="usage-reset">' + esc(fmtReset(item.resetsAt)) + '</p>' : '') +
+          '</article>';
+      }).join('');
+      host.innerHTML = html;
+      // 下一個 frame 再設寬度,讓 CSS transition 有起點可動
+      requestAnimationFrame(function () {
+        host.querySelectorAll('.bar-fill').forEach(function (el) {
+          el.style.width = el.getAttribute('data-pct') + '%';
+        });
+      });
+    }
+
+    function render() {
+      $('loading').classList.add('hidden');
+      $('status-bar').classList.remove('hidden');
+
+      renderCards();
+
+      // 錯誤 / 警告
+      var warnEl = $('warning'), errEl = $('error');
+      warnEl.classList.add('hidden');
+      errEl.classList.add('hidden');
+      if (lastError && lastItems) {
+        $('warning-text').textContent = '⚠ 更新失敗(顯示上次資料):' + lastError;
+        warnEl.classList.remove('hidden');
+      } else if (lastError && !lastItems && !needToken && !corsBlocked) {
+        $('error-text').textContent = '⚠ ' + lastError;
+        errEl.classList.remove('hidden');
+      }
+
+      // 指引卡
+      $('token-card').classList.toggle('hidden', !(mode === 'direct' && needToken && !corsBlocked));
+      $('cors-card').classList.toggle('hidden', !(mode === 'direct' && corsBlocked));
+      if (mode === 'direct' && corsBlocked && !lastItems) {
+        errEl.classList.add('hidden');
+        warnEl.classList.add('hidden');
+      }
+
+      // 狀態列
+      $('status-updated').textContent = '更新於 ' + (lastOk ? new Date(lastOk).toLocaleTimeString('en-GB') : '—');
+      $('status-mode').textContent = mode === 'server' ? '· 本機伺服器' : '· 直連 API';
+      $('token-clear').classList.toggle('hidden', !(mode === 'direct' && !!localStorage.getItem(TOKEN_KEY)));
+      tick();
+    }
+
+    function tick() {
+      var remain = intervalMin * 60000 - (Date.now() - lastFetch);
+      $('status-next').textContent = '下次 ' + (fetching ? '…' : fmtDuration(remain));
+      if (!fetching && lastFetch && remain <= 0) doFetch();
+    }
+
+    // ---------- 事件 ----------
+    $('interval-select').value = String(intervalMin);
+    $('interval-select').addEventListener('change', function () {
+      intervalMin = Number(this.value) || 1;
+      localStorage.setItem(INTERVAL_KEY, String(intervalMin));
+      tick();
+    });
+
+    $('refresh-btn').addEventListener('click', function () { doFetch(); });
+
+    $('token-save').addEventListener('click', function () {
+      var v = $('token-input').value.trim();
+      if (!v) return;
+      localStorage.setItem(TOKEN_KEY, v);
+      $('token-input').value = '';
+      needToken = false;
+      corsBlocked = false;
+      doFetch();
+    });
+    $('token-input').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') $('token-save').click();
+    });
+
+    $('token-clear').addEventListener('click', function () {
+      localStorage.removeItem(TOKEN_KEY);
+      needToken = true;
+      lastItems = null;
+      lastError = null;
+      render();
+    });
+
+    // ---------- 進場動畫(同 index.html 慣例:window.matchMedia guard) ----------
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion && window.gsap) {
+      var header = document.querySelector('.site-header');
+      var main = document.querySelector('main');
+      gsap.set([header, main], { autoAlpha: 0, y: 20 });
+      gsap.to(header, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+      gsap.to(main, { autoAlpha: 1, y: 0, duration: 0.55, ease: 'power2.out', delay: 0.15 });
+    }
+
+    // ---------- 主流程 ----------
+    doFetch();
+    setInterval(tick, 1000);
+  }());
+  </script>
+
+</body>
+</html>
