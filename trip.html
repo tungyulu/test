@@ -26,928 +26,1256 @@
         ::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
 
-        /* 手機 Day Tab 列：完全隱藏橫向捲軸 */
+        /* 分頁列與日期晶片列：完全隱藏橫向捲軸 */
         .tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         .tab-scroll::-webkit-scrollbar { display: none; }
 
-        /* 列印：拿掉導覽與地圖，讓行程卡片乾淨連續輸出 */
+        /* 分頁切換過場改由 GSAP 驅動（見頁尾 script）；減少動態時停用平滑捲動 */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+        }
+
+        /* 路線圓點圖（overview） */
+        .rm-node { position: relative; padding-top: 22px; text-align: center; flex: 1; }
+        .rm-node::before { content: ""; position: absolute; top: 10px; left: -50%; width: 100%; height: 2px; background: #e5e7eb; }
+        .rm-node:first-child::before { display: none; }
+        .rm-dot { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); width: 14px; height: 14px; border-radius: 50%; background: var(--c, #C05A3C); box-shadow: 0 0 0 4px #FDFBF7; }
+
+        /* 列印：拿掉導覽與地圖，所有分頁一次輸出 */
         @media print {
-            .day-tab-nav, aside, iframe, .mobile-day-nav { display: none !important; }
+            .app-tabs, iframe, .day-chips { display: none !important; }
             header { height: auto !important; padding: 1.5rem 0; background: #fff !important; }
             header .absolute { display: none !important; }
-            header h1, header p { color: #3E3A39 !important; opacity: 1 !important; visibility: visible !important; transform: none !important; }
-            [id^="day-"] { display: flex !important; opacity: 1 !important; visibility: visible !important; transform: none !important; break-inside: avoid; }
-            #flight-info, #pretrip-checklist { display: block !important; opacity: 1 !important; visibility: visible !important; transform: none !important; }
+            header h1, header p { color: #3E3A39 !important; opacity: 1 !important; }
+            .panel { display: block !important; }
             .card-shadow { box-shadow: none !important; border: 1px solid #e5e7eb; }
+            [id^="day-"] { break-inside: avoid; }
         }
     </style>
 </head>
 <body class="antialiased min-h-screen">
 
     <!-- Header 區塊 -->
-    <header class="relative h-64 md:h-80 w-full bg-slate-800 flex items-center justify-center overflow-hidden">
+    <header class="relative w-full bg-slate-800 overflow-hidden">
         <div class="absolute inset-0 bg-gradient-to-r from-[#C05A3C] to-[#8C4331] opacity-90"></div>
-        <div class="relative z-10 text-center px-4 pt-10">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-8 md:pt-14 md:pb-12 text-center">
             <h1 class="text-3xl md:text-5xl font-bold text-white mb-3 tracking-wide">Autumn Road Trip</h1>
             <p class="text-lg md:text-xl text-white/90">東京 ‧ 河口湖 ‧ 熱海 ｜ 8天7夜自駕與溫泉之旅</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-2 sm:gap-3 mt-5 text-white">
+                <div class="bg-white/15 border border-white/25 rounded-xl px-4 py-2 text-sm backdrop-blur-sm">
+                    <span class="font-mono text-xs text-amber-100 tracking-wider">CX450 · 去程 11/07</span>
+                    <span class="font-bold ml-2">TPE 12:50 → NRT 16:50</span>
+                </div>
+                <div class="bg-white/15 border border-white/25 rounded-xl px-4 py-2 text-sm backdrop-blur-sm">
+                    <span class="font-mono text-xs text-amber-100 tracking-wider">CX451 · 回程 11/14</span>
+                    <span class="font-bold ml-2">NRT 15:30 → TPE 18:40</span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- 手機版頂部橫向 Day 切換 Tab（電腦版隱藏，改用左側側欄） -->
-    <nav class="day-tab-nav md:hidden sticky top-0 z-40 bg-[#FDFBF7]/90 backdrop-blur border-b border-gray-200/80">
-        <div class="flex gap-2 overflow-x-auto px-3 py-2 tab-scroll">
-            <a href="index.html" aria-label="返回小工具" class="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-sm font-medium text-gray-500 transition-colors">
+    <!-- 分頁導覽列（總覽 / 逐日行程 / 住宿 / 美食） -->
+    <nav class="app-tabs sticky top-0 z-40 bg-[#FDFBF7]/90 backdrop-blur border-b border-gray-200/80">
+        <div class="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto px-3 py-2 tab-scroll">
+            <a href="index.html" aria-label="返回小工具" class="shrink-0 inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-gray-100 border border-gray-200 text-sm font-medium text-gray-500 transition-colors hover:text-[#C05A3C]">
                 <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
             </a>
-            <button aria-pressed="false" data-day="flight-info" onclick="selectDay('flight-info')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[52px]">
-                <i data-lucide="plane" class="w-3.5 h-3.5"></i>
-                <span class="text-[10px] mt-0.5 day-tab-date">航班</span>
+            <button data-tab="overview" onclick="showTab('overview')" class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-200 text-sm font-bold transition-colors">
+                <i data-lucide="map" class="w-3.5 h-3.5"></i> 總覽
             </button>
-            <button aria-pressed="false" data-day="day-1" onclick="selectDay('day-1')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D1</span><span class="text-[10px] mt-0.5 day-tab-date">11/07</span></button>
-            <button aria-pressed="false" data-day="day-2" onclick="selectDay('day-2')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D2</span><span class="text-[10px] mt-0.5 day-tab-date">11/08</span></button>
-            <button aria-pressed="false" data-day="day-3" onclick="selectDay('day-3')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D3</span><span class="text-[10px] mt-0.5 day-tab-date">11/09</span></button>
-            <button aria-pressed="false" data-day="day-4" onclick="selectDay('day-4')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D4</span><span class="text-[10px] mt-0.5 day-tab-date">11/10</span></button>
-            <button aria-pressed="false" data-day="day-5" onclick="selectDay('day-5')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D5</span><span class="text-[10px] mt-0.5 day-tab-date">11/11</span></button>
-            <button aria-pressed="false" data-day="day-6" onclick="selectDay('day-6')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D6</span><span class="text-[10px] mt-0.5 day-tab-date">11/12</span></button>
-            <button aria-pressed="false" data-day="day-7" onclick="selectDay('day-7')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D7</span><span class="text-[10px] mt-0.5 day-tab-date">11/13</span></button>
-            <button aria-pressed="false" data-day="day-8" onclick="selectDay('day-8')" class="day-tab shrink-0 flex flex-col items-center px-3 py-1.5 rounded-xl border text-center transition-colors min-w-[48px]"><span class="text-sm font-bold">D8</span><span class="text-[10px] mt-0.5 day-tab-date">11/14</span></button>
+            <button data-tab="days" onclick="showTab('days')" class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-200 text-sm font-bold transition-colors">
+                <i data-lucide="calendar-days" class="w-3.5 h-3.5"></i> 逐日行程
+            </button>
+            <button data-tab="stay" onclick="showTab('stay')" class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-200 text-sm font-bold transition-colors">
+                <i data-lucide="bed-double" class="w-3.5 h-3.5"></i> 住宿
+            </button>
+            <button data-tab="food" onclick="showTab('food')" class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-200 text-sm font-bold transition-colors">
+                <i data-lucide="utensils" class="w-3.5 h-3.5"></i> 美食
+            </button>
+            <button data-tab="transport" onclick="showTab('transport')" class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-gray-200 text-sm font-bold transition-colors">
+                <i data-lucide="train-front" class="w-3.5 h-3.5"></i> 交通
+            </button>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 md:-mt-10 relative z-20 pb-12 flex flex-col md:flex-row gap-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 pb-12">
+        <main class="min-w-0">
 
-        <!-- 左側固定目錄導覽 (Sidebar) — 僅電腦版顯示 -->
-        <aside class="hidden md:block md:w-64 shrink-0">
-            <div class="bg-white rounded-2xl p-6 card-shadow sticky top-6">
-                <a href="index.html" class="flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-[#C05A3C] transition-colors mb-4 pb-4 border-b border-gray-100">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> 返回小工具
-                </a>
-                <h3 class="text-lg font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">快速跳轉</h3>
-                <nav class="space-y-2">
-                    <a href="#flight-info" class="flex items-center gap-3 p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors font-medium">
-                        <i data-lucide="plane" class="w-4 h-4"></i> 航班資訊
-                    </a>
-                    <div class="h-px bg-gray-100 my-2"></div>
-                    <a href="#day-1" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D1 抵達橫濱</span> <span class="text-xs text-gray-400">11/07</span>
-                    </a>
-                    <a href="#day-2" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D2 箱根與山道</span> <span class="text-xs text-gray-400">11/08</span>
-                    </a>
-                    <a href="#day-3" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D3 富士急樂園</span> <span class="text-xs text-gray-400">11/09</span>
-                    </a>
-                    <a href="#day-4" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D4 湘南海岸</span> <span class="text-xs text-gray-400">11/10</span>
-                    </a>
-                    <a href="#day-5" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D5 新宿逛街</span> <span class="text-xs text-gray-400">11/11</span>
-                    </a>
-                    <a href="#day-6" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D6 銀座與原宿</span> <span class="text-xs text-gray-400">11/12</span>
-                    </a>
-                    <a href="#day-7" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D7 澀谷主場</span> <span class="text-xs text-gray-400">11/13</span>
-                    </a>
-                    <a href="#day-8" class="flex items-center justify-between p-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-[#C05A3C] transition-colors">
-                        <span class="text-sm font-bold">D8 滿載返台</span> <span class="text-xs text-gray-400">11/14</span>
-                    </a>
-                </nav>
-            </div>
-        </aside>
+            <!-- ============ PANEL：總覽 ============ -->
+            <section id="panel-overview" class="panel">
 
-        <!-- 右側主要內容區塊 -->
-        <main class="flex-1 min-w-0">
+                <!-- 路線圖 + 住宿站卡 -->
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8">
+                    <div class="flex items-center gap-3 mb-2 border-b border-gray-100 pb-4">
+                        <i data-lucide="route" class="w-6 h-6 accent-color"></i>
+                        <h2 class="text-2xl font-bold text-gray-800">Route 路線總覽</h2>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">橫濱進出自駕三日（箱根—河口湖—熱海—湘南），後四天以東京市區為基地。點任一站卡可跳到對應天的行程。</p>
 
-            <!-- 航班資訊卡片 -->
-            <section id="flight-info" class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8 scroll-mt-20 md:scroll-mt-6">
-                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
-                    <i data-lucide="plane" class="w-6 h-6 accent-color"></i>
-                    <h2 class="text-2xl font-bold text-gray-800">Flight Info 航班資訊</h2>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-                        <div class="text-sm font-medium text-gray-500 mb-1">去程 Departure | 11/07 (六)</div>
-                        <div class="flex justify-between items-end mb-2">
-                            <div class="text-xl font-bold">國泰 CX450</div>
-                        </div>
-                        <div class="flex items-center gap-4 text-lg">
-                            <div class="text-center"><div class="font-bold">12:50</div><div class="text-sm text-gray-500">TPE</div></div>
-                            <div class="flex-1 border-t-2 border-dashed border-gray-300 relative">
-                                <i data-lucide="plane" class="w-4 h-4 text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
-                            </div>
-                            <div class="text-center"><div class="font-bold">16:50</div><div class="text-sm text-gray-500">NRT</div></div>
-                        </div>
+                    <div class="flex mb-8">
+                        <div class="rm-node" style="--c:#0369a1"><span class="rm-dot"></span><span class="block text-sm font-bold">橫濱</span><span class="block text-xs text-gray-400 font-mono">D1</span></div>
+                        <div class="rm-node" style="--c:#047857"><span class="rm-dot"></span><span class="block text-sm font-bold">河口湖</span><span class="block text-xs text-gray-400 font-mono">D2</span></div>
+                        <div class="rm-node" style="--c:#C05A3C"><span class="rm-dot"></span><span class="block text-sm font-bold">熱海</span><span class="block text-xs text-gray-400 font-mono">D3</span></div>
+                        <div class="rm-node" style="--c:#0369a1"><span class="rm-dot"></span><span class="block text-sm font-bold">橫濱</span><span class="block text-xs text-gray-400 font-mono">D4</span></div>
+                        <div class="rm-node" style="--c:#4f46e5"><span class="rm-dot"></span><span class="block text-sm font-bold">東京</span><span class="block text-xs text-gray-400 font-mono">D5–8</span></div>
                     </div>
 
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
-                        <div class="text-sm font-medium text-gray-500 mb-1">回程 Return | 11/14 (六)</div>
-                        <div class="flex justify-between items-end mb-2">
-                            <div class="text-xl font-bold">國泰 CX451</div>
-                        </div>
-                        <div class="flex items-center gap-4 text-lg">
-                            <div class="text-center"><div class="font-bold">15:30</div><div class="text-sm text-gray-500">NRT</div></div>
-                            <div class="flex-1 border-t-2 border-dashed border-gray-300 relative">
-                                <i data-lucide="plane" class="w-4 h-4 text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-180"></i>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">8 天 7 夜</span>
+                        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">自駕 D2–D4（D5 早上還車）</span>
+                        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">紅葉 · 溫泉 · 富士急</span>
+                        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full">高球 / 潮牌 / Chiikawa 掃貨</span>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <button onclick="gotoDay('day-1')" class="text-left bg-gray-50 hover:bg-white border border-gray-100 hover:border-sky-300 rounded-xl p-4 transition-colors">
+                            <div class="text-xs font-mono text-sky-700 font-bold">D1 · 11/07</div>
+                            <div class="font-bold mt-1">橫濱</div>
+                            <p class="text-xs text-gray-500 mt-1.5">成田降落 → N'EX 直達橫濱，中華街暖身。</p>
+                        </button>
+                        <button onclick="gotoDay('day-2')" class="text-left bg-gray-50 hover:bg-white border border-gray-100 hover:border-emerald-300 rounded-xl p-4 transition-colors">
+                            <div class="text-xs font-mono text-emerald-700 font-bold">D2 · 11/08</div>
+                            <div class="font-bold mt-1">箱根 → 河口湖</div>
+                            <p class="text-xs text-gray-500 mt-1.5">蘆之湖 Skyline 操駕、紅葉迴廊夜楓。</p>
+                        </button>
+                        <button onclick="gotoDay('day-3')" class="text-left bg-gray-50 hover:bg-white border border-gray-100 hover:border-[#C05A3C]/50 rounded-xl p-4 transition-colors">
+                            <div class="text-xs font-mono text-[#C05A3C] font-bold">D3 · 11/09</div>
+                            <div class="font-bold mt-1">富士急 → 熱海</div>
+                            <p class="text-xs text-gray-500 mt-1.5">四大絕叫，傍晚海景溫泉＋鐵板燒。</p>
+                        </button>
+                        <button onclick="gotoDay('day-5')" class="text-left bg-gray-50 hover:bg-white border border-gray-100 hover:border-indigo-300 rounded-xl p-4 transition-colors">
+                            <div class="text-xs font-mono text-indigo-700 font-bold">D5–D8 · 11/11–14</div>
+                            <div class="font-bold mt-1">東京市區</div>
+                            <p class="text-xs text-gray-500 mt-1.5">新宿 / 原宿銀座 / 澀谷購物與美食。</p>
+                        </button>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
+                        <button onclick="showTab('days')" class="flex items-center gap-3 text-left bg-white border border-gray-200 hover:border-[#C05A3C]/40 rounded-xl p-4 transition-colors">
+                            <span class="text-xl">🗓️</span>
+                            <span><span class="block font-bold text-sm">逐日行程</span><span class="block text-xs text-gray-400">D1–D8 每日安排</span></span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-gray-400 ml-auto"></i>
+                        </button>
+                        <button onclick="showTab('stay')" class="flex items-center gap-3 text-left bg-white border border-gray-200 hover:border-[#C05A3C]/40 rounded-xl p-4 transition-colors">
+                            <span class="text-xl">🏨</span>
+                            <span><span class="block font-bold text-sm">住宿</span><span class="block text-xs text-gray-400">四站過夜安排</span></span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-gray-400 ml-auto"></i>
+                        </button>
+                        <button onclick="showTab('food')" class="flex items-center gap-3 text-left bg-white border border-gray-200 hover:border-[#C05A3C]/40 rounded-xl p-4 transition-colors">
+                            <span class="text-xl">🍜</span>
+                            <span><span class="block font-bold text-sm">美食</span><span class="block text-xs text-gray-400">沿線餐廳備選清單</span></span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-gray-400 ml-auto"></i>
+                        </button>
+                        <button onclick="showTab('transport')" class="flex items-center gap-3 text-left bg-white border border-gray-200 hover:border-[#C05A3C]/40 rounded-xl p-4 transition-colors">
+                            <span class="text-xl">🚆</span>
+                            <span><span class="block font-bold text-sm">交通</span><span class="block text-xs text-gray-400">租車 · 自駕 · N'EX · 市區</span></span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-gray-400 ml-auto"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 航班資訊卡片 -->
+                <div id="flight-info" class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8 scroll-mt-20">
+                    <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                        <i data-lucide="plane" class="w-6 h-6 accent-color"></i>
+                        <h2 class="text-2xl font-bold text-gray-800">Flight Info 航班資訊</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                            <div class="text-sm font-medium text-gray-500 mb-1">去程 Departure | 11/07 (六)</div>
+                            <div class="flex justify-between items-end mb-2">
+                                <div class="text-xl font-bold">國泰 CX450</div>
                             </div>
-                            <div class="text-center"><div class="font-bold">18:40</div><div class="text-sm text-gray-500">TPE</div></div>
+                            <div class="flex items-center gap-4 text-lg">
+                                <div class="text-center"><div class="font-bold">12:50</div><div class="text-sm text-gray-500">TPE</div></div>
+                                <div class="flex-1 border-t-2 border-dashed border-gray-300 relative">
+                                    <i data-lucide="plane" class="w-4 h-4 text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></i>
+                                </div>
+                                <div class="text-center"><div class="font-bold">16:50</div><div class="text-sm text-gray-500">NRT</div></div>
+                            </div>
                         </div>
+
+                        <div class="bg-gray-50 rounded-xl p-5 border border-gray-100">
+                            <div class="text-sm font-medium text-gray-500 mb-1">回程 Return | 11/14 (六)</div>
+                            <div class="flex justify-between items-end mb-2">
+                                <div class="text-xl font-bold">國泰 CX451</div>
+                            </div>
+                            <div class="flex items-center gap-4 text-lg">
+                                <div class="text-center"><div class="font-bold">15:30</div><div class="text-sm text-gray-500">NRT</div></div>
+                                <div class="flex-1 border-t-2 border-dashed border-gray-300 relative">
+                                    <i data-lucide="plane" class="w-4 h-4 text-gray-400 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-180"></i>
+                                </div>
+                                <div class="text-center"><div class="font-bold">18:40</div><div class="text-sm text-gray-500">TPE</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 行前確認清單 -->
+                <div id="pretrip-checklist" class="bg-white rounded-2xl p-6 md:p-8 card-shadow scroll-mt-20">
+                    <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                        <i data-lucide="list-checks" class="w-6 h-6 accent-color"></i>
+                        <h2 class="text-2xl font-bold text-gray-800">Checklist 行前確認清單</h2>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-x-8 gap-y-3">
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>駕照日文譯本</strong>：監理站申請，日本租車與路檢必備，台灣駕照正本也要一起帶。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>ETC 卡加租</strong>：取車時向租車公司加租，高速過路費還車時一次結算，免收費站找現金。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>富士急樂園營運確認</strong>：D3（11/09）出發前一天上官網確認無檢修休園，可先買絕叫優先券。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>紅葉迴廊點燈確認</strong>：D2（11/08）夜楓，行前查當年度點燈日期與結束時間。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>備妥千元鈔現金</strong>：蘆之湖 Skyline 通行費（¥1,000）僅收現金。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>橫濱飯店過夜停車</strong>：D4 車停飯店，確認車位與費用（約 ¥1,500–3,000／晚）。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>還車安排</strong>：D5 早上還車，確認租車點開門時間，還車前在附近加油站加滿油。</span>
+                        </label>
+                        <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
+                            <span><strong>餐廳與觀景台預約</strong>：D6 銀座鐵板燒、D7 澀谷燒肉與 Shibuya Sky 皆需提前預約。</span>
+                        </label>
                     </div>
                 </div>
             </section>
 
-            <!-- 行前確認清單 -->
-            <section id="pretrip-checklist" class="bg-white rounded-2xl p-6 md:p-8 card-shadow mb-8 scroll-mt-20 md:scroll-mt-6">
-                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
-                    <i data-lucide="list-checks" class="w-6 h-6 accent-color"></i>
-                    <h2 class="text-2xl font-bold text-gray-800">Checklist 行前確認清單</h2>
-                </div>
-                <div class="grid md:grid-cols-2 gap-x-8 gap-y-3">
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>駕照日文譯本</strong>：監理站申請，日本租車與路檢必備，台灣駕照正本也要一起帶。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>ETC 卡加租</strong>：取車時向租車公司加租，高速過路費還車時一次結算，免收費站找現金。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>富士急樂園營運確認</strong>：D3（11/09）出發前一天上官網確認無檢修休園，可先買絕叫優先券。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>紅葉迴廊點燈確認</strong>：D2（11/08）夜楓，行前查當年度點燈日期與結束時間。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>備妥千元鈔現金</strong>：蘆之湖 Skyline 通行費（¥1,000）僅收現金。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>橫濱飯店過夜停車</strong>：D4 車停飯店，確認車位與費用（約 ¥1,500–3,000／晚）。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>還車安排</strong>：D5 早上還車，確認租車點開門時間，還車前在附近加油站加滿油。</span>
-                    </label>
-                    <label class="flex items-start gap-3 text-sm text-gray-600 cursor-pointer">
-                        <input type="checkbox" class="mt-0.5 w-4 h-4 shrink-0 accent-[#C05A3C]">
-                        <span><strong>餐廳與觀景台預約</strong>：D6 銀座鐵板燒、D7 澀谷燒肉與 Shibuya Sky 皆需提前預約。</span>
-                    </label>
-                </div>
-            </section>
-
-            <!-- 行程總覽 -->
-            <section class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-gray-100 pb-4 static md:sticky md:top-0 bg-white z-30 pt-4 -mt-4">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="map" class="w-6 h-6 accent-color"></i>
+            <!-- ============ PANEL：逐日行程 ============ -->
+            <section id="panel-days" class="panel hidden">
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <div class="flex items-center gap-3 mb-4 border-b border-gray-100 pb-4">
+                        <i data-lucide="calendar-days" class="w-6 h-6 accent-color"></i>
                         <h2 class="text-2xl font-bold text-gray-800">Itinerary 每日排程</h2>
                     </div>
-                </div>
 
-                <!-- 每日行程列表 -->
-                <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:ml-6 md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
+                    <!-- 日期晶片：點了捲到該天 -->
+                    <div class="day-chips flex gap-2 overflow-x-auto pb-4 mb-6 tab-scroll sticky top-[52px] bg-white z-30 pt-2">
+                        <button onclick="gotoDay('day-1')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D1 <span class="font-mono font-normal opacity-70">11/07</span></button>
+                        <button onclick="gotoDay('day-2')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D2 <span class="font-mono font-normal opacity-70">11/08</span></button>
+                        <button onclick="gotoDay('day-3')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D3 <span class="font-mono font-normal opacity-70">11/09</span></button>
+                        <button onclick="gotoDay('day-4')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D4 <span class="font-mono font-normal opacity-70">11/10</span></button>
+                        <button onclick="gotoDay('day-5')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D5 <span class="font-mono font-normal opacity-70">11/11</span></button>
+                        <button onclick="gotoDay('day-6')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D6 <span class="font-mono font-normal opacity-70">11/12</span></button>
+                        <button onclick="gotoDay('day-7')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D7 <span class="font-mono font-normal opacity-70">11/13</span></button>
+                        <button onclick="gotoDay('day-8')" class="shrink-0 px-3 py-1.5 rounded-full bg-gray-100 hover:bg-[#C05A3C] hover:text-white text-xs font-bold text-gray-600 transition-colors">D8 <span class="font-mono font-normal opacity-70">11/14</span></button>
+                    </div>
 
-                    <!-- Day 1 -->
-                    <div id="day-1" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D1</span>
-                        </div>
-                        <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-[#C05A3C]/30 transition-colors">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/07 (六)</span>
-                                <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">抵達橫濱</span>
+                    <!-- 每日行程列表 -->
+                    <div class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:ml-6 md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
+
+                        <!-- Day 1 -->
+                        <div id="day-1" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D1</span>
                             </div>
-                            <h3 class="font-bold text-xl mb-2">成田降落，直奔橫濱</h3>
+                            <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-[#C05A3C]/30 transition-colors">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/07 (六)</span>
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">抵達橫濱</span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">成田降落，直奔橫濱</h3>
 
-                            <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="train" class="w-3 h-3"></i> N'EX 成田特快 · 直達橫濱 (出關約需1-1.5hr)</div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="train" class="w-3 h-3"></i> N'EX 成田特快 · 直達橫濱 (出關約需1-1.5hr)</div>
+                                    <ul class="text-sm text-gray-600 space-y-1">
+                                        <li>• <strong>42號:</strong> 17:45 發車 ➔ 19:19 (橫濱) <span class="text-xs text-gray-400">（16:50 落地後 55 分內出關偏緊，趕上算賺到）</span></li>
+                                        <li>• <strong>46號:</strong> 18:45 發車 ➔ 20:19 (橫濱) <span class="text-[#C05A3C] font-medium">← 主推</span></li>
+                                        <li>• <strong>50號:</strong> 19:45 發車 ➔ 21:20 (橫濱)</li>
+                                    </ul>
+                                </div>
+
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">抵達橫濱飯店放好行李後，在周邊（中華街或みなとみらい一帶）挑一間高評價的居酒屋或燒肉店，用一杯生啤酒與和牛為假期熱身。</p>
+                                <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
+                                    <i data-lucide="moon" class="w-4 h-4 text-[#C05A3C]"></i> 宿：橫濱
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 2 -->
+                        <div id="day-2" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D2</span>
+                            </div>
+                            <div class="flex-1 bg-white p-5 rounded-xl border-2 border-[#C05A3C]/20 shadow-sm group-hover:shadow-md transition-shadow">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/08 (日)</span>
+                                    <span class="px-3 py-1 bg-[#C05A3C]/10 text-[#C05A3C] text-xs rounded-full font-medium flex items-center gap-1">
+                                        <i data-lucide="car" class="w-3 h-3"></i> 自駕 Day 1
+                                    </span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">箱根山道與蘆之湖操駕</h3>
+
+                                <div class="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-orange-800 mb-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航節點預先設定</div>
+                                    <p class="text-xs text-orange-700 leading-relaxed mb-3">
+                                        橫濱取車 ➔ 東名高速 (海老名SA休息) ➔ 小田原厚木道路 ➔ <strong>小田原</strong>(午餐) ➔ 箱根新道 ➔ <strong>蘆之湖 Skyline</strong>(操駕體驗) ➔ 東富士五湖道路 ➔ <strong>河口湖</strong>
+                                    </p>
+                                    <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
+                                        <iframe width="100%" height="100%" loading="lazy" title="Day 2 自駕路線地圖：橫濱—海老名—蘆之湖 Skyline—河口湖"
+                                        src="https://maps.google.com/maps?saddr=Yokohama&daddr=Ebina+SA+to:Ashinoko+Skyline+to:Kawaguchiko,Yamanashi&output=embed"
+                                        class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">上午從橫濱出發（建議早點取車避開車潮），午前在小田原一帶補給午餐，下午上箱根、經「蘆之湖 Skyline」體驗性能車的完美操控（白天視野正對富士山）。傍晚駛入河口湖 check-in、先泡湯放鬆，晚餐在湖區周邊隨意覓食，飯後（約 20:00）再去紅葉迴廊看夜楓點燈（點燈到 21:30，不必趕時間）。</p>
+
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐建議</div>
+                                    <p class="text-sm text-gray-600">午餐 · 小田原一帶（COCO'S／魚市場食堂／鈴廣）；晚餐 · 河口湖湖區（ガスト河口湖店，部分座位正對富士山）——
+                                        <button onclick="gotoFood('food-odawara')" class="font-bold text-amber-700 hover:underline">詳見美食頁 →</button>
+                                    </p>
+                                </div>
+
+                                <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="cloud-sun" class="w-3 h-3"></i> 蘆之湖 Skyline 彈性備案</div>
+                                    <ul class="text-sm text-gray-600 space-y-1.5">
+                                        <li>• <strong>晴天：</strong>13:00–14:00 前上 Skyline 跑山看富士（下午富士山易被雲遮）。通行費本線 ¥1,000、<strong>僅收現金</strong>，記得備千元鈔。</li>
+                                        <li>• <strong>陰雨／起霧：</strong>富士山看不到，直接走東富士五湖道路往河口湖，把賞景時間留給湖區。</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 自駕沿線當地限定吊飾</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Ebina+SA+Outbound" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">海老名 SA (下行線休息站) · Day 2 去程 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 東名高速上必停的超大休息站。名產店極高機率能買到「神奈川/橫濱限定」的 Chiikawa。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="inline-flex items-center gap-2 text-sm text-[#C05A3C] bg-[#C05A3C]/5 px-3 py-1.5 rounded-lg border border-[#C05A3C]/10 font-medium">
+                                    <i data-lucide="moon" class="w-4 h-4"></i> 宿：河口湖區 (賞逆富士 · 純住宿泡湯，晚餐周邊覓食)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 3 -->
+                        <div id="day-3" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D3</span>
+                            </div>
+                            <div class="flex-1 bg-white p-5 rounded-xl border-2 border-[#C05A3C]/20 shadow-sm group-hover:shadow-md transition-shadow">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/09 (一)</span>
+                                    <span class="px-3 py-1 bg-[#C05A3C]/10 text-[#C05A3C] text-xs rounded-full font-medium flex items-center gap-1">
+                                        <i data-lucide="car" class="w-3 h-3"></i> 自駕 Day 2
+                                    </span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">富士急樂園與熱海溫泉</h3>
+
+                                <div class="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-orange-800 mb-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航節點預先設定</div>
+                                    <p class="text-xs text-orange-700 leading-relaxed mb-3">
+                                        河口湖(出發) ➔ <strong>富士急樂園</strong>(暢玩四大絕叫) ➔ 東富士五湖道路 ➔ <strong>御殿場</strong> ➔ 國道 138 號 / 箱根峠 ➔ 熱海峠 ➔ <strong>熱海</strong>(海景溫泉 + 鐵板燒)
+                                    </p>
+                                    <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
+                                        <iframe width="100%" height="100%" loading="lazy" title="Day 3 自駕路線地圖：河口湖—富士急樂園—御殿場—熱海"
+                                        src="https://maps.google.com/maps?saddr=Kawaguchiko,Yamanashi&daddr=Fuji-Q+Highland+to:Gotemba+to:Atami,Shizuoka&output=embed"
+                                        class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">早上盡早前往「富士急樂園」遊玩（平日排隊較短，建議 09:00 開園前到）。離園時間彈性，約 15:30 前後皆可——可直接走高速南下熱海，或沿途加遊下面的順遊備選景點。傍晚抵達熱海，用無敵海景溫泉與鐵板燒療癒身心。</p>
+
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐建議</div>
+                                    <p class="text-sm text-gray-600">早餐 · 河口湖ガスト 07:00 開門，趕 09:00 開園前吃飽最方便；晚餐 · 熱海鐵板燒（已預約）——
+                                        <button onclick="gotoFood('food-kawaguchiko')" class="font-bold text-amber-700 hover:underline">詳見美食頁 →</button>
+                                    </p>
+                                </div>
+
+                                <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="landmark" class="w-3 h-3"></i> 園區景點 · 富士急四大絕叫</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+FUJIYAMA" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">FUJIYAMA <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 高度 79m、最高時速 130km/h，曾為世界最高雲霄飛車，背景正對富士山，全程可看富士全景。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+EEJANAIKA" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">EEJANAIKA (ええじゃないか) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 座椅可 360° 旋轉的第四維度雲霄飛車，全程翻轉 14 次，無法預測下一秒方向，體感極度混亂。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+Takabisha" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">高飛車 (Takabisha) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 全球最大傾角 121° 的俯衝段，吉尼斯世界紀錄保持者，從靜止到垂直落下的那一刻堪稱最恐怖。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+Zokkon" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">ZOKKON <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 2023 年全新開幕的第四代絕叫，座椅面向外側懸掛，雙腳懸空飛馳，最高速度 100km/h。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="route" class="w-3 h-3"></i> 下山順遊備選 · 河口湖→御殿場→熱海沿途</div>
+                                    <p class="text-xs text-emerald-700 mb-2.5">⚠️ 11 月中日落約 16:35，15:30 離園後天黑前大約只夠停留一站——賞景型景點請擇一，逛街型不受影響。</p>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=山中湖+パノラマ台+三国峠" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">山中湖 パノラマ台 / 三國峠 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 富士山＋山中湖絕景，三國峠是經典跑山＋芒草道拍照點，愛開車必收。<span class="text-emerald-700 font-medium">賞景型，需天黑前。</span></p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=御殿場プレミアム・アウトレット" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">御殿場 Premium Outlets <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 日本最大級 outlet，正對富士山，購物與用餐補給一次搞定。<span class="text-emerald-700 font-medium">營業到晚上，天黑後照樣逛。</span></p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=富士スピードウェイ" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">富士スピードウェイ <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 F1 等級國際賽道，車迷可看賽事或周邊設施。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=三島スカイウォーク" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">三島スカイウォーク <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 日本最長人行吊橋，富士山＋駿河灣展望，箱根往熱海途中順遊。<span class="text-emerald-700 font-medium">賞景型，需天黑前。</span></p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=十国峠ケーブルカー" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">十國峠 纜車 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 熱海峠附近，360° 眺望富士山與相模灣，接近熱海的最後一個展望點。<span class="text-emerald-700 font-medium">賞景型，需天黑前（纜車收班早，出發前查末班）。</span></p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3"></i> 出發前確認</div>
+                                    <ul class="text-sm text-gray-600 space-y-1.5">
+                                        <li>• 富士急樂園不定期會排定<strong>檢修休園</strong>，啟程前一天上官網確認當天有無營業。</li>
+                                        <li>• 平日（週一）排隊較短，但熱門設施仍建議 09:00 開園前到，或用 APP 買絕叫優先券。</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 自駕沿線當地限定吊飾</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Atami+Ekimae+Heiwa+Shopping+Street" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">熱海平和通商店街 (熱海車站前) · Day 3 或 Day 4 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 熱海車站外最熱鬧的商店街，土產店是尋找「靜岡限定」或「溫泉限定」Chiikawa 的絕佳地點。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="inline-flex items-center gap-2 text-sm text-[#C05A3C] bg-[#C05A3C]/5 px-3 py-1.5 rounded-lg border border-[#C05A3C]/10 font-medium">
+                                    <i data-lucide="moon" class="w-4 h-4"></i> 宿：熱海市區 (頂級溫泉)
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 4 -->
+                        <div id="day-4" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D4</span>
+                            </div>
+                            <div class="flex-1 bg-white p-5 rounded-xl border-2 border-[#C05A3C]/20 shadow-sm group-hover:shadow-md transition-shadow">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/10 (二)</span>
+                                    <span class="px-3 py-1 bg-[#C05A3C]/10 text-[#C05A3C] text-xs rounded-full font-medium flex items-center gap-1">
+                                        <i data-lucide="car" class="w-3 h-3"></i> 自駕 Day 3
+                                    </span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">湘南海岸線浪漫歸途</h3>
+
+                                <div class="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-orange-800 mb-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航節點預先設定</div>
+                                    <p class="text-xs text-orange-700 leading-relaxed mb-3">
+                                        熱海 ➔ 國道 135 號 ➔ <strong>國道 134 號 (相模灣海岸線)</strong> ➔ 鎌倉高校前(平交道) ➔ 鎌倉大佛 ➔ 橫濱橫須賀道路 ➔ <strong>橫濱</strong>
+                                    </p>
+                                    <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
+                                        <iframe width="100%" height="100%" loading="lazy" title="Day 4 自駕路線地圖：熱海—江之島—鎌倉—橫濱"
+                                        src="https://maps.google.com/maps?saddr=Atami,Shizuoka&daddr=Enoshima,Kanagawa+to:Kotoku-in,Kamakura+to:Yokohama&output=embed"
+                                        class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
+                                    </div>
+                                </div>
+
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">建議上午盡早離開熱海，沿國道 134 號海岸線悠閒巡航（週二平日車流順很多），途經充滿故事的江之島與鎌倉大佛。傍晚抵達橫濱，車先停飯店過夜，隔天早上再還（見下方還車安排）。</p>
+
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐建議</div>
+                                    <p class="text-sm text-gray-600">午餐 · 海岸線在地海鮮（TOTOCO 小田原／江之島生しらす丼）——
+                                        <button onclick="gotoFood('food-shonan')" class="font-bold text-amber-700 hover:underline">詳見美食頁 →</button>
+                                    </p>
+                                </div>
+
+                                <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="route" class="w-3 h-3"></i> 路線備選 · 看時間彈性選</div>
+                                    <ul class="text-sm text-gray-600 space-y-1.5">
+                                        <li>• <strong>輕鬆版：</strong>熱海 → 小田原 → 鎌倉 → 東京（行程鬆、好控還車時間）。</li>
+                                        <li>• <strong>充實版：</strong>熱海 → 江之島 → 鎌倉 → 橫濱晚餐 → 東京（多收江之島與橫濱）。</li>
+                                        <li>• <strong>想開得順：</strong>小田原往東可走「西湘バイパス（西湘 Bypass）」海岸快速道，比普通國道舒服。</li>
+                                        <li>• ⚠️ <strong>鎌倉高校前平交道：</strong>周邊幾乎無停車場、違停取締嚴格；建議車停江之島停車場，搭江之電一站（江ノ島 → 鎌倉高校前）往返再取車。</li>
+                                        <li>• ⚠️ 週二傍晚首都高遇下班尖峰（17:30–19:30）易塞；若趕還車，橫濱晚餐拖到 20:00 後再回市區還車更輕鬆。</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="landmark" class="w-3 h-3"></i> 沿線景點 · 江之島看大佛</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Enoshima+Kanagawa" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">江之島 (江島神社 / 展望燈塔) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 湘南海岸地標小島，登島逛江島神社與海蠟燭展望塔，眺望相模灣與富士山，海鮮丼與生しらす必嚐。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Kotoku-in+Great+Buddha+Kamakura" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">鎌倉大佛 (高德院) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 高約 11.3m 的露天青銅阿彌陀佛，鎌倉象徵地標，可入內參觀佛像內部。距江之島車程約 15 分。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 橫濱回程備案</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Chiikawa+Land+Yokohama+Marui+City" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">Chiikawa Land 橫濱店 (Marui City 8F) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 若傍晚去橫濱吃晚餐，可直接殺去 Marui City 8 樓，把橫濱周邊一次買齊。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="car" class="w-3 h-3"></i> 還車安排 · 建議隔天早上還</div>
+                                    <ul class="text-sm text-gray-600 space-y-1.5">
+                                        <li>• 租車同價、還車點都在橫濱，<strong>建議 D5（11/11）早上再還車</strong>，D4 傍晚就不必趕平日尖峰。</li>
+                                        <li>• 車停飯店過夜，當晚可盡情玩橫濱：中華街晚餐、みなとみらい／紅磚倉庫夜景、或吃燒肉，不必顧慮還車與酒駕。</li>
+                                        <li>• ⚠️ 待確認：飯店過夜停車位與費用（約 ¥1,500–3,000／晚）、租車點隔天開門時間。</li>
+                                    </ul>
+                                </div>
+
+                                <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
+                                    <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：橫濱
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 5 -->
+                        <div id="day-5" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D5</span>
+                            </div>
+                            <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/11 (三)</span>
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">市區漫遊</span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">新宿高球尋寶與居酒屋</h3>
+
+                                <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="car" class="w-3 h-3"></i> 早上還車 · 轉進東京</div>
+                                    <ul class="text-sm text-gray-600 space-y-1.5">
+                                        <li>• 早上先在橫濱還車，收完車後搭電車進東京（約 30 分）入住，再展開當天市區行程。</li>
+                                        <li>• D5–D8 以東京市區為基地（新宿、原宿、澀谷…）。</li>
+                                    </ul>
+                                </div>
+
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">直攻新宿的 Victoria Golf 等大型高爾夫用品店，為 P790 尋找配件。下午逛新宿伊勢丹，晚上體驗熱鬧的新宿居酒屋文化。</p>
+
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐建議</div>
+                                    <p class="text-sm text-gray-600">新宿備選：Negishi 厚切牛舌、ガスト靖国通店（06:00–翌 05:00，居酒屋後宵夜可用）——
+                                        <button onclick="gotoFood('food-shinjuku')" class="font-bold text-amber-700 hover:underline">詳見美食頁 →</button>
+                                    </p>
+                                </div>
+
+                                <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="shopping-bag" class="w-3 h-3"></i> 購物打擊清單 · 新宿（重型戶外 / 高球 / 精品）</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=mont-bell+Shinjuku+Minamiguchi" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Mont-bell (新宿南口旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 超大樓層，重點補充輕量化羽絨、保暖排汗衣等高 C/P 值裝備。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=BEAMS+JAPAN+Shinjuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">BEAMS JAPAN (新宿 6 層樓) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 體驗日本傳統工藝與當代潮流結合的神級選品店。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Alpen+Tokyo" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Alpen Tokyo (新宿) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 高爾夫配件與超大戶外專區，補齊各種裝備。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Isetan+Shinjuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">🐾 Dog Deco (新宿伊勢丹 5F) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 既然要逛伊勢丹，別錯過 5 樓的寵物精品。專賣日本職人手作的皮革項圈、牽繩與高級睡墊，是寵物界的精品區。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
+                                    <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：東京市區
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 6 -->
+                        <div id="day-6" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D6</span>
+                            </div>
+                            <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/12 (四)</span>
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">市區漫遊</span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">原宿潮牌與銀座鐵板燒</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">早上在明治神宮散步，接著逛表參道與貓街的潮牌服飾。傍晚轉往銀座，在精品大道散步後，享用預約好的頂級和牛鐵板燒。</p>
+
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐建議</div>
+                                    <p class="text-sm text-gray-600">午餐備選 · 銀座 Negishi 厚切牛舌；晚餐 · 銀座和牛鐵板燒（已預約）——
+                                        <button onclick="gotoFood('food-ginza')" class="font-bold text-amber-700 hover:underline">詳見美食頁 →</button>
+                                    </p>
+                                </div>
+
+                                <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="shopping-bag" class="w-3 h-3"></i> 購物打擊清單 · 原宿/表參道（街頭與鞋履主戰場）</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=thisisneverthat+Tokyo+Flagship" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">thisisneverthat (原宿旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 首要目標，首爾以外最高規格店鋪。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Carhartt+WIP+Store+Tokyo" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Carhartt WIP (原宿店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 工業風裝潢，鎖定 WIP 日線單品。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Stussy+Harajuku+Chapter" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Stüssy (Harajuku Chapter) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 尋找原宿店鋪限定款式。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=HOKA+Harajuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">HOKA (原宿旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 鎖定 Tor Ultra 或高階戶外機能鞋款。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=ASICS+Harajuku+Flagship" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">ASICS (原宿旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 聯名款與復古 Y2K 跑鞋 (Gel-Kayano 系列) 尋寶地。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Onitsuka+Tiger+Omotesando+NIPPON+MADE" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Onitsuka Tiger (Nippon Made 表參道) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 專攻日本製手工職人皮革頂級系列。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Salomon+Store+Tokyo+Harajuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Salomon Store (Tokyo Harajuku) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 山系神鞋大本營，鎖定 XT-6 或是高階 S/LAB 系列。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=PET+PARADISE+Harajuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">🐾 PET PARADISE (原宿竹下通店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 Eri 的變裝天堂！主打各種超可愛的史努比、迪士尼授權服飾，超適合吉娃娃的嬌小體型。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 原宿主戰場</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Kiddy+Land+Harajuku" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">Kiddy Land 原宿店 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 有非常完整且巨大的 Chiikawa Land 專區，新品通常都很齊全。這棟也有史努比、卡娜赫拉等其他熱門 IP 可順便逛。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
+                                    <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：東京市區
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 7 -->
+                        <div id="day-7" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D7</span>
+                            </div>
+                            <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/13 (五)</span>
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">市區漫遊</span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">澀谷深度探索與完美燒肉</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">宮下公園、澀谷 Parco 完整探索。傍晚預約 Shibuya Sky 觀景台，晚餐用一頓評分極高的極品燒肉做結尾，最後去唐吉訶德把伴手禮買齊。</p>
+
+                                <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐建議</div>
+                                    <p class="text-sm text-gray-600">午餐備選 · 澀谷 Negishi 厚切牛舌；晚餐 · 極品燒肉（已預約）——
+                                        <button onclick="gotoFood('food-shibuya')" class="font-bold text-amber-700 hover:underline">詳見美食頁 →</button>
+                                    </p>
+                                </div>
+
+                                <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="shopping-bag" class="w-3 h-3"></i> 購物打擊清單 · 澀谷（選品店、戶外與生活風格）</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=FREAK'S+STORE+Shibuya" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">FREAK'S STORE (澀谷旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 必逛！重點鎖定他們的日系選品與獨家聯名服飾。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Snow+Peak+Shibuya+Parco" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Snow Peak (Shibuya Parco 5F) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 逛完任天堂順路看，專攻高質感露營服飾與隨身配件。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=BEAMS+MEN+Shibuya" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">BEAMS MEN (澀谷店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 鎖定高端男裝選品與美式休閒。</p>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=GREEN+DOG+Daikanyama" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">🐾 GREEN DOG & CAT (代官山 T-SITE) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 離澀谷極近。頂級寵物選品店，主打健康無添加的頂級肉乾零食與高質感配件，絕對能讓 Eri 滿意。</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 澀谷遊戲神區大滿貫</div>
+                                    <ul class="text-sm text-gray-600 space-y-2.5">
+                                        <li>
+                                            <a href="https://www.google.com/maps/search/?api=1&query=Shibuya+PARCO" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">Shibuya PARCO (直攻 6 樓) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                            <p class="text-xs text-gray-500 mt-0.5">💡 這一棟的 6 樓絕對不能錯過！以下三大旗艦店全在同一層樓，免走回頭路：</p>
+                                            <ul class="mt-1.5 ml-3 space-y-1.5 border-l-2 border-indigo-200 pl-3">
+                                                <li>
+                                                    <span class="font-bold text-gray-700">Nintendo TOKYO</span>
+                                                    <p class="text-xs text-gray-500">任天堂日本首家直營旗艦店，巨大瑪利歐與林克雕像必拍，周邊極多。</p>
+                                                </li>
+                                                <li>
+                                                    <span class="font-bold text-gray-700">Pokémon Center Shibuya</span>
+                                                    <p class="text-xs text-gray-500">門口有一隻超帥的「等身大機甲超夢」在培養槽裡，主打街頭塗鴉風格的寶可夢周邊。</p>
+                                                </li>
+                                                <li>
+                                                    <span class="font-bold text-gray-700">CAPCOM STORE TOKYO</span>
+                                                    <p class="text-xs text-gray-500">魔物獵人、惡靈古堡、快打旋風的粉絲必逛，常有魔物獵人的精緻周邊。</p>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
+                                    <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：東京市區
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Day 8 -->
+                        <div id="day-8" class="relative flex items-start gap-4 md:gap-8 scroll-mt-32 group">
+                            <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
+                                <span class="font-bold text-sm md:text-base">D8</span>
+                            </div>
+                            <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="text-sm font-bold text-gray-500">11/14 (六)</span>
+                                    <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium flex items-center gap-1">
+                                        <i data-lucide="plane-takeoff" class="w-3 h-3"></i> 滿載而歸
+                                    </span>
+                                </div>
+                                <h3 class="font-bold text-xl mb-2">帶著滿滿回憶返台</h3>
+
+                                <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
+                                    <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="train" class="w-3 h-3"></i> N'EX 成田特快推薦班次 (約 1230 前後抵達機場 / 國際線提早 3hr)</div>
+                                    <ul class="text-sm text-gray-600 space-y-1">
+                                        <li>• <strong>13號:</strong> 新宿 10:33 發 / 澀谷 10:39 ➔ 12:05 (成田機場)</li>
+                                        <li>• <strong>15號:</strong> 新宿 11:02 發 / 澀谷 11:08 ➔ 12:34 (成田機場) <span class="text-[#C05A3C] font-medium">← 推薦</span></li>
+                                        <li>• <strong>17號:</strong> 新宿 11:32 發 / 澀谷 11:38 ➔ 13:04 (成田機場)</li>
+                                    </ul>
+                                </div>
+
+                                <p class="text-gray-600 text-sm leading-relaxed">睡到自然醒 ➔ 11:30 出發前往成田機場 ➔ 15:30 航班起飛。帶著滿滿的戰利品與美好回憶，平安返回台北。</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ PANEL：住宿 ============ -->
+            <section id="panel-stay" class="panel hidden">
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <div class="flex items-center gap-3 mb-2 border-b border-gray-100 pb-4">
+                        <i data-lucide="bed-double" class="w-6 h-6 accent-color"></i>
+                        <h2 class="text-2xl font-bold text-gray-800">Lodging 住宿</h2>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">四站過夜安排。自駕段（D2–D4）每晚換宿，東京段（D5–D7）連泊三晚不搬家。</p>
+
+                    <div class="space-y-5">
+                        <div class="relative bg-gray-50 border border-gray-100 rounded-xl p-5 overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full w-1.5 bg-sky-600"></div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-xs font-mono font-bold text-white bg-sky-600 px-2.5 py-0.5 rounded-full">D1 · 11/07</span>
+                                <span class="text-xs text-gray-400">1 晚</span>
+                            </div>
+                            <div class="font-bold text-lg">橫濱（第一晚）</div>
+                            <p class="text-sm text-gray-600 mt-1.5 leading-relaxed">中華街／みなとみらい一帶，N'EX 直達後步行可到。晚餐就在周邊挑居酒屋或燒肉店。</p>
+                        </div>
+
+                        <div class="relative bg-gray-50 border border-gray-100 rounded-xl p-5 overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full w-1.5 bg-emerald-600"></div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-xs font-mono font-bold text-white bg-emerald-600 px-2.5 py-0.5 rounded-full">D2 · 11/08</span>
+                                <span class="text-xs text-gray-400">1 晚</span>
+                            </div>
+                            <div class="font-bold text-lg">河口湖區（賞逆富士 · 泡湯）</div>
+                            <p class="text-sm text-gray-600 mt-1.5 leading-relaxed">純住宿泡湯型，晚餐在湖區周邊覓食（<button onclick="gotoFood('food-kawaguchiko')" class="font-bold text-amber-700 hover:underline">見美食頁 · 河口湖</button>）。飯後約 20:00 去紅葉迴廊看夜楓點燈（至 21:30）。</p>
+                        </div>
+
+                        <div class="relative bg-gray-50 border border-gray-100 rounded-xl p-5 overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full w-1.5 bg-[#C05A3C]"></div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-xs font-mono font-bold text-white bg-[#C05A3C] px-2.5 py-0.5 rounded-full">D3 · 11/09</span>
+                                <span class="text-xs text-gray-400">1 晚</span>
+                            </div>
+                            <div class="font-bold text-lg">熱海市區（頂級海景溫泉）</div>
+                            <p class="text-sm text-gray-600 mt-1.5 leading-relaxed">富士急玩整天後的療癒站：無敵海景溫泉＋預約好的鐵板燒晚餐。</p>
+                        </div>
+
+                        <div class="relative bg-gray-50 border border-gray-100 rounded-xl p-5 overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full w-1.5 bg-sky-600"></div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-xs font-mono font-bold text-white bg-sky-600 px-2.5 py-0.5 rounded-full">D4 · 11/10</span>
+                                <span class="text-xs text-gray-400">1 晚</span>
+                            </div>
+                            <div class="font-bold text-lg">橫濱（第二回 · 車停飯店過夜）</div>
+                            <p class="text-sm text-gray-600 mt-1.5 leading-relaxed">湘南海岸線收尾後回橫濱。<strong>車停飯店過夜、D5 早上再還車</strong>，當晚不必顧慮還車與酒駕。⚠️ 待確認：過夜停車位與費用（約 ¥1,500–3,000／晚）、租車點隔天開門時間。</p>
+                        </div>
+
+                        <div class="relative bg-gray-50 border border-gray-100 rounded-xl p-5 overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full w-1.5 bg-indigo-600"></div>
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2.5 py-0.5 rounded-full">D5–D7 · 11/11–13</span>
+                                <span class="text-xs text-gray-400">連泊 3 晚</span>
+                            </div>
+                            <div class="font-bold text-lg">東京市區（購物基地）</div>
+                            <p class="text-sm text-gray-600 mt-1.5 leading-relaxed">新宿／澀谷一帶為佳，方便 D5 新宿、D6 原宿銀座、D7 澀谷的動線，D8 早上直接搭 N'EX 去成田（新宿 11:02 發最順）。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ PANEL：美食 ============ -->
+            <section id="panel-food" class="panel hidden">
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <div class="flex items-center gap-3 mb-2 border-b border-gray-100 pb-4">
+                        <i data-lucide="utensils" class="w-6 h-6 accent-color"></i>
+                        <h2 class="text-2xl font-bold text-gray-800">Food 美食備選</h2>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">沿線與市區的用餐備選，依區域分組；行程頁每天只留建議並連回這裡。已預約的正餐（D6 銀座鐵板燒、D7 澀谷燒肉）不列入。</p>
+
+                    <!-- 小田原一帶 · D2 午餐 -->
+                    <div id="food-odawara" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-emerald-600 px-2.5 py-1 rounded-full">D2 午餐</span>
+                            <h3 class="font-bold text-lg">小田原一帶</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                            <ul class="text-sm text-gray-600 space-y-2.5">
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=COCO'S+小田原店" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">COCO'S 小田原店 (ココス) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 上箱根前經過小田原。日本國民家庭餐廳，餐點選擇多、全天營業，想輕鬆吃的備案。</p>
+                                </li>
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=早川漁港+魚市場食堂+小田原" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">早川漁港 魚市場食堂 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 小田原早川漁港旁，現撈海鮮丼，想吃在地海味的選擇。</p>
+                                </li>
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=鈴廣かまぼこの里+小田原" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">鈴廣かまぼこの里 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 小田原名物魚板，可逛可吃、附設食堂，順遊補給很方便。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 河口湖湖區 · D2 晚餐 / D3 早餐 -->
+                    <div id="food-kawaguchiko" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-emerald-600 px-2.5 py-1 rounded-full">D2 晚餐 / D3 早餐</span>
+                            <h3 class="font-bold text-lg">河口湖湖區</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                            <ul class="text-sm text-gray-600 space-y-2.5">
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=ガスト+河口湖店" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ガスト 河口湖店 (Gusto) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 日本最大連鎖家庭餐廳之一（すかいらーく集團），起司漢堡排招牌、可加 drink bar。河口湖大橋旁、與隔壁 7-11 共用大停車場，離河口湖車站約 1.2km，每日 07:00–24:00——<strong>部分座位正面富士山</strong>，此店以能看富士山聞名。D2 晚餐輕鬆吃，或 D3 早上 07:00 開門、趕 09:00 富士急開園前當早餐都適合。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 湘南海岸線 · D4 午餐 -->
+                    <div id="food-shonan" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-sky-600 px-2.5 py-1 rounded-full">D4 午餐</span>
+                            <h3 class="font-bold text-lg">湘南海岸線 · 在地海鮮</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                            <ul class="text-sm text-gray-600 space-y-2.5">
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=漁港の駅+TOTOCO小田原" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">漁港の駅 TOTOCO 小田原 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 離開熱海北上經小田原，現撈海鮮丼＋觀光魚市，比連鎖家庭餐廳更有旅行感。</p>
+                                </li>
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=江ノ島+とびっちょ+生しらす丼" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">江之島 生しらす丼 (とびっちょ 等) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 湘南名物，沿海岸線到江之島必嚐的現撈吻仔魚丼。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 新宿 · D5 -->
+                    <div id="food-shinjuku" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2.5 py-1 rounded-full">D5</span>
+                            <h3 class="font-bold text-lg">新宿</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                            <ul class="text-sm text-gray-600 space-y-2.5">
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=ねぎし+新宿" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ねぎし (Negishi) 新宿 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 仙台名物厚切牛舌定食，附麥飯、山藥泥與牛尾湯。新宿一帶多家分店，居酒屋之外想吃得清爽又紮實的備選。</p>
+                                </li>
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=ガスト+新宿靖国通店" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ガスト 新宿靖国通店 (Gusto) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 歌舞伎町 1-1-17，營業 06:00–翌日 05:00——居酒屋喝完的<strong>深夜宵夜</strong>或超早早餐都罩得住。平價、菜單廣（起司漢堡排／義大利麵／烏龍麵），多數套餐可加 drink bar。新宿另有三丁目店（07:00–23:00）、NOWA 大樓店、西口エルタワー店等多家。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 銀座 · D6 -->
+                    <div id="food-ginza" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2.5 py-1 rounded-full">D6</span>
+                            <h3 class="font-bold text-lg">銀座 / 原宿</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                            <ul class="text-sm text-gray-600 space-y-2.5">
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=ねぎし+銀座" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ねぎし (Negishi) 銀座 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 銀座、原宿一帶有分店。晚上和牛鐵板燒之外，白天逛街想簡單吃一頓厚切牛舌定食的午餐備選。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 澀谷 · D7 -->
+                    <div id="food-shibuya" class="mb-2 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2.5 py-1 rounded-full">D7</span>
+                            <h3 class="font-bold text-lg">澀谷</h3>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 rounded-lg p-3">
+                            <ul class="text-sm text-gray-600 space-y-2.5">
+                                <li>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=ねぎし+渋谷" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ねぎし (Negishi) 澀谷 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
+                                    <p class="text-xs text-gray-500 mt-0.5">💡 澀谷站周邊有分店。晚餐極品燒肉之外，午餐想換換口味吃厚切牛舌定食的備選。</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 rounded-lg p-4 text-sm text-emerald-900 leading-relaxed mt-6">
+                        <strong>Gusto（ガスト）小抄：</strong>全國門市極多、多附停車場，自駕與想輕鬆吃的場合都好用；招牌起司漢堡排，兒童餐與 drink bar 齊全。本頁收了兩家——河口湖店（看富士山）與新宿靖国通店（深夜宵夜），不一定哪一天吃，順路就進。
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ PANEL：交通 ============ -->
+            <section id="panel-transport" class="panel hidden">
+                <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                    <div class="flex items-center gap-3 mb-2 border-b border-gray-100 pb-4">
+                        <i data-lucide="train-front" class="w-6 h-6 accent-color"></i>
+                        <h2 class="text-2xl font-bold text-gray-800">Transport 交通</h2>
+                    </div>
+                    <p class="text-sm text-gray-500 mb-6">整趟移動明細：橫濱租還車、自駕三日路線、成田機場往返（N'EX）、東京市區電車注意事項。逐日行程只留概略，到時照這頁走。</p>
+
+                    <!-- 租車資訊（待填） -->
+                    <div id="transport-rental" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-sky-600 px-2.5 py-1 rounded-full">D2–D5</span>
+                            <h3 class="font-bold text-lg">租車資訊 · 橫濱租、橫濱還</h3>
+                            <span class="text-xs font-bold text-orange-600 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full">⚠️ 待補</span>
+                        </div>
+                        <div class="bg-gray-50 border border-gray-200 border-dashed rounded-lg p-4">
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• <strong>租車公司／門市：</strong><span class="text-gray-400">（待填，取還車同一門市或同城不同門市皆可，都在橫濱）</span></li>
+                                <li>• <strong>車型：</strong><span class="text-gray-400">（待填）</span></li>
+                                <li>• <strong>取車：</strong>D2（11/08）上午 · 橫濱 <span class="text-gray-400">／門市與時間待填，建議早點取車避開車潮</span></li>
+                                <li>• <strong>還車：</strong>D5（11/11）上午 · 橫濱 <span class="text-gray-400">／門市開門時間待確認，還車前在附近加油站加滿油</span></li>
+                                <li>• <strong>費用：</strong><span class="text-gray-400">（待填）</span></li>
+                                <li>• <strong>保險：</strong><span class="text-gray-400">（待填，建議免責補償＋NOC 營業損失賠償都保）</span></li>
+                                <li>• <strong>ETC 卡：</strong>取車時加租，高速過路費還車時一次結算。</li>
+                                <li>• <strong>證件：</strong>台灣駕照正本＋駕照日文譯本（監理站申請），兩者都要帶。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 成田機場交通 -->
+                    <div id="transport-nex" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-[#C05A3C] px-2.5 py-1 rounded-full">D1 / D8</span>
+                            <h3 class="font-bold text-lg">成田機場往返 · N'EX 成田特快</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="plane-landing" class="w-3 h-3"></i> D1（11/07）成田 → 橫濱（16:50 落地，出關約 1–1.5hr）</div>
                                 <ul class="text-sm text-gray-600 space-y-1">
-                                    <li>• <strong>42號:</strong> 17:45 發車 ➔ 19:19 (橫濱) <span class="text-xs text-gray-400">（16:50 落地後 55 分內出關偏緊，趕上算賺到）</span></li>
+                                    <li>• <strong>42號:</strong> 17:45 發車 ➔ 19:19 (橫濱) <span class="text-xs text-gray-400">（55 分內出關偏緊，趕上算賺到）</span></li>
                                     <li>• <strong>46號:</strong> 18:45 發車 ➔ 20:19 (橫濱) <span class="text-[#C05A3C] font-medium">← 主推</span></li>
                                     <li>• <strong>50號:</strong> 19:45 發車 ➔ 21:20 (橫濱)</li>
                                 </ul>
                             </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">抵達橫濱飯店放好行李後，在周邊（中華街或みなとみらい一帶）挑一間高評價的居酒屋或燒肉店，用一杯生啤酒與和牛為假期熱身。</p>
-                            <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-                                <i data-lucide="moon" class="w-4 h-4 text-[#C05A3C]"></i> 宿：橫濱
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 2 -->
-                    <div id="day-2" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D2</span>
-                        </div>
-                        <div class="flex-1 bg-white p-5 rounded-xl border-2 border-[#C05A3C]/20 shadow-sm group-hover:shadow-md transition-shadow">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/08 (日)</span>
-                                <span class="px-3 py-1 bg-[#C05A3C]/10 text-[#C05A3C] text-xs rounded-full font-medium flex items-center gap-1">
-                                    <i data-lucide="car" class="w-3 h-3"></i> 自駕 Day 1
-                                </span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">箱根山道與蘆之湖操駕</h3>
-
-                            <div class="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-orange-800 mb-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航節點預先設定</div>
-                                <p class="text-xs text-orange-700 leading-relaxed mb-3">
-                                    橫濱取車 ➔ 東名高速 (海老名SA休息) ➔ 小田原厚木道路 ➔ <strong>小田原</strong>(午餐) ➔ 箱根新道 ➔ <strong>蘆之湖 Skyline</strong>(操駕體驗) ➔ 東富士五湖道路 ➔ <strong>河口湖</strong>
-                                </p>
-                                <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
-                                    <iframe width="100%" height="100%" loading="lazy" title="Day 2 自駕路線地圖：橫濱—海老名—蘆之湖 Skyline—河口湖"
-                                    src="https://maps.google.com/maps?saddr=Yokohama&daddr=Ebina+SA+to:Ashinoko+Skyline+to:Kawaguchiko,Yamanashi&output=embed"
-                                    class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
-                                </div>
-                            </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">上午從橫濱出發（建議早點取車避開車潮），午前在小田原一帶補給午餐，下午上箱根、經「蘆之湖 Skyline」體驗性能車的完美操控（白天視野正對富士山）。傍晚駛入河口湖 check-in、先泡湯放鬆，晚餐在湖區周邊隨意覓食，飯後（約 20:00）再去紅葉迴廊看夜楓點燈（點燈到 21:30，不必趕時間）。</p>
-
-                            <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-amber-800 mb-2 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 午餐選擇 · 小田原一帶</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=COCO'S+小田原店" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">COCO'S 小田原店 (ココス) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 上箱根前經過小田原。日本國民家庭餐廳，餐點選擇多、全天營業，想輕鬆吃的備案。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=早川漁港+魚市場食堂+小田原" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">早川漁港 魚市場食堂 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 小田原早川漁港旁，現撈海鮮丼，想吃在地海味的選擇。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=鈴廣かまぼこの里+小田原" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">鈴廣かまぼこの里 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 小田原名物魚板，可逛可吃、附設食堂，順遊補給很方便。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="cloud-sun" class="w-3 h-3"></i> 蘆之湖 Skyline 彈性備案</div>
-                                <ul class="text-sm text-gray-600 space-y-1.5">
-                                    <li>• <strong>晴天：</strong>13:00–14:00 前上 Skyline 跑山看富士（下午富士山易被雲遮）。通行費本線 ¥1,000、<strong>僅收現金</strong>，記得備千元鈔。</li>
-                                    <li>• <strong>陰雨／起霧：</strong>富士山看不到，直接走東富士五湖道路往河口湖，把賞景時間留給湖區。</li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 自駕沿線當地限定吊飾</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Ebina+SA+Outbound" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">海老名 SA (下行線休息站) · Day 2 去程 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 東名高速上必停的超大休息站。名產店極高機率能買到「神奈川/橫濱限定」的 Chiikawa。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 text-sm text-[#C05A3C] bg-[#C05A3C]/5 px-3 py-1.5 rounded-lg border border-[#C05A3C]/10 font-medium">
-                                <i data-lucide="moon" class="w-4 h-4"></i> 宿：河口湖區 (賞逆富士 · 純住宿泡湯，晚餐周邊覓食)
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 3 -->
-                    <div id="day-3" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D3</span>
-                        </div>
-                        <div class="flex-1 bg-white p-5 rounded-xl border-2 border-[#C05A3C]/20 shadow-sm group-hover:shadow-md transition-shadow">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/09 (一)</span>
-                                <span class="px-3 py-1 bg-[#C05A3C]/10 text-[#C05A3C] text-xs rounded-full font-medium flex items-center gap-1">
-                                    <i data-lucide="car" class="w-3 h-3"></i> 自駕 Day 2
-                                </span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">富士急樂園與熱海溫泉</h3>
-
-                            <div class="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-orange-800 mb-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航節點預先設定</div>
-                                <p class="text-xs text-orange-700 leading-relaxed mb-3">
-                                    河口湖(出發) ➔ <strong>富士急樂園</strong>(暢玩四大絕叫) ➔ 東富士五湖道路 ➔ <strong>御殿場</strong> ➔ 國道 138 號 / 箱根峠 ➔ 熱海峠 ➔ <strong>熱海</strong>(海景溫泉 + 鐵板燒)
-                                </p>
-                                <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
-                                    <iframe width="100%" height="100%" loading="lazy" title="Day 3 自駕路線地圖：河口湖—富士急樂園—御殿場—熱海"
-                                    src="https://maps.google.com/maps?saddr=Kawaguchiko,Yamanashi&daddr=Fuji-Q+Highland+to:Gotemba+to:Atami,Shizuoka&output=embed"
-                                    class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
-                                </div>
-                            </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">早上盡早前往「富士急樂園」遊玩（平日排隊較短，建議 09:00 開園前到）。離園時間彈性，約 15:30 前後皆可——可直接走高速南下熱海，或沿途加遊下面的順遊備選景點。傍晚抵達熱海，用無敵海景溫泉與鐵板燒療癒身心。</p>
-
-                            <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="landmark" class="w-3 h-3"></i> 園區景點 · 富士急四大絕叫</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+FUJIYAMA" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">FUJIYAMA <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 高度 79m、最高時速 130km/h，曾為世界最高雲霄飛車，背景正對富士山，全程可看富士全景。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+EEJANAIKA" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">EEJANAIKA (ええじゃないか) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 座椅可 360° 旋轉的第四維度雲霄飛車，全程翻轉 14 次，無法預測下一秒方向，體感極度混亂。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+Takabisha" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">高飛車 (Takabisha) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 全球最大傾角 121° 的俯衝段，吉尼斯世界紀錄保持者，從靜止到垂直落下的那一刻堪稱最恐怖。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Fujikyu+Highland+Zokkon" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">ZOKKON <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 2023 年全新開幕的第四代絕叫，座椅面向外側懸掛，雙腳懸空飛馳，最高速度 100km/h。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="route" class="w-3 h-3"></i> 下山順遊備選 · 河口湖→御殿場→熱海沿途</div>
-                                <p class="text-xs text-emerald-700 mb-2.5">⚠️ 11 月中日落約 16:35，15:30 離園後天黑前大約只夠停留一站——賞景型景點請擇一，逛街型不受影響。</p>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=山中湖+パノラマ台+三国峠" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">山中湖 パノラマ台 / 三國峠 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 富士山＋山中湖絕景，三國峠是經典跑山＋芒草道拍照點，愛開車必收。<span class="text-emerald-700 font-medium">賞景型，需天黑前。</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=御殿場プレミアム・アウトレット" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">御殿場 Premium Outlets <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 日本最大級 outlet，正對富士山，購物與用餐補給一次搞定。<span class="text-emerald-700 font-medium">營業到晚上，天黑後照樣逛。</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=富士スピードウェイ" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">富士スピードウェイ <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 F1 等級國際賽道，車迷可看賽事或周邊設施。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=三島スカイウォーク" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">三島スカイウォーク <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 日本最長人行吊橋，富士山＋駿河灣展望，箱根往熱海途中順遊。<span class="text-emerald-700 font-medium">賞景型，需天黑前。</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=十国峠ケーブルカー" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">十國峠 纜車 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 熱海峠附近，360° 眺望富士山與相模灣，接近熱海的最後一個展望點。<span class="text-emerald-700 font-medium">賞景型，需天黑前（纜車收班早，出發前查末班）。</span></p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3"></i> 出發前確認</div>
-                                <ul class="text-sm text-gray-600 space-y-1.5">
-                                    <li>• 富士急樂園不定期會排定<strong>檢修休園</strong>，啟程前一天上官網確認當天有無營業。</li>
-                                    <li>• 平日（週一）排隊較短，但熱門設施仍建議 09:00 開園前到，或用 APP 買絕叫優先券。</li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 自駕沿線當地限定吊飾</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Atami+Ekimae+Heiwa+Shopping+Street" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">熱海平和通商店街 (熱海車站前) · Day 3 或 Day 4 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 熱海車站外最熱鬧的商店街，土產店是尋找「靜岡限定」或「溫泉限定」Chiikawa 的絕佳地點。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 text-sm text-[#C05A3C] bg-[#C05A3C]/5 px-3 py-1.5 rounded-lg border border-[#C05A3C]/10 font-medium">
-                                <i data-lucide="moon" class="w-4 h-4"></i> 宿：熱海市區 (頂級溫泉)
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 4 -->
-                    <div id="day-4" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-accent text-white shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D4</span>
-                        </div>
-                        <div class="flex-1 bg-white p-5 rounded-xl border-2 border-[#C05A3C]/20 shadow-sm group-hover:shadow-md transition-shadow">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/10 (二)</span>
-                                <span class="px-3 py-1 bg-[#C05A3C]/10 text-[#C05A3C] text-xs rounded-full font-medium flex items-center gap-1">
-                                    <i data-lucide="car" class="w-3 h-3"></i> 自駕 Day 3
-                                </span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">湘南海岸線浪漫歸途</h3>
-
-                            <div class="bg-orange-50 border border-orange-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-orange-800 mb-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> 導航節點預先設定</div>
-                                <p class="text-xs text-orange-700 leading-relaxed mb-3">
-                                    熱海 ➔ 國道 135 號 ➔ <strong>國道 134 號 (相模灣海岸線)</strong> ➔ 鎌倉高校前(平交道) ➔ 鎌倉大佛 ➔ 橫濱橫須賀道路 ➔ <strong>橫濱</strong>
-                                </p>
-                                <div class="w-full h-48 md:h-64 rounded-lg overflow-hidden border border-orange-200/60 shadow-inner relative">
-                                    <iframe width="100%" height="100%" loading="lazy" title="Day 4 自駕路線地圖：熱海—江之島—鎌倉—橫濱"
-                                    src="https://maps.google.com/maps?saddr=Atami,Shizuoka&daddr=Enoshima,Kanagawa+to:Kotoku-in,Kamakura+to:Yokohama&output=embed"
-                                    class="absolute inset-0 border-0 grayscale-[20%] contrast-125"></iframe>
-                                </div>
-                            </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">建議上午盡早離開熱海，沿國道 134 號海岸線悠閒巡航（週二平日車流順很多），途經充滿故事的江之島與鎌倉大佛。傍晚抵達橫濱，車先停飯店過夜，隔天早上再還（見下方還車安排）。</p>
-
-                            <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="route" class="w-3 h-3"></i> 路線備選 · 看時間彈性選</div>
-                                <ul class="text-sm text-gray-600 space-y-1.5">
-                                    <li>• <strong>輕鬆版：</strong>熱海 → 小田原 → 鎌倉 → 東京（行程鬆、好控還車時間）。</li>
-                                    <li>• <strong>充實版：</strong>熱海 → 江之島 → 鎌倉 → 橫濱晚餐 → 東京（多收江之島與橫濱）。</li>
-                                    <li>• <strong>想開得順：</strong>小田原往東可走「西湘バイパス（西湘 Bypass）」海岸快速道，比普通國道舒服。</li>
-                                    <li>• ⚠️ <strong>鎌倉高校前平交道：</strong>周邊幾乎無停車場、違停取締嚴格；建議車停江之島停車場，搭江之電一站（江ノ島 → 鎌倉高校前）往返再取車。</li>
-                                    <li>• ⚠️ 週二傍晚首都高遇下班尖峰（17:30–19:30）易塞；若趕還車，橫濱晚餐拖到 20:00 後再回市區還車更輕鬆。</li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-amber-800 mb-2 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 午餐選擇 · 海岸線在地海鮮</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=漁港の駅+TOTOCO小田原" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">漁港の駅 TOTOCO 小田原 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 離開熱海北上經小田原，現撈海鮮丼＋觀光魚市，比連鎖家庭餐廳更有旅行感。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=江ノ島+とびっちょ+生しらす丼" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">江之島 生しらす丼 (とびっちょ 等) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 湘南名物，沿海岸線到江之島必嚐的現撈吻仔魚丼。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-emerald-800 mb-2 flex items-center gap-1"><i data-lucide="landmark" class="w-3 h-3"></i> 沿線景點 · 江之島看大佛</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Enoshima+Kanagawa" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">江之島 (江島神社 / 展望燈塔) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 湘南海岸地標小島，登島逛江島神社與海蠟燭展望塔，眺望相模灣與富士山，海鮮丼與生しらす必嚐。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Kotoku-in+Great+Buddha+Kamakura" target="_blank" rel="noopener" class="font-bold text-emerald-700 hover:underline inline-flex items-center gap-1">鎌倉大佛 (高德院) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 高約 11.3m 的露天青銅阿彌陀佛，鎌倉象徵地標，可入內參觀佛像內部。距江之島車程約 15 分。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 橫濱回程備案</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Chiikawa+Land+Yokohama+Marui+City" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">Chiikawa Land 橫濱店 (Marui City 8F) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 若傍晚去橫濱吃晚餐，可直接殺去 Marui City 8 樓，把橫濱周邊一次買齊。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="car" class="w-3 h-3"></i> 還車安排 · 建議隔天早上還</div>
-                                <ul class="text-sm text-gray-600 space-y-1.5">
-                                    <li>• 租車同價、還車點都在橫濱，<strong>建議 D5（11/11）早上再還車</strong>，D4 傍晚就不必趕平日尖峰。</li>
-                                    <li>• 車停飯店過夜，當晚可盡情玩橫濱：中華街晚餐、みなとみらい／紅磚倉庫夜景、或吃燒肉，不必顧慮還車與酒駕。</li>
-                                    <li>• ⚠️ 待確認：飯店過夜停車位與費用（約 ¥1,500–3,000／晚）、租車點隔天開門時間。</li>
-                                </ul>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
-                                <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：橫濱
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 5 -->
-                    <div id="day-5" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D5</span>
-                        </div>
-                        <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/11 (三)</span>
-                                <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">市區漫遊</span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">新宿高球尋寶與居酒屋</h3>
-
-                            <div class="bg-sky-50 border border-sky-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-sky-800 mb-2 flex items-center gap-1"><i data-lucide="car" class="w-3 h-3"></i> 早上還車 · 轉進東京</div>
-                                <ul class="text-sm text-gray-600 space-y-1.5">
-                                    <li>• 早上先在橫濱還車，收完車後搭電車進東京（約 30 分）入住，再展開當天市區行程。</li>
-                                    <li>• D5–D8 以東京市區為基地（新宿、原宿、澀谷…）。</li>
-                                </ul>
-                            </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">直攻新宿的 Victoria Golf 等大型高爾夫用品店，為 P790 尋找配件。下午逛新宿伊勢丹，晚上體驗熱鬧的新宿居酒屋文化。</p>
-
-                            <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-amber-800 mb-2 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐備選 · Negishi 厚切牛舌</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=ねぎし+新宿" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ねぎし (Negishi) 新宿 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 仙台名物厚切牛舌定食，附麥飯、山藥泥與牛尾湯。新宿一帶多家分店，居酒屋之外想吃得清爽又紮實的備選。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="shopping-bag" class="w-3 h-3"></i> 購物打擊清單 · 新宿（重型戶外 / 高球 / 精品）</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=mont-bell+Shinjuku+Minamiguchi" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Mont-bell (新宿南口旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 超大樓層，重點補充輕量化羽絨、保暖排汗衣等高 C/P 值裝備。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=BEAMS+JAPAN+Shinjuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">BEAMS JAPAN (新宿 6 層樓) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 體驗日本傳統工藝與當代潮流結合的神級選品店。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Alpen+Tokyo" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Alpen Tokyo (新宿) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 高爾夫配件與超大戶外專區，補齊各種裝備。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Isetan+Shinjuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">🐾 Dog Deco (新宿伊勢丹 5F) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 既然要逛伊勢丹，別錯過 5 樓的寵物精品。專賣日本職人手作的皮革項圈、牽繩與高級睡墊，是寵物界的精品區。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-                                <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：東京市區
-                            </div>
-                        </div>
-                    </div>
-
-                     <!-- Day 6 -->
-                     <div id="day-6" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D6</span>
-                        </div>
-                        <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/12 (四)</span>
-                                <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">市區漫遊</span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">原宿潮牌與銀座鐵板燒</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">早上在明治神宮散步，接著逛表參道與貓街的潮牌服飾。傍晚轉往銀座，在精品大道散步後，享用預約好的頂級和牛鐵板燒。</p>
-
-                            <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-amber-800 mb-2 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐備選 · Negishi 厚切牛舌</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=ねぎし+銀座" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ねぎし (Negishi) 銀座 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 銀座、原宿一帶有分店。晚上和牛鐵板燒之外，白天逛街想簡單吃一頓厚切牛舌定食的午餐備選。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="shopping-bag" class="w-3 h-3"></i> 購物打擊清單 · 原宿/表參道（街頭與鞋履主戰場）</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=thisisneverthat+Tokyo+Flagship" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">thisisneverthat (原宿旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 首要目標，首爾以外最高規格店鋪。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Carhartt+WIP+Store+Tokyo" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Carhartt WIP (原宿店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 工業風裝潢，鎖定 WIP 日線單品。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Stussy+Harajuku+Chapter" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Stüssy (Harajuku Chapter) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 尋找原宿店鋪限定款式。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=HOKA+Harajuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">HOKA (原宿旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 鎖定 Tor Ultra 或高階戶外機能鞋款。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=ASICS+Harajuku+Flagship" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">ASICS (原宿旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 聯名款與復古 Y2K 跑鞋 (Gel-Kayano 系列) 尋寶地。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Onitsuka+Tiger+Omotesando+NIPPON+MADE" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Onitsuka Tiger (Nippon Made 表參道) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 專攻日本製手工職人皮革頂級系列。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Salomon+Store+Tokyo+Harajuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Salomon Store (Tokyo Harajuku) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 山系神鞋大本營，鎖定 XT-6 或是高階 S/LAB 系列。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=PET+PARADISE+Harajuku" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">🐾 PET PARADISE (原宿竹下通店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 Eri 的變裝天堂！主打各種超可愛的史努比、迪士尼授權服飾，超適合吉娃娃的嬌小體型。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 原宿主戰場</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Kiddy+Land+Harajuku" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">Kiddy Land 原宿店 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 有非常完整且巨大的 Chiikawa Land 專區，新品通常都很齊全。這棟也有史努比、卡娜赫拉等其他熱門 IP 可順便逛。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-                                <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：東京市區
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 7 -->
-                    <div id="day-7" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D7</span>
-                        </div>
-                        <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/13 (五)</span>
-                                <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium">市區漫遊</span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">澀谷深度探索與完美燒肉</h3>
-                            <p class="text-gray-600 text-sm leading-relaxed mb-4">宮下公園、澀谷 Parco 完整探索。傍晚預約 Shibuya Sky 觀景台，晚餐用一頓評分極高的極品燒肉做結尾，最後去唐吉訶德把伴手禮買齊。</p>
-
-                            <div class="bg-amber-50 border border-amber-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-amber-800 mb-2 flex items-center gap-1"><i data-lucide="utensils" class="w-3 h-3"></i> 用餐備選 · Negishi 厚切牛舌</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=ねぎし+渋谷" target="_blank" rel="noopener" class="font-bold text-amber-700 hover:underline inline-flex items-center gap-1">ねぎし (Negishi) 澀谷 <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 澀谷站周邊有分店。晚餐極品燒肉之外，午餐想換換口味吃厚切牛舌定食的備選。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="shopping-bag" class="w-3 h-3"></i> 購物打擊清單 · 澀谷（選品店、戶外與生活風格）</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=FREAK'S+STORE+Shibuya" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">FREAK'S STORE (澀谷旗艦店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 必逛！重點鎖定他們的日系選品與獨家聯名服飾。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Snow+Peak+Shibuya+Parco" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">Snow Peak (Shibuya Parco 5F) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 逛完任天堂順路看，專攻高質感露營服飾與隨身配件。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=BEAMS+MEN+Shibuya" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">BEAMS MEN (澀谷店) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 鎖定高端男裝選品與美式休閒。</p>
-                                    </li>
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=GREEN+DOG+Daikanyama" target="_blank" rel="noopener" class="font-bold text-[#C05A3C] hover:underline inline-flex items-center gap-1">🐾 GREEN DOG & CAT (代官山 T-SITE) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 離澀谷極近。頂級寵物選品店，主打健康無添加的頂級肉乾零食與高質感配件，絕對能讓 Eri 滿意。</p>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-indigo-800 mb-2 flex items-center gap-1"><i data-lucide="gamepad-2" class="w-3 h-3"></i> ACG / Chiikawa 聖地 · 澀谷遊戲神區大滿貫</div>
-                                <ul class="text-sm text-gray-600 space-y-2.5">
-                                    <li>
-                                        <a href="https://www.google.com/maps/search/?api=1&query=Shibuya+PARCO" target="_blank" rel="noopener" class="font-bold text-indigo-700 hover:underline inline-flex items-center gap-1">Shibuya PARCO (直攻 6 樓) <i data-lucide="map-pin" class="w-3 h-3"></i></a>
-                                        <p class="text-xs text-gray-500 mt-0.5">💡 這一棟的 6 樓絕對不能錯過！以下三大旗艦店全在同一層樓，免走回頭路：</p>
-                                        <ul class="mt-1.5 ml-3 space-y-1.5 border-l-2 border-indigo-200 pl-3">
-                                            <li>
-                                                <span class="font-bold text-gray-700">Nintendo TOKYO</span>
-                                                <p class="text-xs text-gray-500">任天堂日本首家直營旗艦店，巨大瑪利歐與林克雕像必拍，周邊極多。</p>
-                                            </li>
-                                            <li>
-                                                <span class="font-bold text-gray-700">Pokémon Center Shibuya</span>
-                                                <p class="text-xs text-gray-500">門口有一隻超帥的「等身大機甲超夢」在培養槽裡，主打街頭塗鴉風格的寶可夢周邊。</p>
-                                            </li>
-                                            <li>
-                                                <span class="font-bold text-gray-700">CAPCOM STORE TOKYO</span>
-                                                <p class="text-xs text-gray-500">魔物獵人、惡靈古堡、快打旋風的粉絲必逛，常有魔物獵人的精緻周邊。</p>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 text-sm text-gray-500 bg-white px-3 py-1.5 rounded-lg border border-gray-100">
-                                <i data-lucide="moon" class="w-4 h-4 text-gray-400"></i> 宿：東京市區
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Day 8 -->
-                    <div id="day-8" class="relative flex items-start gap-4 md:gap-8 scroll-mt-24 group">
-                        <div class="hidden md:flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-white bg-gray-300 text-gray-600 shadow shrink-0 relative z-10 mt-1">
-                            <span class="font-bold text-sm md:text-base">D8</span>
-                        </div>
-                        <div class="flex-1 bg-gray-50 p-5 rounded-xl border border-gray-100 group-hover:border-gray-300 transition-colors">
-                            <div class="flex items-center justify-between mb-3">
-                                <span class="text-sm font-bold text-gray-500">11/14 (六)</span>
-                                <span class="px-3 py-1 bg-gray-200 text-gray-700 text-xs rounded-full font-medium flex items-center gap-1">
-                                    <i data-lucide="plane-takeoff" class="w-3 h-3"></i> 滿載而歸
-                                </span>
-                            </div>
-                            <h3 class="font-bold text-xl mb-2">帶著滿滿回憶返台</h3>
-
-                            <div class="bg-white border border-gray-200 rounded-lg p-3 mb-4 mt-2">
-                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="train" class="w-3 h-3"></i> N'EX 成田特快推薦班次 (約 1230 前後抵達機場 / 國際線提早 3hr)</div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-xs font-bold text-gray-500 mb-2 flex items-center gap-1"><i data-lucide="plane-takeoff" class="w-3 h-3"></i> D8（11/14）新宿／澀谷 → 成田（15:30 起飛，國際線提早 3hr）</div>
                                 <ul class="text-sm text-gray-600 space-y-1">
                                     <li>• <strong>13號:</strong> 新宿 10:33 發 / 澀谷 10:39 ➔ 12:05 (成田機場)</li>
                                     <li>• <strong>15號:</strong> 新宿 11:02 發 / 澀谷 11:08 ➔ 12:34 (成田機場) <span class="text-[#C05A3C] font-medium">← 推薦</span></li>
                                     <li>• <strong>17號:</strong> 新宿 11:32 發 / 澀谷 11:38 ➔ 13:04 (成田機場)</li>
                                 </ul>
                             </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed">睡到自然醒 ➔ 11:30 出發前往成田機場 ➔ 15:30 航班起飛。帶著滿滿的戰利品與美好回憶，平安返回台北。</p>
+                            <div class="bg-sky-50 border border-sky-100 rounded-lg p-3">
+                                <ul class="text-sm text-gray-600 space-y-1.5">
+                                    <li>• N'EX <strong>全車指定席</strong>，上車前先劃位（JR East 網路訂票或車站綠色窗口／售票機）；行李多首選 N'EX，比利木津巴士時間穩。</li>
+                                    <li>• 外國旅客可查 <strong>N'EX 東京去回車票</strong>（來回優惠票），去程到橫濱、回程從新宿走也適用，比分開買便宜。</li>
+                                    <li>• D8 戰利品多，建議直接在新宿上車佔行李架，別到澀谷才上。</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 自駕三日 -->
+                    <div id="transport-drive" class="mb-8 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-emerald-600 px-2.5 py-1 rounded-full">D2–D4</span>
+                            <h3 class="font-bold text-lg">自駕三日 · 路線與注意事項</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-xs font-bold text-emerald-700 mb-1.5">D2（11/08 日）橫濱 → 河口湖 · 自駕 Day 1</div>
+                                <p class="text-sm text-gray-600 leading-relaxed">橫濱取車 ➔ 東名高速（海老名 SA 休息）➔ 小田原厚木道路 ➔ 小田原（午餐）➔ 箱根新道 ➔ <strong>蘆之湖 Skyline</strong> ➔ 東富士五湖道路 ➔ 河口湖</p>
+                                <ul class="text-xs text-gray-500 mt-2 space-y-1">
+                                    <li>• 蘆之湖 Skyline 通行費本線 <strong>¥1,000、僅收現金</strong>，備妥千元鈔；下午富士山易被雲遮，13:00–14:00 前上山最好。</li>
+                                    <li>• 週日車潮多，建議早點取車出發。</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-xs font-bold text-emerald-700 mb-1.5">D3（11/09 一）河口湖 → 熱海 · 自駕 Day 2</div>
+                                <p class="text-sm text-gray-600 leading-relaxed">河口湖 ➔ <strong>富士急樂園</strong>（園區大型停車場）➔ 東富士五湖道路 ➔ 御殿場 ➔ 國道 138 號／箱根峠 ➔ 熱海峠 ➔ 熱海</p>
+                                <ul class="text-xs text-gray-500 mt-2 space-y-1">
+                                    <li>• 11 月中日落約 16:35：15:30 離園後，賞景型順遊（山中湖パノラマ台／三島 Skywalk／十國峠）只夠停一站；御殿場 Outlets 營業到晚上不受限。</li>
+                                    <li>• 熱海市區坡多路窄，抵達後直接進飯店停車場，確認飯店車位。</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded-lg p-4">
+                                <div class="text-xs font-bold text-emerald-700 mb-1.5">D4（11/10 二）熱海 → 橫濱 · 自駕 Day 3</div>
+                                <p class="text-sm text-gray-600 leading-relaxed">熱海 ➔ 國道 135 號 ➔ <strong>國道 134 號（相模灣海岸線）</strong> ➔ 江之島 ➔ 鎌倉大佛 ➔ 橫濱橫須賀道路 ➔ 橫濱（車停飯店過夜）</p>
+                                <ul class="text-xs text-gray-500 mt-2 space-y-1">
+                                    <li>• 小田原往東可改走<strong>西湘バイパス</strong>海岸快速道，比普通國道順。</li>
+                                    <li>• <strong>鎌倉高校前平交道</strong>周邊幾乎無停車場、違停取締嚴格：車停江之島停車場，搭江之電一站（江ノ島 → 鎌倉高校前）往返。</li>
+                                    <li>• 週二 17:30–19:30 首都高下班尖峰易塞；不趕時間就在橫濱吃完晚餐再走。</li>
+                                    <li>• 當晚<strong>車停飯店過夜</strong>（約 ¥1,500–3,000／晚，待確認），D5 早上還車，晚上喝酒不受還車綁架。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 東京市區交通 -->
+                    <div id="transport-tokyo" class="mb-2 scroll-mt-32">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xs font-mono font-bold text-white bg-indigo-600 px-2.5 py-1 rounded-full">D5–D8</span>
+                            <h3 class="font-bold text-lg">東京市區 · 電車注意事項</h3>
+                        </div>
+                        <div class="bg-white border border-gray-200 rounded-lg p-4">
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>• <strong>D5 還車後進東京：</strong>橫濱 → 新宿約 30–40 分（JR 湘南新宿ライン直達；或東急東橫線到澀谷轉乘），扛行李選直達班次。</li>
+                                <li>• <strong>IC 卡：</strong>全程 Suica 就夠（iPhone 可加到 Apple Pay 隨時儲值，免排隊買實體卡）；山手線、地鐵、便利商店通用。</li>
+                                <li>• <strong>市區動線：</strong>新宿—原宿—澀谷都在 <strong>JR 山手線</strong> 上，各站間 5 分內；銀座從澀谷搭地鐵銀座線直達。基本上不需要一日券，嗶 Suica 最省事。</li>
+                                <li>• <strong>避開通勤尖峰：</strong>平日 07:30–09:30 與 17:30–19:30 極擠，扛戰利品或帶大包移動請避開；購物日晚歸反而輕鬆。</li>
+                                <li>• <strong>末班車：</strong>山手線約 00:30 前後收班，居酒屋喝晚了注意時間，錯過只剩計程車（起跳約 ¥500、深夜加成 2 成）。</li>
+                                <li>• <strong>D8 提醒：</strong>從飯店到新宿駅預留 20–30 分緩衝，N'EX 新宿 11:02 發（15 號）為主推班次。</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </section>
+
         </main>
     </div>
 
     <script>
-        // CDN 載入失敗時不讓整段 script 掛掉（Tab 切換等純 DOM 功能仍可用）
+        // CDN 載入失敗時不讓整段 script 掛掉（分頁切換等純 DOM 功能仍可用）
         if (window.lucide) lucide.createIcons();
 
-        // ---- 手機 Day Tab 切換 ----
-        const DAY_ORDER = ['flight-info', 'day-1', 'day-2', 'day-3', 'day-4', 'day-5', 'day-6', 'day-7', 'day-8'];
-        const initialHash = location.hash.slice(1);
-        let mobileActiveDay = DAY_ORDER.includes(initialHash) ? initialHash : 'day-1';
+        // ---- 分頁切換（參考北海道行程頁的 app-shell 分頁架構） ----
+        const PANELS = ['overview', 'days', 'stay', 'food', 'transport'];
 
-        function applyMobileView() {
-            const isMobile = window.innerWidth < 768;
-            // 航班與行前清單區塊：手機版只在 flight-info tab 時顯示
-            ['flight-info', 'pretrip-checklist'].forEach(sectionId => {
-                const el = document.getElementById(sectionId);
-                if (el) el.style.display = (isMobile && mobileActiveDay !== 'flight-info') ? 'none' : '';
+        function showTab(name, opts = {}) {
+            if (!PANELS.includes(name)) name = 'overview';
+            PANELS.forEach(p => {
+                const panel = document.getElementById('panel-' + p);
+                if (panel) panel.classList.toggle('hidden', p !== name);
             });
-            // 每日行程區塊
-            document.querySelectorAll('[id^="day-"]').forEach(el => {
-                el.style.display = (isMobile && el.id !== mobileActiveDay) ? 'none' : '';
+            document.querySelectorAll('.app-tabs [data-tab]').forEach(btn => {
+                const on = btn.dataset.tab === name;
+                btn.classList.toggle('bg-[#C05A3C]', on);
+                btn.classList.toggle('border-[#C05A3C]', on);
+                btn.classList.toggle('text-white', on);
+                btn.classList.toggle('bg-white', !on);
+                btn.classList.toggle('text-gray-600', !on);
+                btn.setAttribute('aria-selected', String(on));
             });
-            document.querySelectorAll('.day-tab').forEach(btn => {
-                const active = btn.dataset.day === mobileActiveDay;
-                btn.classList.toggle('bg-[#C05A3C]', active);
-                btn.classList.toggle('border-[#C05A3C]', active);
-                btn.classList.toggle('text-white', active);
-                btn.classList.toggle('bg-white', !active);
-                btn.classList.toggle('border-gray-200', !active);
-                btn.classList.toggle('text-gray-700', !active);
-                const dateSpan = btn.querySelector('.day-tab-date');
-                if (dateSpan) dateSpan.classList.toggle('text-white/70', active);
-                btn.setAttribute('aria-pressed', String(active));
-            });
+            if (!opts.keepHash) history.replaceState(null, '', '#' + name);
+            if (!opts.noScroll) window.scrollTo({ top: 0, behavior: 'auto' });
+            // 進場動畫（GSAP；CDN 失敗或減少動態時直接顯示，不影響功能）
+            const active = document.getElementById('panel-' + name);
+            if (active) animatePanelIn(active, name);
         }
 
-        function selectDay(id, scrollToTop) {
-            mobileActiveDay = id;
-            // 同步網址 hash，讓特定天可以直接分享（replaceState 不觸發原生錨點跳轉）
+        // 跳到逐日行程的某一天（總覽站卡 / 日期晶片共用）
+        function gotoDay(id) {
+            showTab('days', { keepHash: true, noScroll: true });
             history.replaceState(null, '', '#' + id);
-            applyMobileView();
-            if (window.innerWidth < 768) {
-                if (scrollToTop) {
-                    const tabNav = document.querySelector('.day-tab-nav');
-                    window.scrollTo({ top: tabNav ? tabNav.offsetTop : 0, behavior: 'auto' });
-                }
-                const el = document.getElementById(id);
-                if (el && window.gsap && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    gsap.fromTo(el, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.3, ease: 'power2.out' });
-                }
-                const btn = document.querySelector(`[data-day="${id}"]`);
-                if (btn) btn.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' });
-            }
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // ---- 手機版：卡片底部「上一天 / 下一天」導覽 ----
-        const dayLabel = (id) => id === 'flight-info' ? '航班' : 'D' + id.split('-')[1];
-        DAY_ORDER.forEach((id, i) => {
-            const host = document.getElementById(id);
-            if (!host) return;
-            // flight-info 是整個 section；day 卡片內容在最後一個子 div
-            const card = id === 'flight-info' ? host : host.querySelector(':scope > div:last-child');
-            if (!card) return;
-            const prev = DAY_ORDER[i - 1];
-            const next = DAY_ORDER[i + 1];
-            const nav = document.createElement('div');
-            nav.className = 'mobile-day-nav md:hidden flex justify-between gap-3 mt-4 pt-3 border-t border-gray-200/80';
-            nav.innerHTML =
-                (prev
-                    ? `<button onclick="selectDay('${prev}', true)" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm font-medium text-gray-600">← ${dayLabel(prev)}</button>`
-                    : '<span></span>') +
-                (next
-                    ? `<button onclick="selectDay('${next}', true)" class="inline-flex items-center gap-1 px-3 py-2 rounded-lg bg-[#C05A3C] text-white text-sm font-medium">${dayLabel(next)} →</button>`
-                    : '<span></span>');
-            card.appendChild(nav);
-        });
+        // 跳到美食頁的某個區域群組（行程卡的「詳見美食頁」用）
+        function gotoFood(id) {
+            showTab('food', { keepHash: true, noScroll: true });
+            history.replaceState(null, '', '#' + id);
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
-        window.addEventListener('resize', applyMobileView);
-        applyMobileView();
+        // ---- GSAP 動畫（尊重 prefers-reduced-motion；CDN 失敗時分頁功能不受影響） ----
+        const REDUCE_MQ = '(prefers-reduced-motion: reduce)';
 
-        // GSAP 動畫：進場 + 捲動逐張淡入。尊重 prefers-reduced-motion。
+        // 分頁切換：面板內的大卡片交錯浮現
+        function animatePanelIn(panel, name) {
+            if (!window.gsap || window.matchMedia(REDUCE_MQ).matches) return;
+            const cards = panel.querySelectorAll(':scope > div');
+            if (cards.length) {
+                // 動畫結束清掉 transform，避免殘留的 transform 讓面板內 sticky 日期晶片失效
+                gsap.fromTo(cards,
+                    { autoAlpha: 0, y: 24 },
+                    { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.12,
+                      overwrite: 'auto', clearProps: 'opacity,visibility,transform' });
+            }
+            if (name === 'days') initDaysReveal();
+        }
+
+        // 逐日行程：捲動逐張浮現（首次切到該分頁才建立，避免面板 display:none 時量測錯誤）
+        let daysRevealReady = false;
+        function initDaysReveal() {
+            if (daysRevealReady || !window.gsap || !window.ScrollTrigger) return;
+            daysRevealReady = true;
+            const rows = gsap.utils.toArray('[id^="day-"]');
+            gsap.set(rows, { autoAlpha: 0, y: 48 });
+            ScrollTrigger.batch(rows, {
+                start: 'top 85%',
+                once: true,
+                onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, stagger: 0.15, overwrite: true })
+            });
+            ScrollTrigger.refresh();
+        }
+
         if (window.gsap && window.ScrollTrigger) {
-        gsap.registerPlugin(ScrollTrigger);
+            gsap.registerPlugin(ScrollTrigger);
 
-        const mm = gsap.matchMedia();
+            const mm = gsap.matchMedia();
+            mm.add(
+                {
+                    animate: "(prefers-reduced-motion: no-preference)",
+                    reduce: "(prefers-reduced-motion: reduce)",
+                    canHover: "(hover: hover) and (pointer: fine)"
+                },
+                (ctx) => {
+                    const { reduce, canHover } = ctx.conditions;
 
-        mm.add(
-            {
-                animate: "(prefers-reduced-motion: no-preference)",
-                reduce: "(prefers-reduced-motion: reduce)",
-                canHover: "(hover: hover) and (pointer: fine)",
-                mobile: "(max-width: 767px)"
-            },
-            (ctx) => {
-                const { reduce, canHover, mobile } = ctx.conditions;
-                const dayRows = gsap.utils.toArray('[id^="day-"]');
-
-                // 側欄 scroll-spy：捲到哪個區塊，側欄對應連結高亮（非動畫，reduce 也啟用）
-                if (!mobile) {
-                    const spyLinks = new Map();
-                    document.querySelectorAll('aside nav a[href^="#"]').forEach((a) =>
-                        spyLinks.set(a.getAttribute('href').slice(1), a));
-                    spyLinks.forEach((link, id) => {
-                        const el = document.getElementById(id);
-                        if (!el) return;
-                        ScrollTrigger.create({
-                            trigger: el,
-                            start: 'top center',
-                            end: 'bottom center',
-                            onToggle: (self) => {
-                                link.classList.toggle('bg-[#C05A3C]/10', self.isActive);
-                                link.classList.toggle('text-[#C05A3C]', self.isActive);
-                            }
-                        });
-                    });
-                }
-
-                if (reduce) {
-                    // 偏好減少動態：直接顯示，不做位移 / 視差 / hover 動畫
-                    // 只清動畫相關屬性，保留 applyMobileView 設定的 display
-                    gsap.set(dayRows, { clearProps: "opacity,visibility,transform" });
-                    return;
-                }
-
-                gsap.defaults({ ease: "power2.out", duration: 0.7 });
-
-                // 1) 頁首進場
-                gsap.from("header h1", { y: 30, autoAlpha: 0, duration: 0.9 });
-                gsap.from("header p", { y: 20, autoAlpha: 0, delay: 0.25, duration: 0.9 });
-
-                // 1b) 頁首視差：文字層隨捲動慢速下移，背景不動 → 景深感
-                gsap.to("header .relative.z-10", {
-                    yPercent: 40,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "header",
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
+                    if (reduce) {
+                        // 偏好減少動態：清掉動畫屬性直接顯示（保留分頁的 display 狀態）
+                        gsap.set('[id^="day-"]', { clearProps: 'opacity,visibility,transform' });
+                        return;
                     }
-                });
 
-                // 2) 側欄 + 航班卡進場（手機版航班藏在 tab 裡，跳過）
-                gsap.from("aside .sticky", { x: -30, autoAlpha: 0, delay: 0.2 });
-                if (!mobile) {
-                    gsap.from("#flight-info", { y: 40, autoAlpha: 0, delay: 0.35 });
-                    gsap.from("#flight-info .bg-gray-50", {
-                        y: 24, autoAlpha: 0, delay: 0.5, stagger: 0.15
+                    gsap.defaults({ ease: 'power2.out', duration: 0.7 });
+
+                    // 1) 頁首進場：標題 → 副標 → 航班晶片交錯
+                    gsap.from('header h1', { y: 30, autoAlpha: 0, duration: 0.9 });
+                    gsap.from('header p', { y: 20, autoAlpha: 0, delay: 0.2, duration: 0.9 });
+                    gsap.from('header .backdrop-blur-sm', { y: 16, autoAlpha: 0, delay: 0.4, duration: 0.6, stagger: 0.15 });
+
+                    // 1b) 頁首視差：文字層隨捲動慢速下移，背景不動 → 景深感
+                    gsap.to('header .relative.z-10', {
+                        yPercent: 40,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: 'header',
+                            start: 'top top',
+                            end: 'bottom top',
+                            scrub: true
+                        }
                     });
+
+                    // 2) day 卡 hover 微互動：僅在有滑鼠的裝置啟用，觸控不卡 hover 狀態
+                    let cleanupHover;
+                    if (canHover) {
+                        // hover 目標為卡片內層，與捲動浮現（整列）不同元素，互不干擾
+                        const cards = gsap.utils.toArray('[id^="day-"] > div:last-child');
+                        const onEnter = (e) => gsap.to(e.currentTarget, {
+                            y: -6, scale: 1.02,
+                            boxShadow: '0 14px 32px rgba(192, 90, 60, 0.18)',
+                            duration: 0.3, overwrite: 'auto'
+                        });
+                        const onLeave = (e) => gsap.to(e.currentTarget, {
+                            y: 0, scale: 1,
+                            boxShadow: '0 0px 0px rgba(0, 0, 0, 0)',
+                            duration: 0.3, overwrite: 'auto'
+                        });
+                        cards.forEach((c) => {
+                            c.addEventListener('mouseenter', onEnter);
+                            c.addEventListener('mouseleave', onLeave);
+                        });
+                        // matchMedia 不自動清理手動監聽，條件變更時於回傳函式中移除
+                        cleanupHover = () => cards.forEach((c) => {
+                            c.removeEventListener('mouseenter', onEnter);
+                            c.removeEventListener('mouseleave', onLeave);
+                        });
+                    }
+
+                    return () => { if (cleanupHover) cleanupHover(); };
                 }
+            );
 
-                // 3a) 桌面：捲動進入視窗時逐張交錯淡入
-                if (!mobile) {
-                    gsap.set(dayRows, { autoAlpha: 0, y: 48 });
-                    ScrollTrigger.batch(dayRows, {
-                        start: "top 85%",
-                        once: true,
-                        onEnter: (batch) =>
-                            gsap.to(batch, {
-                                autoAlpha: 1,
-                                y: 0,
-                                stagger: 0.15,
-                                overwrite: true
-                            })
-                    });
-                } else {
-                    // 3b) 手機：只動畫第一張（其餘已被 display:none 隱藏）
-                    const firstEl = document.getElementById(mobileActiveDay);
-                    if (firstEl) gsap.fromTo(firstEl, { autoAlpha: 0, x: 20 }, { autoAlpha: 1, x: 0, duration: 0.35 });
-                }
-
-                // 4) 卡片 hover 微互動：僅在有滑鼠的裝置啟用，觸控不卡 hover 狀態
-                let cleanupHover;
-                if (canHover) {
-                    // hover 目標為卡片內層，與 reveal（整列）不同元素，互不干擾
-                    const cards = gsap.utils.toArray('[id^="day-"] > div:last-child');
-                    const onEnter = (e) => gsap.to(e.currentTarget, {
-                        y: -6, scale: 1.02,
-                        boxShadow: "0 14px 32px rgba(192, 90, 60, 0.18)",
-                        duration: 0.3, overwrite: "auto"
-                    });
-                    const onLeave = (e) => gsap.to(e.currentTarget, {
-                        y: 0, scale: 1,
-                        boxShadow: "0 0px 0px rgba(0, 0, 0, 0)",
-                        duration: 0.3, overwrite: "auto"
-                    });
-                    cards.forEach((c) => {
-                        c.addEventListener("mouseenter", onEnter);
-                        c.addEventListener("mouseleave", onLeave);
-                    });
-                    // matchMedia 不自動清理手動監聽，條件變更時於回傳函式中移除
-                    cleanupHover = () => cards.forEach((c) => {
-                        c.removeEventListener("mouseenter", onEnter);
-                        c.removeEventListener("mouseleave", onLeave);
-                    });
-                }
-
-                return () => { if (cleanupHover) cleanupHover(); };
-            }
-        );
-
-        // 圖片/字體全部載入後重新計算 ScrollTrigger 觸發點
-        window.addEventListener('load', () => ScrollTrigger.refresh());
+            // 圖片/字體全部載入後重新計算 ScrollTrigger 觸發點
+            window.addEventListener('load', () => ScrollTrigger.refresh());
         }
+
+        // ---- 初始路由：支援 #overview/#days/#stay/#food、舊制 #day-N 與 #food-xxx 深連結 ----
+        (function initFromHash() {
+            const h = location.hash.slice(1);
+            if (/^day-[1-8]$/.test(h)) {
+                showTab('days', { keepHash: true, noScroll: true });
+                const el = document.getElementById(h);
+                if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 0);
+            } else if (/^food-/.test(h)) {
+                showTab('food', { keepHash: true, noScroll: true });
+                const el = document.getElementById(h);
+                if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 0);
+            } else if (/^transport-/.test(h)) {
+                showTab('transport', { keepHash: true, noScroll: true });
+                const el = document.getElementById(h);
+                if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 0);
+            } else if (h === 'flight-info' || h === 'pretrip-checklist') {
+                showTab('overview', { keepHash: true, noScroll: true });
+                const el = document.getElementById(h);
+                if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 0);
+            } else {
+                showTab(PANELS.includes(h) ? h : 'overview', { keepHash: PANELS.includes(h) });
+            }
+        })();
     </script>
 </body>
 </html>

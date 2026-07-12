@@ -9,7 +9,7 @@ This is a static HTML project with no build system or package manager. All HTML 
 ## Files
 
 - **`index.html`** — Site hub / navigation page (我的小工具). Displays four destination cards linking to the sub-pages below. Served at the GitHub Pages root (`https://tungyulu.github.io/test/`).
-- **`trip.html`** — Japan road trip itinerary (東京—熱海—河口湖 秋季紅葉巡航), an 8-day travel schedule rendered as a two-column layout with a sticky sidebar nav and timeline-style day cards.
+- **`trip.html`** — Japan road trip itinerary (東京—熱海—河口湖 秋季紅葉巡航), an 8-day travel schedule as a tabbed app shell (總覽 / 逐日行程 / 住宿 / 美食 / 交通) with timeline-style day cards inside the itinerary panel.
 - **`betting.html`** — Sports betting tracker (世界盃運彩投注紀錄) for parlay/system bets, with combinatorics calculations, real-time profit/loss dashboard, and localStorage persistence.
 - **`yacht.html`** — Yacht dice game (快艇骰子), 5-dice 13-category game supporting 1P-vs-CPU and 2P modes with greedy CPU AI and GSAP animations.
 - **`usage.html`** — Claude Code usage dashboard (方案額度儀表板) showing `/usage`-style limit bars with auto-refresh. Works standalone (paste-token direct mode) or served by `usage-dashboard.js --serve`.
@@ -21,7 +21,7 @@ This is a static HTML project with no build system or package manager. All HTML 
 Single-file static hub page. No state, no localStorage. Four `<a class="nav-card">` block links in a custom CSS grid (`.card-grid`, `repeat(2, 1fr)`, single column under 600px). GSAP entrance animation (stagger) and hover lift, both guarded via `window.matchMedia` checks for `prefers-reduced-motion` and `(hover: hover) and (pointer: fine)`. Uses `gsap.set` + `gsap.to` (not `gsap.from` or `gsap.matchMedia` object form — the latter fires the callback once per matching condition and causes duplicate tweens).
 
 ### `trip.html`
-Pure static page; no JavaScript logic beyond `lucide.createIcons()`. Layout: fixed sidebar + scrollable main content area. Styling via Tailwind CDN + inline `<style>`. Icons from Lucide CDN.
+Tabbed app shell (modeled on an external Hokkaido itinerary page): a sticky top tab bar switches five panels — `panel-overview` (route dot-map, stop cards, flights, pre-trip checklist), `panel-days` (D1–D8 timeline cards + day-chip row), `panel-stay` (lodging cards per stop), `panel-food` (restaurant picks grouped by area, each with a Google Maps search link + 💡 note; includes Gusto 河口湖店 & 新宿靖国通店 alongside Negishi), `panel-transport` (car-rental placeholder — Yokohama pick-up/return, fields marked ⚠️ 待補 — plus N'EX airport legs, D2–D4 drive routes with warnings, and D5–D8 Tokyo rail notes). Vanilla JS only: `showTab()` / `gotoDay()` / `gotoFood()` toggle `.hidden`, sync tab styles, and `history.replaceState` the hash; init routing supports `#overview/#days/#stay/#food/#transport`, legacy `#day-N`, `#food-*`, `#transport-*`, `#flight-info`. GSAP animations: header entrance + parallax and day-card hover lift live in a single `gsap.matchMedia().add(objectForm, cb)` block (conditions: animate/reduce/canHover); `animatePanelIn()` staggers panel cards on every tab switch (with `clearProps` so the sticky day-chip row isn't broken by leftover transforms); `initDaysReveal()` lazily creates the ScrollTrigger.batch day-card reveal the first time the days panel is shown (panels are `display:none`, so measuring earlier would be wrong). All animation is skipped under `prefers-reduced-motion` and the page degrades gracefully if the GSAP CDN fails. Day cards keep only a one-line 用餐建議 amber note linking into the food panel. Styling via Tailwind CDN + inline `<style>`; icons from Lucide CDN.
 
 ### `betting.html`
 Single-file app with all state, logic, and rendering in one `<script>` block:
@@ -52,14 +52,14 @@ Other page state: refresh interval (1/5/15 min) in localStorage `claude-usage-in
 
 All pages load from CDN — no local dependencies to install:
 - Tailwind CSS (`cdn.tailwindcss.com`)
-- GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (betting), SplitText (yacht)
+- GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (trip, betting), SplitText (yacht); index loads core only.
 - Lucide icons (`unpkg.com/lucide@latest`) — trip, betting
 - Google Fonts — Noto Sans TC (all pages)
 
 ## GSAP Usage Notes
 
 - **`index.html`**: Use `window.matchMedia().matches` + `gsap.set`/`gsap.to`. Do NOT use `gsap.matchMedia().add(objectForm)` — it fires the callback once per matching condition, causing duplicate stagger tweens.
-- **`betting.html`** / **`yacht.html`**: Use `gsap.matchMedia().add(objectForm, cb)` — these pages already do so correctly, reading `ctx.conditions` inside a single callback.
+- **`trip.html`** / **`betting.html`** / **`yacht.html`**: Use `gsap.matchMedia().add(objectForm, cb)` — these pages already do so correctly, reading `ctx.conditions` inside a single callback.
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
