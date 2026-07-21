@@ -278,11 +278,10 @@
 
       <!-- 直連模式被 CORS 擋下的指引 -->
       <section id="cors-card" class="panel guide hidden">
-        <p class="panel-label">[ GUIDE · 改用本機伺服器 ]</p>
-        <p>瀏覽器的 CORS 政策擋下了對 Anthropic API 的直接請求(這是 API 端的限制,不是 token 的問題)。改用本機伺服器模式最可靠:</p>
-        <pre>node usage-dashboard.js --serve</pre>
-        <p>然後打開 <code>http://localhost:8787</code> — 伺服器會自動讀取本機的 Claude Code 憑證,免貼 token。</p>
-        <p class="dim-note">usage-dashboard.js 就在這個 repo 的根目錄,需要 Node.js 18+。</p>
+        <p class="panel-label">[ GUIDE · 請求被瀏覽器擋下 ]</p>
+        <p>瀏覽器的 CORS 政策擋下了對 Anthropic API 的直接請求(API 端沒有回傳 <code>Access-Control-Allow-Origin</code>,這是 API 端的限制,不是 token 的問題)。這個頁面沒有本機伺服器可以代理,建議改用終端機版:</p>
+        <pre>node usage-dashboard.js</pre>
+        <p class="dim-note">usage-dashboard.js 就在這個 repo 的根目錄,需要 Node.js 18+;支援 --once、--interval 等參數,同時會顯示 reset 倒數、預估撞限時間與(有裝 ccusage 的話)今日花費。</p>
       </section>
 
       <!-- 狀態列 -->
@@ -395,7 +394,7 @@
           else applyError(j.error || ('伺服器回應 ' + res.status));
         });
       }).catch(function () {
-        applyError('本機伺服器沒有回應(node usage-dashboard.js --serve 是否還在跑?)');
+        applyError('本機伺服器沒有回應');
       });
     }
 

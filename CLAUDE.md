@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a static HTML project with no build system or package manager. All HTML files are standalone pages that open directly in a browser. The only non-page file is `usage-dashboard.js`, a zero-dependency Node.js script (Node 18+) that also acts as an optional local server for `usage.html`.
+This is a static HTML project with no build system or package manager. All HTML files are standalone pages that open directly in a browser. The only non-page file is `usage-dashboard.js`, a zero-dependency Node.js script (Node 18+) that renders a terminal usage dashboard; it has no local-server mode.
 
 ## Files
 
@@ -12,8 +12,8 @@ This is a static HTML project with no build system or package manager. All HTML 
 - **`trip.html`** — Japan road trip itinerary (東京—熱海—河口湖 秋季紅葉巡航), an 8-day travel schedule as a tabbed app shell (總覽 / 逐日行程 / 住宿 / 美食 / 交通) with timeline-style day cards inside the itinerary panel.
 - **`betting.html`** — Sports betting tracker (世界盃運彩投注紀錄) for parlay/system bets, with combinatorics calculations, real-time profit/loss dashboard, and localStorage persistence.
 - **`yacht.html`** — Yacht dice game (快艇骰子), 5-dice 13-category game supporting 1P-vs-CPU and 2P modes with greedy CPU AI and GSAP animations.
-- **`usage.html`** — Claude Code usage dashboard (方案額度儀表板) showing `/usage`-style limit bars with auto-refresh. Works standalone (paste-token direct mode) or served by `usage-dashboard.js --serve`.
-- **`usage-dashboard.js`** — Node.js CLI that renders the same usage data as a terminal dashboard (`node usage-dashboard.js`, `--once`, `--interval N`), plus `--serve [port]` which hosts `usage.html` at `http://localhost:8787` and proxies the Anthropic usage API.
+- **`usage.html`** — Claude Code usage dashboard (方案額度儀表板) showing `/usage`-style limit bars with auto-refresh. Standalone paste-token direct mode only (no local-server mode).
+- **`usage-dashboard.js`** — Node.js CLI that renders usage data as a terminal dashboard (`node usage-dashboard.js`, `--once`, `--interval N`, `--selftest`), enhanced with reset countdowns, a projected time-to-limit estimate, a big LED-style clock, live CPU/RAM bars, and (when the `ccusage` CLI is installed) today's/week's/month's spend with a 7-day sparkline.
 
 ## Architecture
 
@@ -40,13 +40,14 @@ Single-file app with phase-driven rendering (`menu` → `playing` → `gameover`
 - **Animations**: GSAP dice-roll squash/stretch, hold toggle bounce, score-cell flash, gameover stagger. SplitText used for menu title. All wrapped in `gsap.matchMedia()`.
 
 ### `usage.html` + `usage-dashboard.js`
-Claude Code plan-usage dashboard. Data comes from `GET https://api.anthropic.com/api/oauth/usage` (OAuth Bearer token + `anthropic-beta: oauth-2025-04-20` header); both files share the same normalization logic (prefer `limits[]` — session / weekly_all / weekly_scoped — falling back to `five_hour`/`seven_day`) and severity thresholds (<80 cyan, ≥80 yellow, ≥95 red).
+Claude Code plan-usage dashboard. Data comes from `GET https://api.anthropic.com/api/oauth/usage` (OAuth Bearer token + `anthropic-beta: oauth-2025-04-20` header); both files independently normalize the response the same way (prefer `limits[]` — session / weekly_all / weekly_scoped — falling back to `five_hour`/`seven_day`) and use the same severity thresholds (<80 cyan, ≥80 yellow, ≥95 red).
 
-`usage.html` auto-detects its data source on load:
-- **Local-server mode** (preferred): if same-origin `GET /api/usage` returns JSON, the page uses it. Run `node usage-dashboard.js --serve [port]` (default 8787, binds 127.0.0.1 only) — the server reads `~/.claude/.credentials.json` per request (so Claude Code token refresh is picked up) and proxies the API; no token pasting, no CORS.
-- **Direct mode** (GitHub Pages / `file://`): user pastes their `claudeAiOauth.accessToken` (stored in localStorage `claude-usage-token`) and the page calls the API directly. The API does not send `Access-Control-Allow-Origin`, so browsers typically block this — a fetch `TypeError` shows a guidance card pointing to `--serve` mode. 401/403 re-opens the token card.
+`usage.html` still probes same-origin `GET /api/usage` once on load (`detectMode()`) before falling back, but there is no longer any server in this repo that serves that endpoint, so it always ends up in:
+- **Direct mode** (the only supported mode): user pastes their `claudeAiOauth.accessToken` (stored in localStorage `claude-usage-token`) and the page calls the Anthropic API directly from the browser. The API does not send `Access-Control-Allow-Origin`, so browsers typically block this — a fetch `TypeError` shows a guidance card pointing the user at the terminal CLI (`node usage-dashboard.js`) instead. 401/403 re-opens the token card.
 
-Other page state: refresh interval (1/5/15 min) in localStorage `claude-usage-interval`; on fetch failure the last data stays visible with a yellow warning (matching the CLI behavior). The CLI's terminal modes (default loop, `--once`, `--interval`) are unchanged from the original script; `--serve` reuses the shared `fetchUsage()`.
+Other page state: refresh interval (1/5/15 min) in localStorage `claude-usage-interval`; on fetch failure the last data stays visible with a yellow warning (matching the CLI's own stale-data behavior).
+
+`usage-dashboard.js` is terminal-only (`--once`, `--interval N`, `--selftest` for injecting fake data without hitting the API). Beyond the shared limits normalization, it independently tracks a rolling percent-history per limit `kind` to project an ETA to 100%, shells out to the `ccusage` CLI (best-effort, silently omitted if not installed) for cost/burn-rate/spend breakdown, and renders CPU/RAM usage bars and an LED-style clock — none of that lives in `usage.html`.
 
 ## External Dependencies (CDN only)
 
