@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>投資作戰表 — 2026 年 9～12 月</title>
+<style>
+  /* ---------- tokens: light is the base palette ---------- */
+  :root {
+    --bg:        #F1F4F5;
+    --surface:   #FFFFFF;
+    --surface-2: #E7EDEF;
+    --surface-3: #DCE4E7;
+    --ink:       #0F1518;
+    --ink-2:     #4A585F;
+    --ink-3:     #76858C;
+    --rule:      #D5DEE1;
+    --rule-2:    #BFCBD0;
+    --accent:    #0B6E78;
+    --accent-bg: #E2F0F1;
+    --ok:        #1E7A4C;
+    --ok-bg:     #E4F1E9;
+    --split:     #B0800B;
+    --split-bg:  #F7EEDB;
+    --suspect:   #96122E;
+    --suspect-bg:#F8E5E8;
+    --fire:      #B14A0B;
+    --fire-bg:   #F9EADD;
+    --shadow:    0 1px 0 rgba(15,21,24,.04), 0 1px 3px rgba(15,21,24,.05);
+
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+            "DejaVu Sans Mono", "Noto Sans Mono CJK TC", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", "Noto Sans TC",
+            "PingFang TC", "Microsoft JhengHei", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:        #0D1214;
+      --surface:   #151B1E;
+      --surface-2: #1D2529;
+      --surface-3: #263036;
+      --ink:       #E6EDEF;
+      --ink-2:     #A1B0B6;
+      --ink-3:     #7A8990;
+      --rule:      #273136;
+      --rule-2:    #37444A;
+      --accent:    #4FC3CE;
+      --accent-bg: #10312F;
+      --ok:        #2F8F63;
+      --ok-bg:     #10281D;
+      --split:     #CF9A2A;
+      --split-bg:  #2A2211;
+      --suspect:   #FF93B0;
+      --suspect-bg:#331A22;
+      --fire:      #E8813D;
+      --fire-bg:   #2E1D10;
+      --shadow:    0 1px 0 rgba(0,0,0,.3), 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:        #0D1214;
+    --surface:   #151B1E;
+    --surface-2: #1D2529;
+    --surface-3: #263036;
+    --ink:       #E6EDEF;
+    --ink-2:     #A1B0B6;
+    --ink-3:     #7A8990;
+    --rule:      #273136;
+    --rule-2:    #37444A;
+    --accent:    #4FC3CE;
+    --accent-bg: #10312F;
+    --ok:        #2F8F63;
+    --ok-bg:     #10281D;
+    --split:     #CF9A2A;
+    --split-bg:  #2A2211;
+    --suspect:   #FF93B0;
+    --suspect-bg:#331A22;
+    --fire:      #E8813D;
+    --fire-bg:   #2E1D10;
+    --shadow:    0 1px 0 rgba(0,0,0,.3), 0 1px 3px rgba(0,0,0,.4);
+  }
+
+  /* ---------- base ---------- */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 40px 24px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+  p { margin: 0; }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- typography roles ---------- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0;
+  }
+  h1 {
+    font-size: clamp(26px, 4.4vw, 36px);
+    line-height: 1.2;
+    font-weight: 660;
+    letter-spacing: -.015em;
+    text-wrap: balance;
+    margin: 6px 0 0;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-2);
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule-2);
+  }
+  h3 { font-size: 17px; font-weight: 640; letter-spacing: -.005em; margin: 0; text-wrap: balance; }
+  .lede { color: var(--ink-2); max-width: 66ch; }
+  .num, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  section { display: flex; flex-direction: column; gap: 18px; }
+
+  /* ---------- masthead ---------- */
+  header { display: flex; flex-direction: column; gap: 14px; }
+  .meta-line {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-3);
+    letter-spacing: .04em;
+    padding-top: 14px; border-top: 1px solid var(--rule);
+  }
+
+  /* ---------- verdict ---------- */
+  .verdict {
+    background: var(--surface);
+    border: 1px solid var(--rule-2);
+    border-top: 3px solid var(--ok);
+    box-shadow: var(--shadow);
+    padding: 26px 26px 22px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .verdict-head { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .verdict h3 { font-size: clamp(19px, 2.6vw, 23px); }
+  .facts {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+  }
+  .fact { background: var(--surface); padding: 14px 16px; display: flex; flex-direction: column; gap: 3px; }
+  .fact-k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  .fact-v { font-family: var(--mono); font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .fact-n { font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+
+  /* ---------- chips ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 3px 8px; border: 1px solid currentColor; white-space: nowrap;
+  }
+  .chip::before { content: ""; width: 6px; height: 6px; background: currentColor; }
+  .chip-ok      { color: var(--ok);      background: var(--ok-bg); }
+  .chip-split   { color: var(--split);   background: var(--split-bg); }
+  .chip-suspect { color: var(--suspect); background: var(--suspect-bg); }
+  .chip-fire    { color: var(--fire);    background: var(--fire-bg); }
+  .chip-ok::before      { border-radius: 50%; }
+  .chip-split::before   { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .chip-suspect::before { transform: rotate(45deg); }
+  .chip-fire::before    { clip-path: polygon(50% 0, 100% 62%, 78% 100%, 22% 100%, 0 62%); }
+
+  /* ---------- tables ---------- */
+  .scroll { overflow-x: auto; border: 1px solid var(--rule-2); background: var(--surface); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 640px; }
+  thead th {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--ink-3); font-weight: 600;
+    text-align: left; padding: 11px 14px; background: var(--surface-2);
+    border-bottom: 1px solid var(--rule-2); white-space: nowrap;
+  }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.5; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody th {
+    text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule);
+    font-weight: 600; font-size: 13.5px; vertical-align: top; white-space: nowrap;
+  }
+  tbody tr:last-child th { border-bottom: 0; }
+  td.mono, th.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .src { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: .05em; }
+  .up   { color: var(--ok); font-weight: 600; }
+  .down { color: var(--suspect); font-weight: 600; }
+
+  /* ---------- stock cards ---------- */
+  .cards { display: flex; flex-direction: column; gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--rule-2); box-shadow: var(--shadow); }
+  .card-top {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    padding: 13px 18px; border-bottom: 1px solid var(--rule); background: var(--surface-2);
+  }
+  .card-top h3 { flex: 1 1 300px; font-size: 15.5px; }
+  .impact {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--ink-2);
+    border-left: 2px solid var(--rule-2); padding-left: 10px; white-space: nowrap;
+  }
+  .card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 14px; }
+  .card-body .lede { max-width: none; font-size: 13.5px; }
+
+  /* price ladder: 價格 → 動作 */
+  .ladder { display: flex; flex-direction: column; border: 1px solid var(--rule); }
+  .rung {
+    display: grid; grid-template-columns: 150px 1fr; gap: 14px;
+    padding: 10px 14px; border-bottom: 1px solid var(--rule); align-items: start;
+  }
+  .rung:last-child { border-bottom: 0; }
+  .rung-price { font-family: var(--mono); font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: .02em; color: var(--ink-2); padding-top: 1px; white-space: nowrap; }
+  .rung-act { font-size: 13.5px; line-height: 1.55; }
+  .rung .buy  { color: var(--ok); font-weight: 640; }
+  .rung .sell { color: var(--split); font-weight: 640; }
+  .rung .stop { color: var(--suspect); font-weight: 640; }
+
+  .ruling {
+    display: flex; gap: 10px; align-items: baseline;
+    font-size: 13.5px; padding: 12px 14px;
+    background: var(--accent-bg); border-left: 3px solid var(--accent);
+  }
+  .ruling-k {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent); font-weight: 600;
+    white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* ---------- allocation chart ---------- */
+  .chart { display: flex; flex-direction: column; gap: 12px; background: var(--surface); border: 1px solid var(--rule-2); padding: 20px 22px 16px; }
+  .bar-row { display: grid; grid-template-columns: 96px 1fr 88px; gap: 12px; align-items: center; }
+  .bar-who { font-size: 13px; font-weight: 640; }
+  .bar-who .src { display: block; }
+  .track { height: 14px; background: var(--surface-3); position: relative; }
+  .fill { height: 100%; background: var(--accent); border-radius: 0 3px 3px 0; }
+  .fill-core { background: var(--ok); }
+  .fill-fire { background: var(--fire); }
+  .bar-val { font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; text-align: right; color: var(--ink-2); white-space: nowrap; }
+  .axis {
+    display: flex; justify-content: space-between;
+    font-family: var(--mono); font-size: 10.5px; color: var(--ink-3);
+    border-top: 1px solid var(--rule); padding-top: 6px;
+    margin-left: 108px; margin-right: 100px;
+  }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 12px; color: var(--ink-2); }
+  .legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; font-style: normal; }
+  .legend .l-core { background: var(--ok); }
+  .legend .l-sat  { background: var(--accent); }
+  .legend .l-fire { background: var(--fire); }
+
+  /* ---------- monthly plan ---------- */
+  .paths { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .path { background: var(--surface); border: 1px solid var(--rule-2); box-shadow: var(--shadow); display: flex; flex-direction: column; }
+  .path.p1 { border-top: 3px solid var(--fire); }
+  .path.p2 { border-top: 3px solid var(--accent); }
+  .path.p3 { border-top: 3px solid var(--rule-2); }
+  .path-head { padding: 15px 18px 12px; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 6px; }
+  .path-head h4 { margin: 0; font-size: 15.5px; font-weight: 660; }
+  .path-body { padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 10px; font-size: 13.5px; }
+  .path-line { display: flex; justify-content: space-between; gap: 12px; }
+  .path-line .v { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .path-body ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; display: flex; flex-direction: column; gap: 4px; }
+
+  /* ---------- notes ---------- */
+  .note { border: 1px solid var(--split); background: var(--split-bg); padding: 15px 18px; display: flex; flex-direction: column; gap: 7px; }
+  .note .eyebrow { color: var(--split); }
+  .note p { font-size: 13.5px; }
+  .warn { border: 1px solid var(--suspect); background: var(--suspect-bg); padding: 15px 18px; display: flex; flex-direction: column; gap: 7px; }
+  .warn .eyebrow { color: var(--suspect); }
+  .warn p { font-size: 13.5px; }
+  footer { font-size: 12.5px; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+  footer ol { margin: 4px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+
+  @media (max-width: 680px) {
+    .facts { grid-template-columns: 1fr 1fr; }
+    .paths { grid-template-columns: 1fr; }
+    .rung { grid-template-columns: 1fr; gap: 3px; }
+    .bar-row { grid-template-columns: 76px 1fr 84px; }
+    .axis { margin-left: 88px; margin-right: 96px; }
+    .wrap { gap: 36px; padding: 28px 16px 72px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a href="index.html" style="font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-3);text-decoration:none;align-self:flex-start">← 回小工具首頁</a>
+
+  <header>
+    <p class="eyebrow">投資作戰表 · 2026 年 9～12 月</p>
+    <h1>ETF 打底 ＋ AI／半導體 ＋ 蘋果事件驅動</h1>
+    <p class="lede">
+      以 2026/9/2 的實際持倉為基準：今天賣出約 1 萬元 00981A、買進約 1 萬元新日興（成本 210.42、持有 48 股），
+      整體股票市值約 25.4 萬，其中 0050 約 14.1 萬是最大部位。
+      新加入觀察的<b>創意 3443</b> 今天收 6,100（+1.41%）、本益比已約 156 倍 ——
+      <b>想買，但絕對不在 6,100 重壓，等回檔分批接。</b>
+    </p>
+    <div class="meta-line">
+      <span>基準日 2026-09-02</span>
+      <span>股票市值 ≈ NT$254,000</span>
+      <span>現金 ≈ NT$1,462</span>
+      <span>每月可投入 NT$20,000</span>
+      <span>組合評價 8.5 / 10</span>
+    </div>
+  </header>
+
+  <!-- ============ 總表 ============ -->
+  <section>
+    <h2>九檔作戰總表</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>股票</th><th>現況</th><th>目標比例</th><th>加碼區</th><th>停利區</th><th>防守線</th><th>戰略</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">0050</th>
+            <td class="mono">約 55%</td><td class="mono"><b>50～55%</b></td>
+            <td class="mono">&lt;102、&lt;98</td><td>不設硬停利</td><td class="mono">90 附近</td>
+            <td><span class="chip chip-ok">核心長抱</span></td>
+          </tr>
+          <tr>
+            <th scope="row">00878</th>
+            <td class="mono">約 13.6%</td><td class="mono"><b>12～15%</b></td>
+            <td class="mono">&lt;32.5、&lt;31</td><td>不急著賣</td><td class="mono">29.5</td>
+            <td><span class="chip chip-ok">收息核心</span></td>
+          </tr>
+          <tr>
+            <th scope="row">00981A</th>
+            <td class="mono">約 9.3%</td><td class="mono"><b>5～8%</b></td>
+            <td class="mono">&lt;29</td><td class="mono">32～34</td><td class="mono">27</td>
+            <td><span class="chip chip-split">逐步降權</span></td>
+          </tr>
+          <tr>
+            <th scope="row">00757</th>
+            <td class="mono">約 3%</td><td class="mono"><b>3～5%</b></td>
+            <td class="mono">&lt;135、&lt;128</td><td class="mono">150～160</td><td class="mono">120</td>
+            <td><span class="chip chip-ok">AI 衛星</span></td>
+          </tr>
+          <tr>
+            <th scope="row">旺宏 2337</th>
+            <td class="mono">約 11.4%</td><td class="mono"><b>7～10%</b></td>
+            <td class="mono">115～118、108～112</td><td class="mono">140～150</td><td class="mono"><b>105</b></td>
+            <td><span class="chip chip-split">等記憶體循環</span></td>
+          </tr>
+          <tr>
+            <th scope="row">聯發科 2454</th>
+            <td class="mono">約 3.4%</td><td class="mono"><b>5～7%</b></td>
+            <td class="mono">4,150～4,250</td><td class="mono">4,800～5,000</td><td class="mono">3,900</td>
+            <td><span class="chip chip-ok">AI／ASIC 核心</span></td>
+          </tr>
+          <tr>
+            <th scope="row">新日興 3376</th>
+            <td class="mono">約 3.9%</td><td class="mono"><b>6～8%</b></td>
+            <td class="mono"><b>200～205、190～195</b></td><td class="mono">235～245</td><td class="mono"><b>188</b></td>
+            <td><span class="chip chip-fire">折疊 iPhone</span></td>
+          </tr>
+          <tr>
+            <th scope="row">創意 3443</th>
+            <td class="mono">目前 0%</td><td class="mono"><b>4～6%</b></td>
+            <td class="mono"><b>5,600～5,800、5,200～5,400</b></td><td class="mono">6,800～7,500</td><td class="mono"><b>4,900</b></td>
+            <td><span class="chip chip-fire">AI ASIC</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ruling">
+      <span class="ruling-k">加碼優先序</span>
+      <p>
+        <b>創意 ＞ 新日興 ＞ 聯發科 ＞ 旺宏 ＞ 00757 ＞ 00981A。</b>
+        這不是「現在直接買入」的排序，而是<b>跌到合理價格後的資金優先級</b>。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 個股作戰 ============ -->
+  <section>
+    <h2>個股作戰計畫</h2>
+    <div class="cards">
+
+      <article class="card">
+        <div class="card-top">
+          <span class="chip chip-fire">新增 · 等回檔買</span>
+          <h3>創意 3443 — AI ASIC，最想放進組合的一檔</h3>
+          <span class="impact">目標 4～6% ≈ NT$10,000～15,000</span>
+        </div>
+        <div class="card-body">
+          <p class="lede">
+            核心邏輯是 <b>AI ASIC／CSP 客製化晶片</b>，市場押注 ASIC 從設計走向量產，產業預期 2026～27 年進入 Turnkey 放量期。
+            問題是<b>現在 6,100 真的不便宜</b>（PE 約 156 倍），所以分三筆等回檔接，不必一次買很多。
+          </p>
+          <div class="ladder">
+            <div class="rung"><span class="rung-price">5,600～5,800</span><span class="rung-act"><b class="buy">第一筆</b> — 買目標部位 30%，約 1.5～2 萬</span></div>
+            <div class="rung"><span class="rung-price">5,200～5,400</span><span class="rung-act"><b class="buy">第二筆</b> — 再買 30～35%，約 1.5～2 萬</span></div>
+            <div class="rung"><span class="rung-price">4,900～5,100</span><span class="rung-act"><b class="buy">第三筆</b> — 剩餘 35%，約 1.5～2 萬</span></div>
+            <div class="rung"><span class="rung-price">6,800～7,500</span><span class="rung-act"><b class="sell">停利區</b> — 分批獲利</span></div>
+            <div class="rung"><span class="rung-price">&lt; 4,900</span><span class="rung-act"><b class="stop">防守線</b> — 重新檢查 ASIC 邏輯</span></div>
+          </div>
+          <div class="warn">
+            <p class="eyebrow">追高禁令</p>
+            <p>
+              明天若直接 <b>+5%（約 6,400）→ 不買</b>；<b>+10%（約 6,700）→ 絕對不追</b>。
+              高價 ASIC 股很容易「基本面沒壞，估值先殺 20～30%」——
+              等一天、等一個回檔，通常比硬追安全得多。
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="chip chip-fire">今日新買 · 續抱</span>
+          <h3>新日興 3376 — 折疊 iPhone 軸承供應鏈</h3>
+          <span class="impact">目標 6～8% · 持有 48 股 · 均價 210.42</span>
+        </div>
+        <div class="card-body">
+          <p class="lede">
+            今天收 208，帳面約 −116 元而已。從 9/1 的 213 再跌 2.35%，但 8/27～8/28 已出現非常強的拉升、外資連續買超，
+            不因今天下跌改變策略。最大催化劑是 <b>Apple 9 月發表會</b>，市場預期折疊 iPhone 題材成為軸承供應鏈的重要催化 ——
+            <b>現在不是賣點，是等 200 左右再加碼的標的。</b>
+          </p>
+          <div class="ladder">
+            <div class="rung"><span class="rung-price">208～210</span><span class="rung-act">現有部位<b class="buy">繼續抱</b></span></div>
+            <div class="rung"><span class="rung-price">200～205</span><span class="rung-act"><b class="buy">加 NT$10,000</b></span></div>
+            <div class="rung"><span class="rung-price">190～195</span><span class="rung-act"><b class="buy">再加 NT$10,000</b></span></div>
+            <div class="rung"><span class="rung-price">&lt; 188</span><span class="rung-act"><b class="stop">停止加碼</b>，重新檢查折疊 iPhone 邏輯</span></div>
+            <div class="rung"><span class="rung-price">220～225</span><span class="rung-act"><b class="sell">不追</b></span></div>
+            <div class="rung"><span class="rung-price">235～245</span><span class="rung-act"><b class="sell">開始分批獲利</b></span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="chip chip-ok">加碼 · 部位太少</span>
+          <h3>聯發科 2454 — 意外成為「AI ASIC 防守牌」</h3>
+          <span class="impact">目標 5～7% ≈ NT$13,000～18,000 · 現持 2 股 ≈ NT$8,550</span>
+        </div>
+        <div class="card-body">
+          <p class="lede">
+            NVIDIA 已宣布斥資 <b>35 億美元認購聯發科海外可轉換公司債</b>，9/1 直接跳空漲停。
+            現在部位太少，要拉高到 5～7% —— 但<b>今天不要追</b>。
+          </p>
+          <div class="ladder">
+            <div class="rung"><span class="rung-price">4,150～4,250</span><span class="rung-act"><b class="buy">加碼</b></span></div>
+            <div class="rung"><span class="rung-price">4,000～4,150</span><span class="rung-act"><b class="buy">大加</b></span></div>
+            <div class="rung"><span class="rung-price">&lt; 3,900</span><span class="rung-act"><b class="stop">重新檢查邏輯</b></span></div>
+            <div class="rung"><span class="rung-price">4,800～5,000</span><span class="rung-act"><b class="sell">分批獲利</b></span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="chip chip-split">持有 · 不急著補</span>
+          <h3>旺宏 2337 — 別因為想解套而亂加</h3>
+          <span class="impact">持有 235 股 · 成本 133.43 · 現價約 122</span>
+        </div>
+        <div class="card-body">
+          <p class="lede">
+            9/1 收 122，外資單日大賣約 5,051 張、三大法人合計賣超約 6,961 張，籌碼明顯比新日興弱。
+            但今天又有外資報告以 AI 推論的記憶體需求為由，把旺宏列入正向觀察 —— 所以定調：<b>持有，但不急著補。</b>
+          </p>
+          <div class="ladder">
+            <div class="rung"><span class="rung-price">115～118</span><span class="rung-act"><b class="buy">小補</b></span></div>
+            <div class="rung"><span class="rung-price">108～112</span><span class="rung-act"><b class="buy">再補</b></span></div>
+            <div class="rung"><span class="rung-price">105</span><span class="rung-act"><b class="stop">防守線</b></span></div>
+            <div class="rung"><span class="rung-price">140～150</span><span class="rung-act"><b class="sell">分批賣</b></span></div>
+            <div class="rung"><span class="rung-price">150+</span><span class="rung-act"><b class="sell">認真考慮</b>把旺宏降到組合 5% 以下</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="chip chip-ok">基地 · 不動</span>
+          <h3>0050 — 真正的核心，不拿去當短線資金</h3>
+          <span class="impact">1,317 股 · 成本 84.50 · 現價 106.80 · 未實現 +26.4%</span>
+        </div>
+        <div class="card-body">
+          <p class="lede">
+            <b>不建議為了買創意、新日興而賣 0050。</b>組合的正確長相是：
+            0050 = 基地、00878 = 防守、創意／新日興／聯發科／旺宏 = 攻擊部隊。
+          </p>
+          <div class="ladder">
+            <div class="rung"><span class="rung-price">&lt; 102、&lt; 98</span><span class="rung-act"><b class="buy">長期加碼</b></span></div>
+            <div class="rung"><span class="rung-price">&gt; 115</span><span class="rung-act"><b class="sell">不追</b>、繼續持有</span></div>
+            <div class="rung"><span class="rung-price">90 附近</span><span class="rung-act"><b class="stop">防守參考</b>（不設硬停利）</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="chip chip-split">降權中 · 不必一次清</span>
+          <h3>00981A — 今天的減碼方向正確</h3>
+          <span class="impact">餘 797 股 ≈ NT$23,695 · 今日已賣約 NT$10,000</span>
+        </div>
+        <div class="card-body">
+          <p class="lede">
+            繼續降低權重，但<b>不需要一次全部清掉</b>。最後留約 5～8% 就好，
+            騰出的資金慢慢轉到<b>創意＋新日興＋聯發科</b>。
+          </p>
+          <div class="ladder">
+            <div class="rung"><span class="rung-price">現價</span><span class="rung-act">保留</span></div>
+            <div class="rung"><span class="rung-price">反彈 31～32</span><span class="rung-act"><b class="sell">再賣 NT$5,000～10,000</b></span></div>
+            <div class="rung"><span class="rung-price">32～34</span><span class="rung-act"><b class="sell">再減</b></span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ 資金計畫 ============ -->
+  <section>
+    <h2>9～11 月每月 NT$20,000 怎麼打</h2>
+    <p class="lede">
+      現金只有約 NT$1,462，<b>不要幻想一次把所有標的買滿</b>。原本的每月定額 2 萬改成「戰術配置」——
+      而且沒有好價格時，<b>不要為了「每個月一定要買」而硬買</b>。
+    </p>
+    <div class="paths">
+      <div class="path p1">
+        <div class="path-head">
+          <span class="chip chip-fire">第一優先</span>
+          <h4>創意／新日興</h4>
+          <p class="src">跌進設定價位才出手</p>
+        </div>
+        <div class="path-body">
+          <div class="path-line"><span>投入</span><span class="v">NT$10,000～15,000</span></div>
+          <ul>
+            <li>創意進 5,600～5,800 起分三筆接</li>
+            <li>新日興 200～205、190～195 各加一筆</li>
+          </ul>
+        </div>
+      </div>
+      <div class="path p2">
+        <div class="path-head">
+          <span class="chip chip-ok">第二優先</span>
+          <h4>聯發科</h4>
+          <p class="src">回到 4,150～4,250 再加</p>
+        </div>
+        <div class="path-body">
+          <div class="path-line"><span>投入</span><span class="v">NT$5,000～10,000</span></div>
+          <ul>
+            <li>NVIDIA CB 題材後不追高</li>
+            <li>4,000～4,150 可以大加</li>
+          </ul>
+        </div>
+      </div>
+      <div class="path p3">
+        <div class="path-head">
+          <span class="chip chip-split">沒有好價格</span>
+          <h4>留現金</h4>
+          <p class="src">空手也是一種部位</p>
+        </div>
+        <div class="path-body">
+          <div class="path-line"><span>投入</span><span class="v">NT$0</span></div>
+          <ul>
+            <li>全部保留，等價格進區間</li>
+            <li>不為了買而買</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="ruling">
+      <span class="ruling-k">每新增 1 萬元</span>
+      <p>
+        <b>創意 4,000 ＞ 新日興 3,000 ＞ 聯發科 2,000 ＞ 現金 1,000。</b>
+        鐵律：創意、新日興、聯發科任何一檔<b>突然跳空 +5% 以上，都不追</b>。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 目標組合 ============ -->
+  <section>
+    <h2>最終目標組合</h2>
+    <div class="chart">
+      <div class="bar-row"><span class="bar-who">0050<span class="src">保底</span></span><div class="track"><div class="fill fill-core" style="width:95%"></div></div><span class="bar-val">50～55%</span></div>
+      <div class="bar-row"><span class="bar-who">00878<span class="src">現金流</span></span><div class="track"><div class="fill fill-core" style="width:24.5%"></div></div><span class="bar-val">12～15%</span></div>
+      <div class="bar-row"><span class="bar-who">旺宏<span class="src">記憶體循環</span></span><div class="track"><div class="fill" style="width:15.5%"></div></div><span class="bar-val">7～10%</span></div>
+      <div class="bar-row"><span class="bar-who">新日興<span class="src">折疊 iPhone</span></span><div class="track"><div class="fill fill-fire" style="width:12.7%"></div></div><span class="bar-val">6～8%</span></div>
+      <div class="bar-row"><span class="bar-who">00981A<span class="src">降權中</span></span><div class="track"><div class="fill" style="width:11.8%"></div></div><span class="bar-val">5～8%</span></div>
+      <div class="bar-row"><span class="bar-who">聯發科<span class="src">NVIDIA／ASIC</span></span><div class="track"><div class="fill" style="width:10.9%"></div></div><span class="bar-val">5～7%</span></div>
+      <div class="bar-row"><span class="bar-who">創意<span class="src">AI ASIC 爆發</span></span><div class="track"><div class="fill fill-fire" style="width:9.1%"></div></div><span class="bar-val">4～6%</span></div>
+      <div class="bar-row"><span class="bar-who">00757<span class="src">美股科技</span></span><div class="track"><div class="fill" style="width:7.3%"></div></div><span class="bar-val">3～5%</span></div>
+      <div class="axis"><span>0%</span><span>55%</span></div>
+      <div class="legend">
+        <span><i class="l-core"></i>核心（ETF 打底）</span>
+        <span><i class="l-fire"></i>事件驅動攻擊部隊</span>
+        <span><i class="l-sat"></i>衛星／循環部位</span>
+      </div>
+    </div>
+    <p class="lede" style="font-size:13px">
+      條長以目標區間中點對 55% 上限縮放，只看相對權重。組合定位：
+      <b>「ETF 打底 ＋ AI／半導體 ＋ 蘋果事件驅動」</b>。
+    </p>
+  </section>
+
+  <!-- ============ 觸發表 ============ -->
+  <section>
+    <h2>看到價格就做什麼 — 觸發速查表</h2>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>價格事件</th><th>動作</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row" class="mono">創意 &lt; 5,800</th><td><span class="up">🟢 開始買</span></td></tr>
+          <tr><th scope="row" class="mono">創意 &lt; 5,400</th><td><span class="up">🟢🟢 加碼</span></td></tr>
+          <tr><th scope="row" class="mono">創意 &lt; 5,100</th><td><span class="up">🟢🟢🟢 重點加</span></td></tr>
+          <tr><th scope="row" class="mono">創意 &gt; 6,300</th><td><span class="down">❌ 不追</span></td></tr>
+          <tr><th scope="row" class="mono">新日興 &lt; 205</th><td><span class="up">🟢 加</span></td></tr>
+          <tr><th scope="row" class="mono">新日興 &lt; 195</th><td><span class="up">🟢🟢 加</span></td></tr>
+          <tr><th scope="row" class="mono">新日興 &lt; 188</th><td><span class="down">🔴 停止加碼</span></td></tr>
+          <tr><th scope="row" class="mono">聯發科 &lt; 4,250</th><td><span class="up">🟢 加</span></td></tr>
+          <tr><th scope="row" class="mono">聯發科 &lt; 4,150</th><td><span class="up">🟢🟢 加</span></td></tr>
+          <tr><th scope="row" class="mono">旺宏 &lt; 118</th><td><span class="up">🟢 小加</span></td></tr>
+          <tr><th scope="row" class="mono">旺宏 &lt; 112</th><td><span class="up">🟢🟢 加</span></td></tr>
+          <tr><th scope="row" class="mono">00981A &gt; 32</th><td>🟡 減碼</td></tr>
+          <tr><th scope="row" class="mono">0050 &lt; 102</th><td><span class="up">🟢 長期加</span></td></tr>
+          <tr><th scope="row" class="mono">0050 &gt; 115</th><td>🟢 不追、繼續持有</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <p class="eyebrow">總結</p>
+      <p>
+        今天「賣 00981A、換新日興」的方向維持正面；下一步真正值得做的，是<b>等創意回檔，而不是現在硬塞進去</b>。
+        目前這套組合的評價：<b>8.5 / 10</b>。
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>免責：</b>本頁為個人投資筆記與紀錄，非投資建議；所有價格與消息以 2026-09-02 當日資訊為準，實際進出請自行查證。</p>
+    <p><b>引用來源：</b></p>
+    <ol>
+      <li><a href="https://istock88.com/stock/3443/quote" rel="noopener">iStock88 — 3443 創意 即時報價</a></li>
+      <li><a href="https://news.cnyes.com/news/id/6342842" rel="noopener">鉅亨網 — 創意、世芯-KY 及聯發科產業趨勢、營運展望與風險</a></li>
+      <li><a href="https://hk.investing.com/equities/shin-zu-shing-historical-data" rel="noopener">Investing.com — 新日興 (3376) 歷史價格</a></li>
+      <li><a href="https://www.investor.com.tw/onlinenews/HeadlineNews.asp?AJX=2026%2F8%2F27113316" rel="noopener">Investor — 折疊 iPhone 呼之欲出，新日興 8 月起業績表態</a></li>
+      <li><a href="https://ec.ltn.com.tw/article/breakingnews/5560164" rel="noopener">自由財經 — 焦點股》聯發科：隔日沖客出場 上檔壓力浮現</a></li>
+      <li><a href="https://goodinfo.tw/tw/ShowK_Chart.asp?CHT_CAT=DATE&amp;PRICE_ADJ=T&amp;STOCK_ID=2337" rel="noopener">Goodinfo — 2337 旺宏 技術分析</a></li>
+      <li><a href="https://fnc.ebc.net.tw/fncnews/business/217398" rel="noopener">東森財經 — 大摩點名愛普是首選、旺宏是唯一</a></li>
+    </ol>
+  </footer>
+
+</div>
+</body>
+</html>

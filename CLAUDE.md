@@ -8,18 +8,19 @@ This is a static HTML project with no build system or package manager. All HTML 
 
 ## Files
 
-- **`index.html`** — Site hub / navigation page (我的小工具). Displays five destination cards linking to the sub-pages below. Served at the GitHub Pages root (`https://tungyulu.github.io/test/`).
+- **`index.html`** — Site hub / navigation page (我的小工具). Displays six destination cards linking to the sub-pages below. Served at the GitHub Pages root (`https://tungyulu.github.io/test/`).
 - **`trip.html`** — Japan road trip itinerary (關東秋季紅葉巡航: 東京 / 河口湖 / 湘南), an 8-day travel schedule as a tabbed app shell (總覽 / 逐日行程 / 住宿 / 美食 / 交通) with timeline-style day cards inside the itinerary panel.
 - **`betting.html`** — Sports betting tracker (世界盃運彩投注紀錄) for parlay/system bets, with combinatorics calculations, real-time profit/loss dashboard, and localStorage persistence.
 - **`yacht.html`** — Yacht dice game (快艇骰子), 5-dice 13-category game supporting 1P-vs-CPU and 2P modes with greedy CPU AI and GSAP animations.
 - **`usage.html`** — Claude Code usage dashboard (方案額度儀表板) showing `/usage`-style limit bars with auto-refresh. Standalone paste-token direct mode only (no local-server mode).
 - **`usage-dashboard.js`** — Node.js CLI that renders usage data as a terminal dashboard (`node usage-dashboard.js`, `--once`, `--interval N`, `--selftest`), enhanced with reset countdowns, a projected time-to-limit estimate, a big LED-style clock, live CPU/RAM bars, and (when the `ccusage` CLI is installed) today's/week's/month's spend with a 7-day sparkline.
 - **`dyson.html`** — Static research report (Dyson 選購 — 四家 AI 交叉比對): a cross-comparison of four AI answers about which Dyson vacuum to buy, laid out as verdict panel, rank matrix, divergence cards, hallucination table, weighted-score bars, and a to-verify list. Content-only, no interactivity.
+- **`invest.html`** — Static investment playbook (投資作戰表 — 2026 年 9～12 月): a personal Taiwan-stock strategy note snapshotted at 2026-09-02, laid out as a 9-stock battle-plan table (target %, add/take-profit/defense price zones), per-stock cards with price ladders, monthly NT$20,000 allocation paths, a target-allocation bar chart, and a price-trigger quick table. Content-only, no interactivity — same self-contained pattern as `dyson.html`.
 
 ## Architecture
 
 ### `index.html`
-Single-file static hub page. No state, no localStorage. Five `<a class="nav-card">` block links in a custom CSS grid (`.card-grid`, `repeat(2, 1fr)`, single column under 600px — five cards lay out 2/2/1, the last card occupying the left cell). GSAP entrance animation (stagger) and hover lift, both guarded via `window.matchMedia` checks for `prefers-reduced-motion` and `(hover: hover) and (pointer: fine)`. Uses `gsap.set` + `gsap.to` (not `gsap.from` or `gsap.matchMedia` object form — the latter fires the callback once per matching condition and causes duplicate tweens).
+Single-file static hub page. No state, no localStorage. Six `<a class="nav-card">` block links in a custom CSS grid (`.card-grid`, `repeat(2, 1fr)`, single column under 600px — six cards lay out 2/2/2). GSAP entrance animation (stagger) and hover lift, both guarded via `window.matchMedia` checks for `prefers-reduced-motion` and `(hover: hover) and (pointer: fine)`. Uses `gsap.set` + `gsap.to` (not `gsap.from` or `gsap.matchMedia` object form — the latter fires the callback once per matching condition and causes duplicate tweens).
 
 ### `trip.html`
 Tabbed app shell (modeled on an external Hokkaido itinerary page): a sticky top tab bar switches five panels — `panel-overview` (route dot-map, stop cards, flights, pre-trip checklist), `panel-days` (D1–D8 timeline cards + day-chip row), `panel-stay` (lodging cards per stop), `panel-food` (restaurant picks grouped by area, each with a Google Maps search link + 💡 note; includes Gusto 河口湖店/新宿靖国通店/藤澤 and 焼肉ここから alongside Negishi), `panel-transport` (booked Toyota Rent-a-Car 関内店 details — GR Yaris, 11/08 10:30 pick-up to 11/11 10:30 return — plus N'EX airport legs, D2–D4 drive routes with warnings, and D5–D8 Tokyo rail notes). Vanilla JS only: `showTab()` / `gotoDay()` / `gotoFood()` toggle `.hidden`, sync tab styles, and `history.replaceState` the hash; init routing supports `#overview/#days/#stay/#food/#transport`, legacy `#day-N`, `#food-*`, `#transport-*`, `#flight-info`. GSAP animations: header entrance + parallax and day-card hover lift live in a single `gsap.matchMedia().add(objectForm, cb)` block (conditions: animate/reduce/canHover); `animatePanelIn()` staggers panel cards on every tab switch (with `clearProps` so the sticky day-chip row isn't broken by leftover transforms); `initDaysReveal()` lazily creates the ScrollTrigger.batch day-card reveal the first time the days panel is shown (panels are `display:none`, so measuring earlier would be wrong). All animation is skipped under `prefers-reduced-motion` and the page degrades gracefully if the GSAP CDN fails. Day cards keep only a one-line 用餐建議 amber note linking into the food panel. Styling via Tailwind CDN + inline `<style>`; icons from Lucide CDN.
@@ -55,7 +56,7 @@ Content-only static page — the odd one out: **no JS at all and no CDN requests
 
 ## External Dependencies (CDN only)
 
-All pages except `dyson.html` (which is fully self-contained) load from CDN — no local dependencies to install:
+All pages except `dyson.html` and `invest.html` (which are fully self-contained) load from CDN — no local dependencies to install:
 - Tailwind CSS (`cdn.tailwindcss.com`)
 - GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (trip, betting), SplitText (yacht); index loads core only.
 - Lucide icons (`unpkg.com/lucide@latest`) — trip, betting
