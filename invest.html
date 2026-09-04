@@ -155,6 +155,7 @@
     padding: 26px 26px 22px;
     display: flex; flex-direction: column; gap: 20px;
   }
+  .verdict.alert { border-top-color: var(--suspect); }
   .verdict-head { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
   .verdict h3 { font-size: clamp(19px, 2.6vw, 23px); }
   .facts {
@@ -312,66 +313,107 @@
   <a href="index.html" style="font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;color:var(--ink-3);text-decoration:none;align-self:flex-start">← 回小工具首頁</a>
 
   <header>
-    <p class="eyebrow">投資作戰表 · 2026 年 9～12 月 · v2 合併持倉 PDF 檢討版</p>
+    <p class="eyebrow">投資作戰表 · 2026 年 9～12 月 · v3 變現任務版（2026-09-04）</p>
     <h1>ETF 打底 ＋ AI／半導體 ＋ 蘋果事件驅動</h1>
     <p class="lede">
-      以 2026/9/2 的持倉與交易紀錄為基準：當日賣出 00981A 350 股（約 29.92，約 1 萬元）、
-      買進新日興 48 股 × 210（含費用成本約 10,100、均價 210.42）。
-      新加入觀察的<b>創意 3443</b> 收 6,100（+1.41%）、本益比已約 156 倍 —— 想買，但絕對不在 6,100 重壓。
-      <b>本版特別修正：0050、00878 的定期定額不停</b> —— 不因為想買創意、新日興，就把核心 ETF 停掉。
+      持倉基準為 2026/9/2 的交易紀錄（賣 00981A 350 股 × 約 29.92、買新日興 48 股 × 210）。
+      <b>9/4 需求變更：10/1 前帳戶要多出 NT$50,000～60,000 現金</b> ——
+      這改變了原本的作戰方式：不再單純追求報酬，「必須變現」排第一優先，
+      <b>不拿需要的 5～6 萬去賭 9 月行情</b>。中期配置計畫保留，10/1 任務完成後恢復。
     </p>
     <div class="meta-line">
-      <span>基準日 2026-09-02</span>
-      <span>現金 ≈ NT$1,462</span>
+      <span>基準日 2026-09-02 · 更新 2026-09-04</span>
+      <span>現金 ≈ NT$1,462 → 目標 NT$50,000～60,000</span>
+      <span>期限 10/1（實際 9/25 前完成）</span>
       <span>每月可投入 NT$20,000</span>
-      <span>0050 佔股票市值約 55%</span>
     </div>
   </header>
 
-  <!-- ============ 一句話版本 ============ -->
+  <!-- ============ 10/1 現金任務 ============ -->
   <section>
-    <h2>一句話版本</h2>
-    <div class="verdict">
+    <h2>最高優先 — 10/1 現金任務</h2>
+    <div class="verdict alert">
       <div class="verdict-head">
-        <span class="chip chip-ok">核心結論</span>
-        <h3>0050、00878 繼續定期定額當底；00981A 慢慢降；旺宏先抱但不攤平；新日興持有並等回檔加碼；創意想買但一定等價格；聯發科拉回再加。</h3>
+        <span class="chip chip-suspect">任務變更 · 期限 10/1</span>
+        <h3>先把 00981A 變現，旺宏負責補足剩下的現金缺口，0050／00878 不動。</h3>
+        <p class="lede">
+          目標是 <b>9/25 左右帳戶現金至少 55,000，不要拖到 9/30</b> ——
+          你需要的是「10/1 有 5～6 萬現金」，不是「10/1 那一天剛好賣股票湊到 5 萬」。
+          9/4 台股早盤因美股反彈一度大漲逾 700 點：<b>利用反彈逐步變現，而不是在恐慌下砍核心資產</b>。
+        </p>
       </div>
       <div class="facts">
         <div class="fact">
-          <span class="fact-k">股票市值</span>
-          <span class="fact-v">254,000</span>
-          <span class="fact-n">0050 約 140,656 為最大部位</span>
+          <span class="fact-k">① 00981A 全部賣</span>
+          <span class="fact-v">≈23,700</span>
+          <span class="fact-n">9 月第一週執行，先完成近一半任務</span>
         </div>
         <div class="fact">
-          <span class="fact-k">總資產</span>
-          <span class="fact-v">255,000</span>
-          <span class="fact-n">現金僅約 1,462，不要幻想一次買滿</span>
+          <span class="fact-k">② 旺宏 賣約 220 股</span>
+          <span class="fact-v">≈26,000～27,500</span>
+          <span class="fact-n">9 月中依情境執行，最晚 9 月下旬完成</span>
         </div>
         <div class="fact">
-          <span class="fact-k">未實現獲利</span>
-          <span class="fact-v">+35,000</span>
-          <span class="fact-n">0050 +26.4%、00878 +21%、00757 +11.6%</span>
+          <span class="fact-k">③ 9 月戰術資金轉現金</span>
+          <span class="fact-v">+5,000</span>
+          <span class="fact-n">戰術買進暫停，全部累積現金</span>
         </div>
         <div class="fact">
-          <span class="fact-k">組合評價</span>
-          <span class="fact-v">8.5 / 10</span>
-          <span class="fact-n">最大問題：進攻部位跟核心 ETF 搶資金</span>
+          <span class="fact-k">合計</span>
+          <span class="fact-v">≈54,700～56,200</span>
+          <span class="fact-n">🎯 落在 50,000～60,000 目標範圍</span>
         </div>
       </div>
       <div class="ruling">
-        <span class="ruling-k">核心紀律</span>
+        <span class="ruling-k">動用 0050 的唯一情況</span>
         <p>
-          <b>0050／00878 是固定累積</b>，不能因為市場有熱門股就停；
-          <b>創意／新日興／聯發科</b>是「有便宜價格才出手」；
-          <b>旺宏</b>是「有反轉確認才增加」，不是單純跌了就買。
+          <b>9 月底了還差很多現金</b>（例如 9/25 只有 40,000、但 10/1 必須有 60,000）——
+          這時才考慮賣 0050 約 20,000，而且放在<b>最後一順位</b>。
+          不為了拿 5 萬現金，把長期複利資產換成短期現金。
         </p>
       </div>
     </div>
   </section>
 
+  <!-- ============ 9 月新作戰表 ============ -->
+  <section>
+    <h2>9 月新作戰表 — 變現優先</h2>
+    <p class="lede">
+      持倉快照（9/2）：股票市值 254,000、總資產 255,000、未實現獲利約 +35,000。
+      9/4 盤中參考價：旺宏約 118、新日興約 207～209、創意約 5,795 —— 變現方案不是建立在「價格完全不變」的假設上。
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>標的</th><th>現在</th><th>9 月策略</th><th>10/1 前</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">0050</th><td>🟢</td><td>照定期定額（9/7 買 10,000）</td><td><b>不動</b></td></tr>
+          <tr><th scope="row">00878</th><td>🟢</td><td>照定期定額（9/7 買 5,000）</td><td><b>不動</b></td></tr>
+          <tr><th scope="row">00981A</th><td>🟡</td><td><b>優先賣</b>（9 月第一週全出）</td><td><b>清掉或留極少</b></td></tr>
+          <tr><th scope="row">旺宏 2337</th><td>🟡</td><td><b>第二順位變現</b></td><td>賣約 200～235 股</td></tr>
+          <tr><th scope="row">新日興 3376</th><td>🔥</td><td>持有（Apple 題材窗口）</td><td><b>不賣，除非大漲</b></td></tr>
+          <tr><th scope="row">聯發科 2454</th><td>🟢</td><td>持有</td><td><b>不賣</b></td></tr>
+          <tr><th scope="row">00757</th><td>🟢</td><td>持有</td><td><b>不賣</b></td></tr>
+          <tr><th scope="row">創意 3443</th><td>🔥</td><td><b>暫停買</b>（到價也不買）</td><td>10/1 後再考慮</td></tr>
+          <tr><th scope="row">現金</th><td>🔴 1,462</td><td>持續累積</td><td><b>50,000～60,000</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ruling">
+      <span class="ruling-k">為什麼是 00981A ＋ 旺宏</span>
+      <p>
+        兩檔合計約 <b>23,700 ＋ 28,900 ≈ 52,600</b>，剛好落在目標範圍。
+        不優先賣 0050 是因為那會破壞核心架構（長期複利資產 → 短期現金）；
+        願意賣旺宏是因為它波動明顯比 0050 大 ——
+        <b>寧願實現旺宏約 −10% 的損失，也不砍 0050 長期部位</b>。這是資產配置的選擇，不是突然看空旺宏。
+      </p>
+    </div>
+  </section>
+
   <!-- ============ 總表 ============ -->
   <section>
-    <h2>九檔作戰總表</h2>
+    <h2>九檔作戰總表 — 中期原計畫（10/1 任務完成後恢復）</h2>
     <div class="scroll">
       <table>
         <thead>
@@ -436,6 +478,7 @@
       <p>
         <b>創意 ＞ 新日興 ＞ 聯發科 ＞ 旺宏 ＞ 00757 ＞ 00981A。</b>
         這不是「現在直接買入」的排序，而是<b>跌到合理價格後的資金優先級</b>。
+        <b>⚠ 10/1 前變現期間，本表的個股加碼全部暫停</b>（只有 0050／00878 定期定額照常）。
       </p>
     </div>
   </section>
@@ -447,11 +490,19 @@
 
       <article class="card">
         <div class="card-top">
-          <span class="chip chip-fire">新增 · 等回檔買</span>
+          <span class="chip chip-split">變更 · 觀察不買（10/1 前）</span>
           <h3>創意 3443 — AI ASIC，最想放進組合的一檔</h3>
-          <span class="impact">目標 4～6% ≈ NT$10,000～15,000</span>
+          <span class="impact">目標 4～6% ≈ NT$10,000～15,000（10/1 後）</span>
         </div>
         <div class="card-body">
+          <div class="warn">
+            <p class="eyebrow">v3 重要修改：由「準備買」改成「觀察，不買」</p>
+            <p>
+              9/4 盤中約 5,795，<b>已經進入原設定的第一買點區 5,600～5,800</b> —— 但這次還是不買。
+              <b>現金需求優先於抄底</b>：你現在最不需要的是「賣股票拿現金 → 看到創意跌 → 又把現金買回股票」，
+              那會讓現金目標變得很難控制。下面的進場梯 <b>10/1 任務完成後才恢復適用</b>。
+            </p>
+          </div>
           <p class="lede">
             核心邏輯是 <b>AI ASIC／CSP 客製化晶片</b>，市場押注 ASIC 從設計走向量產，產業預期 2026～27 年進入 Turnkey 放量期。
             問題是<b>現在 6,100 真的不便宜</b>（PE 約 156 倍），所以分三筆等回檔接，不必一次買很多。
@@ -487,6 +538,8 @@
             今天收 208，帳面約 −116 元而已。從 9/1 的 213 再跌 2.35%，但 8/27～8/28 已出現非常強的拉升、外資連續買超，
             不因今天下跌改變策略。最大催化劑是 <b>Apple 9 月發表會</b>，市場預期折疊 iPhone 題材成為軸承供應鏈的重要催化 ——
             <b>現在不是賣點，是等 200 左右再加碼的標的。</b>目前這 1 萬元只是第一筆，不需要急著一次買滿。
+            <b>10/1 變現任務中：不賣，除非大漲到停利區</b> —— 正處於 Apple 新產品題材窗口，
+            市場對其 2026～27 年獲利成長仍有相當高期待，把它拿去湊現金是最容易搞錯的操作。
           </p>
           <div class="ladder">
             <div class="rung"><span class="rung-price">208～210</span><span class="rung-act">現有部位<b class="buy">繼續抱</b></span></div>
@@ -509,6 +562,7 @@
           <p class="lede">
             NVIDIA 已宣布斥資 <b>35 億美元認購聯發科海外可轉換公司債</b>，9/1 直接跳空漲停。
             現在部位太少，要拉高到 5～7% —— 但<b>今天不要追</b>。
+            <b>10/1 變現任務中：不賣、也暫停加碼</b>（戰術資金已暫停），下面的加碼梯 10/1 後恢復適用。
           </p>
           <div class="ladder">
             <div class="rung"><span class="rung-price">4,250 以下</span><span class="rung-act"><b class="buy">開始加</b></span></div>
@@ -522,22 +576,22 @@
 
       <article class="card">
         <div class="card-top">
-          <span class="chip chip-split">持有 · 不攤平</span>
-          <h3>旺宏 2337 — 最重要的是不要「為了解套而攤平」</h3>
-          <span class="impact">235 股 · 成本 133.43 · 市值 28,905 · 帳面約 −7.8%</span>
+          <span class="chip chip-suspect">變現第二順位</span>
+          <h3>旺宏 2337 — 從「先抱不攤平」變成「負責補足現金缺口」</h3>
+          <span class="impact">235 股 · 成本 133.43 · 帳面約 −7.8% · 9/4 約 118</span>
         </div>
         <div class="card-body">
           <p class="lede">
-            當初買它本來就偏短線、期待往 160 附近走。9/1 收 122，外資單日大賣約 5,051 張、三大法人合計賣超約 6,961 張，
-            籌碼明顯比新日興弱；但今天又有外資報告以 AI 推論的記憶體需求為由，把旺宏列入正向觀察。
-            定調：<b>持有，但不要因為「都跌這麼多了，再買一點降低成本」就一直補</b> —— 有反轉確認才增加。
+            「不攤平」的觀點沒有改，但<b>「持有」跟「一定不能賣」是兩回事</b> —— 多了 10/1 期限，就重新排序。
+            旺宏雖有記憶體景氣改善題材（市場看好 NAND／NOR 供需與獲利改善），但股價波動明顯比 0050 大，
+            所以必須從股票變現時：<b>寧願實現約 −10% 的損失，也不砍 0050 長期部位</b>。
+            先賣 00981A、<b>不要今天就把旺宏全賣</b> —— 到 10/1 還有近一個月，9 月中再依情境決定賣多少。
           </p>
           <div class="ladder">
-            <div class="rung"><span class="rung-price">115～118</span><span class="rung-act"><b class="buy">小補</b></span></div>
-            <div class="rung"><span class="rung-price">108～112</span><span class="rung-act"><b class="buy">再補</b></span></div>
-            <div class="rung"><span class="rung-price">&lt; 105</span><span class="rung-act"><b class="stop">停止攤平</b>，重新評估</span></div>
-            <div class="rung"><span class="rung-price">140～150</span><span class="rung-act"><b class="sell">分批賣</b></span></div>
-            <div class="rung"><span class="rung-price">150+（重新突破）</span><span class="rung-act"><b class="sell">認真考慮</b>把旺宏大幅降低（組合 5% 以下）</span></div>
+            <div class="rung"><span class="rung-price">🟢 反彈 125～130</span><span class="rung-act"><b class="sell">賣 200～220 股</b>，拿回約 25,000～28,600 —— 加上 00981A 約 48,500～52,600，接近達標</span></div>
+            <div class="rung"><span class="rung-price">🔴 續跌 &lt; 115</span><span class="rung-act"><b class="sell">直接賣 200～235 股</b>解決現金需求，不等解套 —— <b>成本價跟未來報酬沒有關係</b></span></div>
+            <div class="rung"><span class="rung-price">最晚 9 月下旬</span><span class="rung-act"><b class="stop">完成變現</b>，不拖到 9/30</span></div>
+            <div class="rung"><span class="rung-price">10/1 後</span><span class="rung-act">原計畫恢復：115～118 小補、108～112 再補、&lt;105 停止攤平、140～150 分批賣</span></div>
           </div>
         </div>
       </article>
@@ -552,6 +606,7 @@
           <p class="lede">
             <b>9/7 照買 10,000，之後每月繼續</b> —— 不要因為現在想買創意、新日興就把 0050 停掉。
             大盤明顯回檔時反而可以增加，也不因為短期漲多就賣。目標維持約 50～55% 的股票資產。
+            <b>變現任務中 0050 排最後一順位</b>：只有 9 月底現金還差很多（例如 9/25 只有 4 萬）才考慮賣約 2 萬。
           </p>
           <div class="ladder">
             <div class="rung"><span class="rung-price">每月（9/7 起）</span><span class="rung-act"><b class="buy">定期定額 NT$10,000 照買</b></span></div>
@@ -601,20 +656,18 @@
 
       <article class="card">
         <div class="card-top">
-          <span class="chip chip-split">降權中 · 不必一次清</span>
-          <h3>00981A — 9/2 的減碼方向正確</h3>
-          <span class="impact">餘 797 股 ≈ NT$23,695 · 9/2 已賣 350 股 × 約 29.92</span>
+          <span class="chip chip-suspect">變現第一順位</span>
+          <h3>00981A — 直接全部賣掉，不等除息</h3>
+          <span class="impact">餘 797 股 ≈ NT$23,695 · 9/2 已先賣 350 股 × 約 29.92</span>
         </div>
         <div class="card-body">
           <p class="lede">
-            9/2 賣出 350 股、成交約 29.92（約 1 萬元），這個操作是合理的。
-            繼續降低權重，但<b>不需要一次全部砍光</b>。最後留約 5～8% 就好，
-            主動資金留給<b>創意＋新日興＋聯發科</b>。
+            原本的「反彈慢慢減」升級成 <b>9 月第一週全部賣掉</b>（約 23,500～24,000），先完成現金任務的近一半。
+            <b>不用為了 9/16 除息拖著</b>：0.63 元配息預計 <b>10/13 才入帳</b>，晚於 10/1 期限，等它反而誤事。
           </p>
           <div class="ladder">
-            <div class="rung"><span class="rung-price">現價</span><span class="rung-act">保留</span></div>
-            <div class="rung"><span class="rung-price">反彈 31～32</span><span class="rung-act"><b class="sell">再賣 NT$5,000～10,000</b></span></div>
-            <div class="rung"><span class="rung-price">32～34</span><span class="rung-act"><b class="sell">再減</b></span></div>
+            <div class="rung"><span class="rung-price">9 月第一週</span><span class="rung-act"><b class="sell">全部賣出</b> ≈ NT$23,500～24,000</span></div>
+            <div class="rung"><span class="rung-price">（作廢）31～34 反彈梯</span><span class="rung-act">原「反彈 31～32／32～34 分批減」因變現期限直接取消</span></div>
           </div>
         </div>
       </article>
@@ -624,10 +677,11 @@
 
   <!-- ============ 資金計畫 ============ -->
   <section>
-    <h2>每月 NT$20,000 怎麼分（修正版）</h2>
+    <h2>每月 NT$20,000 怎麼分（v3：9 月戰術資金暫停）</h2>
     <p class="lede">
-      修正重點：<b>核心 ETF 的定期定額不能停</b>。每月 2 萬改成「15,000 固定 ＋ 5,000 戰術」——
-      戰術資金不固定買，只在價格到位時出手；現金只有約 NT$1,462，不要幻想一次把所有標的買滿。
+      核心不變：<b>0050／00878 的定期定額照買</b> —— 這比「賣掉 0050 再買回來」合理。
+      v3 修改：因為 10/1 前要回收 5～6 萬，<b>9 月的 5,000 戰術資金暫停買股，全部優先累積現金</b>；
+      10/1 任務完成後恢復「價格到位才出手」的戰術規則。
     </p>
     <div class="paths">
       <div class="path p1">
@@ -660,16 +714,16 @@
       </div>
       <div class="path p3">
         <div class="path-head">
-          <span class="chip chip-split">戰術</span>
-          <h4>戰術資金</h4>
-          <p class="src">價格到位才出手</p>
+          <span class="chip chip-suspect">9 月暫停</span>
+          <h4>戰術資金 → 現金</h4>
+          <p class="src">10/1 後恢復戰術規則</p>
         </div>
         <div class="path-body">
-          <div class="path-line"><span>投入</span><span class="v">NT$5,000</span></div>
+          <div class="path-line"><span>投入</span><span class="v">NT$5,000 留現金</span></div>
           <ul>
-            <li>創意 ≤ 5,800／新日興 ≤ 205</li>
-            <li>聯發科 ≤ 4,250／旺宏 ≤ 118</li>
-            <li><b>都沒到 → 留現金</b>，不為了買而買</li>
+            <li><b>9 月不進場 —— 創意到價也不買</b></li>
+            <li>併入 10/1 現金任務（約佔缺口 1 成）</li>
+            <li>10/1 後恢復：創意 ≤5,800／新日興 ≤205／聯發科 ≤4,250／旺宏 ≤118</li>
           </ul>
         </div>
       </div>
@@ -677,7 +731,8 @@
     <div class="ruling">
       <span class="ruling-k">鐵律</span>
       <p>
-        創意、新日興、聯發科任何一檔<b>突然跳空 +5% 以上，都不追</b>（創意估值高，追高風險比新日興更大）；
+        變現期間<b>只賣不買</b>（0050／00878 定期定額除外）；恢復後照舊：
+        創意、新日興、聯發科任何一檔<b>突然跳空 +5% 以上，都不追</b>；
         旺宏<b>有反轉確認才增加</b>，不是單純跌了就買。
       </p>
     </div>
@@ -710,7 +765,11 @@
 
   <!-- ============ 觸發表 ============ -->
   <section>
-    <h2>看到價格就做什麼 — 觸發速查表</h2>
+    <h2>看到價格就做什麼 — 觸發速查表（10/1 後恢復）</h2>
+    <p class="lede">
+      <b>⚠ 10/1 前變現期間，下表所有「🟢 買進」觸發一律暫停</b>（只有 0050／00878 定期定額照常執行）；
+      減碼／停止類觸發仍然有效。10/1 任務完成後全表恢復。
+    </p>
     <div class="scroll">
       <table>
         <thead>
@@ -739,31 +798,36 @@
     <div class="note">
       <p class="eyebrow">總結</p>
       <p>
-        目前最大的問題不是「買錯股票」，而是<b>短線進攻部位容易跟核心 ETF 搶資金</b>。
-        9/2「賣 00981A、換新日興」的方向維持正面；下一步真正值得做的，是<b>等創意回檔，而不是現在硬塞進去</b>。
-        目前這套組合的評價：<b>8.5 / 10</b>。
+        目前最大的問題不是「買錯股票」，而是<b>短線進攻部位容易跟核心 ETF 搶資金</b>；
+        而現在多了 10/1 期限，下一步真正值得做的是<b>完成現金任務</b>——
+        先賣 00981A、旺宏補足缺口、0050／00878 不動、創意到價也不買。
+        9/2「賣 00981A、換新日興」的方向維持正面；組合評價 <b>8.5 / 10</b>。
       </p>
     </div>
   </section>
 
   <!-- ============ 8 句話 ============ -->
   <section>
-    <h2>接下來只要記住 8 句話</h2>
+    <h2>接下來只要記住 8 句話（v3 變現版）</h2>
     <ol class="todo">
-      <li><b>9/7 0050：買。</b><p>定期定額 NT$10,000 照常執行。</p></li>
-      <li><b>9/7 00878：買。</b><p>定期定額 NT$5,000 照常執行。</p></li>
-      <li><b>00981A：反彈慢慢減。</b><p>31～32 再減一部分、32～34 再減，最後留 5～8%。</p></li>
-      <li><b>新日興：200～205 加，190～195 再加。</b><p>&lt;188 停止加碼、重新檢查基本面。</p></li>
-      <li><b>創意：等 5,800 以下，不追 6,000+。</b><p>目前是 0 持股，更沒有理由追高。</p></li>
-      <li><b>聯發科：4,250 以下開始買。</b><p>4,000 附近比較積極。</p></li>
-      <li><b>旺宏：不為了解套亂攤平。</b><p>&lt;105 停止攤平、重新評估。</p></li>
-      <li><b>每月剩下 5,000：沒好價格就留現金。</b><p>不為了「每個月一定要買」而硬買。</p></li>
+      <li><b>00981A：9 月第一週全部賣掉。</b><p>約 23,500～24,000；不等 9/16 除息（配息 10/13 才入帳，晚於期限）。</p></li>
+      <li><b>9/7 0050：照買 10,000。</b><p>定期定額不停，這比賣掉再買回來合理。</p></li>
+      <li><b>9/7 00878：照買 5,000。</b><p>同上，核心 ETF 是底。</p></li>
+      <li><b>戰術 5,000：暫停，留現金。</b><p>9 月剩下的投資資金全部優先累積現金。</p></li>
+      <li><b>旺宏：反彈 125～130 賣 200～220 股；&lt;115 也賣。</b><p>不等解套 —— 成本價跟未來報酬沒有關係；最晚 9 月下旬完成。</p></li>
+      <li><b>創意：到價也不買。</b><p>9/4 約 5,795 已進第一買點區，但現金需求優先於抄底；10/1 後再考慮。</p></li>
+      <li><b>新日興／聯發科／00757：不賣。</b><p>新日興除非大漲到 235～245 停利區。</p></li>
+      <li><b>9/25 左右現金至少 55,000。</b><p>不要拖到 9/30；還差很多才動 0050（約 2 萬、最後一順位）。</p></li>
     </ol>
   </section>
 
   <footer>
     <p><b>免責：</b>本頁為個人投資筆記與紀錄，非投資建議；所有價格與消息以 2026-09-02 當日資訊為準，實際進出請自行查證。</p>
-    <p><b>版本：</b>v2 — 合併 9/2 持倉與交易紀錄（PDF）的檢討版；主要修正為「0050／00878 定期定額不停」，每月 2 萬改為 0050 10,000／00878 5,000／戰術資金 5,000。</p>
+    <p><b>版本：</b>
+      v3（2026-09-04）— 變現任務版：10/1 前需多出 NT$50,000～60,000 現金；賣序 00981A → 旺宏 →（最後才是 0050），戰術資金暫停、創意改「觀察不買」、觸發表買進全面暫停至 10/1。
+      ｜v2（2026-09-04）— 合併 9/2 持倉 PDF 檢討：0050／00878 定期定額不停，每月 2 萬改為 10,000／5,000／戰術 5,000。
+      ｜v1（2026-09-02）— 初版作戰表。
+    </p>
     <p><b>引用來源：</b></p>
     <ol>
       <li><a href="https://istock88.com/stock/3443/quote" rel="noopener">iStock88 — 3443 創意 即時報價</a></li>
@@ -773,6 +837,12 @@
       <li><a href="https://ec.ltn.com.tw/article/breakingnews/5560164" rel="noopener">自由財經 — 焦點股》聯發科：隔日沖客出場 上檔壓力浮現</a></li>
       <li><a href="https://goodinfo.tw/tw/ShowK_Chart.asp?CHT_CAT=DATE&amp;PRICE_ADJ=T&amp;STOCK_ID=2337" rel="noopener">Goodinfo — 2337 旺宏 技術分析</a></li>
       <li><a href="https://fnc.ebc.net.tw/fncnews/business/217398" rel="noopener">東森財經 — 大摩點名愛普是首選、旺宏是唯一</a></li>
+      <li><a href="https://tw.stock.yahoo.com/quote/2337.TW" rel="noopener">Yahoo 股市 — 旺宏 (2337.TW) 走勢圖（9/4 盤中約 118）</a></li>
+      <li><a href="https://tw.stock.yahoo.com/quote/3443.TW" rel="noopener">Yahoo 股市 — 創意 (3443.TW) 走勢圖（9/4 盤中約 5,795）</a></li>
+      <li><a href="https://tw.stock.yahoo.com/news/5%E6%AA%949%E6%9C%88%E9%99%A4%E6%81%AFetf%E6%80%8E%E9%BA%BC%E9%81%B8-%E7%A0%B4%E8%A7%A3%E9%AB%98%E5%B9%B4%E5%8C%96%E9%85%8D%E6%81%AF%E7%8E%87%E8%BF%B7%E6%80%9D-%E5%90%AB%E6%81%AF%E7%B8%BD%E5%A0%B1%E9%85%AC%E6%89%8D%E6%98%AF%E7%8E%8B%E9%81%93-001747907.html" rel="noopener">Yahoo 股市 — 9 月除息 ETF：00981A 9/16 除息 0.63、10/13 入帳</a></li>
+      <li><a href="https://www.sinotrade.com.tw/richclub/hotstock/%E8%98%8B%E6%9E%9C%E6%8A%98%E7%96%8AiPhone-2026%E4%B8%8B%E5%8D%8A%E5%B9%B4%E9%87%8F%E7%94%A2%E5%80%92%E6%95%B8-%E9%B4%BB%E6%B5%B7-%E6%96%B0%E6%97%A5%E8%88%88-%E5%8F%B0%E7%A9%8D%E9%9B%BB%E4%B8%89%E5%A4%A7%E5%8F%B0%E8%82%A1%E4%BE%9B%E6%87%89%E9%8F%88%E5%8F%97%E6%83%A0%E8%A7%A3%E6%9E%90-%E8%82%A1%E5%B8%82%E8%A9%B1%E9%A1%8C-6a4dc484f220a5e4de514be6" rel="noopener">永豐金證券 — 蘋果折疊 iPhone 2026 下半年量產倒數：鴻海、新日興供應鏈解析</a></li>
+      <li><a href="https://www.pressplay.cc/project/2667A183130728C4AE30928EF3CFF4DD/articles/3C2F709EE0CA76B2B6D6272C3E8DF69B" rel="noopener">PressPlay — 旺宏解析：利基記憶體 4 大業務與 2026 財報</a></li>
+      <li><a href="https://news.tvbs.com.tw/money/4017272" rel="noopener">TVBS — 9/4 美股收高、台股開盤大反彈一度漲逾 700 點</a></li>
     </ol>
   </footer>
 
