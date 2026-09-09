@@ -17,6 +17,17 @@
 | [invest.html](https://tungyulu.github.io/test/invest.html) | 投資作戰表 · 2026 年 9～12 月 |
 | [golf.html](https://tungyulu.github.io/test/golf.html) | 高爾夫球軌跡追蹤 · 慢動作影片逐幀追蹤球／桿頭，物理模型模擬飛行 |
 
+## golf-tracer.py
+
+在一般速度（30/60 fps）揮桿影片上畫出球的飛行軌跡（shot tracer）並輸出 mp4；適合後方／斜後方視角、球一兩幀就飛遠的影片。需要 Python 3 與 `pip install opencv-python-headless numpy pillow imageio-ffmpeg`。
+
+```bash
+python3 golf-tracer.py IMG_4086.mov --impact 101 --tee 905,1358          # 擊球幀號、該幀球的像素座標
+python3 golf-tracer.py IMG_4086.mov --impact 101 --tee 905,1358 --dry-run # 只看追蹤與擬合結果
+```
+
+只能畫方向與軌跡，量不出球速；要量球速請用 `golf.html` 搭配正面 240 fps 慢動作影片。
+
 ## usage-dashboard.js
 
 終端機版的額度儀表板（Node 18+，零相依）：
