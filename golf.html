@@ -143,6 +143,21 @@
     table.pts td:first-child, table.pts th:first-child { text-align: left; }
     .scroll { max-height: 180px; overflow: auto; }
 
+    .auto-card { margin-bottom: 1.25rem; border-color: var(--border-hi); }
+    .auto-prog { height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; margin-top: 0.75rem; }
+    .auto-bar { height: 100%; width: 0; background: var(--cyan); transition: width .2s ease; }
+    .auto-status { margin-top: 0.6rem; font-size: 0.8125rem; color: var(--ink); }
+    .auto-status.ok { color: var(--green); } .auto-status.warn { color: var(--amber); }
+    .auto-tiles { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .auto-timing { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-dim); margin-top: 0.75rem; }
+    .auto-timing b { color: var(--ink-hi); font-weight: 500; }
+    .auto-tl { width: 100%; height: auto; display: block; margin-top: 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+    details.manual { margin-bottom: 1rem; }
+    details.manual > summary { cursor: pointer; font-weight: 700; color: var(--ink-hi); font-size: 0.875rem; padding: 0.75rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+    details.manual[open] > summary { border-radius: 12px 12px 0 0; }
+    details.manual > .hint, details.manual > .card, details.manual > .results { margin-left: 0; }
+    details.manual > .card:first-of-type { margin-top: 0.75rem; }
+    details.manual > .results { margin-top: 0.75rem; }
     details.limits { margin-top: 1.5rem; }
     details.limits summary { cursor: pointer; font-weight: 700; color: var(--ink-hi); font-size: 0.9375rem; }
     details.limits ul { margin: 0.5rem 0 0; padding-left: 1.25rem; font-size: 0.8125rem; color: var(--ink-dim); }
@@ -158,17 +173,54 @@
   <p class="tag">// golf · video ball tracker</p>
   <h1>高爾夫球軌跡追蹤</h1>
   <p class="lede">
-    載入你的<strong>正面（face-on）慢動作揮桿影片</strong>，在擊球後的幾幀標記球的位置，工具會以比例尺換算出<strong>出球速度與起飛角</strong>，再用飛行物理模型（空氣阻力＋馬格努斯升力）推算整條球道、落點與最高點，並疊回影片畫面。
-    若球出畫面太快，也可以改標記擊球前的<strong>桿頭</strong>，由桿頭速度與攻角推估出球條件。影片只在你的瀏覽器中處理，不會上傳到任何地方。
+    <strong>把揮桿影片丟進來就好。</strong>頁面會自動找出擊球瞬間與上桿頂點、量出下桿時間，推估桿頭速度、球速與整條飛行軌跡（距離、最高點、飛行時間），能追到球的拖影時還會把 tracer 疊回影片上。
+    適用手機一般速度（30／60 fps）從<strong>後方或斜後方</strong>拍的影片；影片只在你的瀏覽器中處理，不會上傳。
   </p>
+
+  <section class="card auto-card" id="autoCard">
+    <div class="step-head"><span class="step-num">AUTO</span><span class="step-title">⚡ 自動分析：載入影片即開始</span></div>
+    <div class="row">
+      <label class="field" style="flex:2 1 260px">揮桿影片（mp4 / mov）<input type="file" id="file" accept="video/*" /></label>
+      <label class="field">球桿<select id="autoClub"></select></label>
+      <label class="field">相機高度 (m)<input type="number" id="autoCamH" min="0.3" max="3" step="0.1" value="1.2" /></label>
+    </div>
+    <div class="auto-prog" id="autoProg" hidden><div class="auto-bar" id="autoBar"></div></div>
+    <div class="auto-status" id="autoStatus">選一段影片，分析會自動開始（約等於影片長度的時間）。</div>
+    <div id="autoResults" hidden>
+      <div class="stat-row auto-tiles">
+        <div class="stat hi" id="tChs"><div class="lab">桿頭速度（節奏法）</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat" id="tDown"><div class="lab">下桿時間</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat" id="tBall"><div class="lab">推估球速</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat" id="tLaunch"><div class="lab">起飛角（球桿典型）</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat hi" id="tCarry"><div class="lab">推估 Carry</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat" id="tApex"><div class="lab">最高點</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat" id="tTrail"><div class="lab">球拖影追蹤</div><div class="val">—</div><div class="sub"></div></div>
+        <div class="stat" id="tDir"><div class="lab">出球方向</div><div class="val">—</div><div class="sub"></div></div>
+      </div>
+      <div class="auto-timing" id="autoTiming"></div>
+      <canvas id="autoTimeline" width="900" height="120" class="auto-tl"></canvas>
+      <div class="btns">
+        <button class="btn primary" id="autoPlay" disabled>▶ 播放 Tracer</button>
+        <span class="readout" style="align-self:center">微調：擊球幀</span>
+        <button class="btn" id="impMinus">−1</button><button class="btn" id="impPlus">+1</button>
+        <span class="readout" style="align-self:center">頂點</span>
+        <button class="btn" id="topMinus">−1</button><button class="btn" id="topPlus">+1</button>
+        <button class="btn" id="autoRerun">↻ 重新分析</button>
+      </div>
+      <p class="hint" id="autoCam"></p>
+      <p class="hint">桿頭速度由<b>下桿時間</b>推估（巡迴賽約 0.25 s ≈ 110 mph、業餘 0.30～0.40 s ≈ 70～90 mph），誤差約 ±12%；起飛角與後旋採所選球桿的典型值，桿面角度無法從影片判讀。距離區間對應球速 ±12%。</p>
+    </div>
+  </section>
 
   <div class="layout">
     <!-- ───────── 左欄：步驟 ───────── -->
     <aside>
+      <details class="manual" id="manualTools">
+        <summary>🔬 進階：正面慢動作手動量測（比例尺、逐幀標記球與桿頭）</summary>
+        <p class="hint">若你有<b>正面（face-on）240 fps 慢動作</b>影片，這裡可以逐幀標記球與桿頭，實際量出球速、起飛角、桿頭速度與攻角，比自動模式準確得多。</p>
       <section class="card" id="step-video">
-        <div class="step-head"><span class="step-num">01</span><span class="step-title">載入影片</span></div>
-        <input type="file" id="file" accept="video/*" />
-        <p class="hint">建議用手機 <b>120 / 240 fps 慢動作</b>，相機正對目標線（站在你的正面），三腳架固定。一般 30 fps 影片球一兩幀就會飛出畫面，幾乎無法追蹤。</p>
+        <div class="step-head"><span class="step-num">01</span><span class="step-title">幀率設定</span></div>
+        <p class="hint">自動模式會把兩個幀率設成影片實際幀率。手動量測建議用 <b>120 / 240 fps 慢動作</b>，相機正對目標線（站在你的正面），三腳架固定。</p>
         <div class="row">
           <label class="field">播放幀率 fps<input type="number" id="playFps" min="1" max="480" step="1" value="30" /></label>
           <label class="field">拍攝幀率 fps<input type="number" id="captureFps" min="1" max="2000" step="1" value="240" /></label>
@@ -260,6 +312,7 @@
           <button class="btn" id="exportPng">⬇ 匯出目前畫面 (PNG)</button>
         </div>
       </section>
+      </details>
     </aside>
 
     <!-- ───────── 右欄：畫面 + 結果 ───────── -->
@@ -267,7 +320,7 @@
       <div class="viewer">
         <div class="stage" id="stage">
           <canvas id="view" class="no-video" width="960" height="540"></canvas>
-          <div class="empty" id="empty"><span class="big">🎥</span><span>從左側「載入影片」選一段揮桿影片開始</span><span class="muted" style="font-size:.75rem">支援手機 mp4 / mov / webm，全程在本機處理</span></div>
+          <div class="empty" id="empty"><span class="big">🎥</span><span>從上方「自動分析」選一段揮桿影片開始</span><span class="muted" style="font-size:.75rem">支援手機 mp4 / mov / webm，全程在本機處理</span></div>
         </div>
         <div class="toolbar">
           <button class="btn" id="prev10" title="往前 10 幀 (Shift+←)">⏮ −10</button>
@@ -289,6 +342,8 @@
       </div>
       <div id="msg">載入影片後，先設定比例尺，再標記擊球後的球位置。</div>
 
+      <details class="manual" id="manualResults">
+        <summary>🔬 手動量測結果（球的實測／揮桿實測）</summary>
       <div class="results">
         <section class="card">
           <div class="step-head"><span class="step-title">🎯 球的實測（由影片標記）</span></div>
@@ -318,6 +373,7 @@
           <div class="scroll"><table class="pts" id="clubTable"></table></div>
         </section>
       </div>
+      </details>
 
       <section class="card" style="margin-top:1rem" id="simCard">
         <div class="step-head"><span class="step-title">🛰 飛行模擬</span></div>
@@ -485,7 +541,7 @@
       $('#scrub').disabled = false;
       $('#videoInfo').innerHTML = `<b>${f.name}</b> · ${state.W}×${state.H} · ${fmt(state.duration, 2)} s · 約 ${state.totalFrames} 幀（以播放幀率計）`;
       fitView();
-      seekTo(0).then(() => msg('已載入。用 ← → 逐幀，先設定比例尺（步驟 02）。', 'ok'));
+      seekTo(0).then(() => msg('已載入，自動分析進行中…', 'ok'));
     }, { once: true });
     video.addEventListener('error', () => msg('瀏覽器無法解碼這個影片格式。試試轉成 mp4 (H.264) 再載入。', 'warn'), { once: true });
   });
@@ -582,6 +638,7 @@
         vctx.strokeRect(pred.x * k - R, pred.y * k - R, 2 * R, 2 * R); vctx.setLineDash([]);
       }
     }
+    if (typeof window.__golfOverlay === 'function') { try { window.__golfOverlay(vctx, k, video.currentTime); } catch (_) { /* overlay is optional */ } }
     updateFrameInfo();
 
     function dot(pt, r) { vctx.beginPath(); vctx.arc(pt[0], pt[1], r, 0, Math.PI * 2); vctx.fill(); }
@@ -1081,10 +1138,604 @@
   shapeFromFacePath();
   setMode('none');
   runSim();
-  msg('載入影片後，先設定比例尺，再標記擊球後的球位置。');
+  msg('載入影片後會自動分析；需要手動量測時再展開左側的進階區。');
 
   // exposed for testing / debugging
-  window.__golf = { state, detectBlob, simulate, fitBall, fitClub, seekTo, autoTrack, updateFits, runSim, CLUBS, AERO };
+  window.__golf = { state, detectBlob, simulate, fitBall, fitClub, seekTo, autoTrack, updateFits, runSim, render, CLUBS, AERO };
+}());
+</script>
+<script>
+/* ═══════════════════════════ 自動分析模組（後方視角 / 一般速度影片） ═══════════════════════════ */
+(function () {
+  'use strict';
+  const $ = (s) => document.querySelector(s);
+  const G = window.__golf;                 // manual module API: state, simulate, CLUBS, seekTo, runSim, render
+  const video = $('#video');
+  const MPH = 2.23694, KMH = 3.6, YD = 1.09361, BALL_D = 0.04267;
+  // Tempo model: club-head speed (mph) ≈ TEMPO_K × clubFactor / downswing-time (s). Tour ≈ 0.25 s → 110+ mph, amateur 0.33 s → ~85 mph.
+  const TEMPO_K = 27.5;
+  const CLUB_FACTOR = { D: 1, '3W': 0.95, '5W': 0.91, H: 0.88, '4i': 0.85, '5i': 0.83, '6i': 0.81, '7i': 0.80, '8i': 0.77, '9i': 0.75, PW: 0.73, SW: 0.70 };
+  const fmt = (n, d = 1) => (Number.isFinite(n) ? n.toFixed(d) : '—');
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  const A = { file: null, meta: {}, frames: null, fps: 30, W: 0, H: 0, lw: 0, lh: 0, E: null, El: null, sm: null,
+    ballLow: null, tee: null, ballDiam: null, imp: null, top: null, bs: null, trail: [], geo: null, est: null, busy: false, playing: false };
+
+  // ────────────────────────────── UI refs
+  const ui = {
+    card: $('#autoCard'), prog: $('#autoProg'), bar: $('#autoBar'), status: $('#autoStatus'), results: $('#autoResults'),
+    tl: $('#autoTimeline'), club: $('#autoClub'), camH: $('#autoCamH'), play: $('#autoPlay'), rerun: $('#autoRerun'),
+    impM: $('#impMinus'), impP: $('#impPlus'), topM: $('#topMinus'), topP: $('#topPlus'),
+  };
+  G.CLUBS.forEach((c) => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; ui.club.appendChild(o); });
+  ui.club.value = $('#club').value || 'D';
+  function status(text, kind) { ui.status.textContent = text; ui.status.className = 'auto-status' + (kind ? ' ' + kind : ''); }
+  function progress(p) { ui.prog.hidden = false; ui.bar.style.width = `${Math.round(clamp(p, 0, 1) * 100)}%`; }
+
+  // ────────────────────────────── 1. QuickTime metadata (camera model, 35mm-equivalent focal length)
+  async function readQtMeta(file) {
+    const out = {};
+    try {
+      const dvOf = async (off, len) => new DataView(await file.slice(off, off + len).arrayBuffer());
+      const s4 = (dv, o) => String.fromCharCode(dv.getUint8(o), dv.getUint8(o + 1), dv.getUint8(o + 2), dv.getUint8(o + 3));
+      let pos = 0, moov = null, guard = 0;
+      while (pos + 8 <= file.size && guard++ < 64) {
+        const h = await dvOf(pos, Math.min(16, file.size - pos));
+        let size = h.getUint32(0); const type = s4(h, 4); let hdr = 8;
+        if (size === 1 && h.byteLength >= 16) { size = Number(h.getBigUint64(8)); hdr = 16; }
+        if (size === 0) size = file.size - pos;
+        if (size < 8) break;
+        if (type === 'moov') { moov = { s: pos + hdr, e: pos + size }; break; }
+        pos += size;
+      }
+      if (!moov || moov.e - moov.s > 64e6) return out;
+      const buf = new DataView(await file.slice(moov.s, moov.e).arrayBuffer());
+      const td = new TextDecoder();
+      const utf8 = (a, b) => td.decode(new Uint8Array(buf.buffer, buf.byteOffset + a, Math.max(0, b - a)));
+      const atoms = function* (s, e) {
+        let p = s;
+        while (p + 8 <= e) {
+          let size = buf.getUint32(p); const type = s4(buf, p + 4); let hdr = 8;
+          if (size === 1) { size = Number(buf.getBigUint64(p + 8)); hdr = 16; }
+          if (size === 0) size = e - p;
+          if (size < 8) return;
+          yield [type, p + hdr, p + size, p];
+          p += size;
+        }
+      };
+      const parseMeta = (s, e) => {
+        const t = s4(buf, s + 4); const off = (t === 'hdlr' || t === 'keys' || t === 'ilst') ? s : s + 4;   // QuickTime meta has no version/flags
+        const keys = [];
+        for (const [type, cs, ce] of atoms(off, e)) {
+          if (type === 'keys') { const cnt = buf.getUint32(cs + 4); let p = cs + 8; for (let i = 0; i < cnt && p + 8 <= ce; i++) { const sz = buf.getUint32(p); if (sz < 8) break; keys.push(utf8(p + 8, p + sz)); p += sz; } }
+          if (type === 'ilst') for (const [, s4_, e4, p4] of atoms(cs, ce)) {
+            const idx = buf.getUint32(p4 + 4);
+            for (const [t5, s5, e5] of atoms(s4_, e4)) if (t5 === 'data' && e5 - s5 >= 8) {
+              const dtype = buf.getUint32(s5); const a = s5 + 8, n = e5 - a; let val = null;
+              if (dtype === 1) val = utf8(a, e5);
+              else if (dtype === 21 || dtype === 22) { val = 0; for (let i = 0; i < n; i++) val = val * 256 + buf.getUint8(a + i); if (dtype === 21 && n && buf.getUint8(a) & 0x80) val -= 2 ** (8 * n); }
+              else if (dtype === 23 && n === 4) val = buf.getFloat32(a);
+              else if (dtype === 24 && n === 8) val = buf.getFloat64(a);
+              const key = keys[idx - 1]; if (key && val !== null && !(key in out)) out[key] = val;
+            }
+          }
+        }
+      };
+      for (const [t2, s2, e2] of atoms(0, buf.byteLength)) {
+        if (t2 === 'meta') parseMeta(s2, e2);
+        if (t2 === 'udta') for (const [t3, s3, e3] of atoms(s2, e2)) if (t3 === 'meta') parseMeta(s3, e3);
+        if (t2 === 'trak') for (const [t3, s3, e3] of atoms(s2, e2)) {
+          if (t3 === 'meta') parseMeta(s3, e3);
+          if (t3 === 'udta') for (const [t4, s4_, e4] of atoms(s3, e3)) if (t4 === 'meta') parseMeta(s4_, e4);
+        }
+      }
+    } catch (e) { console.warn('metadata parse failed', e); }
+    return out;
+  }
+
+  // ────────────────────────────── 2. low-res capture pass (playback + requestVideoFrameCallback; fallback: seeking)
+  function toGray(data, out) { for (let i = 0, j = 0; j < out.length; i += 4, j++) out[j] = (data[i] * 77 + data[i + 1] * 150 + data[i + 2] * 29) >> 8; return out; }
+  async function capturePass() {
+    A.W = video.videoWidth; A.H = video.videoHeight;
+    const sc = 480 / Math.max(A.W, A.H); A.lw = Math.round(A.W * sc); A.lh = Math.round(A.H * sc);
+    const c = document.createElement('canvas'); c.width = A.lw; c.height = A.lh; const ctx = c.getContext('2d', { willReadFrequently: true });
+    let frames = []; const dur = video.duration;
+    video.pause(); video.muted = true;
+    const rvfc = 'requestVideoFrameCallback' in HTMLVideoElement.prototype;
+    const playCapture = (rate) => new Promise((resolve) => {
+      frames = []; let handle = 0, lastT = -1;
+      const cb = (now, m) => {
+        if (m.mediaTime > lastT) { ctx.drawImage(video, 0, 0, A.lw, A.lh); frames.push({ t: m.mediaTime, g: toGray(ctx.getImageData(0, 0, A.lw, A.lh).data, new Uint8Array(A.lw * A.lh)) }); lastT = m.mediaTime; progress(0.05 + 0.45 * m.mediaTime / dur); }
+        handle = video.requestVideoFrameCallback(cb);
+      };
+      const done = () => { video.cancelVideoFrameCallback(handle); video.removeEventListener('ended', done); resolve(); };
+      video.addEventListener('ended', done);
+      video.currentTime = 0; video.playbackRate = rate;
+      video.play().catch(() => { done(); });
+      handle = video.requestVideoFrameCallback(cb);
+    });
+    // frame-interval statistics: dropped frames show up as irregular mediaTime deltas
+    const stats = () => {
+      const d = []; for (let i = 1; i < frames.length; i++) d.push(frames[i].t - frames[i - 1].t); d.sort((a, b) => a - b);
+      if (d.length < 5) return { fps: 30, irregular: 1 };
+      const base = d[Math.floor(d.length * 0.1)]; const irregular = d.filter((x) => x > base * 1.5).length / d.length;
+      const typical = irregular > 0.05 ? base : d[d.length >> 1];                 // median interval unless frames were dropped
+      let fps = 1 / typical; for (const c of [24, 25, 30, 48, 50, 60, 100, 120, 240]) if (Math.abs(fps - c) / c < 0.08) { fps = c; break; }
+      return { fps, irregular };
+    };
+    if (rvfc) {
+      await playCapture(1);
+      let st = stats();
+      if (frames.length >= 10 && st.irregular > 0.05) { status('播放掉幀，改以 0.5 倍速重新擷取…'); await playCapture(0.5); st = stats(); }
+      if (frames.length >= 10 && st.irregular > 0.05) { status('仍有掉幀，改以 0.25 倍速重新擷取…'); await playCapture(0.25); st = stats(); }
+      video.playbackRate = 1;
+      A.fpsStats = st;
+    }
+    if (frames.length < 10) {   // fallback: seek at an assumed 30 fps
+      frames.length = 0; const fps = 30, n = Math.floor(dur * fps);
+      for (let i = 0; i < n; i++) {
+        await seekTime((i + 0.5) / fps); ctx.drawImage(video, 0, 0, A.lw, A.lh);
+        frames.push({ t: (i + 0.5) / fps, g: toGray(ctx.getImageData(0, 0, A.lw, A.lh).data, new Uint8Array(A.lw * A.lh)) });
+        if (i % 10 === 0) progress(0.05 + 0.45 * i / n);
+      }
+    }
+    A.frames = frames;
+    const nominal = frames.length > 2 ? (frames.length - 1) / (frames[frames.length - 1].t - frames[0].t) : 30;
+    A.fps = (A.fpsStats && A.fpsStats.fps >= 10 && A.fpsStats.fps <= 480) ? A.fpsStats.fps : nominal;
+    A.dropped = A.fpsStats ? Math.round((1 - nominal / A.fps) * 100) : 0;
+  }
+  function seekTime(t) {
+    return new Promise((res) => {
+      const tt = clamp(t, 0, Math.max(0, video.duration - 0.0005));
+      if (Math.abs(video.currentTime - tt) < 1e-6 && video.readyState >= 2) return res();
+      const fin = () => { video.removeEventListener('seeked', fin); res(); };
+      video.addEventListener('seeked', fin); video.currentTime = tt;
+    });
+  }
+  const frameCanvas = document.createElement('canvas'); const fctx = frameCanvas.getContext('2d', { willReadFrequently: true });
+  async function grayAt(t) {   // full-res gray at time t
+    await seekTime(t); frameCanvas.width = A.W; frameCanvas.height = A.H; fctx.drawImage(video, 0, 0, A.W, A.H);
+    return toGray(fctx.getImageData(0, 0, A.W, A.H).data, new Uint8Array(A.W * A.H));
+  }
+
+  // ────────────────────────────── 3. analysis
+  function motionEnergy() {
+    const F = A.frames, n = F.length, w = A.lw, h = A.lh, lowStart = Math.floor(h * 0.62) * w;
+    const E = new Float32Array(n), El = new Float32Array(n);
+    for (let i = 1; i < n; i++) {
+      const a = F[i].g, b = F[i - 1].g; let c = 0, cl = 0;
+      for (let p = 0; p < a.length; p++) { const d = a[p] - b[p]; if (d > 25 || d < -25) { c++; if (p >= lowStart) cl++; } }
+      E[i] = 100 * c / a.length; El[i] = 100 * cl / (a.length - lowStart);
+    }
+    const sm = new Float32Array(n); for (let i = 0; i < n; i++) sm[i] = (E[Math.max(0, i - 1)] + E[i] + E[Math.min(n - 1, i + 1)]) / 3;
+    A.E = E; A.El = El; A.sm = sm;
+  }
+  function median(arr) { const s = Array.from(arr).sort((a, b) => a - b); return s.length ? s[s.length >> 1] : 0; }
+  // candidate impact moments: lower-region motion bursts that follow a dip (non-max suppressed), strongest first
+  function swingBursts() {
+    const El = A.El, sm = A.sm, n = El.length, fps = A.fps; const out = [];
+    const quietLen = Math.max(4, Math.round(0.15 * fps));
+    for (let i = Math.round(0.4 * fps); i < n - 3; i++) {
+      const w0 = Math.max(1, i - Math.round(0.8 * fps)), w1 = i - Math.round(0.15 * fps); if (w1 <= w0) continue;
+      let mn = Infinity, mi = w0; for (let k = w0; k <= w1; k++) if (sm[k] < mn) { mn = sm[k]; mi = k; }
+      if (!(El[i] > 0.6 && sm[i] > mn * 2)) continue;
+      // a real swing: quiet address (≥0.3 s of sm<0.6) ending no more than 1.6 s before the top-of-backswing dip
+      let qEnd = -1, run = 0;
+      for (let k = Math.max(0, mi - Math.round(3 * fps)); k < mi - Math.round(0.15 * fps); k++) { run = sm[k] < 0.6 ? run + 1 : 0; if (run >= quietLen) qEnd = k; }
+      const quietOK = qEnd >= 0 && (mi - qEnd) <= 1.6 * fps;
+      out.push({ i, v: El[i] - mn, quietOK });
+    }
+    out.sort((a, b) => (b.quietOK - a.quietOK) || (b.v - a.v)); const picked = [];
+    for (const c of out) { if (!picked.some((p) => Math.abs(p.i - c.i) < 0.5 * fps)) picked.push(c); if (picked.length >= 8) break; }
+    return picked;
+  }
+  // bright, small, round blob that sits still during the backswing and vanishes *within one frame* at a motion burst = the teed ball
+  // (feet, gloves, buckets move gradually; only the ball leaves a 7×7 window between two consecutive frames)
+  function findBall() {
+    const F = A.frames, n = F.length, w = A.lw, h = A.lh, fps = A.fps;
+    A.ballDebug = [];
+    const bursts = swingBursts(); A.bursts = bursts;
+    const windows = bursts.map((b) => ({ i0: Math.max(0, b.i - Math.round(1.0 * fps)), i1: Math.max(1, b.i - Math.round(0.15 * fps)), burst: b.i, quietOK: b.quietOK }));
+    for (let f0 = 0.05; f0 <= 0.65; f0 += 0.1) windows.push({ i0: Math.floor(n * f0), i1: Math.max(Math.floor(n * f0) + 3, Math.floor(n * (f0 + 0.2))), burst: null, quietOK: false });
+    const minRun = Math.max(6, Math.round(0.35 * fps));
+    let best = null; const tried = [];
+    for (const win of windows) {
+      const { i0, i1, burst } = win; if (i1 - i0 < 3) continue;
+      const step = Math.max(1, Math.floor((i1 - i0) / 24));
+      const med = new Uint8Array(w * h); const col = [];
+      for (let p = 0; p < w * h; p++) { col.length = 0; for (let i = i0; i < i1; i += step) col.push(F[i].g[p]); col.sort((a, b) => a - b); med[p] = col[col.length >> 1]; }
+      const box = boxBlur(med, w, h, 7);
+      const mask = new Uint8Array(w * h);
+      for (let p = 0; p < w * h; p++) if (med[p] > 165 && med[p] - box[p] > 35) mask[p] = 1;
+      const comps = components(mask, w, h, 4, 600);
+      const cands = comps.filter((c) => c.y > h * 0.3 && c.w / c.h > 0.5 && c.w / c.h < 2 && c.area / (c.w * c.h) > 0.45 && c.x > 4 && c.x < w - 4 && c.y < h - 4);
+      for (const c of cands) {
+        const cx = Math.round(c.x), cy = Math.round(c.y);
+        if (tried.some((t) => Math.hypot(t[0] - cx, t[1] - cy) < 4 && t[2] === burst)) continue; tried.push([cx, cy, burst]);
+        // brightness series = local max over 7×7 (tolerates ±3 px hand-held drift at analysis resolution)
+        const s = new Float32Array(n); const R7 = 3;
+        for (let i = 0; i < n; i++) { const g = F[i].g; let mx = 0; for (let dy = -R7; dy <= R7; dy++) { const yy = cy + dy; if (yy < 0 || yy >= h) continue; for (let dx = -R7; dx <= R7; dx++) { const xx = cx + dx; if (xx < 0 || xx >= w) continue; const v = g[yy * w + xx]; if (v > mx) mx = v; } } s[i] = mx; }
+        const inWin = Array.from(s.slice(i0, i1)).sort((a, b) => a - b); const bright = inWin[Math.floor(inWin.length * 0.5)];
+        const bg = median(ringSamples(med, w, h, cx, cy, Math.max(3, Math.round(Math.sqrt(c.area) * 1.5))));
+        const dbg = { burst, quietOK: win.quietOK, x: cx, y: cy, area: c.area, bright: Math.round(bright), bg: Math.round(bg) }; A.ballDebug.push(dbg);
+        if (bright - bg < 30) { dbg.reject = 'contrast'; continue; }
+        const thr = (bright + bg) / 2;
+        // all vanish events: a present run ≥ minRun followed by ≥3 absent frames
+        const events = []; let run = 0;
+        for (let i = 0; i < n - 3; i++) {
+          if (s[i] >= thr) { run++; continue; }
+          if (run >= minRun && s[i + 1] < thr && s[i + 2] < thr) events.push(i);
+          run = 0;
+        }
+        if (!events.length) { dbg.reject = 'no-vanish'; continue; }
+        // pick the event at the burst (or, for generic windows, the one with the most motion nearby)
+        let d = -1;
+        if (burst !== null) { let bd = 1e9; for (const e of events) if (Math.abs(e - burst) < bd) { bd = Math.abs(e - burst); d = e; } if (bd > 8) { dbg.reject = 'not-at-burst'; dbg.events = events; continue; } }
+        else { let bs = -1; for (const e of events) { const m = Math.max(A.El[e - 1] || 0, A.El[e] || 0, A.El[e + 1] || 0); const sh = (s[e - 1] - s[e]) / Math.max(1, bright - bg); if (m >= 0.3 && sh > bs) { bs = sh; d = e; } } if (d < 0) { dbg.reject = 'no-motion'; continue; } }
+        dbg.d = d;
+        const sharp = (s[d - 1] - s[d]) / Math.max(1, bright - bg); dbg.sharp = +sharp.toFixed(2);
+        if (sharp < 0.7) { dbg.reject = 'gradual'; continue; }            // only a struck ball leaves within one frame
+        // after the ball leaves, the window shows the background (mat/tee) again; an occluder (leg, shaft) makes it darker than that
+        const postArr = Array.from(s.slice(d, Math.min(n, d + 6))).sort((a, b) => a - b); const post = postArr[postArr.length >> 1];
+        dbg.post = Math.round(post); if (Math.abs(post - bg) > 0.35 * (bright - bg)) { dbg.reject = 'occluded'; continue; }
+        let absentAfter = 0; const aEnd = Math.min(n, d + Math.round(1.5 * fps)); for (let i = d; i < aEnd; i++) if (s[i] < thr) absentAfter++;
+        // the white tee stays behind and hand-held drift can sweep it into the 7×7 window, so be lenient when the vanish sits on a swing burst
+        dbg.absent = +(absentAfter / (aEnd - d)).toFixed(2); if (absentAfter / (aEnd - d) < (burst !== null ? 0.6 : 0.8)) { dbg.reject = 'reappears'; continue; }
+        const motion = Math.max(A.El[d - 1] || 0, A.El[d] || 0, A.El[d + 1] || 0);
+        dbg.motion = +motion.toFixed(2); if (motion < 0.3) { dbg.reject = 'no-motion'; continue; }
+        let absentRest = 0; for (let i = d; i < n; i++) if (s[i] < thr) absentRest++; absentRest /= Math.max(1, n - d); dbg.absentRest = +absentRest.toFixed(2);
+        const score = Math.min(sharp, 1) * 40 + (win.quietOK ? 20 : 0) + (burst !== null ? 15 : 0) + absentRest * 20 + Math.min(motion, 4) * 5 + (c.area <= 80 ? 10 : 0) - (c.area < 6 ? 10 : 0); dbg.score = +score.toFixed(1);
+        if (!best || score > best.score) best = { ...c, d, score, motion, bright, bg, sharp };
+      }
+    }
+    return best;
+  }
+  function boxBlur(src, w, h, r) {
+    const tmp = new Float32Array(w * h), out = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) { let sum = 0, cnt = 0; for (let x = -r; x <= r; x++) { if (x >= 0 && x < w) { sum += src[y * w + x]; cnt++; } } for (let x = 0; x < w; x++) { tmp[y * w + x] = sum / cnt; const xo = x - r, xi = x + r + 1; if (xo >= 0) { sum -= src[y * w + xo]; cnt--; } if (xi < w) { sum += src[y * w + xi]; cnt++; } } }
+    for (let x = 0; x < w; x++) { let sum = 0, cnt = 0; for (let y = -r; y <= r; y++) { if (y >= 0 && y < h) { sum += tmp[y * w + x]; cnt++; } } for (let y = 0; y < h; y++) { out[y * w + x] = sum / cnt; const yo = y - r, yi = y + r + 1; if (yo >= 0) { sum -= tmp[yo * w + x]; cnt--; } if (yi < h) { sum += tmp[yi * w + x]; cnt++; } } }
+    return out;
+  }
+  function ringSamples(img, w, h, cx, cy, r) { const out = []; for (let a = 0; a < 24; a++) { const x = Math.round(cx + r * Math.cos(a * Math.PI / 12)), y = Math.round(cy + r * Math.sin(a * Math.PI / 12)); if (x >= 0 && x < w && y >= 0 && y < h) out.push(img[y * w + x]); } return out; }
+  // 8-connected components on a 0/1 mask; returns centroid, bbox, area (+ optional per-pixel callback)
+  function components(mask, w, h, minA, maxA, withPixels) {
+    const seen = new Uint8Array(w * h), stack = new Int32Array(w * h), out = [];
+    for (let s = 0; s < w * h; s++) {
+      if (!mask[s] || seen[s]) continue;
+      let sp = 0; stack[sp++] = s; seen[s] = 1; let n = 0, sx = 0, sy = 0, x0 = w, x1 = 0, y0 = h, y1 = 0; const px = withPixels ? [] : null;
+      while (sp) {
+        const i = stack[--sp]; const x = i % w, y = (i - x) / w; n++; sx += x; sy += y; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; if (px) px.push(i);
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= w || yy >= h) continue; const q = yy * w + xx; if (mask[q] && !seen[q]) { seen[q] = 1; stack[sp++] = q; } }
+      }
+      if (n >= minA && n <= maxA) out.push({ x: sx / n, y: sy / n, area: n, x0, y0, x1, y1, w: x1 - x0 + 1, h: y1 - y0 + 1, px });
+    }
+    return out;
+  }
+  // top of backswing: flat minimum of smoothed motion energy 0.15–0.8 s before impact; backswing start: last quiet stretch before it
+  function findTopAndStart(imp) {
+    const sm = A.sm, fps = A.fps;
+    const a = Math.max(1, imp - Math.round(0.8 * fps)), b = Math.max(a + 1, imp - Math.round(0.15 * fps));
+    let mi = a; for (let i = a; i <= b; i++) if (sm[i] < sm[mi]) mi = i;
+    let lo = mi, hi = mi; while (lo > a && sm[lo - 1] <= sm[mi] * 1.25 + 0.05) lo--; while (hi < b && sm[hi + 1] <= sm[mi] * 1.25 + 0.05) hi++;
+    const top = Math.round((lo + hi) / 2);
+    // backswing start: walk back from top while motion stays above a quiet threshold; the backswing period should be reasonably long
+    const quiet = Math.max(0.6, sm[mi] * 1.5);
+    // walk back from the dip: first leave the top-of-backswing pause, then cross the backswing motion, then find the quiet address
+    let bs = top; let i = lo - 1; let run = 0;
+    while (i > 0 && sm[i] < quiet) i--;
+    while (i > 0) { if (sm[i] < quiet) { run++; if (run >= 3) { bs = i + 3; break; } } else run = 0; i--; }
+    if (i <= 0) bs = Math.max(0, top - Math.round(0.8 * fps));
+    return { top, bs, topMin: sm[mi] };
+  }
+  // fallback impact when no ball is found: biggest lower-region motion burst that follows a dip
+  function fallbackImpact() {
+    const El = A.El, sm = A.sm, n = El.length, fps = A.fps;
+    const quietLen = Math.max(4, Math.round(0.15 * fps));
+    let best = -1, bestv = 0, bestAny = -1, bestAnyV = 0;
+    for (let i = Math.round(0.6 * fps); i < n - 5; i++) {
+      const w0 = Math.max(1, i - Math.round(0.8 * fps)), w1 = i - Math.round(0.15 * fps); if (w1 <= w0) continue;
+      let mn = Infinity, mi = w0; for (let k = w0; k <= w1; k++) if (sm[k] < mn) { mn = sm[k]; mi = k; }
+      if (!(sm[i] > mn * 2.5 && El[i] > 0.8)) continue;
+      const v = (El[i] + El[i - 1]) / 2 - mn * 2;
+      // a real swing has a quiet address (sm < 0.6) for ≥0.3 s somewhere 0.8–3 s before the top
+      let quiet = false, run = 0;
+      for (let k = Math.max(0, mi - Math.round(3 * fps)); k < mi - Math.round(0.5 * fps); k++) { run = sm[k] < 0.6 ? run + 1 : 0; if (run >= quietLen) { quiet = true; break; } }
+      if (quiet && v > bestv) { bestv = v; best = i; }
+      if (v > bestAnyV) { bestAnyV = v; bestAny = i; }
+    }
+    return best >= 0 ? best : bestAny;
+  }
+
+  // ────────────────────────────── 4. full-res refinement: ball diameter + streak tracking
+  async function refineBall(tLow) {
+    const g = await grayAt(A.frames[Math.max(0, A.imp - 4)].t);
+    const sc = A.W / A.lw; const cx = Math.round(A.ballLow.x * sc), cy = Math.round(A.ballLow.y * sc), R = Math.round(Math.max(20, Math.sqrt(A.ballLow.area) * sc * 2));
+    const x0 = clamp(cx - R, 0, A.W - 1), x1 = clamp(cx + R, 0, A.W - 1), y0 = clamp(cy - R, 0, A.H - 1), y1 = clamp(cy + R, 0, A.H - 1), w = x1 - x0 + 1, h = y1 - y0 + 1;
+    let mx = 0; const vals = [];
+    for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) { const v = g[y * A.W + x]; if (v > mx) mx = v; vals.push(v); }
+    const thr = (mx + median(vals)) / 2; const mask = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (g[(y0 + y) * A.W + x0 + x] > thr) mask[y * w + x] = 1;
+    const comps = components(mask, w, h, 20, w * h / 2); if (!comps.length) return null;
+    // the ball: roundest sizeable blob nearest the low-res position
+    comps.forEach((c) => { c.round = c.area / (Math.PI * Math.pow(Math.max(c.w, c.h) / 2, 2)); c.dist = Math.hypot(c.x + x0 - cx, c.y + y0 - cy); });
+    comps.sort((p, q) => (p.dist - 20 * p.round) - (q.dist - 20 * q.round));
+    const c = comps[0];
+    return { x: c.x + x0, y: c.y + y0, diam: 2 * Math.sqrt(c.area / Math.PI), w: c.w, h: c.h };
+  }
+  async function trackStreak() {
+    const trail = []; const fps = A.fps, W = A.W, H = A.H; const tee = A.tee;
+    let prev = await grayAt(A.frames[A.imp].t);
+    let pred = null, vel = null, R = 320, last = null;
+    for (let k = 1; k <= 30 && A.imp + k < A.frames.length; k++) {
+      const cur = await grayAt(A.frames[A.imp + k].t);
+      progress(0.6 + 0.35 * k / 30);
+      const px = pred || tee, rr = R;
+      const x0 = clamp(Math.round(px.x - rr), 0, W - 1), x1 = clamp(Math.round(px.x + rr), 0, W - 1), y0 = clamp(Math.round(px.y - rr), 0, H - 1), y1 = clamp(Math.round(px.y + rr), 0, H - 1);
+      const w = x1 - x0 + 1, h = y1 - y0 + 1; const mask = new Uint8Array(w * h); const dsum = new Int32Array(w * h);
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = (y0 + y) * W + x0 + x; const d = cur[i] - prev[i]; if (d > 22) { mask[y * w + x] = 1; dsum[y * w + x] = d; } }
+      const comps = components(mask, w, h, 15, 6000, false);
+      let best = null;
+      for (const c of comps) {
+        const gx = c.x + x0, gy = c.y + y0;
+        let score;
+        if (!pred) {   // first flight frame: the streak starts at the tee and heads upward — nearest bbox point to the tee
+          const nx = clamp(tee.x, c.x0 + x0, c.x1 + x0), ny = clamp(tee.y, c.y0 + y0, c.y1 + y0);
+          const near = Math.hypot(nx - tee.x, ny - tee.y); const diag = Math.hypot(c.w, c.h);
+          if (c.area < 60 || diag < 20 || near > 90) continue;
+          if (gy > tee.y - 8) continue;                   // the ball rises: its streak centroid sits above the tee
+          if (near < 3 && c.area > 3000) continue;       // component containing the tee & huge → probably the club
+          score = near + Math.max(0, 1500 - c.area) * 0.01;
+        } else {
+          score = Math.hypot(gx - pred.x, gy - pred.y);
+          if (last && Math.hypot(gx - last.x, gy - last.y) < 6) continue;
+        }
+        if (!best || score < best.score) best = { x: gx, y: gy, area: c.area, w: c.w, h: c.h, score };
+      }
+      if (!best) { if (!pred && k <= 3) { prev = cur; continue; } trail.stop = `第 ${k} 幀找不到球`; break; }
+      if (vel) {
+        const step = Math.hypot(best.x - last.x, best.y - last.y), vprev = Math.hypot(vel.x, vel.y);
+        if (step > vprev * 1.6 + 15) { trail.stop = '位移不合理'; break; }
+        if (trail.length >= 4 && best.area > 500 && best.area > 1.3 * Math.max(...trail.slice(-4, -1).map((t) => t.area))) { trail.stop = '拖影變大（黏到身體）'; break; }
+        if (trail.length >= 6 && Math.hypot(best.x - pred.x, best.y - pred.y) > 40) { trail.stop = '偏離模型預測'; break; }
+      }
+      // consistency: a receding ball's image steps shrink and its direction barely changes
+      if (last) {
+        const s1 = { x: best.x - last.x, y: best.y - last.y }; const prevStep = { x: last.x - (trail.length >= 2 ? trail[trail.length - 2].x : tee.x), y: last.y - (trail.length >= 2 ? trail[trail.length - 2].y : tee.y) };
+        const n1 = Math.hypot(s1.x, s1.y), n0 = Math.hypot(prevStep.x, prevStep.y);
+        const ang = n1 > 1 && n0 > 1 ? Math.acos(clamp((s1.x * prevStep.x + s1.y * prevStep.y) / (n1 * n0), -1, 1)) * 180 / Math.PI : 0;
+        if (ang > 35 || (trail.length >= 2 && n1 > n0 * 1.25 + 4)) { trail.stop = '軌跡不連貫'; break; }
+      }
+      trail.push({ k, t: A.frames[A.imp + k].t, x: best.x, y: best.y, area: best.area });
+      vel = { x: best.x - (last ? last.x : tee.x), y: best.y - (last ? last.y : tee.y) }; last = best;
+      if (trail.length >= 6) { const m = fitPersp(trail); const q = perspPt(m, k + 1); pred = { x: q[0], y: q[1] }; R = 60; }
+      else { pred = { x: best.x + vel.x * 0.8, y: best.y + vel.y * 0.8 }; R = Math.max(60, Math.hypot(vel.x, vel.y) * 0.7 + 40); }
+      prev = cur;
+    }
+    return trail;
+  }
+  // perspective-linear fit through the tee: p(t) = (A + B t)/(1 + c t), t in frames after impact
+  function fitPersp(trail) {
+    const good = trail.filter((p) => p.area >= 250); const pts = good.length >= 2 ? good : trail;
+    const T = [0, ...pts.map((p) => p.k)], X = [A.tee.x, ...pts.map((p) => p.x)], Y = [A.tee.y, ...pts.map((p) => p.y)];
+    let best = null;
+    for (let c = 0.005; c <= 1.5; c += 0.0025) {
+      // least squares for a,b in x = a/D + b t/D
+      const fit = (V) => { let s11 = 0, s12 = 0, s22 = 0, r1 = 0, r2 = 0; for (let i = 0; i < T.length; i++) { const D = 1 + c * T[i], u = 1 / D, v = T[i] / D; s11 += u * u; s12 += u * v; s22 += v * v; r1 += u * V[i]; r2 += v * V[i]; } const det = s11 * s22 - s12 * s12 || 1e-9; const a = (r1 * s22 - r2 * s12) / det, b = (s11 * r2 - s12 * r1) / det; let err = 0; for (let i = 0; i < T.length; i++) { const D = 1 + c * T[i]; err += Math.pow((a + b * T[i]) / D - V[i], 2); } return { a, b, err }; };
+      const fx = fit(X), fy = fit(Y); const err = fx.err + fy.err;
+      if (!best || err < best.err) best = { c, ax: [fx.a, fx.b], ay: [fy.a, fy.b], err, rms: Math.sqrt(err / T.length / 2) };
+    }
+    return best;
+  }
+  function perspPt(m, t) { const D = 1 + m.c * t; return [(m.ax[0] + m.ax[1] * t) / D, (m.ay[0] + m.ay[1] * t) / D]; }
+
+  // ────────────────────────────── 5. camera geometry & estimates
+  function cameraModel() {
+    const f35 = parseFloat(A.meta['com.apple.quicktime.camera.focal_length.35mm_equivalent']);
+    const diag = Math.hypot(A.W, A.H);
+    const f = diag * (Number.isFinite(f35) && f35 > 5 ? f35 : 27) / 43.27;
+    const cx = A.W / 2, cy = A.H / 2;
+    const geo = { f, f35: Number.isFinite(f35) ? f35 : null, cx, cy, model: A.meta['com.apple.quicktime.model'] || null, lens: A.meta['com.apple.quicktime.camera.lens_model'] || null };
+    if (A.tee && A.ballDiam && f * BALL_D / A.ballDiam > 1.0 && f * BALL_D / A.ballDiam < 15) {
+      const Z0 = f * BALL_D / A.ballDiam; const ray = [(A.tee.x - cx) / f, (A.tee.y - cy) / f, 1]; const B = ray.map((v) => v * Z0); const range = Math.hypot(...B);
+      const hCam = clamp(+ui.camH.value || 1.2, 0.3, 3);
+      const dep = Math.asin(clamp(hCam / range, -1, 1)); const below = Math.atan2(B[1], B[2]); const theta = dep - below;   // camera pitch (down +)
+      const F = [0, -Math.sin(theta), Math.cos(theta)], U = [0, -Math.cos(theta), -Math.sin(theta)], R = [1, 0, 0];
+      Object.assign(geo, { Z0, range, B, theta, F, U, R, hCam });
+    }
+    return geo;
+  }
+  const v3 = (a, s) => a.map((v) => v * s), add3 = (...vs) => vs.reduce((p, q) => p.map((v, i) => v + q[i]));
+  function imgVelocity(geo, u) {   // image velocity (px per m/s) of a point at B moving with unit vector u
+    const [X, Y, Z] = geo.B, [vx, vy, vz] = u;
+    return [geo.f * (vx * Z - X * vz) / (Z * Z), geo.f * (vy * Z - Y * vz) / (Z * Z)];
+  }
+  function solveAzimuth(geo, launchDeg, dir) {   // find azimuth A (right +) so the projected launch direction matches the image trail direction
+    const E = launchDeg * Math.PI / 180; let best = null;
+    for (let a = -80; a <= 80; a += 0.25) {
+      const Ar = a * Math.PI / 180;
+      const u = add3(v3(add3(v3(geo.F, Math.cos(Ar)), v3(geo.R, Math.sin(Ar))), Math.cos(E)), v3(geo.U, Math.sin(E)));
+      const iv = imgVelocity(geo, u); const n = Math.hypot(iv[0], iv[1]); if (n < 1e-9) continue;
+      const err = Math.hypot(iv[0] / n - dir[0], iv[1] / n - dir[1]);
+      if (!best || err < best.err) best = { az: a, err, u, iv };
+    }
+    return best;
+  }
+  function project(geo, az, x, y, z) {   // world (x downrange along azimuth, y up, z right) → image px
+    const Ar = az * Math.PI / 180; const FA = add3(v3(geo.F, Math.cos(Ar)), v3(geo.R, Math.sin(Ar))), RA = add3(v3(geo.F, -Math.sin(Ar)), v3(geo.R, Math.cos(Ar)));
+    const C = add3(geo.B, v3(FA, x), v3(geo.U, y), v3(RA, z));
+    if (C[2] < 0.2) return null;
+    return [geo.cx + geo.f * C[0] / C[2], geo.cy + geo.f * C[1] / C[2]];
+  }
+
+  function estimate() {
+    const fps = A.fps, F = A.frames;
+    const club = G.CLUBS.find((c) => c.id === ui.club.value) || G.CLUBS[0];
+    const tImp = F[A.imp].t + 0.5 / fps, tTop = F[A.top].t, tBs = F[A.bs].t;
+    const Tdown = Math.max(0.12, tImp - tTop), Tback = Math.max(0.05, tTop - tBs);
+    const chsMph = TEMPO_K * (CLUB_FACTOR[club.id] || 0.85) / Tdown; const chs = chsMph / MPH;
+    const ballSpeed = chs * club.smash;
+    // slower swings launch higher and keep most of the spin (more spin loft), so don't scale spin down linearly
+    const typicalChs = club.ball / club.smash;
+    const launch = clamp(club.launch + 0.06 * (typicalChs - chsMph), club.launch - 2, club.launch + 6);
+    const spin = clamp(club.spin * clamp(ballSpeed * MPH / club.ball, 0.9, 1.3), 800, 12000);
+    const geo = cameraModel(); let az = 0, vGeo = null, dir = null;
+    if (A.trail.length >= 3 && geo.B) {
+      const lastP = A.trail[A.trail.length - 1]; const dx = lastP.x - A.tee.x, dy = lastP.y - A.tee.y, n = Math.hypot(dx, dy) || 1; dir = [dx / n, dy / n];
+      const sol = solveAzimuth(geo, launch, dir); if (sol) { az = sol.az; const first = A.trail[0]; const disp = Math.hypot(first.x - A.tee.x, first.y - A.tee.y) * fps / Math.max(0.5, first.k); vGeo = disp / Math.hypot(sol.iv[0], sol.iv[1]); }
+    }
+    const sim = G.simulate({ v0: ballSpeed, launchDeg: launch, rpm: spin, axisDeg: 0, startDirDeg: 0 });
+    const simLo = G.simulate({ v0: ballSpeed * 0.88, launchDeg: launch, rpm: spin * 0.88, axisDeg: 0, startDirDeg: 0 });
+    const simHi = G.simulate({ v0: ballSpeed * 1.12, launchDeg: launch, rpm: spin * 1.12, axisDeg: 0, startDirDeg: 0 });
+    A.geo = geo; A.est = { club, tImp, tTop, tBs, Tdown, Tback, chs, chsMph, ballSpeed, launch, spin, az, vGeo, sim, simLo, simHi, model: A.trail.length >= 3 ? fitPersp(A.trail) : null };
+    return A.est;
+  }
+
+  // ────────────────────────────── 6. rendering results
+  function renderResults() {
+    const e = A.est, geo = A.geo, fps = A.fps;
+    ui.results.hidden = false;
+    const tile = (id, val, sub) => { const el = $(id); el.querySelector('.val').innerHTML = val; el.querySelector('.sub').textContent = sub || ''; };
+    tile('#tChs', `${fmt(e.chsMph, 0)}<small>mph</small>`, `${fmt(e.chs, 1)} m/s · ${fmt(e.chs * KMH, 0)} km/h`);
+    tile('#tDown', `${fmt(e.Tdown * 1000, 0)}<small>ms</small>`, `上桿 ${fmt(e.Tback, 2)} s · 節奏 ${fmt(e.Tback / e.Tdown, 1)} : 1`);
+    tile('#tBall', `${fmt(e.ballSpeed, 1)}<small>m/s</small>`, `${fmt(e.ballSpeed * MPH, 0)} mph · smash ${e.club.smash}`);
+    tile('#tLaunch', `${fmt(e.launch, 1)}<small>°</small>`, `後旋約 ${fmt(e.spin, 0)} rpm（球桿典型值）`);
+    tile('#tCarry', `${fmt(e.sim.carry * YD, 0)}<small>yd</small>`, `${fmt(e.sim.carry, 0)} m · 區間 ${fmt(e.simLo.carry * YD, 0)}–${fmt(e.simHi.carry * YD, 0)} yd`);
+    tile('#tApex', `${fmt(e.sim.apex, 0)}<small>m</small>`, `飛行 ${fmt(e.sim.tof, 1)} s · 落地角 ${fmt(e.sim.landAngle, 0)}°`);
+    const tr = A.trail;
+    tile('#tTrail', tr.length ? `${tr.length}<small>幀</small>` : '—', tr.length ? `追到擊球後 ${fmt(tr[tr.length - 1].k / fps, 2)} s${tr.stop ? '，' + tr.stop : ''}` : '影片中沒有可追蹤的球拖影');
+    tile('#tDir', tr.length >= 3 ? `${e.az < 0 ? '左 ' : '右 '}${fmt(Math.abs(e.az), 0)}<small>°</small>` : '—', tr.length >= 3 ? '出球方向（相對鏡頭中心軸）' : '需要球拖影');
+    const camBits = [];
+    if (geo.model) camBits.push(geo.model); camBits.push(geo.f35 ? `${geo.f35} mm 等效（來自檔案）` : '焦距未知，假設 27 mm 等效');
+    if (geo.Z0) camBits.push(`相機距球約 ${fmt(geo.range, 1)} m · 俯角 ${fmt(geo.theta * 180 / Math.PI, 0)}°`);
+    if (A.ballDiam) camBits.push(`球直徑 ${fmt(A.ballDiam, 1)} px`);
+    if (e.vGeo) camBits.push(`拖影幾何法球速 ${fmt(e.vGeo, 0)} m/s（僅供交叉參考，誤差大）`);
+    $('#autoCam').textContent = camBits.join(' · ');
+    $('#autoTiming').innerHTML = `擊球 <b>${fmt(e.tImp, 2)} s</b>（frame ${A.imp}）· 上桿頂點 <b>${fmt(e.tTop, 2)} s</b>（frame ${A.top}）· 起桿 <b>${fmt(e.tBs, 2)} s</b>（frame ${A.bs}）· 影片 ${fmt(fps, 0)} fps${A.dropped > 5 ? `（擷取掉幀約 ${A.dropped}%）` : ''}`;
+    drawTimeline();
+    // push into the detailed simulator (charts, stat tiles)
+    $('#simV').value = fmt(e.ballSpeed, 1); $('#simLaunch').value = fmt(e.launch, 1); $('#simSpin').value = Math.round(e.spin);
+    $('#simAxis').value = '0'; $('#simDir').value = '0'; $('#club').value = e.club.id;
+    G.runSim();
+    ui.play.disabled = false;
+    G.render();
+  }
+  function drawTimeline() {
+    const cv = ui.tl, c = cv.getContext('2d'); const W = cv.width, H = cv.height; const E = A.sm, n = E.length;
+    c.clearRect(0, 0, W, H); c.fillStyle = '#080C14'; c.fillRect(0, 0, W, H);
+    let mx = 0; for (let i = 0; i < n; i++) mx = Math.max(mx, E[i]); mx = mx || 1;
+    const X = (i) => 40 + i / (n - 1) * (W - 56), Y = (v) => H - 22 - v / mx * (H - 40);
+    c.strokeStyle = '#22D3EE'; c.lineWidth = 1.5; c.beginPath(); for (let i = 0; i < n; i++) { if (i === 0) c.moveTo(X(i), Y(E[i])); else c.lineTo(X(i), Y(E[i])); } c.stroke();
+    c.fillStyle = 'rgba(34,211,238,0.12)'; c.lineTo(X(n - 1), Y(0)); c.lineTo(X(0), Y(0)); c.fill();
+    const mark = (i, col, label) => { c.strokeStyle = col; c.lineWidth = 2; c.beginPath(); c.moveTo(X(i), 8); c.lineTo(X(i), H - 22); c.stroke(); c.fillStyle = col; c.font = '11px JetBrains Mono, monospace'; c.textAlign = 'center'; c.fillText(label, X(i), H - 8); };
+    mark(A.bs, '#64748B', '起桿'); mark(A.top, '#FBBF24', '頂點'); mark(A.imp, '#F87171', '擊球');
+    c.fillStyle = '#64748B'; c.textAlign = 'left'; c.font = '11px JetBrains Mono, monospace'; c.fillText('動作能量', 4, 14);
+    // downswing bracket
+    c.fillStyle = 'rgba(251,191,36,0.10)'; c.fillRect(X(A.top), 8, X(A.imp) - X(A.top), H - 30);
+  }
+
+  // ────────────────────────────── 7. video overlay (hook into the manual viewer) + tracer playback
+  function drawOverlay(ctx, k, t, opts = {}) {
+    if (!A.est || !A.tee) return;
+    const e = A.est, geo = A.geo, fps = A.fps; const tRel = t - e.tImp; if (tRel < -0.02 && !opts.force) { ring(ctx, k); return; }
+    const glow = document.createElement('canvas'); glow.width = ctx.canvas.width; glow.height = ctx.canvas.height; const g = glow.getContext('2d');
+    // measured trail (solid)
+    const trailPts = [[A.tee.x, A.tee.y], ...A.trail.filter((p) => opts.full || p.k / fps <= tRel + 1e-6).map((p) => [p.x, p.y])];
+    if (trailPts.length >= 2) { g.strokeStyle = '#FFD728'; g.lineWidth = 6; g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); trailPts.forEach((p, i) => (i ? g.lineTo(p[0] * k, p[1] * k) : g.moveTo(p[0] * k, p[1] * k))); g.stroke(); }
+    // simulated 3D flight projected through the camera model (dashed)
+    if (geo.B && e.sim) {
+      const tStart = A.trail.length ? A.trail[A.trail.length - 1].k / fps : 0;
+      g.strokeStyle = 'rgba(167,139,250,0.95)'; g.lineWidth = 3.5; g.setLineDash([10, 8]); g.beginPath(); let started = false;
+      for (const q of e.sim.path) {
+        if (q.t < tStart) continue; if (!opts.full && q.t > tRel) break;
+        const p = project(geo, e.az, q.x, q.y, q.z); if (!p) break;
+        const px = p[0] * k, py = p[1] * k; if (px < -100 || px > glow.width + 100 || py < -100 || py > glow.height + 100) break;
+        if (!started) { const last = trailPts[trailPts.length - 1]; g.moveTo(last[0] * k, last[1] * k); started = true; }
+        g.lineTo(px, py);
+      }
+      g.stroke(); g.setLineDash([]);
+      // current ball position marker during playback
+      if (!opts.full && tRel >= 0 && tRel <= e.sim.tof) { const q = e.sim.path.find((p) => p.t >= tRel) || e.sim.path[e.sim.path.length - 1]; const p = project(geo, e.az, q.x, q.y, q.z); if (p) { g.fillStyle = '#fff'; g.beginPath(); g.arc(p[0] * k, p[1] * k, 5, 0, Math.PI * 2); g.fill(); } }
+    }
+    ctx.save(); ctx.filter = 'blur(6px)'; ctx.globalAlpha = 0.8; ctx.drawImage(glow, 0, 0); ctx.filter = 'none'; ctx.globalAlpha = 1; ctx.drawImage(glow, 0, 0); ctx.restore();
+  }
+  function ring(ctx, k) { if (!A.tee) return; ctx.strokeStyle = '#FFD728'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(A.tee.x * k, A.tee.y * k, Math.max(8, (A.ballDiam || 20) * k * 0.9), 0, Math.PI * 2); ctx.stroke(); }
+  window.__golfOverlay = (ctx, k, t) => { if (!A.playing) drawOverlay(ctx, k, t, { full: t >= (A.est ? A.est.tImp + 2.5 : Infinity) }); };
+
+  async function playTracer() {
+    if (!A.est || A.playing) { if (A.playing) stopTracer(); return; }
+    const view = $('#view'), ctx = view.getContext('2d'); const e = A.est;
+    A.playing = true; ui.play.textContent = '⏹ 停止'; G.state.busy = true;
+    await seekTime(Math.max(0, e.tImp - 1.0)); video.playbackRate = 1;
+    const tEnd = Math.min(video.duration, e.tImp + 3.0);
+    const loop = () => {
+      if (!A.playing) return;
+      const t = video.currentTime; const k = view.width / A.W;
+      ctx.drawImage(video, 0, 0, view.width, view.height);
+      drawOverlay(ctx, k, t);
+      label(ctx, t - e.tImp);
+      if (t >= tEnd || video.ended) { stopTracer(); return; }
+      requestAnimationFrame(loop);
+    };
+    video.play().then(() => requestAnimationFrame(loop)).catch(() => stopTracer());
+  }
+  function label(ctx, tRel) {
+    const s = tRel < 0 ? '等待擊球…' : `擊球後 ${(tRel * 1000).toFixed(0)} ms${A.trail.length && tRel <= A.trail[A.trail.length - 1].k / A.fps ? ' · 影片實測' : ' · 推估（物理模型 + 相機投影）'}`;
+    ctx.font = '13px JetBrains Mono, monospace'; const w = ctx.measureText(s).width; ctx.fillStyle = 'rgba(8,12,20,0.7)'; ctx.fillRect(10, 10, w + 16, 26); ctx.fillStyle = tRel < 0 ? '#CBD5E1' : '#FFD728'; ctx.fillText(s, 18, 28);
+  }
+  function stopTracer() { A.playing = false; video.pause(); ui.play.textContent = '▶ 播放 Tracer'; G.state.busy = false; if (A.est) G.seekTo(Math.round(A.est.tImp * G.state.playFps)); }
+
+  // ────────────────────────────── 8. pipeline
+  async function run(file) {
+    if (A.busy) return; A.busy = true; G.state.busy = true;
+    ui.results.hidden = true; ui.play.disabled = true; A.trail = []; A.est = null; A.tee = null; A.ballDiam = null;
+    try {
+      progress(0.02); status('讀取相機資訊…');
+      A.meta = await readQtMeta(file);
+      status('逐幀擷取影片（播放一次）…'); await capturePass();
+      if (!A.frames || A.frames.length < 10) throw new Error('抓不到影格，瀏覽器可能無法解碼這個影片（HEVC）。請改用 Safari，或在 iPhone 設定→相機→格式 選「最相容」。');
+      progress(0.52); status('分析動作能量、尋找球與擊球瞬間…'); await new Promise((r) => setTimeout(r, 10));
+      motionEnergy();
+      A.ballLow = findBall();
+      if (A.ballLow) A.imp = A.ballLow.d - 1;
+      else { A.imp = fallbackImpact(); if (A.imp < 0) throw new Error('找不到擊球瞬間：影片裡沒有偵測到揮桿動作（或球不在畫面裡）。'); }
+      const ts = findTopAndStart(A.imp); A.top = ts.top; A.bs = ts.bs;
+      // sync manual module fps so its frame navigation lines up
+      $('#playFps').value = Math.round(A.fps); $('#captureFps').value = Math.round(A.fps); $('#playFps').dispatchEvent(new Event('change'));
+      progress(0.58);
+      if (A.ballLow) {
+        status('放大確認球的位置與大小…');
+        const rb = await refineBall(); if (rb) { A.tee = { x: rb.x, y: rb.y }; A.ballDiam = rb.diam; } else { const sc = A.W / A.lw; A.tee = { x: A.ballLow.x * sc, y: A.ballLow.y * sc }; A.ballDiam = Math.sqrt(A.ballLow.area / Math.PI) * 2 * sc; }
+        status('追蹤擊球後的球拖影…');
+        A.trail = await trackStreak();
+      }
+      progress(0.97); status('推估桿頭速度與飛行軌跡…');
+      estimate(); renderResults();
+      progress(1);
+      const tr = A.trail.length;
+      status(`完成：擊球 ${fmt(A.est.tImp, 2)} s，下桿 ${fmt(A.est.Tdown * 1000, 0)} ms → 桿頭約 ${fmt(A.est.chsMph, 0)} mph，推估 carry ${fmt(A.est.sim.carry * YD, 0)} yd${tr ? `；球拖影追到 ${tr} 幀` : '；沒追到球，僅用揮桿節奏推估'}。`, 'ok');
+      G.state.busy = false;
+      await G.seekTo(Math.round(A.est.tImp * G.state.playFps));
+    } catch (err) {
+      console.error(err); status(`分析失敗：${err.message}`, 'warn'); ui.prog.hidden = true;
+    } finally { A.busy = false; G.state.busy = false; }
+  }
+
+  // ────────────────────────────── wiring
+  $('#file').addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0]; if (!f) return; A.file = f;
+    const onMeta = () => { video.removeEventListener('loadedmetadata', onMeta); setTimeout(() => run(f), 250); };
+    video.addEventListener('loadedmetadata', onMeta);
+  });
+  ui.rerun.addEventListener('click', () => { if (A.file) run(A.file); });
+  video.addEventListener('error', () => status('瀏覽器無法解碼這個影片（iPhone 預設 HEVC 格式）。請改用 Safari 開這個頁面，或在 iPhone 設定 → 相機 → 格式 選「最相容」後重拍／轉檔為 H.264 mp4。', 'warn'));
+  ui.club.addEventListener('change', () => { if (A.est) { estimate(); renderResults(); } });
+  ui.camH.addEventListener('change', () => { if (A.est) { estimate(); renderResults(); } });
+  ui.play.addEventListener('click', playTracer);
+  const nudge = (which, d) => { if (!A.est) return; if (which === 'imp') A.imp = clamp(A.imp + d, 1, A.frames.length - 2); else A.top = clamp(A.top + d, 0, A.imp - 2); estimate(); renderResults(); G.seekTo(Math.round((which === 'imp' ? A.est.tImp : A.est.tTop) * G.state.playFps)); };
+  ui.impM.addEventListener('click', () => nudge('imp', -1)); ui.impP.addEventListener('click', () => nudge('imp', 1));
+  ui.topM.addEventListener('click', () => nudge('top', -1)); ui.topP.addEventListener('click', () => nudge('top', 1));
+
+  window.__golfAuto = { A, run, readQtMeta, motionEnergy, swingBursts, findBall, findTopAndStart, fallbackImpact, fitPersp, estimate, cameraModel, solveAzimuth, project };
 }());
 </script>
 </body>

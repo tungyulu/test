@@ -15,7 +15,7 @@
 | [usage.html](https://tungyulu.github.io/test/usage.html) | Claude Code 方案額度儀表板 |
 | [dyson.html](https://tungyulu.github.io/test/dyson.html) | Dyson 選購 · 四家 AI 交叉比對報告 |
 | [invest.html](https://tungyulu.github.io/test/invest.html) | 投資作戰表 · 2026 年 9～12 月 |
-| [golf.html](https://tungyulu.github.io/test/golf.html) | 高爾夫球軌跡追蹤 · 慢動作影片逐幀追蹤球／桿頭，物理模型模擬飛行 |
+| [golf.html](https://tungyulu.github.io/test/golf.html) | 高爾夫揮桿分析 · 丟入手機影片自動找擊球瞬間、量下桿節奏推估桿頭速度與飛行距離，能追到球時疊上 tracer；另有正面慢動作手動量測 |
 
 ## golf-tracer.py
 
