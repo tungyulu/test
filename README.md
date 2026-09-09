@@ -14,6 +14,8 @@
 | [yacht.html](https://tungyulu.github.io/test/yacht.html) | 快艇骰子 · 5 顆骰子 13 類別計分 |
 | [usage.html](https://tungyulu.github.io/test/usage.html) | Claude Code 方案額度儀表板 |
 | [dyson.html](https://tungyulu.github.io/test/dyson.html) | Dyson 選購 · 四家 AI 交叉比對報告 |
+| [invest.html](https://tungyulu.github.io/test/invest.html) | 投資作戰表 · 2026 年 9～12 月 |
+| [golf.html](https://tungyulu.github.io/test/golf.html) | 高爾夫球軌跡追蹤 · 慢動作影片逐幀追蹤球／桿頭，物理模型模擬飛行 |
 
 ## usage-dashboard.js
 

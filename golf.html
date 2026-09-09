@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>高爾夫球軌跡追蹤</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #080C14;
+      --surface:   #0D1422;
+      --surface-2: #111B2E;
+      --border:    #1A2540;
+      --border-hi: #2D4470;
+      --ink:       #CBD5E1;
+      --ink-dim:   #64748B;
+      --ink-hi:    #F1F5F9;
+      --cyan:      #22D3EE;
+      --cyan-glow: rgba(34, 211, 238, 0.12);
+      --amber:     #FBBF24;
+      --green:     #4ADE80;
+      --red:       #F87171;
+      --mono: 'JetBrains Mono', 'Courier New', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { color-scheme: dark; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100svh;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(34,211,238,0.055) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none; z-index: 0;
+    }
+    .wrap { position: relative; z-index: 1; max-width: 80rem; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+
+    /* ── header ── */
+    .back { font-family: var(--mono); font-size: 0.75rem; color: var(--cyan); text-decoration: none; letter-spacing: 0.06em; opacity: 0.85; }
+    .back:hover { opacity: 1; text-decoration: underline; }
+    .tag { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; color: var(--cyan); margin: 1.5rem 0 0.5rem; opacity: 0.85; }
+    h1 { font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; letter-spacing: -0.02em; color: var(--ink-hi); margin: 0 0 0.75rem; }
+    .lede { max-width: 48rem; color: var(--ink-dim); font-size: 0.9375rem; margin: 0 0 1.5rem; }
+    .lede strong { color: var(--ink); font-weight: 500; }
+    hr.rule { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+    /* ── layout ── */
+    .layout { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+    @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.125rem 1.25rem; }
+    .card + .card { margin-top: 1rem; }
+    .step-head { display: flex; align-items: center; gap: 0.625rem; margin-bottom: 0.625rem; }
+    .step-num { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em; color: var(--cyan); border: 1px solid var(--border-hi); border-radius: 999px; padding: 0.05rem 0.5rem; }
+    .step-title { font-weight: 700; color: var(--ink-hi); font-size: 0.9375rem; }
+    .hint { font-size: 0.75rem; color: var(--ink-dim); margin: 0.25rem 0 0.5rem; }
+    .hint b { color: var(--ink); font-weight: 500; }
+
+    label.field { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.75rem; color: var(--ink-dim); }
+    .row { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: flex-end; }
+    .row > * { flex: 1 1 0; min-width: 0; }
+    input[type=number], input[type=text], select {
+      width: 100%; background: var(--bg); color: var(--ink-hi); border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.4rem 0.55rem; font-family: var(--mono); font-size: 0.8125rem;
+    }
+    input[type=number]:focus, select:focus, input[type=text]:focus { outline: 2px solid var(--cyan); outline-offset: 1px; border-color: var(--border-hi); }
+    input[type=file] { font-size: 0.75rem; color: var(--ink-dim); width: 100%; }
+    input[type=file]::file-selector-button {
+      background: var(--surface-2); color: var(--cyan); border: 1px solid var(--border-hi); border-radius: 8px;
+      padding: 0.4rem 0.75rem; font-family: var(--mono); font-size: 0.75rem; cursor: pointer; margin-right: 0.5rem;
+    }
+    input[type=range] { width: 100%; accent-color: var(--cyan); }
+
+    button.btn {
+      background: var(--surface-2); color: var(--ink-hi); border: 1px solid var(--border-hi); border-radius: 8px;
+      padding: 0.45rem 0.75rem; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.03em; cursor: pointer;
+      transition: border-color .15s, background .15s, color .15s; white-space: nowrap;
+    }
+    button.btn:hover:not(:disabled) { border-color: var(--cyan); }
+    button.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    button.btn.primary { background: var(--cyan); color: #06222A; border-color: var(--cyan); font-weight: 500; }
+    button.btn.primary:hover:not(:disabled) { filter: brightness(1.08); }
+    button.btn.active { background: var(--cyan-glow); border-color: var(--cyan); color: var(--cyan); }
+    button.btn.amber.active { background: rgba(251,191,36,0.12); border-color: var(--amber); color: var(--amber); }
+    button.btn.green.active { background: rgba(74,222,128,0.12); border-color: var(--green); color: var(--green); }
+    button.btn.danger:hover:not(:disabled) { border-color: var(--red); color: var(--red); }
+    .btns { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.5rem; }
+
+    /* ── viewer ── */
+    .viewer { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .stage { position: relative; background: #000; display: flex; justify-content: center; align-items: center; min-height: 240px; }
+    #view { display: block; max-width: 100%; touch-action: none; cursor: crosshair; }
+    #view.no-video { cursor: default; }
+    .stage .empty { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--ink-dim); font-size: 0.875rem; pointer-events: none; text-align: center; padding: 1rem; }
+    .stage .empty .big { font-size: 2.5rem; }
+    .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; border-top: 1px solid var(--border); }
+    .toolbar .spacer { flex: 1; }
+    .readout { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-dim); }
+    .readout b { color: var(--ink-hi); font-weight: 500; }
+    .slider-row { padding: 0 1rem 0.75rem; }
+    .legend { display: flex; gap: 1rem; flex-wrap: wrap; padding: 0 1rem 0.75rem; font-size: 0.6875rem; color: var(--ink-dim); font-family: var(--mono); }
+    .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: -1px; margin-right: 0.3rem; }
+
+    #msg { margin-top: 0.75rem; padding: 0.6rem 0.9rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); font-size: 0.8125rem; color: var(--ink); min-height: 2.5rem; }
+    #msg.warn { border-color: rgba(251,191,36,0.5); color: var(--amber); }
+    #msg.ok { border-color: rgba(74,222,128,0.5); color: var(--green); }
+
+    /* ── results ── */
+    .results { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .results .card + .card { margin-top: 0; }
+    .kv { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.9rem; font-size: 0.8125rem; margin: 0.5rem 0 0; }
+    .kv dt { color: var(--ink-dim); }
+    .kv dd { margin: 0; font-family: var(--mono); color: var(--ink-hi); text-align: right; }
+    .kv dd small { color: var(--ink-dim); }
+    .big-num { font-family: var(--mono); font-size: 1.75rem; color: var(--cyan); line-height: 1.1; }
+    .big-num small { font-size: 0.75rem; color: var(--ink-dim); margin-left: 0.25rem; }
+    .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+    .stat { background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 0.875rem; }
+    .stat .lab { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em; color: var(--ink-dim); text-transform: uppercase; }
+    .stat .val { font-family: var(--mono); font-size: 1.25rem; color: var(--ink-hi); margin-top: 0.15rem; }
+    .stat .val small { font-size: 0.6875rem; color: var(--ink-dim); margin-left: 0.2rem; }
+    .stat .sub { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-dim); margin-top: 0.1rem; min-height: 1em; }
+    .stat.hi .val { color: var(--cyan); }
+
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+    @media (max-width: 700px) { .charts { grid-template-columns: 1fr; } }
+    .chart-card canvas { width: 100%; height: auto; display: block; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); }
+    .chart-title { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em; color: var(--ink-dim); margin-bottom: 0.5rem; }
+
+    table.pts { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.6875rem; margin-top: 0.5rem; }
+    table.pts th, table.pts td { text-align: right; padding: 0.2rem 0.35rem; border-bottom: 1px solid var(--border); color: var(--ink-dim); }
+    table.pts th { color: var(--ink); font-weight: 500; }
+    table.pts td:first-child, table.pts th:first-child { text-align: left; }
+    .scroll { max-height: 180px; overflow: auto; }
+
+    details.limits { margin-top: 1.5rem; }
+    details.limits summary { cursor: pointer; font-weight: 700; color: var(--ink-hi); font-size: 0.9375rem; }
+    details.limits ul { margin: 0.5rem 0 0; padding-left: 1.25rem; font-size: 0.8125rem; color: var(--ink-dim); }
+    details.limits li { margin: 0.3rem 0; }
+    details.limits li b { color: var(--ink); font-weight: 500; }
+    .muted { color: var(--ink-dim); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 回小工具首頁</a>
+  <p class="tag">// golf · video ball tracker</p>
+  <h1>高爾夫球軌跡追蹤</h1>
+  <p class="lede">
+    載入你的<strong>正面（face-on）慢動作揮桿影片</strong>，在擊球後的幾幀標記球的位置，工具會以比例尺換算出<strong>出球速度與起飛角</strong>，再用飛行物理模型（空氣阻力＋馬格努斯升力）推算整條球道、落點與最高點，並疊回影片畫面。
+    若球出畫面太快，也可以改標記擊球前的<strong>桿頭</strong>，由桿頭速度與攻角推估出球條件。影片只在你的瀏覽器中處理，不會上傳到任何地方。
+  </p>
+
+  <div class="layout">
+    <!-- ───────── 左欄：步驟 ───────── -->
+    <aside>
+      <section class="card" id="step-video">
+        <div class="step-head"><span class="step-num">01</span><span class="step-title">載入影片</span></div>
+        <input type="file" id="file" accept="video/*" />
+        <p class="hint">建議用手機 <b>120 / 240 fps 慢動作</b>，相機正對目標線（站在你的正面），三腳架固定。一般 30 fps 影片球一兩幀就會飛出畫面，幾乎無法追蹤。</p>
+        <div class="row">
+          <label class="field">播放幀率 fps<input type="number" id="playFps" min="1" max="480" step="1" value="30" /></label>
+          <label class="field">拍攝幀率 fps<input type="number" id="captureFps" min="1" max="2000" step="1" value="240" /></label>
+        </div>
+        <p class="hint">慢動作影片匯出後通常以 30 fps 播放，但每一幀其實是 1/240 秒（iPhone 240 fps 慢動作）。<b>播放幀率</b>用來逐幀定位、<b>拍攝幀率</b>用來換算真實時間。若是普通影片，兩者填一樣即可。</p>
+        <div class="readout" id="videoInfo">尚未載入</div>
+      </section>
+
+      <section class="card" id="step-scale">
+        <div class="step-head"><span class="step-num">02</span><span class="step-title">比例尺</span></div>
+        <div class="row">
+          <label class="field">參考物
+            <select id="refType">
+              <option value="1.14">一號木桿長 (45") ≈ 1.14 m</option>
+              <option value="1.09">三號木桿長 ≈ 1.09 m</option>
+              <option value="0.97">5 鐵桿長 ≈ 0.97 m</option>
+              <option value="0.94">7 鐵桿長 ≈ 0.94 m</option>
+              <option value="0.90">挖起桿長 ≈ 0.90 m</option>
+              <option value="custom">自訂長度（身高、球梯間距…）</option>
+            </select>
+          </label>
+          <label class="field">長度 (m)<input type="number" id="refLen" min="0.05" step="0.01" value="1.14" /></label>
+        </div>
+        <div class="btns">
+          <button class="btn green" id="modeScale" data-mode="scale">📏 在畫面上點兩端</button>
+          <button class="btn danger" id="clearScale">清除</button>
+        </div>
+        <p class="hint">停在準備擊球的那一幀，點桿頭底部與握把頂端（或其他已知長度的兩端）。<b>參考物要跟球的飛行面大致同一距離</b>，比例才準。</p>
+        <div class="readout" id="scaleInfo">尚未設定</div>
+      </section>
+
+      <section class="card" id="step-impact">
+        <div class="step-head"><span class="step-num">03</span><span class="step-title">擊球瞬間 (t = 0)</span></div>
+        <p class="hint">逐幀找到桿面接觸球的那一幀，按下「設為擊球瞬間」。之後的幀為正、之前為負。</p>
+        <div class="btns">
+          <button class="btn" id="setImpact">⛳ 設為擊球瞬間</button>
+        </div>
+        <div class="readout" id="impactInfo">尚未設定（將以第一個球標記為 t=0）</div>
+      </section>
+
+      <section class="card" id="step-ball">
+        <div class="step-head"><span class="step-num">04</span><span class="step-title">追蹤球</span></div>
+        <p class="hint">切到「標記球」模式，在擊球後第一幀點球心，再按「自動追蹤」讓工具往後逐幀尋找。追蹤跑掉時直接點一下修正，再繼續。至少需要 <b>3 幀</b>。</p>
+        <div class="btns">
+          <button class="btn" id="modeBall" data-mode="ball">🎯 標記球</button>
+          <button class="btn primary" id="trackBall">▶ 自動追蹤 +</button>
+          <button class="btn" id="trackBallOne">+1 幀</button>
+          <button class="btn danger" id="clearBall">清除</button>
+        </div>
+        <div class="row" style="margin-top:.5rem">
+          <label class="field">搜尋半徑 (px)<input type="number" id="searchR" min="8" max="400" step="4" value="60" /></label>
+          <label class="field">差異門檻<input type="number" id="thresh" min="5" max="150" step="5" value="35" /></label>
+          <label class="field">最多幀數<input type="number" id="maxSteps" min="1" max="200" step="1" value="12" /></label>
+        </div>
+        <div class="row" style="margin-top:.5rem">
+          <label class="field">目標亮暗
+            <select id="polarity">
+              <option value="auto">自動判斷（比較點選處與周圍）</option>
+              <option value="bright">目標比背景亮（白球對草地）</option>
+              <option value="dark">目標比背景暗（球對天空）</option>
+            </select>
+          </label>
+        </div>
+        <p class="hint">💡 先手動點 <b>連續兩幀</b> 再按自動追蹤，工具就知道速度方向，不會被隨揮的桿頭騙走。</p>
+      </section>
+
+      <section class="card" id="step-club">
+        <div class="step-head"><span class="step-num">05</span><span class="step-title">追蹤桿頭（選用）</span></div>
+        <p class="hint">在擊球前 3～6 幀點桿頭，工具往前逐幀追蹤，算出<b>桿頭速度</b>與<b>攻角</b>，再依球桿推估出球速度、起飛角與後旋。</p>
+        <div class="row">
+          <label class="field">球桿
+            <select id="club"></select>
+          </label>
+        </div>
+        <div class="btns">
+          <button class="btn amber" id="modeClub" data-mode="club">🏏 標記桿頭</button>
+          <button class="btn primary" id="trackClub">◀ 自動追蹤 −</button>
+          <button class="btn danger" id="clearClub">清除</button>
+        </div>
+        <div class="btns">
+          <button class="btn" id="applySwing" disabled>↓ 用揮桿數據推估出球條件</button>
+        </div>
+      </section>
+
+      <section class="card" id="step-export">
+        <div class="step-head"><span class="step-num">06</span><span class="step-title">匯出</span></div>
+        <div class="btns">
+          <button class="btn" id="exportJson">⬇ 匯出標記與結果 (JSON)</button>
+          <button class="btn" id="exportPng">⬇ 匯出目前畫面 (PNG)</button>
+        </div>
+      </section>
+    </aside>
+
+    <!-- ───────── 右欄：畫面 + 結果 ───────── -->
+    <main>
+      <div class="viewer">
+        <div class="stage" id="stage">
+          <canvas id="view" class="no-video" width="960" height="540"></canvas>
+          <div class="empty" id="empty"><span class="big">🎥</span><span>從左側「載入影片」選一段揮桿影片開始</span><span class="muted" style="font-size:.75rem">支援手機 mp4 / mov / webm，全程在本機處理</span></div>
+        </div>
+        <div class="toolbar">
+          <button class="btn" id="prev10" title="往前 10 幀 (Shift+←)">⏮ −10</button>
+          <button class="btn" id="prev1" title="往前 1 幀 (←)">◀ −1</button>
+          <button class="btn" id="next1" title="往後 1 幀 (→)">+1 ▶</button>
+          <button class="btn" id="next10" title="往後 10 幀 (Shift+→)">+10 ⏭</button>
+          <span class="spacer"></span>
+          <span class="readout" id="frameInfo">frame — · t —</span>
+          <button class="btn" id="modeNone" data-mode="none">🖐 不標記</button>
+        </div>
+        <div class="slider-row"><input type="range" id="scrub" min="0" max="0" value="0" step="1" disabled aria-label="影片時間軸" /></div>
+        <div class="legend">
+          <span><i style="background:var(--green)"></i>比例尺</span>
+          <span><i style="background:var(--cyan)"></i>球（實測）</span>
+          <span><i style="background:var(--amber)"></i>桿頭</span>
+          <span><i style="background:#A78BFA"></i>模擬軌跡</span>
+          <span class="muted">← → 逐幀 · Shift 快 10 幀 · 點擊畫面 = 依目前模式標記</span>
+        </div>
+      </div>
+      <div id="msg">載入影片後，先設定比例尺，再標記擊球後的球位置。</div>
+
+      <div class="results">
+        <section class="card">
+          <div class="step-head"><span class="step-title">🎯 球的實測（由影片標記）</span></div>
+          <div class="big-num" id="ballSpeedBig">—<small>m/s</small></div>
+          <dl class="kv" id="ballKv">
+            <dt>球速</dt><dd>—</dd>
+            <dt>起飛角</dt><dd>—</dd>
+            <dt>畫面中方向</dt><dd>—</dd>
+            <dt>擬合誤差 (RMS)</dt><dd>—</dd>
+            <dt>使用幀數</dt><dd>—</dd>
+          </dl>
+          <div class="btns"><button class="btn" id="applyBall" disabled>↓ 帶入模擬</button></div>
+          <div class="scroll"><table class="pts" id="ballTable"></table></div>
+        </section>
+
+        <section class="card">
+          <div class="step-head"><span class="step-title">🏏 揮桿實測（由桿頭標記）</span></div>
+          <div class="big-num" id="clubSpeedBig">—<small>km/h</small></div>
+          <dl class="kv" id="clubKv">
+            <dt>桿頭速度</dt><dd>—</dd>
+            <dt>攻角 (AoA)</dt><dd>—</dd>
+            <dt>推估球速</dt><dd>—</dd>
+            <dt>推估起飛角</dt><dd>—</dd>
+            <dt>推估後旋</dt><dd>—</dd>
+          </dl>
+          <p class="hint">推估以 Trackman 巡迴賽平均值為基準，用桿頭速度與攻角修正；桿面角度無法從影片判讀，請在右邊的球型欄位自行假設。</p>
+          <div class="scroll"><table class="pts" id="clubTable"></table></div>
+        </section>
+      </div>
+
+      <section class="card" style="margin-top:1rem" id="simCard">
+        <div class="step-head"><span class="step-title">🛰 飛行模擬</span></div>
+        <div class="row">
+          <label class="field">球速 (m/s)<input type="number" id="simV" min="5" max="100" step="0.1" value="60" /></label>
+          <label class="field">起飛角 (°)<input type="number" id="simLaunch" min="0" max="60" step="0.1" value="12" /></label>
+          <label class="field">後旋 (rpm)<input type="number" id="simSpin" min="0" max="15000" step="50" value="2800" /></label>
+        </div>
+        <div class="row" style="margin-top:.5rem">
+          <label class="field">桿面角 (°, 開 +)<input type="number" id="simFace" min="-30" max="30" step="0.5" value="0" /></label>
+          <label class="field">揮桿路徑 (°, 內→外 +)<input type="number" id="simPath" min="-30" max="30" step="0.5" value="0" /></label>
+          <label class="field">旋轉軸傾角 (°, 右曲 +)<input type="number" id="simAxis" min="-60" max="60" step="0.5" value="0" /></label>
+          <label class="field">起始方向 (°, 右 +)<input type="number" id="simDir" min="-45" max="45" step="0.5" value="0" /></label>
+        </div>
+        <p class="hint">改桿面角／揮桿路徑會自動算出旋轉軸傾角與起始方向（右手球員：桿面比路徑開 → 右曲 fade / slice）。也可以直接改後兩欄。</p>
+        <div class="btns">
+          <button class="btn primary" id="runSim">🚀 模擬</button>
+          <button class="btn" id="playSim" disabled>▶ 播放飛行動畫</button>
+          <label class="field" style="flex-direction:row;align-items:center;gap:.5rem;margin-left:.5rem"><input type="checkbox" id="overlaySim" checked /> 疊在影片上</label>
+        </div>
+        <div class="stat-row" id="simStats">
+          <div class="stat hi"><div class="lab">Carry 飛行距離</div><div class="val">—</div><div class="sub"></div></div>
+          <div class="stat"><div class="lab">最高點</div><div class="val">—</div><div class="sub"></div></div>
+          <div class="stat"><div class="lab">飛行時間</div><div class="val">—</div><div class="sub"></div></div>
+          <div class="stat"><div class="lab">左右偏移</div><div class="val">—</div><div class="sub"></div></div>
+          <div class="stat"><div class="lab">落地角度</div><div class="val">—</div><div class="sub"></div></div>
+          <div class="stat"><div class="lab">落地球速</div><div class="val">—</div><div class="sub"></div></div>
+        </div>
+        <div class="charts">
+          <div class="chart-card"><div class="chart-title">SIDE VIEW · 高度 vs 距離 (m)</div><canvas id="sideChart" width="640" height="300"></canvas></div>
+          <div class="chart-card"><div class="chart-title">TOP VIEW · 左右偏移 vs 距離 (m)</div><canvas id="topChart" width="640" height="300"></canvas></div>
+        </div>
+      </section>
+
+      <details class="limits">
+        <summary>這個工具能做什麼、不能做什麼</summary>
+        <ul>
+          <li><b>能：</b>從慢動作影片量出擊球後前 0.05～0.2 秒的球速與起飛角（正面視角），再用物理模型外推整條軌跡。飛行模型以 Driver 160 mph → 約 260 yd、7 鐵 120 mph → 約 165 yd 校準，一般誤差約 ±10%。</li>
+          <li><b>能：</b>從擊球前幾幀的桿頭位置量出桿頭速度與攻角，以球桿別的擊球效率（smash factor）推估球速、起飛角與後旋。</li>
+          <li><b>不能：</b>從影片量出<b>後旋量、桿面角度</b>。這兩者主宰球的左右彎曲與滾動，需要雷達（Trackman）或高速攝影機才測得到；這裡以球桿典型值代入，並讓你手動假設桿面角。</li>
+          <li><b>不能：</b>只憑揮桿軌跡「精準」預測球的落點。桿頭路徑只決定一部分（起始方向、彎曲方向），擊球點偏移、桿面角、動態桿面仰角都看不到，所以「用揮桿推估」只是量級參考，實測球的標記準得多。</li>
+          <li><b>拍攝要點：</b>相機與目標線垂直、與球同高、離球 3～5 m；三腳架固定；背景乾淨（球在草地或深色背景前最好追蹤）；用 240 fps 慢動作。球若朝相機或遠離相機飛（推桿／拉球），正面視角會低估球速。</li>
+          <li><b>後方（down-the-line）視角</b>目前不支援量測，因為缺乏深度資訊，無法把畫面位移換成實際距離。</li>
+        </ul>
+      </details>
+    </main>
+  </div>
+</div>
+
+<video id="video" playsinline muted preload="auto" style="display:none"></video>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ───────────────────────── constants ───────────────────────── */
+  const STORE_KEY = 'golf-tracker-v1';
+  const G = 9.81;
+  const BALL_R = 0.02134;      // m
+  const BALL_M = 0.04593;      // kg
+  const RHO = 1.225;
+  const AREA = Math.PI * BALL_R * BALL_R;
+  // Drag / lift vs spin ratio S = r·ω / v — coefficients calibrated so that
+  // Driver 71.5 m/s, 11°, 2700 rpm → ~260 yd; 7i 53.6 m/s, 16.5°, 7000 rpm → ~166 yd.
+  const AERO = { cd0: 0.20, cd1: 0.50, cl0: 0.14, cl1: 0.80, sMax: 0.35, spinTau: 25 };
+
+  // Trackman PGA Tour averages: loft(static, typical), ball speed mph, launch °, AoA °, spin rpm, smash.
+  const CLUBS = [
+    { id: 'D',  name: 'Driver 一號木',  loft: 10.5, ball: 167, launch: 10.9, aoa: -1.3, spin: 2686, smash: 1.48 },
+    { id: '3W', name: '3 號木桿',       loft: 15,   ball: 158, launch: 9.2,  aoa: -2.9, spin: 3655, smash: 1.48 },
+    { id: '5W', name: '5 號木桿',       loft: 18,   ball: 152, launch: 9.4,  aoa: -3.3, spin: 4350, smash: 1.47 },
+    { id: 'H',  name: '小雞腿 Hybrid',  loft: 21,   ball: 146, launch: 10.2, aoa: -3.5, spin: 4437, smash: 1.46 },
+    { id: '4i', name: '4 鐵',           loft: 24,   ball: 137, launch: 11.0, aoa: -4.3, spin: 4836, smash: 1.43 },
+    { id: '5i', name: '5 鐵',           loft: 27,   ball: 132, launch: 12.1, aoa: -3.7, spin: 5361, smash: 1.41 },
+    { id: '6i', name: '6 鐵',           loft: 30,   ball: 127, launch: 14.1, aoa: -4.1, spin: 6231, smash: 1.38 },
+    { id: '7i', name: '7 鐵',           loft: 34,   ball: 120, launch: 16.3, aoa: -4.3, spin: 7097, smash: 1.33 },
+    { id: '8i', name: '8 鐵',           loft: 38,   ball: 115, launch: 18.1, aoa: -4.5, spin: 7998, smash: 1.32 },
+    { id: '9i', name: '9 鐵',           loft: 42,   ball: 109, launch: 20.4, aoa: -4.7, spin: 8647, smash: 1.28 },
+    { id: 'PW', name: 'PW 劈起桿',      loft: 46,   ball: 102, launch: 24.2, aoa: -5.0, spin: 9304, smash: 1.23 },
+    { id: 'SW', name: 'SW 沙坑桿',      loft: 56,   ball: 88,  launch: 30.0, aoa: -5.5, spin: 10000, smash: 1.15 },
+  ];
+  const MPH = 2.23694, KMH = 3.6, YD = 1.09361;
+
+  /* ───────────────────────── state ───────────────────────── */
+  const state = {
+    loaded: false, W: 0, H: 0, duration: 0, totalFrames: 0,
+    frame: 0, impactFrame: null,
+    playFps: 30, captureFps: 240,
+    scale: { p1: null, p2: null, mPerPx: null },
+    ballPts: new Map(),   // absFrame → {x, y, auto}
+    clubPts: new Map(),
+    mode: 'none',
+    ballFit: null, clubFit: null,
+    sim: null, simAnim: null,
+    busy: false,
+  };
+
+  /* ───────────────────────── dom ───────────────────────── */
+  const $ = (s) => document.querySelector(s);
+  const video = $('#video');
+  const view = $('#view');
+  const vctx = view.getContext('2d');
+  const frameCanvas = document.createElement('canvas');
+  const fctx = frameCanvas.getContext('2d', { willReadFrequently: true });
+  const msgEl = $('#msg');
+  const stage = $('#stage');
+
+  const clubSel = $('#club');
+  CLUBS.forEach(c => { const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; clubSel.appendChild(o); });
+
+  function msg(text, kind) { msgEl.textContent = text; msgEl.className = kind || ''; }
+  const fmt = (n, d = 1) => (Number.isFinite(n) ? n.toFixed(d) : '—');
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  /* ───────────────────────── settings persistence ───────────────────────── */
+  function loadSettings() {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+      if (s.playFps) $('#playFps').value = s.playFps;
+      if (s.captureFps) $('#captureFps').value = s.captureFps;
+      if (s.refType) $('#refType').value = s.refType;
+      if (s.refLen) $('#refLen').value = s.refLen;
+      if (s.club) clubSel.value = s.club;
+      if (s.searchR) $('#searchR').value = s.searchR;
+      if (s.thresh) $('#thresh').value = s.thresh;
+      if (s.polarity) $('#polarity').value = s.polarity;
+    } catch (_) { /* ignore */ }
+    readFps();
+  }
+  function saveSettings() {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify({
+        playFps: +$('#playFps').value, captureFps: +$('#captureFps').value,
+        refType: $('#refType').value, refLen: +$('#refLen').value, club: clubSel.value,
+        searchR: +$('#searchR').value, thresh: +$('#thresh').value, polarity: $('#polarity').value,
+      }));
+    } catch (_) { /* ignore */ }
+  }
+  function readFps() {
+    state.playFps = clamp(+$('#playFps').value || 30, 1, 480);
+    state.captureFps = clamp(+$('#captureFps').value || state.playFps, 1, 2000);
+    if (state.loaded) {
+      state.totalFrames = Math.max(1, Math.floor(state.duration * state.playFps));
+      $('#scrub').max = state.totalFrames - 1;
+    }
+  }
+
+  /* ───────────────────────── video loading & frame seeking ───────────────────────── */
+  let objectUrl = null;
+  $('#file').addEventListener('change', (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    if (objectUrl) URL.revokeObjectURL(objectUrl);
+    objectUrl = URL.createObjectURL(f);
+    resetAll();
+    video.src = objectUrl;
+    msg('影片載入中…');
+    video.addEventListener('loadedmetadata', () => {
+      state.loaded = true;
+      state.W = video.videoWidth; state.H = video.videoHeight; state.duration = video.duration;
+      frameCanvas.width = state.W; frameCanvas.height = state.H;
+      readFps();
+      $('#empty').hidden = true;
+      view.classList.remove('no-video');
+      $('#scrub').disabled = false;
+      $('#videoInfo').innerHTML = `<b>${f.name}</b> · ${state.W}×${state.H} · ${fmt(state.duration, 2)} s · 約 ${state.totalFrames} 幀（以播放幀率計）`;
+      fitView();
+      seekTo(0).then(() => msg('已載入。用 ← → 逐幀，先設定比例尺（步驟 02）。', 'ok'));
+    }, { once: true });
+    video.addEventListener('error', () => msg('瀏覽器無法解碼這個影片格式。試試轉成 mp4 (H.264) 再載入。', 'warn'), { once: true });
+  });
+
+  function resetAll() {
+    state.loaded = false; state.frame = 0; state.impactFrame = null;
+    state.scale = { p1: null, p2: null, mPerPx: null };
+    state.ballPts.clear(); state.clubPts.clear();
+    state.ballFit = null; state.clubFit = null; stopSimAnim();
+    updateAllReadouts();
+  }
+
+  function fitView() {
+    if (!state.loaded) return;
+    const maxW = stage.clientWidth || 960;
+    const maxH = Math.max(240, Math.min(window.innerHeight * 0.72, 900));
+    const s = Math.min(maxW / state.W, maxH / state.H, 1.5);
+    view.width = Math.round(state.W * s);
+    view.height = Math.round(state.H * s);
+    render();
+  }
+  window.addEventListener('resize', fitView);
+
+  function seekTo(frame) {
+    return new Promise((resolve) => {
+      if (!state.loaded) return resolve();
+      const f = clamp(Math.round(frame), 0, state.totalFrames - 1);
+      const t = Math.min((f + 0.5) / state.playFps, Math.max(0, state.duration - 0.0005));
+      const finish = () => { video.removeEventListener('seeked', finish); state.frame = f; grabFrame(); render(); resolve(); };
+      if (Math.abs(video.currentTime - t) < 1e-6 && video.readyState >= 2) { finish(); return; }
+      video.addEventListener('seeked', finish);
+      video.currentTime = t;
+    });
+  }
+  function grabFrame() { try { fctx.drawImage(video, 0, 0, state.W, state.H); } catch (_) { /* not ready */ } }
+  const relFrame = (abs) => abs - (state.impactFrame ?? firstBallFrame() ?? 0);
+  const relTime = (abs) => relFrame(abs) / state.captureFps;
+  function firstBallFrame() { return state.ballPts.size ? Math.min(...state.ballPts.keys()) : null; }
+
+  /* ───────────────────────── rendering ───────────────────────── */
+  function render() {
+    const cw = view.width, ch = view.height;
+    vctx.clearRect(0, 0, cw, ch);
+    if (!state.loaded) { updateFrameInfo(); return; }
+    vctx.drawImage(frameCanvas, 0, 0, cw, ch);
+    const k = cw / state.W;
+    const P = (p) => [p.x * k, p.y * k];
+
+    // scale line
+    const sc = state.scale;
+    if (sc.p1) {
+      vctx.strokeStyle = '#4ADE80'; vctx.fillStyle = '#4ADE80'; vctx.lineWidth = 2;
+      dot(P(sc.p1), 4);
+      if (sc.p2) {
+        dot(P(sc.p2), 4);
+        vctx.beginPath(); vctx.moveTo(...P(sc.p1)); vctx.lineTo(...P(sc.p2)); vctx.stroke();
+        const mid = [(sc.p1.x + sc.p2.x) / 2 * k, (sc.p1.y + sc.p2.y) / 2 * k];
+        labelText(`${fmt(+$('#refLen').value, 2)} m`, mid[0] + 8, mid[1] - 8, '#4ADE80');
+      }
+    }
+    // simulated trajectory overlay (face-on projection)
+    if (state.sim && $('#overlaySim').checked && sc.mPerPx && state.ballPts.size) {
+      const f0 = firstBallFrame(); const o = state.ballPts.get(f0); const dir = state.ballFit ? state.ballFit.dirSign : 1;
+      vctx.strokeStyle = 'rgba(167,139,250,0.9)'; vctx.lineWidth = 2; vctx.setLineDash([6, 4]);
+      vctx.beginPath(); let started = false;
+      for (const q of state.sim.path) {
+        const px = (o.x + dir * q.x / sc.mPerPx) * k, py = (o.y - q.y / sc.mPerPx) * k;
+        if (px < -50 || px > cw + 50 || py < -50 || py > ch + 50) { if (started) break; continue; }
+        if (!started) { vctx.moveTo(px, py); started = true; } else vctx.lineTo(px, py);
+      }
+      vctx.stroke(); vctx.setLineDash([]);
+      if (state.simAnim && state.simAnim.pos) {
+        const q = state.simAnim.pos;
+        const px = (o.x + dir * q.x / sc.mPerPx) * k, py = (o.y - q.y / sc.mPerPx) * k;
+        vctx.fillStyle = '#A78BFA'; dot([px, py], Math.max(4, BALL_R / sc.mPerPx * k));
+      }
+    }
+    // club points
+    drawTrack(state.clubPts, '#FBBF24', k);
+    // ball points
+    drawTrack(state.ballPts, '#22D3EE', k);
+    // current-frame emphasis
+    for (const [pts, col] of [[state.ballPts, '#22D3EE'], [state.clubPts, '#FBBF24']]) {
+      const p = pts.get(state.frame);
+      if (p) { vctx.strokeStyle = col; vctx.lineWidth = 2; vctx.beginPath(); vctx.arc(p.x * k, p.y * k, 12, 0, Math.PI * 2); vctx.stroke(); }
+    }
+    // search window preview
+    if (state.mode === 'ball' || state.mode === 'club') {
+      const pts = state.mode === 'ball' ? state.ballPts : state.clubPts;
+      const pred = predictNext(pts, state.mode === 'ball' ? 1 : -1);
+      if (pred && pred.frame === state.frame) {
+        const R = pred.R * k;
+        vctx.strokeStyle = 'rgba(255,255,255,0.35)'; vctx.setLineDash([3, 3]); vctx.lineWidth = 1;
+        vctx.strokeRect(pred.x * k - R, pred.y * k - R, 2 * R, 2 * R); vctx.setLineDash([]);
+      }
+    }
+    updateFrameInfo();
+
+    function dot(pt, r) { vctx.beginPath(); vctx.arc(pt[0], pt[1], r, 0, Math.PI * 2); vctx.fill(); }
+    function drawTrack(pts, col, k) {
+      if (!pts.size) return;
+      const frames = [...pts.keys()].sort((a, b) => a - b);
+      vctx.strokeStyle = col; vctx.fillStyle = col; vctx.lineWidth = 1.5;
+      vctx.beginPath();
+      frames.forEach((f, i) => { const p = pts.get(f); if (i === 0) vctx.moveTo(p.x * k, p.y * k); else vctx.lineTo(p.x * k, p.y * k); });
+      vctx.stroke();
+      frames.forEach((f) => { const p = pts.get(f); vctx.globalAlpha = p.auto ? 0.8 : 1; dot([p.x * k, p.y * k], 3.5); vctx.globalAlpha = 1; });
+    }
+  }
+  function labelText(text, x, y, col) {
+    vctx.font = '12px JetBrains Mono, monospace'; vctx.fillStyle = 'rgba(0,0,0,0.6)';
+    const w = vctx.measureText(text).width; vctx.fillRect(x - 3, y - 12, w + 6, 16);
+    vctx.fillStyle = col; vctx.fillText(text, x, y);
+  }
+  function updateFrameInfo() {
+    if (!state.loaded) { $('#frameInfo').textContent = 'frame — · t —'; return; }
+    const k = relFrame(state.frame);
+    const sign = k > 0 ? '+' : '';
+    $('#frameInfo').innerHTML = `frame <b>${state.frame}</b> / ${state.totalFrames - 1} · k=<b>${sign}${k}</b> · t=<b>${sign}${(k / state.captureFps * 1000).toFixed(1)} ms</b>`;
+    $('#scrub').value = state.frame;
+  }
+
+  /* ───────────────────────── interaction: modes & clicks ───────────────────────── */
+  document.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => { setMode(b.dataset.mode); if (b.dataset.mode !== 'none') revealViewer(); }));
+  function revealViewer() {
+    // side-bar buttons can sit below the fold; bring the canvas back into view so the next click lands on it
+    const r = view.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > window.innerHeight) view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function setMode(m) {
+    state.mode = m;
+    document.querySelectorAll('[data-mode]').forEach((b) => b.classList.toggle('active', b.dataset.mode === m));
+    const hints = {
+      scale: '比例尺：在畫面上點參考物的兩端。',
+      ball: '標記球：點擊目前幀的球心；再按「自動追蹤 +」往後追。',
+      club: '標記桿頭：點擊目前幀的桿頭；再按「自動追蹤 −」往前追。',
+      none: '不標記：點擊畫面不會有動作。',
+    };
+    msg(hints[m] || '');
+    render();
+  }
+  view.addEventListener('pointerdown', (e) => {
+    if (!state.loaded || state.busy || state.mode === 'none') return;
+    const r = view.getBoundingClientRect();
+    const x = (e.clientX - r.left) * (state.W / r.width);
+    const y = (e.clientY - r.top) * (state.H / r.height);
+    if (state.mode === 'scale') {
+      const sc = state.scale;
+      if (!sc.p1 || sc.p2) { sc.p1 = { x, y }; sc.p2 = null; sc.mPerPx = null; msg('再點參考物的另一端。'); }
+      else { sc.p2 = { x, y }; computeScale(); }
+    } else if (state.mode === 'ball') {
+      state.ballPts.set(state.frame, { x, y, auto: false }); updateFits();
+    } else if (state.mode === 'club') {
+      state.clubPts.set(state.frame, { x, y, auto: false }); updateFits();
+    }
+    render();
+  });
+  function computeScale() {
+    const sc = state.scale; const L = +$('#refLen').value;
+    if (!sc.p1 || !sc.p2 || !(L > 0)) { sc.mPerPx = null; $('#scaleInfo').textContent = '尚未設定'; return; }
+    const px = Math.hypot(sc.p2.x - sc.p1.x, sc.p2.y - sc.p1.y);
+    sc.mPerPx = px > 1 ? L / px : null;
+    $('#scaleInfo').innerHTML = sc.mPerPx ? `<b>${fmt(px, 0)} px = ${fmt(L, 2)} m</b> → 1 px = ${(sc.mPerPx * 1000).toFixed(2)} mm · 球直徑約 ${fmt(2 * BALL_R / sc.mPerPx, 1)} px` : '兩點太近';
+    updateFits();
+    if (sc.mPerPx) msg('比例尺已設定。接著逐幀找到擊球瞬間（步驟 03），再標記球（步驟 04）。', 'ok');
+  }
+  $('#clearScale').addEventListener('click', () => { state.scale = { p1: null, p2: null, mPerPx: null }; computeScale(); render(); });
+  $('#refType').addEventListener('change', () => { if ($('#refType').value !== 'custom') $('#refLen').value = $('#refType').value; computeScale(); saveSettings(); render(); });
+  $('#refLen').addEventListener('input', () => { $('#refType').value = 'custom'; computeScale(); saveSettings(); render(); });
+  ['#playFps', '#captureFps'].forEach((id) => $(id).addEventListener('change', () => { readFps(); updateFits(); saveSettings(); render(); }));
+  ['#searchR', '#thresh', '#polarity'].forEach((id) => $(id).addEventListener('change', () => { saveSettings(); render(); }));
+  clubSel.addEventListener('change', () => { saveSettings(); updateFits(); });
+
+  $('#setImpact').addEventListener('click', () => {
+    if (!state.loaded) return;
+    state.impactFrame = state.frame;
+    $('#impactInfo').innerHTML = `擊球瞬間 = frame <b>${state.frame}</b>`;
+    updateFits(); render();
+    msg('已設定擊球瞬間。切到「標記球」，在下一幀點球心，再按自動追蹤。', 'ok');
+  });
+
+  // frame navigation
+  const step = (d) => { if (state.loaded && !state.busy) seekTo(state.frame + d); };
+  $('#prev1').addEventListener('click', () => step(-1));
+  $('#next1').addEventListener('click', () => step(1));
+  $('#prev10').addEventListener('click', () => step(-10));
+  $('#next10').addEventListener('click', () => step(10));
+  $('#scrub').addEventListener('input', (e) => { if (!state.busy) seekTo(+e.target.value); });
+  document.addEventListener('keydown', (e) => {
+    if (e.target.matches('input, select, textarea')) return;
+    if (e.key === 'ArrowLeft') { e.preventDefault(); step(e.shiftKey ? -10 : -1); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); step(e.shiftKey ? 10 : 1); }
+  });
+
+  /* ───────────────────────── blob detection (frame differencing) ───────────────────────── */
+  // prev/cur: full-frame ImageData.data (RGBA), W/H frame size, pred {x,y}, last {x,y} (ghost location),
+  // opts {R, thresh, minArea, maxArea, brighter (bool|null)}
+  function detectBlob(prev, cur, W, H, pred, last, opts) {
+    const R = Math.round(opts.R);
+    const x0 = clamp(Math.round(pred.x - R), 0, W - 1), y0 = clamp(Math.round(pred.y - R), 0, H - 1);
+    const x1 = clamp(Math.round(pred.x + R), 0, W - 1), y1 = clamp(Math.round(pred.y + R), 0, H - 1);
+    const w = x1 - x0 + 1, h = y1 - y0 + 1;
+    if (w < 3 || h < 3) return null;
+    const mask = new Uint8Array(w * h), delta = new Int16Array(w * h);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = ((y0 + y) * W + (x0 + x)) * 4;
+        const gp = (prev[i] * 77 + prev[i + 1] * 150 + prev[i + 2] * 29) >> 8;
+        const gc = (cur[i] * 77 + cur[i + 1] * 150 + cur[i + 2] * 29) >> 8;
+        const d = gc - gp;
+        delta[y * w + x] = d;
+        if (Math.abs(d) > opts.thresh) mask[y * w + x] = 1;
+      }
+    }
+    // connected components (4-neighbour BFS)
+    const comps = []; const stack = new Int32Array(w * h);
+    for (let s = 0; s < w * h; s++) {
+      if (mask[s] !== 1) continue;
+      let sp = 0; stack[sp++] = s; mask[s] = 2;
+      let n = 0, sx = 0, sy = 0, sd = 0, maxY = -1; const px_ = [], py_ = [];
+      while (sp) {
+        const idx = stack[--sp]; const px = idx % w, py = (idx - px) / w;
+        n++; sx += px; sy += py; sd += delta[idx]; if (py > maxY) maxY = py;
+        if (opts.anchorBottom) { px_.push(px); py_.push(py); }
+        const nb = [idx - 1, idx + 1, idx - w, idx + w];
+        if (px === 0) nb[0] = -1; if (px === w - 1) nb[1] = -1;
+        for (const q of nb) { if (q >= 0 && q < w * h && mask[q] === 1) { mask[q] = 2; stack[sp++] = q; } }
+      }
+      if (n < opts.minArea || n > opts.maxArea) continue;
+      let cx = x0 + sx / n, cy = y0 + sy / n;
+      if (opts.anchorBottom) {
+        // club head = lowest part of the moving club (face-on view): centroid of the bottom band only,
+        // so the shaft (which moves too and is connected to the head) does not drag the point upward.
+        let bx = 0, by = 0, bn = 0;
+        for (let i = 0; i < n; i++) if (py_[i] >= maxY - opts.anchorBottom) { bx += px_[i]; by += py_[i]; bn++; }
+        if (bn) { cx = x0 + bx / bn; cy = y0 + by / bn; }
+      }
+      comps.push({ x: cx, y: cy, area: n, meanDelta: sd / n });
+    }
+    if (!comps.length) return null;
+    // polarity: is the tracked object brighter or darker than its surroundings? (auto: sample prev frame at `last`)
+    let brighter = opts.brighter;
+    if (brighter === 'auto' && last) {
+      let obj = 0, on = 0, bg = 0, bn = 0;
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+        const i = ((y0 + y) * W + (x0 + x)) * 4; const gp = (prev[i] * 77 + prev[i + 1] * 150 + prev[i + 2] * 29) >> 8;
+        if (Math.abs(x0 + x - last.x) <= 2 && Math.abs(y0 + y - last.y) <= 2) { obj += gp; on++; } else { bg += gp; bn++; }
+      }
+      const diff = on && bn ? obj / on - bg / bn : 0;
+      brighter = diff > 15 ? true : diff < -15 ? false : null;
+    } else if (brighter === 'auto') brighter = null;
+    const ghostR = Math.max(6, Math.sqrt(opts.maxArea / Math.PI) * 0.8);
+    let cands = last ? comps.filter((c) => Math.hypot(c.x - last.x, c.y - last.y) > ghostR) : comps;
+    if (!cands.length) cands = comps;
+    for (const c of cands) {
+      c.score = Math.hypot(c.x - pred.x, c.y - pred.y);
+      if (brighter === true && c.meanDelta < 0) c.score += R;      // object arriving → brighter than before
+      if (brighter === false && c.meanDelta > 0) c.score += R;
+      if (opts.expectArea) c.score += 0.5 * R * Math.abs(Math.log(c.area / opts.expectArea));   // size similarity
+    }
+    cands.sort((a, b) => a.score - b.score);
+    return cands[0];
+  }
+
+  function ballRadiusPx() { return state.scale.mPerPx ? BALL_R / state.scale.mPerPx : 8; }
+  function detectOpts(kind, haveVelocity) {
+    const baseR = clamp(+$('#searchR').value || 60, 8, 400);
+    const rb = ballRadiusPx();
+    const pol = $('#polarity').value; const brighter = pol === 'bright' ? true : pol === 'dark' ? false : 'auto';
+    if (kind === 'ball') {
+      return { R: haveVelocity ? baseR : baseR * 1.6, thresh: +$('#thresh').value || 35,
+        minArea: Math.max(3, Math.PI * rb * rb * 0.15), maxArea: Math.max(40, Math.PI * rb * rb * 6),
+        expectArea: state.scale.mPerPx ? Math.PI * rb * rb : null, brighter };
+    }
+    return { R: haveVelocity ? baseR * 1.5 : baseR * 2.5, thresh: +$('#thresh').value || 35,
+      minArea: Math.max(10, Math.PI * rb * rb * 0.5), maxArea: Math.max(400, Math.PI * rb * rb * 60), expectArea: null, brighter,
+      anchorBottom: Math.max(6, rb * 2.5) };   // club head ≈ 1.2× ball diameter tall in face-on view
+  }
+  function predictNext(pts, dir) {
+    if (!pts.size) return null;
+    const frames = [...pts.keys()].sort((a, b) => a - b);
+    const edge = dir > 0 ? frames[frames.length - 1] : frames[0];
+    const last = pts.get(edge), before = pts.get(edge - dir);
+    const opts = detectOpts(state.mode === 'club' ? 'club' : 'ball', !!before);
+    if (before) return { frame: edge + dir, x: 2 * last.x - before.x, y: 2 * last.y - before.y, R: opts.R, last, edge };
+    return { frame: edge + dir, x: last.x, y: last.y, R: opts.R, last, edge };
+  }
+
+  async function autoTrack(kind, dir, maxSteps) {
+    if (!state.loaded || state.busy) return;
+    const pts = kind === 'ball' ? state.ballPts : state.clubPts;
+    if (!pts.size) { msg(kind === 'ball' ? '先在擊球後第一幀點一下球，再自動追蹤。' : '先在擊球前某一幀點一下桿頭，再自動追蹤。', 'warn'); return; }
+    state.busy = true; setMode(kind);
+    let added = 0, stopReason = '';
+    try {
+      const frames = [...pts.keys()].sort((a, b) => a - b);
+      let cur = dir > 0 ? frames[frames.length - 1] : frames[0];
+      await seekTo(cur);
+      let prevData = fctx.getImageData(0, 0, state.W, state.H).data;
+      for (let i = 0; i < maxSteps; i++) {
+        const next = cur + dir;
+        if (next < 0 || next >= state.totalFrames) { stopReason = '到影片邊界'; break; }
+        if (kind === 'club' && state.impactFrame !== null && next > state.impactFrame) { stopReason = '已到擊球瞬間'; break; }
+        const last = pts.get(cur), before = pts.get(cur - dir);
+        const opts = detectOpts(kind, !!before);
+        const pred = before ? { x: 2 * last.x - before.x, y: 2 * last.y - before.y } : { x: last.x, y: last.y };
+        if (pred.x < -opts.R || pred.x > state.W + opts.R || pred.y < -opts.R || pred.y > state.H + opts.R) { stopReason = '球已飛出畫面'; break; }
+        await seekTo(next);
+        const curData = fctx.getImageData(0, 0, state.W, state.H).data;
+        const hit = detectBlob(prevData, curData, state.W, state.H, pred, last, opts);
+        if (!hit) { stopReason = `第 ${next} 幀找不到目標`; break; }
+        // sanity: jump must not be wildly inconsistent with previous velocity
+        if (before) {
+          const vPrev = Math.hypot(last.x - before.x, last.y - before.y);
+          const vNow = Math.hypot(hit.x - last.x, hit.y - last.y);
+          if (vPrev > 4 && (vNow > vPrev * 2.2 || vNow < vPrev * 0.3)) { stopReason = `第 ${next} 幀候選位移不合理，停下等你確認`; break; }
+        }
+        pts.set(next, { x: hit.x, y: hit.y, auto: true });
+        added++; cur = next; prevData = curData;
+        updateFits(); render();
+      }
+    } finally { state.busy = false; }
+    updateFits(); render();
+    const tail = stopReason ? `（停止：${stopReason}）` : '';
+    if (added) msg(`自動追蹤新增 ${added} 幀 ${tail}。若有跑掉的點，停在該幀直接點正確位置修正。`, stopReason.includes('找不到') || stopReason.includes('不合理') ? 'warn' : 'ok');
+    else msg(`沒有新增任何幀 ${tail}。可以放大搜尋半徑、調低差異門檻，或手動點下一幀。`, 'warn');
+  }
+  $('#trackBall').addEventListener('click', () => autoTrack('ball', 1, clamp(+$('#maxSteps').value || 12, 1, 200)));
+  $('#trackBallOne').addEventListener('click', () => autoTrack('ball', 1, 1));
+  $('#trackClub').addEventListener('click', () => autoTrack('club', -1, clamp(+$('#maxSteps').value || 12, 1, 200)));
+  $('#clearBall').addEventListener('click', () => { state.ballPts.clear(); updateFits(); render(); });
+  $('#clearClub').addEventListener('click', () => { state.clubPts.clear(); updateFits(); render(); });
+
+  /* ───────────────────────── fits ───────────────────────── */
+  // Ball: X(t) = vx·t, Y(t) = vy·t − ½ g t² through the first tracked point (least squares).
+  function fitBall() {
+    const s = state.scale.mPerPx; if (!s || state.ballPts.size < 2) return null;
+    const frames = [...state.ballPts.keys()].sort((a, b) => a - b);
+    const f0 = frames[0], o = state.ballPts.get(f0);
+    const rows = frames.slice(1).map((f) => { const p = state.ballPts.get(f); return { t: (f - f0) / state.captureFps, X: (p.x - o.x) * s, Y: -(p.y - o.y) * s }; });
+    const dirSign = rows.reduce((a, r) => a + r.X, 0) >= 0 ? 1 : -1;
+    let stt = 0, stx = 0, sty = 0;
+    for (const r of rows) { stt += r.t * r.t; stx += r.t * r.X * dirSign; sty += r.t * (r.Y + 0.5 * G * r.t * r.t); }
+    const vx = stx / stt, vy = sty / stt;
+    let se = 0;
+    for (const r of rows) { const ex = r.X * dirSign - vx * r.t, ey = r.Y - (vy * r.t - 0.5 * G * r.t * r.t); se += ex * ex + ey * ey; }
+    const rms = Math.sqrt(se / rows.length);
+    const v0 = Math.hypot(vx, vy), launch = Math.atan2(vy, vx) * 180 / Math.PI;
+    const t0 = relTime(f0);
+    return { v0, launch, vx, vy, dirSign, rms, n: frames.length, t0 };
+  }
+  // Club head: speed over the last intervals before impact, attack angle from the last interval.
+  function fitClub() {
+    const s = state.scale.mPerPx; if (!s || state.clubPts.size < 2) return null;
+    const cutoff = state.impactFrame ?? firstBallFrame();
+    let frames = [...state.clubPts.keys()].sort((a, b) => a - b);
+    if (cutoff !== null) frames = frames.filter((f) => f <= cutoff);
+    if (frames.length < 2) return null;
+    const use = frames.slice(-4);
+    const speeds = [];
+    for (let i = 1; i < use.length; i++) {
+      const a = state.clubPts.get(use[i - 1]), b = state.clubPts.get(use[i]);
+      const dt = (use[i] - use[i - 1]) / state.captureFps;
+      speeds.push(Math.hypot(b.x - a.x, b.y - a.y) * s / dt);
+    }
+    const chs = speeds.reduce((x, y) => x + y, 0) / speeds.length;
+    const a = state.clubPts.get(use[use.length - 2]), b = state.clubPts.get(use[use.length - 1]);
+    const aoa = Math.atan2(-(b.y - a.y), Math.abs(b.x - a.x)) * 180 / Math.PI;
+    const club = CLUBS.find((c) => c.id === clubSel.value) || CLUBS[0];
+    const ballSpeed = chs * club.smash;
+    const launch = clamp(club.launch + 0.15 * (aoa - club.aoa), 2, 50);
+    const spin = clamp(club.spin * (ballSpeed * MPH / club.ball) * (1 + 0.03 * (club.aoa - aoa)), 500, 14000);
+    return { chs, aoa, ballSpeed, launch, spin, n: frames.length, club };
+  }
+
+  function updateFits() {
+    state.ballFit = fitBall();
+    state.clubFit = fitClub();
+    updateAllReadouts();
+  }
+  function updateAllReadouts() {
+    const bf = state.ballFit, cf = state.clubFit;
+    $('#ballSpeedBig').innerHTML = bf ? `${fmt(bf.v0, 1)}<small>m/s · ${fmt(bf.v0 * MPH, 0)} mph</small>` : '—<small>m/s</small>';
+    fillKv('#ballKv', bf ? [
+      `${fmt(bf.v0 * KMH, 0)} km/h <small>/ ${fmt(bf.v0 * MPH, 0)} mph</small>`,
+      `${fmt(bf.launch, 1)}°`,
+      bf.dirSign > 0 ? '往右 →' : '← 往左',
+      `${fmt(bf.rms * 100, 1)} cm`,
+      `${bf.n} 幀 <small>(首點 t=${fmt(bf.t0 * 1000, 1)} ms)</small>`,
+    ] : null);
+    $('#applyBall').disabled = !bf;
+    $('#clubSpeedBig').innerHTML = cf ? `${fmt(cf.chs * KMH, 0)}<small>km/h · ${fmt(cf.chs * MPH, 0)} mph</small>` : '—<small>km/h</small>';
+    fillKv('#clubKv', cf ? [
+      `${fmt(cf.chs, 1)} m/s <small>/ ${fmt(cf.chs * MPH, 0)} mph</small>`,
+      `${cf.aoa > 0 ? '+' : ''}${fmt(cf.aoa, 1)}° <small>${cf.aoa < 0 ? '向下' : '向上'}</small>`,
+      `${fmt(cf.ballSpeed, 1)} m/s <small>(smash ${cf.club.smash})</small>`,
+      `${fmt(cf.launch, 1)}°`,
+      `${fmt(cf.spin, 0)} rpm`,
+    ] : null);
+    $('#applySwing').disabled = !cf;
+    fillTable('#ballTable', state.ballPts);
+    fillTable('#clubTable', state.clubPts);
+    if (state.impactFrame === null) $('#impactInfo').innerHTML = firstBallFrame() !== null ? `尚未設定 → 以第一個球標記 frame <b>${firstBallFrame()}</b> 為 t=0` : '尚未設定（將以第一個球標記為 t=0）';
+    if (!state.scale.mPerPx && (state.ballPts.size || state.clubPts.size)) msg('已有標記，但還沒有比例尺——請先完成步驟 02 才能換算速度。', 'warn');
+  }
+  function fillKv(sel, vals) {
+    const dds = document.querySelectorAll(`${sel} dd`);
+    dds.forEach((dd, i) => { dd.innerHTML = vals ? vals[i] : '—'; });
+  }
+  function fillTable(sel, pts) {
+    const t = $(sel);
+    if (!pts.size) { t.innerHTML = ''; return; }
+    const frames = [...pts.keys()].sort((a, b) => a - b);
+    let html = '<tr><th>frame</th><th>k</th><th>t (ms)</th><th>x</th><th>y</th><th>來源</th></tr>';
+    for (const f of frames) { const p = pts.get(f); html += `<tr><td>${f}</td><td>${relFrame(f)}</td><td>${fmt(relTime(f) * 1000, 1)}</td><td>${fmt(p.x, 0)}</td><td>${fmt(p.y, 0)}</td><td>${p.auto ? 'auto' : '手動'}</td></tr>`; }
+    t.innerHTML = html;
+  }
+
+  $('#applyBall').addEventListener('click', () => {
+    const bf = state.ballFit; if (!bf) return;
+    $('#simV').value = fmt(bf.v0, 1); $('#simLaunch').value = fmt(bf.launch, 1);
+    if (state.clubFit) $('#simSpin').value = Math.round(state.clubFit.spin);
+    else { const c = CLUBS.find((x) => x.id === clubSel.value) || CLUBS[0]; $('#simSpin').value = Math.round(c.spin * clamp(bf.v0 * MPH / c.ball, 0.5, 1.3)); }
+    runSim(); $('#simCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  $('#applySwing').addEventListener('click', () => {
+    const cf = state.clubFit; if (!cf) return;
+    $('#simV').value = fmt(cf.ballSpeed, 1); $('#simLaunch').value = fmt(cf.launch, 1); $('#simSpin').value = Math.round(cf.spin);
+    runSim(); $('#simCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ───────────────────────── flight simulation ───────────────────────── */
+  // x: downrange (m), y: up, z: right (right-handed frame). axisDeg > 0 → spin axis tilted right → ball curves right.
+  function simulate({ v0, launchDeg, rpm, axisDeg = 0, startDirDeg = 0 }) {
+    const th = launchDeg * Math.PI / 180, ax = axisDeg * Math.PI / 180, ph = startDirDeg * Math.PI / 180;
+    let s = [0, 0, 0, v0 * Math.cos(th) * Math.cos(ph), v0 * Math.sin(th), v0 * Math.cos(th) * Math.sin(ph)];
+    let w = rpm * 2 * Math.PI / 60;
+    const k = 0.5 * RHO * AREA / BALL_M, dt = 0.005;
+    const acc = (q) => {
+      const [, , , vx, vy, vz] = q; const v = Math.hypot(vx, vy, vz) || 1e-9;
+      const S = Math.min(BALL_R * w / v, AERO.sMax);
+      const cd = AERO.cd0 + AERO.cd1 * S, cl = AERO.cl0 + AERO.cl1 * S;
+      const vh = Math.hypot(vx, vz) || 1e-9;
+      // pure-backspin axis is horizontal & perpendicular to velocity; tilt it by ax (right end down = fade).
+      const wx = -vz / vh * Math.cos(ax), wy = -Math.sin(ax), wz = vx / vh * Math.cos(ax);
+      let cx = wy * vz - wz * vy, cy = wz * vx - wx * vz, cz = wx * vy - wy * vx;
+      const cn = Math.hypot(cx, cy, cz) || 1e-9; cx /= cn; cy /= cn; cz /= cn;
+      const lift = k * cl * v * v, drag = k * cd * v;
+      return [vx, vy, vz, -drag * vx + lift * cx, -drag * vy + lift * cy - G, -drag * vz + lift * cz];
+    };
+    const path = [{ t: 0, x: 0, y: 0, z: 0 }];
+    let t = 0, apex = 0, apexX = 0, prev = s;
+    while (t < 20) {
+      const k1 = acc(s), s2 = s.map((v, i) => v + dt / 2 * k1[i]);
+      const k2 = acc(s2), s3 = s.map((v, i) => v + dt / 2 * k2[i]);
+      const k3 = acc(s3), s4 = s.map((v, i) => v + dt * k3[i]);
+      const k4 = acc(s4);
+      prev = s;
+      s = s.map((v, i) => v + dt / 6 * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i]));
+      w *= Math.exp(-dt / AERO.spinTau);
+      t += dt;
+      if (s[1] > apex) { apex = s[1]; apexX = s[0]; }
+      if (s[1] < 0 && t > dt) {
+        const f = prev[1] / (prev[1] - s[1]);   // interpolate ground crossing
+        s = prev.map((v, i) => v + f * (s[i] - v)); t = t - dt + f * dt;
+        path.push({ t, x: s[0], y: 0, z: s[2] });
+        break;
+      }
+      if (path.length === 0 || t - path[path.length - 1].t >= 0.02 - 1e-9) path.push({ t, x: s[0], y: s[1], z: s[2] });
+    }
+    const landSpeed = Math.hypot(s[3], s[4], s[5]);
+    const landAngle = Math.atan2(-s[4], Math.hypot(s[3], s[5])) * 180 / Math.PI;
+    return { path, carry: s[0], apex, apexX, tof: t, lateral: s[2], landSpeed, landAngle };
+  }
+
+  function shapeFromFacePath() {
+    const face = +$('#simFace').value || 0, path = +$('#simPath').value || 0;
+    const club = CLUBS.find((c) => c.id === clubSel.value) || CLUBS[0];
+    const kAxis = 40 / (club.loft + 1);                         // driver ≈ 3.5°/°, 7i ≈ 1.1°/°
+    $('#simAxis').value = fmt(clamp((face - path) * kAxis, -60, 60), 1);
+    $('#simDir').value = fmt(clamp(0.8 * face + 0.2 * path, -45, 45), 1);
+  }
+  ['#simFace', '#simPath'].forEach((id) => $(id).addEventListener('input', shapeFromFacePath));
+
+  function runSim() {
+    stopSimAnim();
+    const params = { v0: clamp(+$('#simV').value || 0, 1, 120), launchDeg: clamp(+$('#simLaunch').value || 0, -5, 80),
+      rpm: clamp(+$('#simSpin').value || 0, 0, 20000), axisDeg: +$('#simAxis').value || 0, startDirDeg: +$('#simDir').value || 0 };
+    const r = simulate(params);
+    state.sim = { ...r, params };
+    const vals = document.querySelectorAll('#simStats .val');
+    const subs = document.querySelectorAll('#simStats .sub');
+    vals[0].innerHTML = `${fmt(r.carry, 0)}<small>m</small>`;           subs[0].textContent = `${fmt(r.carry * YD, 0)} yd`;
+    vals[1].innerHTML = `${fmt(r.apex, 1)}<small>m</small>`;            subs[1].textContent = `在 ${fmt(r.apexX, 0)} m 處`;
+    vals[2].innerHTML = `${fmt(r.tof, 2)}<small>s</small>`;             subs[2].textContent = '';
+    vals[3].innerHTML = `${r.lateral > 0 ? '右 ' : r.lateral < 0 ? '左 ' : ''}${fmt(Math.abs(r.lateral), 1)}<small>m</small>`; subs[3].textContent = `${fmt(Math.abs(r.lateral) * YD, 0)} yd`;
+    vals[4].innerHTML = `${fmt(r.landAngle, 1)}<small>°</small>`;       subs[4].textContent = '';
+    vals[5].innerHTML = `${fmt(r.landSpeed, 1)}<small>m/s</small>`;     subs[5].textContent = `${fmt(r.landSpeed * KMH, 0)} km/h`;
+    $('#playSim').disabled = false;
+    drawCharts(); render();
+    msg(`模擬完成：carry ${fmt(r.carry, 0)} m（${fmt(r.carry * YD, 0)} yd），最高 ${fmt(r.apex, 1)} m，飛行 ${fmt(r.tof, 1)} s。`, 'ok');
+  }
+  $('#runSim').addEventListener('click', runSim);
+  $('#overlaySim').addEventListener('change', render);
+
+  /* ───────────────────────── charts ───────────────────────── */
+  function drawCharts(animPos) {
+    const sim = state.sim; if (!sim) return;
+    const side = $('#sideChart'), top = $('#topChart');
+    const maxX = Math.max(10, Math.ceil(sim.carry * 1.08 / 10) * 10);
+    drawChart(side, sim.path, 'y', maxX, Math.max(5, Math.ceil(sim.apex * 1.25 / 5) * 5), 0, animPos, '#22D3EE');
+    const latMax = Math.max(5, Math.ceil(Math.max(Math.abs(sim.lateral), 1) * 1.6 / 5) * 5);
+    drawChart(top, sim.path, 'z', maxX, latMax, -latMax, animPos, '#A78BFA');
+  }
+  function drawChart(cv, path, key, maxX, maxY, minY, animPos, col) {
+    const c = cv.getContext('2d'); const W = cv.width, H = cv.height;
+    const padL = 44, padR = 16, padT = 14, padB = 30;
+    const X = (x) => padL + x / maxX * (W - padL - padR);
+    const Y = (y) => padT + (maxY - y) / (maxY - minY) * (H - padT - padB);
+    c.clearRect(0, 0, W, H);
+    c.fillStyle = '#080C14'; c.fillRect(0, 0, W, H);
+    c.strokeStyle = '#1A2540'; c.lineWidth = 1; c.font = '11px JetBrains Mono, monospace'; c.fillStyle = '#64748B'; c.textAlign = 'center';
+    const stepX = maxX > 200 ? 50 : maxX > 80 ? 20 : 10;
+    for (let x = 0; x <= maxX; x += stepX) { c.beginPath(); c.moveTo(X(x), padT); c.lineTo(X(x), H - padB); c.stroke(); c.fillText(x, X(x), H - padB + 16); }
+    const stepY = (maxY - minY) > 40 ? 10 : 5;
+    c.textAlign = 'right';
+    for (let y = Math.ceil(minY / stepY) * stepY; y <= maxY; y += stepY) { c.beginPath(); c.moveTo(padL, Y(y)); c.lineTo(W - padR, Y(y)); c.stroke(); c.fillText(y, padL - 6, Y(y) + 4); }
+    // ground / centre line
+    c.strokeStyle = key === 'y' ? '#4ADE80' : '#2D4470'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(padL, Y(0)); c.lineTo(W - padR, Y(0)); c.stroke();
+    // path
+    c.strokeStyle = col; c.lineWidth = 2.5; c.beginPath();
+    path.forEach((p, i) => { const px = X(p.x), py = Y(p[key]); if (i === 0) c.moveTo(px, py); else c.lineTo(px, py); });
+    c.stroke();
+    // landing marker
+    const end = path[path.length - 1];
+    c.fillStyle = col; c.beginPath(); c.arc(X(end.x), Y(end[key]), 4, 0, Math.PI * 2); c.fill();
+    if (animPos) { c.fillStyle = '#F1F5F9'; c.beginPath(); c.arc(X(animPos.x), Y(animPos[key]), 5, 0, Math.PI * 2); c.fill(); }
+    c.textAlign = 'left'; c.fillStyle = '#64748B'; c.fillText(key === 'y' ? '高度 m' : '偏移 m（上=右）', padL + 4, padT + 10);
+  }
+
+  /* ───────────────────────── flight animation (real-time) ───────────────────────── */
+  function stopSimAnim() { if (state.simAnim && state.simAnim.raf) cancelAnimationFrame(state.simAnim.raf); state.simAnim = null; $('#playSim').textContent = '▶ 播放飛行動畫'; }
+  $('#playSim').addEventListener('click', () => {
+    if (!state.sim) return;
+    if (state.simAnim) { stopSimAnim(); drawCharts(); render(); return; }
+    const path = state.sim.path, start = performance.now();
+    state.simAnim = { raf: 0, pos: path[0] };
+    $('#playSim').textContent = '⏹ 停止';
+    const tick = (now) => {
+      const t = (now - start) / 1000;
+      if (t >= state.sim.tof) { state.simAnim.pos = path[path.length - 1]; drawCharts(state.simAnim.pos); render(); stopSimAnim(); return; }
+      let i = 1; while (i < path.length - 1 && path[i].t < t) i++;
+      const a = path[i - 1], b = path[i], f = clamp((t - a.t) / Math.max(1e-6, b.t - a.t), 0, 1);
+      state.simAnim.pos = { t, x: a.x + f * (b.x - a.x), y: a.y + f * (b.y - a.y), z: a.z + f * (b.z - a.z) };
+      drawCharts(state.simAnim.pos); render();
+      state.simAnim.raf = requestAnimationFrame(tick);
+    };
+    state.simAnim.raf = requestAnimationFrame(tick);
+  });
+
+  /* ───────────────────────── export ───────────────────────── */
+  function download(name, blob) {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  }
+  $('#exportJson').addEventListener('click', () => {
+    const toArr = (m) => [...m.entries()].sort((a, b) => a[0] - b[0]).map(([frame, p]) => ({ frame, k: relFrame(frame), t: relTime(frame), x: +p.x.toFixed(1), y: +p.y.toFixed(1), auto: p.auto }));
+    const out = {
+      exportedAt: new Date().toISOString(), video: { width: state.W, height: state.H, duration: state.duration, playFps: state.playFps, captureFps: state.captureFps },
+      impactFrame: state.impactFrame, scale: state.scale, ballPoints: toArr(state.ballPts), clubPoints: toArr(state.clubPts),
+      ballFit: state.ballFit, clubFit: state.clubFit && { ...state.clubFit, club: state.clubFit.club.id },
+      sim: state.sim && { params: state.sim.params, carry_m: state.sim.carry, apex_m: state.sim.apex, tof_s: state.sim.tof, lateral_m: state.sim.lateral, landAngle: state.sim.landAngle, landSpeed: state.sim.landSpeed },
+    };
+    download('golf-track.json', new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' }));
+  });
+  $('#exportPng').addEventListener('click', () => { if (state.loaded) view.toBlob((b) => b && download(`golf-frame-${state.frame}.png`, b), 'image/png'); });
+
+  /* ───────────────────────── entrance animation (GSAP, optional) ───────────────────────── */
+  if (typeof gsap !== 'undefined') {
+    const mm = gsap.matchMedia();
+    mm.add({ animate: '(prefers-reduced-motion: no-preference)', reduce: '(prefers-reduced-motion: reduce)' }, (ctx) => {
+      if (!ctx.conditions.animate) return;
+      gsap.set('h1, .lede, .tag', { autoAlpha: 0, y: 14 });
+      gsap.set('aside .card, .viewer', { autoAlpha: 0, y: 20 });
+      gsap.to('.tag, h1, .lede', { autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.08, ease: 'power2.out' });
+      gsap.to('.viewer', { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.2, ease: 'power2.out' });
+      gsap.to('aside .card', { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.06, delay: 0.25, ease: 'power2.out' });
+    });
+  }
+
+  /* ───────────────────────── init ───────────────────────── */
+  loadSettings();
+  shapeFromFacePath();
+  setMode('none');
+  runSim();
+  msg('載入影片後，先設定比例尺，再標記擊球後的球位置。');
+
+  // exposed for testing / debugging
+  window.__golf = { state, detectBlob, simulate, fitBall, fitClub, seekTo, autoTrack, updateFits, runSim, CLUBS, AERO };
+}());
+</script>
+</body>
+</html>
