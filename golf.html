@@ -1821,10 +1821,12 @@
   }
 
   // ────────────────────────────── wiring
+  let pendingMeta = null;   // picking a new file before the previous one loaded must not leave a stale listener behind
   $('#file').addEventListener('change', (e) => {
     const f = e.target.files && e.target.files[0]; if (!f) return; A.file = f;
-    const onMeta = () => { video.removeEventListener('loadedmetadata', onMeta); setTimeout(() => run(f), 250); };
-    video.addEventListener('loadedmetadata', onMeta);
+    if (pendingMeta) video.removeEventListener('loadedmetadata', pendingMeta);
+    const onMeta = () => { video.removeEventListener('loadedmetadata', onMeta); pendingMeta = null; setTimeout(() => run(f), 250); };
+    pendingMeta = onMeta; video.addEventListener('loadedmetadata', onMeta);
   });
   ui.rerun.addEventListener('click', () => { if (A.file) run(A.file); });
   video.addEventListener('error', () => status('瀏覽器無法解碼這個影片（iPhone 預設 HEVC 格式）。請改用 Safari 開這個頁面，或在 iPhone 設定 → 相機 → 格式 選「最相容」後重拍／轉檔為 H.264 mp4。', 'warn'));
