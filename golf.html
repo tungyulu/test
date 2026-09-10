@@ -1294,8 +1294,8 @@
     });
   }
   const frameCanvas = document.createElement('canvas'); const fctx = frameCanvas.getContext('2d', { willReadFrequently: true });
-  async function grayAt(t) {   // full-res gray at time t
-    await seekTime(t); if (frameCanvas.width !== A.W || frameCanvas.height !== A.H) { frameCanvas.width = A.W; frameCanvas.height = A.H; } fctx.drawImage(video, 0, 0, A.W, A.H);
+  async function grayAt(t) {   // full-res gray at time t (t is a frame's presentation time; aim at mid-frame so the seek cannot land on the previous frame)
+    await seekTime(t + 0.4 / (A.fps || 30)); if (frameCanvas.width !== A.W || frameCanvas.height !== A.H) { frameCanvas.width = A.W; frameCanvas.height = A.H; } fctx.drawImage(video, 0, 0, A.W, A.H);
     return toGray(fctx.getImageData(0, 0, A.W, A.H).data, new Uint8Array(A.W * A.H));
   }
 
@@ -1483,7 +1483,7 @@
     return { x: c.x + x0, y: c.y + y0, diam: 2 * Math.sqrt(c.area / Math.PI), w: c.w, h: c.h };
   }
   async function trackStreak() {
-    const trail = []; const fps = A.fps, W = A.W, H = A.H; const tee = A.tee;
+    const trail = []; const fps = A.fps, W = A.W, H = A.H; const tee = A.tee; A.trailDebug = [];
     let prev = await grayAt(A.frames[A.imp].t);
     let pred = null, vel = null, R = 320, last = null;
     for (let k = 1; k <= 30 && A.imp + k < A.frames.length; k++) {
@@ -1498,6 +1498,7 @@
       if (fps <= 35) { const dil = new Uint8Array(w * h); for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) { const i = y * w + x; if (mask[i] || mask[i - 1] || mask[i + 1] || mask[i - w] || mask[i + w] || mask[i - w - 1] || mask[i - w + 1] || mask[i + w - 1] || mask[i + w + 1]) dil[i] = 1; } mask = dil; }
       const comps = components(mask, w, h, 15, 8000, false);
       let best = null;
+      (A.trailDebug = A.trailDebug || []).push({ k, pred: pred ? [Math.round(pred.x), Math.round(pred.y)] : null, R: Math.round(rr), win: [x0, y0, x1, y1], comps: comps.slice().sort((p, q) => q.area - p.area).slice(0, 6).map((c) => [Math.round(c.x + x0), Math.round(c.y + y0), c.area]) });
       for (const c of comps) {
         const gx = c.x + x0, gy = c.y + y0;
         let score;
@@ -1511,15 +1512,24 @@
           if (near < 3 && c.area > 3000) continue;       // component containing the tee & huge → probably the club
           score = near + Math.max(0, 1500 - c.area) * 0.01;
         } else {
-          score = Math.hypot(gx - pred.x, gy - pred.y);
           if (last && Math.hypot(gx - last.x, gy - last.y) < 6) continue;
+          if (trail.length < 6 && vel) {
+            // early steps: the speed along the flight line is uncertain (the first streak's centroid sits mid-exposure),
+            // the direction is not — weight the perpendicular offset fully and the along-track error at 0.4
+            const vn = Math.hypot(vel.x, vel.y) || 1, ux = vel.x / vn, uy = vel.y / vn;
+            const rx = gx - last.x, ry = gy - last.y; const along = rx * ux + ry * uy, perp = Math.abs(rx * uy - ry * ux);
+            score = perp + 0.4 * Math.abs(along - vn * 0.8) + (along < 0 ? 200 : 0);
+          } else score = Math.hypot(gx - pred.x, gy - pred.y);
+          // a receding streak shrinks gradually (≈2–4× per frame at most); a speck 50× smaller than the last streak is noise
+          if (last && last.area) score += 40 * Math.max(0, Math.log10(last.area / Math.max(1, c.area)) - 0.3);
         }
         if (!best || score < best.score) best = { x: gx, y: gy, area: c.area, w: c.w, h: c.h, diag: Math.hypot(c.w, c.h), score };
       }
       if (!best) { if (!pred && k <= 3) { prev = cur; continue; } trail.stop = `第 ${k} 幀找不到球`; break; }
       if (vel) {
         const step = Math.hypot(best.x - last.x, best.y - last.y), vprev = Math.hypot(vel.x, vel.y);
-        if (step > vprev * 1.6 + 15) { trail.stop = '位移不合理'; break; }
+        // the first streak's centroid sits mid-exposure, so tee→first-centroid underestimates the per-frame step: be lenient once
+        if (step > vprev * (trail.length === 1 ? 2.6 : 1.6) + 15) { trail.stop = '位移不合理'; break; }
         if (trail.length >= 4 && best.area > 500 && best.area > 1.3 * Math.max(...trail.slice(-4, -1).map((t) => t.area))) { trail.stop = '拖影變大（黏到身體）'; break; }
         if (trail.length >= 6 && Math.hypot(best.x - pred.x, best.y - pred.y) > 40) { trail.stop = '偏離模型預測'; break; }
       }
@@ -1533,7 +1543,7 @@
       trail.push({ k, t: A.frames[A.imp + k].t, x: best.x, y: best.y, area: best.area, diag: best.diag });
       vel = { x: best.x - (last ? last.x : tee.x), y: best.y - (last ? last.y : tee.y) }; last = best;
       if (trail.length >= 6) { const m = fitPersp(trail); const q = perspPt(m, k + 1); pred = { x: q[0], y: q[1] }; R = 60; }
-      else { pred = { x: best.x + vel.x * 0.8, y: best.y + vel.y * 0.8 }; R = Math.max(60, Math.hypot(vel.x, vel.y) * 0.7 + 40); }
+      else { pred = { x: best.x + vel.x * 0.8, y: best.y + vel.y * 0.8 }; R = Math.max(60, Math.hypot(vel.x, vel.y) * (trail.length === 1 ? 1.6 : 0.7) + 40); }
       prev = cur;
     }
     return trail;
