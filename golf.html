@@ -1491,9 +1491,12 @@
       progress(0.6 + 0.35 * k / 30);
       const px = pred || tee, rr = R;
       const x0 = clamp(Math.round(px.x - rr), 0, W - 1), x1 = clamp(Math.round(px.x + rr), 0, W - 1), y0 = clamp(Math.round(px.y - rr), 0, H - 1), y1 = clamp(Math.round(px.y + rr), 0, H - 1);
-      const w = x1 - x0 + 1, h = y1 - y0 + 1; const mask = new Uint8Array(w * h); const dsum = new Int32Array(w * h);
-      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = (y0 + y) * W + x0 + x; const d = cur[i] - prev[i]; if (d > 22) { mask[y * w + x] = 1; dsum[y * w + x] = d; } }
-      const comps = components(mask, w, h, 15, 6000, false);
+      const w = x1 - x0 + 1, h = y1 - y0 + 1; let mask = new Uint8Array(w * h);
+      // 30 fps clips smear the streak over 1.5 m per frame: it is faint and fragmented, so use a lower threshold and bridge gaps
+      const thr = fps <= 35 ? 14 : 22;
+      for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) { const i = (y0 + y) * W + x0 + x; if (cur[i] - prev[i] > thr) mask[y * w + x] = 1; }
+      if (fps <= 35) { const dil = new Uint8Array(w * h); for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) { const i = y * w + x; if (mask[i] || mask[i - 1] || mask[i + 1] || mask[i - w] || mask[i + w] || mask[i - w - 1] || mask[i - w + 1] || mask[i + w - 1] || mask[i + w + 1]) dil[i] = 1; } mask = dil; }
+      const comps = components(mask, w, h, 15, 8000, false);
       let best = null;
       for (const c of comps) {
         const gx = c.x + x0, gy = c.y + y0;
@@ -1501,7 +1504,9 @@
         if (!pred) {   // first flight frame: the streak starts at the tee and heads upward — nearest bbox point to the tee
           const nx = clamp(tee.x, c.x0 + x0, c.x1 + x0), ny = clamp(tee.y, c.y0 + y0, c.y1 + y0);
           const near = Math.hypot(nx - tee.x, ny - tee.y); const diag = Math.hypot(c.w, c.h);
-          if (c.area < 60 || diag < 20 || near > 90) continue;
+          // at 30 fps the ball has already flown ~1.5 m before the first streak is exposed, so the gap to the tee scales with 1/fps
+          const nearMax = clamp(90 * 60 / fps, 90, 260) * (W / 1080);
+          if (c.area < 60 * (W / 1080) || diag < 20 || near > nearMax) continue;
           if (gy > tee.y - 8) continue;                   // the ball rises: its streak centroid sits above the tee
           if (near < 3 && c.area > 3000) continue;       // component containing the tee & huge → probably the club
           score = near + Math.max(0, 1500 - c.area) * 0.01;
@@ -1523,7 +1528,7 @@
         const s1 = { x: best.x - last.x, y: best.y - last.y }; const prevStep = { x: last.x - (trail.length >= 2 ? trail[trail.length - 2].x : tee.x), y: last.y - (trail.length >= 2 ? trail[trail.length - 2].y : tee.y) };
         const n1 = Math.hypot(s1.x, s1.y), n0 = Math.hypot(prevStep.x, prevStep.y);
         const ang = n1 > 1 && n0 > 1 ? Math.acos(clamp((s1.x * prevStep.x + s1.y * prevStep.y) / (n1 * n0), -1, 1)) * 180 / Math.PI : 0;
-        if (ang > 35 || (trail.length >= 2 && n1 > n0 * 1.25 + 4)) { trail.stop = '軌跡不連貫'; break; }
+        if (ang > (trail.length < 2 ? 50 : 35) || (trail.length >= 2 && n1 > n0 * 1.25 + 4)) { trail.stop = '軌跡不連貫'; break; }
       }
       trail.push({ k, t: A.frames[A.imp + k].t, x: best.x, y: best.y, area: best.area, diag: best.diag });
       vel = { x: best.x - (last ? last.x : tee.x), y: best.y - (last ? last.y : tee.y) }; last = best;
