@@ -423,7 +423,7 @@
   </div>
 </div>
 
-<video id="video" playsinline muted preload="auto" style="display:none"></video>
+<video id="video" playsinline webkit-playsinline muted preload="auto" style="position:absolute;left:0;top:0;width:2px;height:2px;opacity:0.01;pointer-events:none"></video>
 
 <script>
 (function () {
@@ -1243,16 +1243,17 @@
     video.pause(); video.muted = true;
     const rvfc = 'requestVideoFrameCallback' in HTMLVideoElement.prototype;
     const playCapture = (rate) => new Promise((resolve) => {
-      frames = []; let handle = 0, lastT = -1;
+      frames = []; let handle = 0, lastT = -1, finished = false;
       const cb = (now, m) => {
         if (m.mediaTime > lastT) { ctx.drawImage(video, 0, 0, A.lw, A.lh); frames.push({ t: m.mediaTime, g: toGray(ctx.getImageData(0, 0, A.lw, A.lh).data, new Uint8Array(A.lw * A.lh)) }); lastT = m.mediaTime; progress(0.05 + 0.45 * m.mediaTime / dur); }
-        handle = video.requestVideoFrameCallback(cb);
+        if (!finished) handle = video.requestVideoFrameCallback(cb);
       };
-      const done = () => { video.cancelVideoFrameCallback(handle); video.removeEventListener('ended', done); resolve(); };
+      const done = () => { if (finished) return; finished = true; clearTimeout(watchdog); video.cancelVideoFrameCallback(handle); video.removeEventListener('ended', done); video.pause(); resolve(); };
+      // watchdog: some mobile browsers never fire "ended" for inline muted playback
+      const watchdog = setTimeout(done, (dur / rate + 8) * 1000);
       video.addEventListener('ended', done);
       video.currentTime = 0; video.playbackRate = rate;
-      video.play().catch(() => { done(); });
-      handle = video.requestVideoFrameCallback(cb);
+      video.play().then(() => { handle = video.requestVideoFrameCallback(cb); }).catch(() => { done(); });
     });
     // frame-interval statistics: dropped frames show up as irregular mediaTime deltas
     const stats = () => {
@@ -1294,7 +1295,7 @@
   }
   const frameCanvas = document.createElement('canvas'); const fctx = frameCanvas.getContext('2d', { willReadFrequently: true });
   async function grayAt(t) {   // full-res gray at time t
-    await seekTime(t); frameCanvas.width = A.W; frameCanvas.height = A.H; fctx.drawImage(video, 0, 0, A.W, A.H);
+    await seekTime(t); if (frameCanvas.width !== A.W || frameCanvas.height !== A.H) { frameCanvas.width = A.W; frameCanvas.height = A.H; } fctx.drawImage(video, 0, 0, A.W, A.H);
     return toGray(fctx.getImageData(0, 0, A.W, A.H).data, new Uint8Array(A.W * A.H));
   }
 
@@ -1331,19 +1332,27 @@
   }
   // bright, small, round blob that sits still during the backswing and vanishes *within one frame* at a motion burst = the teed ball
   // (feet, gloves, buckets move gradually; only the ball leaves a 7×7 window between two consecutive frames)
-  function findBall() {
+  const tick = () => new Promise((r) => setTimeout(r, 0));
+  async function findBall() {
     const F = A.frames, n = F.length, w = A.lw, h = A.lh, fps = A.fps;
     A.ballDebug = [];
     const bursts = swingBursts(); A.bursts = bursts;
     const windows = bursts.map((b) => ({ i0: Math.max(0, b.i - Math.round(1.0 * fps)), i1: Math.max(1, b.i - Math.round(0.15 * fps)), burst: b.i, quietOK: b.quietOK }));
     for (let f0 = 0.05; f0 <= 0.65; f0 += 0.1) windows.push({ i0: Math.floor(n * f0), i1: Math.max(Math.floor(n * f0) + 3, Math.floor(n * (f0 + 0.2))), burst: null, quietOK: false });
     const minRun = Math.max(6, Math.round(0.35 * fps));
-    let best = null; const tried = [];
-    for (const win of windows) {
-      const { i0, i1, burst } = win; if (i1 - i0 < 3) continue;
-      const step = Math.max(1, Math.floor((i1 - i0) / 24));
-      const med = new Uint8Array(w * h); const col = [];
-      for (let p = 0; p < w * h; p++) { col.length = 0; for (let i = i0; i < i1; i += step) col.push(F[i].g[p]); col.sort((a, b) => a - b); med[p] = col[col.length >> 1]; }
+    let best = null; const tried = []; const seenWin = new Set(); const accepted = [];
+    const yTop = Math.floor(h * 0.3) * w;                       // the teed ball is in the lower 70 % of the frame
+    for (let wi = 0; wi < windows.length; wi++) {
+      const win = windows[wi]; const { i0, i1, burst } = win; if (i1 - i0 < 3) continue;
+      const key = `${i0}-${i1}`; if (seenWin.has(key)) continue; seenWin.add(key);
+      progress(0.53 + 0.05 * wi / windows.length); await tick();   // let the progress bar breathe on slow phones
+      // temporal median over ≤12 sampled frames with an insertion sort on a typed array (fast on mobile)
+      const step = Math.max(1, Math.floor((i1 - i0) / 12)); const idx = []; for (let i = i0; i < i1 && idx.length < 12; i += step) idx.push(i);
+      const m = idx.length, col = new Uint8Array(m), med = new Uint8Array(w * h);
+      for (let p = yTop; p < w * h; p++) {
+        for (let j = 0; j < m; j++) { const v = F[idx[j]].g[p]; let q = j; while (q > 0 && col[q - 1] > v) { col[q] = col[q - 1]; q--; } col[q] = v; }
+        med[p] = col[m >> 1];
+      }
       const box = boxBlur(med, w, h, 7);
       const mask = new Uint8Array(w * h);
       for (let p = 0; p < w * h; p++) if (med[p] > 165 && med[p] - box[p] > 35) mask[p] = 1;
@@ -1370,7 +1379,8 @@
         if (!events.length) { dbg.reject = 'no-vanish'; continue; }
         // pick the event at the burst (or, for generic windows, the one with the most motion nearby)
         let d = -1;
-        if (burst !== null) { let bd = 1e9; for (const e of events) if (Math.abs(e - burst) < bd) { bd = Math.abs(e - burst); d = e; } if (bd > 8) { dbg.reject = 'not-at-burst'; dbg.events = events; continue; } }
+        const burstTol = Math.max(3, Math.round(0.08 * fps));   // the club head pausing at the top vanishes ~0.15 s before impact — keep that out
+        if (burst !== null) { let bd = 1e9; for (const e of events) if (Math.abs(e - burst) < bd) { bd = Math.abs(e - burst); d = e; } if (bd > burstTol) { dbg.reject = 'not-at-burst'; dbg.events = events; continue; } }
         else { let bs = -1; for (const e of events) { const m = Math.max(A.El[e - 1] || 0, A.El[e] || 0, A.El[e + 1] || 0); const sh = (s[e - 1] - s[e]) / Math.max(1, bright - bg); if (m >= 0.3 && sh > bs) { bs = sh; d = e; } } if (d < 0) { dbg.reject = 'no-motion'; continue; } }
         dbg.d = d;
         const sharp = (s[d - 1] - s[d]) / Math.max(1, bright - bg); dbg.sharp = +sharp.toFixed(2);
@@ -1383,12 +1393,22 @@
         dbg.absent = +(absentAfter / (aEnd - d)).toFixed(2); if (absentAfter / (aEnd - d) < (burst !== null ? 0.6 : 0.8)) { dbg.reject = 'reappears'; continue; }
         const motion = Math.max(A.El[d - 1] || 0, A.El[d] || 0, A.El[d + 1] || 0);
         dbg.motion = +motion.toFixed(2); if (motion < 0.3) { dbg.reject = 'no-motion'; continue; }
+        // impact follows the top-of-backswing pause: a clear motion-energy dip 0.15–0.8 s before the vanish (a glove
+        // moving during the backswing has no such pause)
+        { const w0 = Math.max(1, d - Math.round(0.8 * fps)), w1 = Math.max(w0, d - Math.round(0.15 * fps)); let dip = Infinity, pre = 0;
+          for (let k = w0; k <= w1; k++) dip = Math.min(dip, A.sm[k]); for (let k = Math.max(1, w0 - Math.round(0.6 * fps)); k <= w1; k++) pre = Math.max(pre, A.sm[k]);
+          dbg.dip = +dip.toFixed(2); if (!(dip < 0.8 || dip < 0.35 * pre)) { dbg.reject = 'no-pause'; continue; } }
         let absentRest = 0; for (let i = d; i < n; i++) if (s[i] < thr) absentRest++; absentRest /= Math.max(1, n - d); dbg.absentRest = +absentRest.toFixed(2);
-        const score = Math.min(sharp, 1) * 40 + (win.quietOK ? 20 : 0) + (burst !== null ? 15 : 0) + absentRest * 20 + Math.min(motion, 4) * 5 + (c.area <= 80 ? 10 : 0) - (c.area < 6 ? 10 : 0); dbg.score = +score.toFixed(1);
-        if (!best || score > best.score) best = { ...c, d, score, motion, bright, bg, sharp };
+        // the teed ball sits on the ground, i.e. in the lower half of a rear-view frame; the club head pausing at the top does not
+        const score = Math.min(sharp, 1) * 40 + (win.quietOK ? 20 : 0) + (burst !== null ? 15 : 0) + absentRest * 20 + Math.min(motion, 4) * 5 + (c.area <= 80 ? 10 : 0) - (c.area < 6 ? 10 : 0) - (cx < w * 0.05 || cx > w * 0.95 ? 15 : 0) + (cy > h * 0.5 ? 15 : 0); dbg.score = +score.toFixed(1);
+        const cand = { ...c, d, score, motion, bright, bg, sharp };
+        const dup = accepted.find((q) => Math.hypot(q.x - cand.x, q.y - cand.y) < 6 && Math.abs(q.d - cand.d) <= 3);
+        if (dup) { if (cand.score > dup.score) Object.assign(dup, cand); } else accepted.push(cand);
+        if (!best || score > best.score) best = cand;
       }
     }
-    return best;
+    accepted.sort((p, q) => q.score - p.score);
+    return accepted;
   }
   function boxBlur(src, w, h, r) {
     const tmp = new Float32Array(w * h), out = new Uint8Array(w * h);
@@ -1489,7 +1509,7 @@
           score = Math.hypot(gx - pred.x, gy - pred.y);
           if (last && Math.hypot(gx - last.x, gy - last.y) < 6) continue;
         }
-        if (!best || score < best.score) best = { x: gx, y: gy, area: c.area, w: c.w, h: c.h, score };
+        if (!best || score < best.score) best = { x: gx, y: gy, area: c.area, w: c.w, h: c.h, diag: Math.hypot(c.w, c.h), score };
       }
       if (!best) { if (!pred && k <= 3) { prev = cur; continue; } trail.stop = `第 ${k} 幀找不到球`; break; }
       if (vel) {
@@ -1505,7 +1525,7 @@
         const ang = n1 > 1 && n0 > 1 ? Math.acos(clamp((s1.x * prevStep.x + s1.y * prevStep.y) / (n1 * n0), -1, 1)) * 180 / Math.PI : 0;
         if (ang > 35 || (trail.length >= 2 && n1 > n0 * 1.25 + 4)) { trail.stop = '軌跡不連貫'; break; }
       }
-      trail.push({ k, t: A.frames[A.imp + k].t, x: best.x, y: best.y, area: best.area });
+      trail.push({ k, t: A.frames[A.imp + k].t, x: best.x, y: best.y, area: best.area, diag: best.diag });
       vel = { x: best.x - (last ? last.x : tee.x), y: best.y - (last ? last.y : tee.y) }; last = best;
       if (trail.length >= 6) { const m = fitPersp(trail); const q = perspPt(m, k + 1); pred = { x: q[0], y: q[1] }; R = 60; }
       else { pred = { x: best.x + vel.x * 0.8, y: best.y + vel.y * 0.8 }; R = Math.max(60, Math.hypot(vel.x, vel.y) * 0.7 + 40); }
@@ -1527,6 +1547,44 @@
     return best;
   }
   function perspPt(m, t) { const D = 1 + m.c * t; return [(m.ax[0] + m.ax[1] * t) / D, (m.ay[0] + m.ay[1] * t) / D]; }
+
+  // ────────────────────────────── 4b. camera-motion compensation (translation of each frame relative to the impact frame)
+  function downsample(g, w, h, f) { const ow = Math.floor(w / f), oh = Math.floor(h / f), o = new Float32Array(ow * oh); for (let y = 0; y < oh; y++) for (let x = 0; x < ow; x++) { let s = 0; for (let dy = 0; dy < f; dy++) for (let dx = 0; dx < f; dx++) s += g[(y * f + dy) * w + x * f + dx]; o[y * ow + x] = s / (f * f); } return { g: o, w: ow, h: oh }; }
+  function blockShift(ref, cur, w, h, bx0, by0, bw, bh, cx, cy, R) {   // best (dx,dy) for one block around (cx,cy) by SAD
+    let best = null;
+    for (let dy = cy - R; dy <= cy + R; dy++) for (let dx = cx - R; dx <= cx + R; dx++) {
+      let sad = 0, cnt = 0;
+      for (let y = by0; y < by0 + bh; y += 2) { const yy = y + dy; if (yy < 0 || yy >= h) continue; for (let x = bx0; x < bx0 + bw; x += 2) { const xx = x + dx; if (xx < 0 || xx >= w) continue; sad += Math.abs(ref[y * w + x] - cur[yy * w + xx]); cnt++; } }
+      if (cnt < 20) continue; sad /= cnt;
+      if (!best || sad < best.sad) best = { dx, dy, sad };
+    }
+    return best;
+  }
+  async function estimateShifts() {
+    const F = A.frames, n = F.length, w = A.lw, h = A.lh; const shifts = new Array(n).fill(null);
+    const imp = A.imp; const end = Math.min(n - 1, imp + Math.round(3.5 * A.fps)), start = Math.max(0, imp - Math.round(1.2 * A.fps));
+    const r8 = downsample(F[imp].g, w, h, 8), r4 = downsample(F[imp].g, w, h, 4);
+    for (let i = start; i <= end; i++) {
+      if (i === imp) { shifts[i] = [0, 0]; continue; }
+      const c8 = downsample(F[i].g, w, h, 8), c4 = downsample(F[i].g, w, h, 4);
+      // coarse: whole frame at 1/8, ±6 px (= ±48 px analysis-res)
+      const coarse = blockShift(r8.g, c8.g, r8.w, r8.h, 0, 0, r8.w, r8.h, 0, 0, 6) || { dx: 0, dy: 0 };
+      // fine: 3×4 blocks at 1/4 around the coarse guess, median over blocks (robust to the moving golfer)
+      const bw = Math.floor(r4.w / 3), bh = Math.floor(r4.h / 4), dxs = [], dys = [];
+      for (let by = 0; by < 4; by++) for (let bx = 0; bx < 3; bx++) { const b = blockShift(r4.g, c4.g, r4.w, r4.h, bx * bw, by * bh, bw, bh, coarse.dx * 2, coarse.dy * 2, 2); if (b) { dxs.push(b.dx); dys.push(b.dy); } }
+      const mdx = median(dxs), mdy = median(dys);
+      shifts[i] = [mdx * 4, mdy * 4];                     // analysis-res px: where impact-frame content appears in frame i
+      if ((i - start) % 20 === 0) { progress(0.9 + 0.07 * (i - start) / (end - start)); await tick(); }
+    }
+    A.shifts = shifts;
+  }
+  function shiftAt(t) {   // full-res translation to apply to impact-frame coordinates at video time t
+    if (!A.shifts || !A.frames) return [0, 0];
+    const F = A.frames; let lo = 0, hi = F.length - 1;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (F[mid].t < t) lo = mid + 1; else hi = mid; }
+    const s = A.shifts[lo] || A.shifts[Math.max(0, lo - 1)]; if (!s) return [0, 0];
+    const k = A.W / A.lw; return [s[0] * k, s[1] * k];
+  }
 
   // ────────────────────────────── 5. camera geometry & estimates
   function cameraModel() {
@@ -1638,8 +1696,9 @@
     if (!A.est || !A.tee) return;
     const e = A.est, geo = A.geo, fps = A.fps; const tRel = t - e.tImp; if (tRel < -0.02 && !opts.force) { ring(ctx, k); return; }
     const glow = document.createElement('canvas'); glow.width = ctx.canvas.width; glow.height = ctx.canvas.height; const g = glow.getContext('2d');
+    const [sx, sy] = shiftAt(t);                                     // follow hand-held camera motion
     // measured trail (solid)
-    const trailPts = [[A.tee.x, A.tee.y], ...A.trail.filter((p) => opts.full || p.k / fps <= tRel + 1e-6).map((p) => [p.x, p.y])];
+    const trailPts = [[A.tee.x + sx, A.tee.y + sy], ...A.trail.filter((p) => opts.full || p.k / fps <= tRel + 1e-6).map((p) => [p.x + sx, p.y + sy])];
     if (trailPts.length >= 2) { g.strokeStyle = '#FFD728'; g.lineWidth = 6; g.lineCap = 'round'; g.lineJoin = 'round'; g.beginPath(); trailPts.forEach((p, i) => (i ? g.lineTo(p[0] * k, p[1] * k) : g.moveTo(p[0] * k, p[1] * k))); g.stroke(); }
     // simulated 3D flight projected through the camera model (dashed)
     if (geo.B && e.sim) {
@@ -1648,18 +1707,19 @@
       for (const q of e.sim.path) {
         if (q.t < tStart) continue; if (!opts.full && q.t > tRel) break;
         const p = project(geo, e.az, q.x, q.y, q.z); if (!p) break;
-        const px = p[0] * k, py = p[1] * k; if (px < -100 || px > glow.width + 100 || py < -100 || py > glow.height + 100) break;
+        const px = (p[0] + sx) * k, py = (p[1] + sy) * k; if (px < -100 || px > glow.width + 100 || py < -100 || py > glow.height + 100) break;
         if (!started) { const last = trailPts[trailPts.length - 1]; g.moveTo(last[0] * k, last[1] * k); started = true; }
         g.lineTo(px, py);
       }
       g.stroke(); g.setLineDash([]);
       // current ball position marker during playback
-      if (!opts.full && tRel >= 0 && tRel <= e.sim.tof) { const q = e.sim.path.find((p) => p.t >= tRel) || e.sim.path[e.sim.path.length - 1]; const p = project(geo, e.az, q.x, q.y, q.z); if (p) { g.fillStyle = '#fff'; g.beginPath(); g.arc(p[0] * k, p[1] * k, 5, 0, Math.PI * 2); g.fill(); } }
+      if (!opts.full && tRel >= 0 && tRel <= e.sim.tof) { const q = e.sim.path.find((p) => p.t >= tRel) || e.sim.path[e.sim.path.length - 1]; const p = project(geo, e.az, q.x, q.y, q.z); if (p) { g.fillStyle = '#fff'; g.beginPath(); g.arc((p[0] + sx) * k, (p[1] + sy) * k, 5, 0, Math.PI * 2); g.fill(); } }
     }
     ctx.save(); ctx.filter = 'blur(6px)'; ctx.globalAlpha = 0.8; ctx.drawImage(glow, 0, 0); ctx.filter = 'none'; ctx.globalAlpha = 1; ctx.drawImage(glow, 0, 0); ctx.restore();
   }
   function ring(ctx, k) { if (!A.tee) return; ctx.strokeStyle = '#FFD728'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(A.tee.x * k, A.tee.y * k, Math.max(8, (A.ballDiam || 20) * k * 0.9), 0, Math.PI * 2); ctx.stroke(); }
-  window.__golfOverlay = (ctx, k, t) => { if (!A.playing) drawOverlay(ctx, k, t, { full: t >= (A.est ? A.est.tImp + 2.5 : Infinity) }); };
+  // static overlay: only draw the trail on frames where it makes sense (from impact to ~3.5 s after)
+  window.__golfOverlay = (ctx, k, t) => { if (A.playing || !A.est) return; if (t > A.est.tImp + 3.5) return; drawOverlay(ctx, k, t, { full: t >= A.est.tImp + 2.5 }); };
 
   async function playTracer() {
     if (!A.est || A.playing) { if (A.playing) stopTracer(); return; }
@@ -1693,22 +1753,31 @@
       A.meta = await readQtMeta(file);
       status('逐幀擷取影片（播放一次）…'); await capturePass();
       if (!A.frames || A.frames.length < 10) throw new Error('抓不到影格，瀏覽器可能無法解碼這個影片（HEVC）。請改用 Safari，或在 iPhone 設定→相機→格式 選「最相容」。');
-      progress(0.52); status('分析動作能量、尋找球與擊球瞬間…'); await new Promise((r) => setTimeout(r, 10));
-      motionEnergy();
-      A.ballLow = findBall();
-      if (A.ballLow) A.imp = A.ballLow.d - 1;
-      else { A.imp = fallbackImpact(); if (A.imp < 0) throw new Error('找不到擊球瞬間：影片裡沒有偵測到揮桿動作（或球不在畫面裡）。'); }
-      const ts = findTopAndStart(A.imp); A.top = ts.top; A.bs = ts.bs;
+      progress(0.52); status('分析動作能量、尋找球與擊球瞬間…'); await tick();
+      motionEnergy(); await tick();
+      const cands = await findBall(); A.ballCands = cands;
       // sync manual module fps so its frame navigation lines up
       $('#playFps').value = Math.round(A.fps); $('#captureFps').value = Math.round(A.fps); $('#playFps').dispatchEvent(new Event('change'));
       progress(0.58);
-      if (A.ballLow) {
-        status('放大確認球的位置與大小…');
-        const rb = await refineBall(); if (rb) { A.tee = { x: rb.x, y: rb.y }; A.ballDiam = rb.diam; } else { const sc = A.W / A.lw; A.tee = { x: A.ballLow.x * sc, y: A.ballLow.y * sc }; A.ballDiam = Math.sqrt(A.ballLow.area / Math.PI) * 2 * sc; }
-        status('追蹤擊球後的球拖影…');
-        A.trail = await trackStreak();
+      // physical validation: the real ball leaves a coherent upward streak; occluded buckets, gloves and shoes do not.
+      // Try the best-scored candidates in turn and keep the first one whose streak tracks for ≥3 frames.
+      let chosen = null;
+      // a struck ball's first streak is long (motion blur ≫ ball size); a glove or shoe leaves a compact blob
+      const validTrail = (tr, tee) => tr.length >= 3 && tr[tr.length - 1].y < tee.y - 20 && Math.hypot(tr[tr.length - 1].x - tee.x, tr[tr.length - 1].y - tee.y) >= 60 && tr[0].diag >= Math.max(40, 3 * (A.ballDiam || 10));
+      for (let ci = 0; ci < Math.min(3, cands.length); ci++) {
+        const c = cands[ci]; A.ballLow = c; A.imp = c.d - 1;
+        status(`驗證候選球 ${ci + 1}/${Math.min(3, cands.length)}：放大確認位置、追蹤擊球後的拖影…`); await tick();
+        const rb = await refineBall(); if (rb) { A.tee = { x: rb.x, y: rb.y }; A.ballDiam = rb.diam; } else { const sc = A.W / A.lw; A.tee = { x: c.x * sc, y: c.y * sc }; A.ballDiam = Math.sqrt(c.area / Math.PI) * 2 * sc; }
+        const tr = await trackStreak(); c.trail = tr; c.tee = A.tee; c.diam = A.ballDiam;
+        if (validTrail(tr, A.tee)) { chosen = c; break; }
       }
-      progress(0.97); status('推估桿頭速度與飛行軌跡…');
+      if (!chosen && cands.length) chosen = cands[0];     // nothing tracked: keep the best-scored ball (streak may simply be invisible)
+      if (chosen) { A.ballLow = chosen; A.imp = chosen.d - 1; A.tee = chosen.tee; A.ballDiam = chosen.diam; A.trail = chosen.trail || []; }
+      else { A.ballLow = null; A.tee = null; A.ballDiam = null; A.trail = []; A.imp = fallbackImpact(); if (A.imp < 0) throw new Error('找不到擊球瞬間：影片裡沒有偵測到揮桿動作（或球不在畫面裡）。'); }
+      const ts = findTopAndStart(A.imp); A.top = ts.top; A.bs = ts.bs;
+      progress(0.9); status('估計手持晃動，讓軌跡跟著畫面對齊…'); await tick();
+      A.shifts = null; await estimateShifts();
+      progress(0.97); status('推估桿頭速度與飛行軌跡…'); await tick();
       estimate(); renderResults();
       progress(1);
       const tr = A.trail.length;
