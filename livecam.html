@@ -1,0 +1,1530 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="東京近郊即時影像一次看：新宿、澀谷、原宿、銀座、橫濱、江之島鎌倉、箱根、河口湖富士山、熱海、成田機場的 YouTube 直播攝影機，地名全中文標示，畫面每分鐘更新。附各地天氣、穿搭建議、富士山能見度與自駕路面判讀。">
+<title>東京近郊即時影像｜新宿・橫濱・箱根・河口湖・熱海 YouTube 直播攝影機・天氣・穿搭・自駕路況</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23B8542A%22%2F%3E%3Cpath%20d%3D%22M6%2023%20L16%208%20L26%2023%20Z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22M12%2014%20L16%2011%20L20%2014%20L18%2012%20L16%2013%20L14%2012%20Z%22%20fill%3D%22%23B8542A%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://i.ytimg.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500&family=Chivo+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#EEEAE3; --pane:#FFFFFF; --pane-2:#F6F2EC;
+  --ink:#1D1A17; --ink-2:#4F4741; --ink-3:#8A7F76;
+  --line:#D9D1C7; --line-2:#E8E1D8;
+  --sea:#2A5D8F; --ember:#B8542A;
+  --go:#2E7D52; --warn:#B8862A; --stop:#B23A3A; --teal:#127D6E;
+  --shadow:0 1px 1px rgba(29,26,23,.04), 0 10px 24px -18px rgba(29,26,23,.5);
+  --tc:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  --jp:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI",sans-serif;
+  --mono:"Chivo Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#14110F; --pane:#1E1A17; --pane-2:#26211D;
+    --ink:#EDE6DE; --ink-2:#B9AEA3; --ink-3:#7E736A;
+    --line:#3A332D; --line-2:#2C2622;
+    --sea:#7FB2E0; --ember:#E08A5C;
+    --go:#5FBE8B; --warn:#D8AC5A; --stop:#E07B7B; --teal:#5CC9B4;
+    --shadow:0 1px 1px rgba(0,0,0,.5), 0 10px 24px -18px rgba(0,0,0,.9);
+  }
+}
+/* Dark palette is duplicated on purpose: one copy for "system is dark", one for the
+   manual toggle. CSS cannot share a rule across a media-query boundary. Edit both. */
+:root[data-theme="dark"]{
+  --ground:#14110F; --pane:#1E1A17; --pane-2:#26211D;
+  --ink:#EDE6DE; --ink-2:#B9AEA3; --ink-3:#7E736A;
+  --line:#3A332D; --line-2:#2C2622;
+  --sea:#7FB2E0; --ember:#E08A5C;
+  --go:#5FBE8B; --warn:#D8AC5A; --stop:#E07B7B; --teal:#5CC9B4;
+  --shadow:0 1px 1px rgba(0,0,0,.5), 0 10px 24px -18px rgba(0,0,0,.9);
+}
+*,*::before,*::after{box-sizing:border-box;}
+body{margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--tc); font-size:16px; line-height:1.6; -webkit-text-size-adjust:100%;}
+.wrap{max-width:1240px; margin:0 auto; padding:20px 18px 60px;}
+
+.topbar{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px;}
+.home{font-size:12px; color:var(--ink-3); text-decoration:none;}
+.home:hover{color:var(--sea); text-decoration:underline;}
+.theme-btn{font:inherit; font-family:var(--tc); font-size:11.5px; cursor:pointer;
+  color:var(--ink-3); background:var(--pane); border:1px solid var(--line);
+  border-radius:99px; padding:4px 13px; white-space:nowrap;}
+.theme-btn:hover{border-color:var(--sea); color:var(--sea);}
+.theme-btn:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
+
+/* Layer 1: clocks and day/night */
+.now{background:var(--pane); border:1px solid var(--line); border-radius:3px;
+  padding:13px 15px; box-shadow:var(--shadow);
+  display:flex; flex-wrap:wrap; gap:10px 24px; align-items:flex-end;
+  justify-content:space-between;}
+.stamp{display:flex; flex-direction:column; gap:2px;}
+.stamp .d1{font-size:19px; font-weight:500; letter-spacing:.03em; line-height:1.2;}
+.stamp .d1 em{font-style:normal; font-size:12px; color:var(--ink-3);
+  font-family:var(--mono); margin-left:8px;}
+.stamp .d2{font-size:15px; color:var(--ink-2); letter-spacing:.06em;}
+.stamp .d3{display:flex; align-items:baseline; gap:5px 16px; flex-wrap:wrap; margin-top:4px;}
+.stamp .d3 span{font-size:12px; color:var(--ink-3); letter-spacing:.04em;}
+.stamp .d3 b{font-family:var(--mono); font-size:23px; font-weight:600; line-height:1;
+  font-variant-numeric:tabular-nums; margin-left:2px;}
+.stamp .d3 .t-tw{color:var(--teal);}
+.stamp .d3 .t-jp{color:var(--ember);}
+.now .sun{margin:0; text-align:right; font-size:12.5px; color:var(--ink-2); line-height:1.45;}
+.now .sun b{display:block; font-size:14px; color:var(--ink); font-weight:500;}
+.now .sun #dnNote{color:var(--ember); font-weight:500;}
+.law{flex:1 1 320px; min-width:0; display:flex; flex-wrap:wrap; align-items:baseline;
+  gap:3px 10px; text-decoration:none; color:inherit;
+  border:1px solid var(--line-2); border-left:3px solid var(--ember);
+  border-radius:3px; background:var(--pane-2); padding:7px 11px;}
+.law:hover{border-color:var(--sea); border-left-color:var(--ember);}
+.law:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
+.law-k{font-family:var(--mono); font-size:9.5px; letter-spacing:.12em;
+  color:var(--ember); white-space:nowrap;}
+.law-t{font-size:12.5px; color:var(--ink-2); line-height:1.45;}
+.law-go{margin-left:auto; font-size:11px; color:var(--stop); font-weight:500;
+  white-space:nowrap;}
+
+/* Layer 2: today's brief (weather ticker + recommendations) */
+.brief{margin-top:12px; background:var(--pane); border:1px solid var(--line);
+  border-radius:3px; box-shadow:var(--shadow); padding:12px 14px 13px;}
+.brief-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:9px;}
+.brief-t{font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink-3);}
+.brief-note{font-size:12.5px; color:var(--ember); font-weight:500;}
+.wx{display:flex; flex-direction:column; gap:4px;}
+.wx[hidden]{display:none;}
+.wx-top{display:flex; align-items:baseline; gap:6px 10px; flex-wrap:wrap;}
+.wx-label{font-family:var(--mono); font-size:9.5px; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--ink-3); white-space:nowrap;}
+.wx-src{font-family:var(--mono); font-size:9.5px; color:var(--ink-3);
+  text-decoration:none; white-space:nowrap;}
+.wx-src:hover{color:var(--sea); text-decoration:underline;}
+.wx-more{margin-left:auto; font-size:11px; color:var(--stop); font-weight:500;
+  text-decoration:none; white-space:nowrap;}
+.wx-more:hover{text-decoration:underline;}
+.wx-btn{margin-left:0; font:inherit; font-size:11px; font-weight:500;
+  font-family:var(--tc); color:var(--stop); background:none; border:0;
+  padding:0; cursor:pointer; white-space:nowrap;}
+.wx-btn:hover{text-decoration:underline;}
+.wx-btn:focus-visible{outline:2px solid var(--ember); outline-offset:2px; border-radius:2px;}
+
+.wx-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(178px,1fr));
+  gap:8px; margin-top:2px;}
+.wx-grid[hidden]{display:none;}
+.wg-cell{background:var(--pane-2); border:1px solid var(--line-2);
+  border-radius:3px; padding:9px 11px 10px;}
+.wg-city{font-size:14px; font-weight:500; margin-bottom:5px;}
+.wg-t{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.wg-p{font-size:12px; color:var(--ink-2); margin-top:5px;
+  font-variant-numeric:tabular-nums;}
+.wg-p.wet{color:var(--sea); font-weight:500;}
+.wg-w{font-size:11.5px; color:var(--ink-3); line-height:1.55; margin-top:2px;}
+@media (max-width:560px){
+  .wx-grid{grid-template-columns:repeat(2,1fr); gap:7px;}
+  .wg-cell{padding:8px 9px 9px;}
+  .wg-t{gap:6px;}
+}
+
+/* Fuji visibility panel */
+.fuji{margin-top:11px; padding-top:11px; border-top:1px dotted var(--line);}
+.fuji[hidden]{display:none;}
+.fuji h5{margin:0 0 4px; font-size:14px; font-weight:700; color:var(--sea);}
+.fuji-cap{margin:0 0 10px; font-size:11.5px; color:var(--ink-3); line-height:1.7;}
+.fuji-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:8px;}
+.fuji-i{background:var(--pane-2); border:1px solid var(--line-2); border-radius:3px; padding:9px 11px;}
+.fuji-i .fh{display:flex; align-items:baseline; gap:8px;}
+.fuji-i .fh b{font-size:14px; font-weight:700;}
+.fuji-i .fh .fv{margin-left:auto; font-size:12.5px; font-weight:600; white-space:nowrap;}
+.fuji-i .fs{font-size:11.5px; color:var(--ink-2); margin-top:4px; line-height:1.55;}
+.fuji-i .fs em{font-style:normal; font-family:var(--mono); color:var(--ink-3);}
+.fv-go{color:var(--go);} .fv-warn{color:var(--warn);} .fv-stop{color:var(--stop);}
+.fuji-src{margin:10px 0 0; font-size:11px; color:var(--ink-3); line-height:1.75;}
+.fuji-src a{color:var(--sea); text-decoration:none;}
+.fuji-src a:hover{text-decoration:underline;}
+
+/* Umbrella / packing explainer */
+.pack{margin-top:11px; padding-top:11px; border-top:1px dotted var(--line);}
+.pack[hidden]{display:none;}
+.pack h5{margin:0 0 7px; font-size:14px; font-weight:700; color:var(--ember);}
+.pack-lead{margin:0 0 10px; font-size:12.5px; color:var(--ink-2); line-height:1.7;}
+.pack-l{margin:0 0 10px;}
+.pack-l>div{display:flex; gap:11px; align-items:baseline; padding:6px 0;
+  border-bottom:1px dotted var(--line-2);}
+.pack-l>div:last-child{border-bottom:0;}
+.pack-l dt{flex:0 0 96px; font-size:13px; font-weight:700; color:var(--sea);}
+.pack-l dd{margin:0; font-size:12.5px; color:var(--ink-2); line-height:1.7;}
+.pack-l dd b{color:var(--ink); font-weight:500;}
+.pack-src{margin:0; font-size:11.5px; color:var(--ink-3); line-height:1.7;}
+.pack-src a{color:var(--sea); text-decoration:none;}
+.pack-src a:hover{text-decoration:underline;}
+@media (max-width:560px){
+  .pack-l>div{flex-direction:column; gap:2px;}
+  .pack-l dt{flex:none;}
+}
+
+.wx-track{overflow:hidden; border:1px solid var(--line-2); border-radius:3px;
+  background:var(--pane-2); padding:6px 0;}
+.wx-run{display:inline-flex; white-space:nowrap; will-change:transform;}
+.wx-item{display:inline-flex; align-items:center; gap:9px; padding:0 18px;
+  border-right:1px dotted var(--line);}
+.wx-city{font-size:13px; font-weight:500;}
+.wx-slot{display:inline-flex; align-items:center; gap:3px;}
+.wx-tag{font-size:9.5px; letter-spacing:.06em; color:var(--ink-3); white-space:nowrap;}
+.wx-fig{display:block; flex:0 0 auto;}
+.wx-slot:first-of-type{color:var(--ember);}
+.wx-slot:last-of-type{color:var(--sea);}
+.wx-t{font-family:var(--mono); font-size:13px; font-variant-numeric:tabular-nums;}
+.wx-hi{color:var(--ember); font-weight:600;}
+.wx-lo{color:var(--sea); font-weight:600;}
+.wx-p{font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums;}
+.wx-p.wet{color:var(--sea); font-weight:500;}
+.wx-w{font-size:12px; color:var(--ink-3);}
+
+/* Recommendations */
+.rec{margin-top:12px; padding-top:11px; border-top:1px dotted var(--line);}
+.rec[hidden]{display:none;}
+.rec-h{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin-bottom:8px;}
+.rec-h b{font-size:14.5px; font-weight:700;}
+.rec-h span{font-size:11px; color:var(--ink-3);}
+.rec-list{display:grid; grid-template-columns:repeat(3,1fr); gap:9px;}
+.rec-card{display:flex; gap:10px; align-items:flex-start; text-decoration:none;
+  color:inherit; background:var(--pane-2); border:1px solid var(--line-2);
+  border-radius:3px; padding:9px 11px; transition:border-color .14s;}
+.rec-card:hover{border-color:var(--sea);}
+.rec-card[hidden]{display:none;}
+.rec-card:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
+.rec-rank{flex:0 0 auto; font-family:var(--mono); font-size:15px; font-weight:600;
+  color:var(--ember); line-height:1.3;}
+.rec-b{min-width:0;}
+.rec-n{display:block; font-size:14px; font-weight:500; line-height:1.35;}
+.rec-w{display:block; font-size:11.5px; color:var(--ink-2); margin-top:3px; line-height:1.45;}
+.rec-x{display:block; font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+
+header{padding:20px 0 15px; border-bottom:2px solid var(--ink);}
+.kicker{font-family:var(--mono); font-size:10.5px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--ember); margin-bottom:8px;}
+h1{font-size:clamp(26px,6.4vw,38px); line-height:1.1; margin:0 0 7px; font-weight:700;}
+.tagline{margin:0 0 10px; color:var(--sea); font-weight:500; letter-spacing:.02em;
+  font-size:clamp(15px,3.5vw,18px); line-height:1.5;}
+.sub{margin:0; color:var(--ink-2); max-width:64ch; font-size:14.5px;}
+
+.howto{margin-top:13px;}
+.howto-btn{font:inherit; font-family:var(--tc); font-size:13px; font-weight:500;
+  cursor:pointer; color:var(--sea); background:none; border:0; padding:0;}
+.howto-btn:hover{text-decoration:underline;}
+.howto-btn:focus-visible{outline:2px solid var(--ember); outline-offset:2px; border-radius:2px;}
+.howto-box{margin-top:11px; background:var(--pane); border:1px solid var(--line);
+  border-radius:3px; padding:15px 17px; max-width:68ch;}
+.howto-box[hidden]{display:none;}
+.howto-box ol{margin:0; padding:0; list-style:none; counter-reset:h;}
+.howto-box li{position:relative; padding-left:31px; margin-bottom:10px;
+  font-size:13px; color:var(--ink-2); line-height:1.7;}
+.howto-box li:last-child{margin-bottom:0;}
+.howto-box li::before{counter-increment:h; content:counter(h);
+  position:absolute; left:0; top:3px; width:20px; height:20px; border-radius:50%;
+  background:var(--sea); color:#fff; font-family:var(--mono); font-size:11px;
+  display:flex; align-items:center; justify-content:center;}
+.howto-box b{color:var(--ink); font-weight:500;}
+
+.filters{position:sticky; top:0; z-index:5; background:var(--ground);
+  padding:12px 0 10px; display:flex; gap:7px; align-items:center;
+  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
+.filters::-webkit-scrollbar{display:none;}
+.filters button{flex:0 0 auto; font:inherit; font-size:14px; cursor:pointer;
+  background:var(--pane); color:var(--ink-2); border:1px solid var(--line);
+  border-radius:2px; padding:7px 15px;}
+.filters button:hover{border-color:var(--sea); color:var(--sea);}
+.filters button[aria-pressed="true"]{background:var(--sea); border-color:var(--sea); color:#fff;}
+.filters .sep{flex:0 0 auto; width:1px; height:22px; background:var(--line); margin:0 3px;}
+.filters .mode[aria-pressed="true"]{background:var(--ember); border-color:var(--ember);}
+.filters .age{flex:0 0 auto; margin-left:auto; font-family:var(--mono);
+  font-size:11px; color:var(--ink-3); white-space:nowrap;}
+
+/* Road conditions (driving mode) */
+.road{margin-top:14px; background:var(--pane); border:1px solid var(--line);
+  border-radius:3px; padding:13px 15px; box-shadow:var(--shadow);}
+.road[hidden]{display:none;}
+.road h4{margin:0 0 3px; font-size:14.5px; font-weight:700;}
+.road-cap{margin:0 0 10px; font-size:11.5px; color:var(--ink-3);}
+.road-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px;}
+.road-i{display:flex; align-items:baseline; gap:8px; padding:7px 10px;
+  background:var(--pane-2); border:1px solid var(--line-2); border-radius:3px;}
+.road-i .rd-n{font-size:13.5px; font-weight:500; white-space:nowrap;}
+.road-i .rd-t{font-family:var(--mono); font-size:12px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums;}
+.road-i .rd-s{margin-left:auto; font-size:12px; font-weight:500; white-space:nowrap;}
+.rd-go{color:var(--go);} .rd-warn{color:var(--warn);} .rd-stop{color:var(--stop);}
+.road-src{margin:10px 0 0; font-size:11.5px; color:var(--ink-3);}
+.road-src a{color:var(--sea); text-decoration:none;}
+.road-src a:hover{text-decoration:underline;}
+.law-full{margin-top:13px; padding-top:12px; border-top:1px dotted var(--line);}
+.law-full h5{margin:0 0 8px; font-size:14px; font-weight:700; color:var(--ember);}
+.law-full ul{margin:0 0 10px; padding:0; list-style:none;}
+.law-full li{position:relative; padding-left:1.1em; margin-bottom:4px;
+  font-size:13px; color:var(--ink-2); line-height:1.65;}
+.law-full li::before{content:"·"; position:absolute; left:.25em; color:var(--ink-3);}
+.law-full b{color:var(--ink); font-weight:500;}
+.law-hit{margin:0 0 10px; font-size:13.5px; color:var(--ink); line-height:1.7;}
+.law-sig{margin:0 0 10px; font-size:15px; font-weight:500;
+  color:var(--sea); letter-spacing:.04em;}
+.law-src{margin:0; font-size:11.5px; color:var(--ink-3); line-height:1.7;}
+.law-src a{color:var(--sea); text-decoration:none;}
+.law-src a:hover{text-decoration:underline;}
+
+/* My trip (public, mirrors trip.html) */
+.trip{margin-top:14px; background:var(--pane); border:1px solid var(--sea);
+  border-radius:3px; padding:13px 15px; box-shadow:var(--shadow);}
+.trip[hidden]{display:none;}
+.trip-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+.trip-h h4{margin:0; font-size:15px; font-weight:700;}
+.trip-h .cd{font-family:var(--mono); font-size:11.5px; color:var(--ember);}
+.trip-h .off{margin-left:auto; font-size:11px; color:var(--ink-3);
+  background:none; border:0; cursor:pointer; font-family:var(--tc); padding:0;}
+.trip-h .off:hover{color:var(--sea); text-decoration:underline;}
+.trip-days{display:flex; gap:5px; overflow-x:auto; margin:11px 0 0; padding-bottom:4px;
+  scrollbar-width:none;}
+.trip-days::-webkit-scrollbar{display:none;}
+.trip-days button{flex:0 0 auto; font:inherit; font-family:var(--mono); font-size:11.5px;
+  cursor:pointer; background:var(--pane-2); color:var(--ink-2);
+  border:1px solid var(--line); border-radius:2px; padding:5px 9px; line-height:1.3;}
+.trip-days button b{display:block; font-family:var(--tc); font-size:10px; font-weight:400;}
+.trip-days button[aria-pressed="true"]{background:var(--sea); border-color:var(--sea); color:#fff;}
+.trip-days button.today{border-color:var(--ember);}
+.trip-body{margin-top:11px; padding-top:10px; border-top:1px dotted var(--line);}
+.trip-title{font-size:15px; font-weight:500;}
+.trip-route{font-size:13px; color:var(--ink-2); margin-top:4px; line-height:1.65;}
+.trip-car{display:inline-block; font-family:var(--mono); font-size:10.5px;
+  border:1px solid var(--line); border-radius:2px; padding:1px 6px; margin-left:7px;
+  color:var(--ink-3); vertical-align:1px;}
+.trip-car.on{color:var(--ember); border-color:var(--ember);}
+.trip-sec{margin-top:11px;}
+.trip-sec h5{margin:0 0 6px; font-family:var(--mono); font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:400;}
+.trip-cams{display:flex; flex-wrap:wrap; gap:6px;}
+.trip-cams a{font-size:12.5px; text-decoration:none; color:var(--ink-2);
+  background:var(--pane-2); border:1px solid var(--line-2); border-radius:2px;
+  padding:4px 9px;}
+.trip-cams a:hover{border-color:var(--sea); color:var(--sea);}
+.trip-wx{display:flex; flex-wrap:wrap; gap:6px;}
+.trip-wx span{font-size:12px; color:var(--ink-2); background:var(--pane-2);
+  border:1px solid var(--line-2); border-radius:2px; padding:4px 9px;}
+.trip-wx b{font-family:var(--mono); font-weight:600; color:var(--sea);}
+.trip-link{display:inline-block; margin-top:10px; font-size:12.5px; color:var(--sea);
+  text-decoration:none; font-weight:500;}
+.trip-link:hover{text-decoration:underline;}
+.mc-hint{margin:6px 0 0; font-size:11px; color:var(--ink-3); line-height:1.7;}
+
+.region{margin-top:30px;}
+.region[hidden]{display:none;}
+.region-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+  padding-bottom:8px; border-bottom:2px solid var(--ink);}
+.region-head h2{margin:0; font-size:24px; font-weight:700; letter-spacing:.03em;}
+.region-head p{margin:0; font-size:13px; color:var(--ink-3);}
+.region-head .n{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-3);}
+.area{margin-top:20px;}
+.area[hidden]{display:none;}
+.area h3{margin:0 0 11px; font-size:14.5px; font-weight:500; color:var(--sea);
+  letter-spacing:.06em; display:flex; align-items:center; gap:9px;}
+.area h3::after{content:""; flex:1; height:1px; background:var(--line);}
+
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:12px;}
+.cam{position:relative; background:var(--pane);
+  border:1px solid var(--line); border-radius:4px; overflow:hidden;
+  box-shadow:var(--shadow); transition:border-color .14s, transform .14s;}
+.cam[hidden]{display:none;}
+.cam:hover{border-color:var(--sea); transform:translateY(-2px);}
+.cam:focus-within{border-color:var(--sea);}
+.cam-link{display:block; text-decoration:none; color:inherit;}
+.cam-link:focus-visible{outline:2px solid var(--ember); outline-offset:-2px;}
+.shot,.meta,.zh,.jp,.why{display:block;}
+.shot{position:relative; aspect-ratio:16/9; background:#0B131A; overflow:hidden;}
+.shot img{width:100%; height:100%; object-fit:cover; display:block;
+  opacity:0; transition:opacity .35s;}
+.shot img.on{opacity:1;}
+.shot .dot{position:absolute; top:8px; left:8px; z-index:2;
+  font-family:var(--mono); font-size:9.5px; font-weight:600; letter-spacing:.13em;
+  color:#fff; background:rgba(184,84,42,.92); padding:2px 7px; border-radius:2px;
+  display:flex; align-items:center; gap:5px;}
+.shot .dot i{width:5px; height:5px; border-radius:50%; background:#fff;
+  animation:pulse 2.4s ease-in-out infinite;}
+.shot .dot em{font-style:normal;}
+.shot.night .dot{background:rgba(42,93,143,.94); letter-spacing:.08em;}
+.shot.night .dot i{animation:none; opacity:.55;}
+.shot.err .dot{background:rgba(90,105,116,.94); letter-spacing:.08em;}
+.shot.err .dot i{animation:none; opacity:.45;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.shot .yt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  opacity:0; transition:opacity .16s; background:rgba(11,19,26,.45);}
+.cam:hover .shot .yt{opacity:1;}
+.shot .yt span{background:#fff; color:#0F1A22; font-size:13px; font-weight:500;
+  padding:7px 15px; border-radius:99px;}
+.shot .fail{position:absolute; inset:0; display:none; align-items:center; justify-content:center;
+  color:#7C8E9A; font-size:12.5px; text-align:center; padding:0 12px;}
+.shot.err .fail{display:flex;}
+.shot .nite{position:absolute; left:0; right:0; bottom:0; z-index:2; display:none;
+  font-size:11.5px; color:#C6D4DD; background:linear-gradient(transparent,rgba(11,19,26,.86));
+  padding:16px 10px 7px;}
+.shot.night:not(.err) .nite{display:block;}
+.cam-act{position:absolute; top:6px; right:6px; z-index:3; display:flex; gap:5px;}
+.cam-act button,.cam-act a{font:inherit; font-size:12px; line-height:1; cursor:pointer;
+  color:#E3EBF0; background:rgba(11,19,26,.62); border:1px solid rgba(227,235,240,.28);
+  border-radius:2px; padding:5px 7px; text-decoration:none;
+  -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);}
+.cam-act button:hover,.cam-act a:hover{background:rgba(42,93,143,.9); border-color:#fff;}
+.cam-act button[aria-pressed="true"]{color:#FFD79A; border-color:#FFD79A;}
+.cam-act a{font-family:var(--mono); font-size:10px; letter-spacing:.06em;}
+.meta{padding:11px 12px 12px;}
+.zh{font-size:15.5px; font-weight:500; line-height:1.35;}
+.jp{font-family:var(--jp); font-size:11.5px; color:var(--ink-3); line-height:1.45; margin-top:2px;}
+.why{font-size:12.5px; color:var(--ink-2); margin-top:7px;
+  padding-top:7px; border-top:1px dotted var(--line-2);}
+.empty{padding:26px 4px; color:var(--ink-3); font-size:14px;}
+.empty[hidden]{display:none;}
+
+.note{background:var(--pane-2); border:1px solid var(--line);
+  border-radius:3px; padding:15px; margin-top:14px;}
+.note h4{margin:0 0 6px; font-size:14.5px; font-weight:700;}
+.note p{margin:0 0 8px; font-size:13.5px; color:var(--ink-2);}
+.note p:last-child{margin-bottom:0;}
+.note a{color:var(--sea);}
+footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line);
+  text-align:center; line-height:1.8; color:var(--ink-3);}
+footer .sig-title{font-family:var(--tc); font-size:16px;
+  color:var(--ink); font-weight:500; letter-spacing:.06em;}
+footer .sig-by{margin-top:3px; font-family:var(--tc);
+  font-size:14px; color:var(--ink-2); letter-spacing:.03em;}
+footer .sig-by a{color:var(--sea); text-decoration:none;}
+footer .sig-by a:hover{text-decoration:underline;}
+.sig-ver{margin-top:14px;}
+.sig-ver span{display:inline-block; font-family:var(--mono); font-size:11.5px;
+  letter-spacing:.08em; color:var(--ink-2);
+  border:1px solid var(--line); border-radius:99px; padding:3px 12px;}
+.legal{max-width:64ch; margin:22px auto 0; padding-top:16px;
+  border-top:1px dotted var(--line); text-align:left;}
+.legal h4{margin:0 0 7px; font-family:var(--tc); font-size:12.5px; font-weight:700;
+  letter-spacing:.06em; color:var(--ink-2); text-align:center;}
+.legal-lead{margin:0 0 8px; font-family:var(--tc); font-size:12px;
+  color:var(--ink-2); text-align:center; line-height:1.7;}
+.legal ul{margin:0; padding:0; list-style:none;}
+.legal li{position:relative; padding-left:1.1em; margin-bottom:5px;
+  font-family:var(--tc); font-size:11.5px; line-height:1.75; color:var(--ink-3);}
+.legal li::before{content:"·"; position:absolute; left:.2em; color:var(--ink-3);}
+.legal b{color:var(--ink-2); font-weight:500;}
+.legal a{color:var(--sea); text-decoration:none;}
+.legal a:hover{text-decoration:underline;}
+footer .meta-note{margin:16px 0 0;
+  font-family:var(--mono); font-size:11px; line-height:1.9;}
+
+@media (prefers-reduced-motion:reduce){
+  .shot .dot i{animation:none} .cam{transition:none} .shot img{transition:none}
+}
+@media (max-width:860px){
+  .rec-list{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+  .wrap{padding:15px 12px 44px;}
+  .grid{grid-template-columns:1fr;}
+  .now{gap:9px;}
+  .stamp .d1{font-size:17px;}
+  .stamp .d3 b{font-size:21px;}
+  .now .sun{order:2;}
+  .filters .age{display:none;}
+}
+@media (max-width:380px){
+  .filters{gap:6px;}
+  .filters button{padding:7px 11px; font-size:13.5px;}
+  .now .sun{text-align:left; width:100%;
+    padding-top:9px; border-top:1px dotted var(--line-2);}
+  .shot .yt{opacity:1; background:none;}
+  .shot .yt span{position:absolute; right:8px; bottom:8px; font-size:11.5px; padding:5px 11px;}
+}
+</style>
+<script>
+/* Apply the saved theme before first paint so dark-mode users do not see a white flash. */
+try{ var _t=localStorage.getItem('tk_theme');
+     if(_t) document.documentElement.setAttribute('data-theme',_t); }catch(e){}
+</script>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="home" href="index.html">← 我的小工具</a>
+    <button class="theme-btn" type="button" id="themeBtn"
+      title="切換明暗：跟隨系統 → 淺色 → 深色">◐ 跟隨系統</button>
+  </div>
+
+  <!-- Layer 1: clocks and day/night -->
+  <div class="now">
+    <div class="stamp">
+      <div class="d1" id="today">—</div>
+      <div class="d2" id="weekday">—</div>
+      <div class="d3">
+        <span class="t-tw">台灣時間<b id="twt">--:--</b></span>
+        <span class="t-jp">日本時間<b id="jst">--:--</b></span>
+      </div>
+    </div>
+
+    <a class="law" href="#road" id="lawBar">
+      <span class="law-k">日本 2026/9/1 新制</span>
+      <span class="law-t">沒有中央線的路，法定速限 30 km/h</span>
+      <span class="law-go">自駕注意事項 ↓</span>
+    </a>
+
+    <p class="sun"><b id="dn">—</b><span id="dnNote"></span></p>
+  </div>
+
+  <!-- Layer 2: today's brief -->
+  <section class="brief">
+    <div class="brief-h">
+      <span class="brief-t">今日提醒</span>
+      <span class="brief-note" id="briefNote"></span>
+    </div>
+
+    <div class="wx" id="wx" hidden>
+      <div class="wx-top">
+        <span class="wx-label">今日氣溫 · 降水機率 · 穿著</span><a class="wx-src" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
+        <a class="wx-more" href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">穿衣指數 ↗</a>
+        <button class="wx-btn" type="button" id="packBtn"
+          aria-expanded="false" aria-controls="packBox">帶什麼 ▾</button>
+        <button class="wx-btn" type="button" id="gridBtn"
+          aria-expanded="false" aria-controls="wxGrid">展開比較 ▾</button>
+        <button class="wx-btn" type="button" id="fujiBtn"
+          aria-expanded="false" aria-controls="fujiBox">富士山看得到嗎 ▾</button>
+      </div>
+      <div class="wx-track" id="wxTrack"><div class="wx-run" id="wxRun"></div></div>
+      <div class="wx-grid" id="wxGrid" hidden></div>
+      <div class="fuji" id="fujiBox" hidden></div>
+
+      <div class="pack" id="packBox" hidden>
+        <h5>十一月的關東・箱根・富士五湖，帶什麼</h5>
+        <p class="pack-lead">同一天裡，<b>東京市區、熱海海邊、河口湖湖畔</b>可以差 8～10 度。
+          河口湖海拔約 830 公尺，清晨常在 0～3 度，看逆富士要當冬天穿。</p>
+        <dl class="pack-l">
+          <div><dt>洋蔥式穿法</dt><dd><b>白天市區 15～18 度、朝晚 8～10 度。</b>薄長袖＋可收納的中層＋防風外套最好用，進店脫、出門穿。</dd></div>
+          <div><dt>河口湖・箱根</dt><dd><b>比東京低 5～8 度。</b>D2 夜楓點燈與 D3 清晨都在戶外，帶一件真正保暖的外套與圍巾。</dd></div>
+          <div><dt>雨具</dt><dd><b>降水機率 50% 以上就帶折傘。</b>湘南、熱海沿海風大，傘容易翻，防水外套更實用。</dd></div>
+          <div><dt>鞋</dt><dd>D5～D7 每天走兩萬步起跳，<b>好走的鞋比好看重要</b>。江之島、鎌倉有石階與坡道。</dd></div>
+          <div><dt>自駕日</dt><dd>箱根、熱海峠<b>清晨與夜間會起霧</b>；河口湖朝晚接近冰點，橋面與陰面可能結霜。</dd></div>
+        </dl>
+        <p class="pack-src">穿衣指數以 Weathernews 關東版為準 →
+          <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース 服装予報（関東）↗</a></p>
+      </div>
+    </div>
+
+    <div class="rec" id="rec" hidden>
+      <div class="rec-h">
+        <b>現在值得看哪裡</b>
+        <span>依各支攝影機所在地的日夜與天氣自動挑，理由寫在下面</span>
+      </div>
+      <div class="rec-list" id="recList"></div>
+    </div>
+  </section>
+
+  <section class="trip" id="trip" hidden></section>
+
+  <header>
+    <div class="kicker">Tokyo · Yokohama · Hakone · Fuji · Atami · Live Cameras</div>
+    <h1>東京近郊即時影像</h1>
+    <p class="tagline">看得到東京、橫濱、箱根、河口湖、熱海現在的樣子，也知道現在該不該去。</p>
+    <p class="sub">
+      沿著 11 月自駕行程的路線挑選 YouTube 直播攝影機，中文標示地點。<br>
+      縮圖是<strong>當下的畫面</strong>，每分鐘自動更新；點下去手機會開 YouTube 看即時影像。
+    </p>
+
+    <div class="howto">
+      <button class="howto-btn" type="button" id="howBtn"
+        aria-expanded="false" aria-controls="howBox">怎麼用 ▾</button>
+      <div class="howto-box" id="howBox" hidden>
+        <ol>
+          <li><b>往下滑就是了。</b>卡片上那張圖就是那個地方現在的樣子，每分鐘自己更新。</li>
+          <li><b>點卡片</b>用 YouTube 看即時影像，手機會直接跳進 App。</li>
+          <li><b>看卡片左上角的標示。</b>LIVE ＝有畫面；<b>夜間</b>＝那邊天黑了，畫面暗是正常的，不是故障；無畫面＝畫格伺服器沒回應，點進去通常還看得到。</li>
+          <li><b>卡片右上角</b>有兩個鈕：☆ 收藏常看的，之後用上面的「收藏」就能只看那幾支；「地圖」開 Google 地圖看那個地點在哪。</li>
+          <li><b>上面的「展開比較」</b>把跑馬燈換成表格，各地氣溫、該穿什麼一次看完。<b>「富士山看得到嗎」</b>用河口湖、山中湖、御殿場、箱根的雲量判斷今天能不能看到富士山。</li>
+          <li><b>要開車就點「自駕・路面」。</b>只留拍路面的攝影機，另外給各區的路面判讀，以及日本 9/1 起「沒有中央線的路速限 30」的新制說明。<b>「富士山」</b>則只留拍得到富士山的機位。</li>
+          <li><b>「我的行程」</b>那一區依 trip.html 的 8 天行程，每天列出用得到的攝影機與當地天氣。</li>
+        </ol>
+      </div>
+    </div>
+  </header>
+
+  <nav class="filters" id="filters" aria-label="區域與模式篩選"></nav>
+
+  <section class="road" id="road" hidden>
+    <h4>路面判讀</h4>
+    <p class="road-cap" id="roadCap">依 Open-Meteo 的當地氣溫、降水與能見度換算，<strong>不是官方路況</strong>。實際通行狀況請看下面的官方連結。</p>
+    <div class="road-list" id="roadList"></div>
+
+    <div class="law-full">
+      <h5>9/1 起，日本「生活道路」的法定速限降到 30 km/h</h5>
+      <ul>
+        <li>怎麼認：路面<b>沒有中央分隔線</b>的，就是</li>
+        <li>沒有速限標誌也一樣，法定就是 30</li>
+        <li>有標誌的<b>以標誌為準</b></li>
+        <li>這趟特別容易踩到：河口湖湖畔小路、熱海溫泉街、鎌倉江之島巷道、住宅區</li>
+      </ul>
+      <p class="law-hit">原本這些路是 60。<br>同一條路，同樣的開法，現在可能就是超速一倍。</p>
+      <p class="law-sig">平安是回家唯一的路。</p>
+      <p class="law-src">依<a href="https://www.keishicho.metro.tokyo.lg.jp/kotsu/doro/Residential_roads.html" target="_blank" rel="noopener">警視庁公告</a>整理（令和8年9月1日施行）。
+        有中央線、有車道線、有分隔島的一般道路與高速公路、汽車專用道<b>不變</b>。</p>
+    </div>
+
+    <p class="road-src">
+      官方：<a href="https://www.jartic.or.jp/" target="_blank" rel="noopener">日本道路交通情報中心 ↗</a>
+      <a href="https://www.c-nexco.co.jp/" target="_blank" rel="noopener">NEXCO 中日本（東名・小田原厚木）↗</a>
+      <a href="https://www.shutoko.jp/" target="_blank" rel="noopener">首都高速 ↗</a>
+      <a href="https://www.ktr.mlit.go.jp/yokohama/" target="_blank" rel="noopener">國道 134・135・138 號（關東地方整備局）↗</a>
+    </p>
+  </section>
+
+  <main id="board"></main>
+  <p class="empty" id="empty" hidden>這個條件下沒有攝影機。</p>
+
+  <div class="note">
+    <h4>找不到直播的地方</h4>
+    <p><strong>蘆之湖 Skyline、三國峠、十國峠</strong>沒有穩定的 YouTube 直播；能見度請用鄰近的箱根、山中湖、御殿場機位判斷，
+      再對照下方「富士山看得到嗎」。<strong>鎌倉高校前平交道</strong>沒有官方直播，附近的七里ヶ浜與江之島海岸機位可以看天色與海況。</p>
+    <p><strong>富士急樂園</strong>沒有園區直播，出發前一天請上<a href="https://www.fujiq.jp/" target="_blank" rel="noopener">官網</a>確認營運日與檢修休園。</p>
+  </div>
+
+  <div class="note">
+    <h4>畫面說明</h4>
+    <p>卡片左上角的標示有三種：<strong>LIVE</strong>＝有畫面；<strong>夜間</strong>＝那個地方太陽已經下山，
+      畫面暗是正常的，不是壞掉；<strong>無畫面</strong>＝畫格伺服器沒回應。</p>
+    <p>畫面來自 YouTube 的直播畫格，有 CDN 快取，可能落後幾分鐘。要看真正的即時影片就點進去。
+      頻道主停播或換新網址也很正常——點進去若顯示無法播放，往上點頻道名稱，通常會看到他們開了新的直播。</p>
+  </div>
+
+  <footer>
+    <div class="sig-title">東京近郊即時影像</div>
+    <div class="sig-by">做法參考 <a href="https://hokkaido-livecam-hubaco.netlify.app/" target="_blank" rel="noopener">北海道各地即時影像（虎拔）</a>，攝影機清單依 <a href="trip.html">Autumn Road Trip</a> 行程重新蒐集</div>
+    <!-- Bump this line on every revision: date = edit date, +0.1 minor / +1.0 major -->
+    <div class="sig-ver"><span>2026-09-14　Ver 1.0</span></div>
+
+    <section class="legal">
+      <h4>版權與資料來源</h4>
+      <p class="legal-lead">本頁為個人非營利彙整，<strong>不儲存、不轉錄、不轉播</strong>任何影像。</p>
+      <ul>
+        <li><b>即時畫面</b>　全部為各 YouTube 頻道的公開直播，著作權屬各原始頻道所有。
+            本頁僅提供連結與 YouTube 產生的預覽畫格，點擊一律導向 YouTube 原始頁面觀看。</li>
+        <li><b>氣象資料</b>　<a href="https://open-meteo.com/" target="_blank" rel="noopener">Weather data by Open-Meteo.com</a>
+            （<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。
+            穿著建議、推薦順序、富士山能見度與路面判讀皆為依氣溫、天氣代碼、雲量與能見度自行換算，
+            <b>非官方預報、非官方路況</b>，僅供參考。</li>
+        <li><b>日出日落與日夜判斷</b>　依各地座標計算的天文值，非觀測值。地點座標取城鎮位置，
+            非攝影機的精確架設點。</li>
+        <li><b>外部連結</b>　穿衣指數為
+            <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース</a>；
+            道路資訊為<a href="https://www.jartic.or.jp/" target="_blank" rel="noopener">日本道路交通情報中心</a>、
+            <a href="https://www.c-nexco.co.jp/" target="_blank" rel="noopener">NEXCO 中日本</a>與
+            <a href="https://www.shutoko.jp/" target="_blank" rel="noopener">首都高速</a>。</li>
+        <li>各直播的內容、可用性與正確性由原頻道負責，本頁不做任何擔保。行前請以官方資訊再確認。</li>
+      </ul>
+    </section>
+
+    <p class="meta-note" id="foot"></p>
+  </footer>
+</div>
+<script>
+/* Camera list.
+   Each area carries at:[lat,lon] (town position, not the exact camera spot; good enough for
+   day/night and weather), wx: display name used by the ticker and trip panel, and fuji:true when
+   the area has a Mt. Fuji view (used by the Fuji filter and the visibility panel).
+   Per camera: [videoId, zh, jp, why, tags, mapQuery, channelId]
+   The tag column is a space-separated list of single Chinese words understood by the
+   recommendation engine (night view, street, road, mountain, sea, airport, nature, sunset,
+   railway). The legend lives in CLAUDE.md under livecam.html.
+   All entries were verified live on 2026-09-14. */
+const REGIONS=[
+{id:'tokyo',name:'東京都心',desc:'新宿・原宿・澀谷・銀座・東京鐵塔・晴空塔・台場・成田',areas:[
+ {name:'新宿',at:[35.69,139.70],wx:'新宿',cams:[
+  ['u7kCTaCX_J4','新宿　新宿駅前（TBS 新聞台機位）','新宿駅前のライブカメラ 現在の様子は？／TBS NEWS DIG','電視台官方鏡頭，一眼掌握新宿站前人潮。','街 路','新宿駅','UC6AG81pAkf6Lbi_1VC5NmPA'],
+  ['Zhmmh7l6KEw','新宿　新宿駅東口・3D 巨貓看板視角','新宿猫の目線（新宿駅東口） ライブカメラ／【公式】クロス新宿ビジョン','從 3D 巨貓看板俯瞰東口廣場，D5 逛街起點。','街 夜景','新宿駅東口','UC8cnCaq-MquhsebMer9A9rQ'],
+  ['lA6TaaMGgDo','新宿　西武新宿駅 PePe 前廣場','東京都 新宿 24時間 ライブカメラ / 西武新宿駅 pepe前広場 交差点／インフォ新宿 channel','歌舞伎町入口路口，巨型螢幕與夜間霓虹。','街 夜景','西武新宿駅','UC56apcbc2pLZ9xyBizbD1Dg'],
+  ['ErHJBXTmm2Q','新宿　歌舞伎町交差點・靖國通（4K 屋頂機位）','東京 新宿 歌舞伎町 交差点 ライブカメラ【テイケイ屋上カメラ】／テイケイ公式チャンネル','高角度看靖國通車流，ガスト靖国通店就在這一帶。','街 路 夜景','歌舞伎町交差点','UCuv7xqb-jo3HEFMIVLTY_CA'],
+  ['TObte08ESr0','新宿　歌舞伎町哥吉拉頭前（東寶大樓）','新宿 歌舞伎町LIVE 東京 24時間ライブ／歌舞伎町ゴジラ前ライブ','哥吉拉頭地標與電影院前廣場人潮。','街 夜景','新宿東宝ビル ゴジラ','UCOlgAxGWftBFw3ENlnV5YVQ'],
+  ['6dp-bvQ7RWo','新宿　大ガード交差點','Tokyo Shinjuku 新宿 大ガード交差点 Live Ch／【LIVE】新宿 大ガード交差点 Tokyo Shinjuku Live Ch','JR 鐵橋下的繁忙路口，歌舞伎町與西新宿之間。','路 街','新宿大ガード','UCpk2ftN35L3xfoV2S5xLN2A'],
+  ['GLQhbRGv5qU','新宿　思い出横丁旁 JR 鐵道機位','Tokyo Shinjuku JR Live Cam東京 新宿 鉄道 ライブカメラ OmoideYokocho／【LIVE】東京 新宿 鉄道 ライブ Tokyo Shinjuku Live Ch','思出橫丁邊看山手線・中央線穿梭，D8 的 N\'EX 也從這裡出發。','鐵 街','思い出横丁','UC1kDVgEX2DsE295Bkum_K9Q'],
+  ['G1XL6DbczYk','新宿　高樓群與 DoCoMo 塔遠望（4K）','4k 東京ライブカメラ ドコモタワー #国立競技場・新宿御苑・新宿・渋谷／Venus117','從國立競技場方向遠望新宿高樓群夜景。','夜景','国立競技場 ドコモタワー','UCvnoz9Xda2mwTb6KhfYBUnQ']]},
+ {name:'原宿・表參道・青山',at:[35.67,139.70],wx:'原宿',cams:[
+  ['TFnxkhY4Td4','原宿　原宿駅表參道口・明治神宮方向（4K）','原宿駅前ライブカメラ｜表参道口・明治神宮 / Harajuku Live Stream／原宿駅・表参道口 ライブカメラ','原宿站前唯一直播，看竹下通人潮出入，D6 早上先看這支。','街 路','原宿駅 表参道口','UCpweG_uuLZhAH9B_Spwmmzg'],
+  ['_S6fKuBTeW0','青山　外苑前交差點（青山通・表參道東側）','外苑前交差点（定点）／いえろ〜ちゃんねる','表參道東端青山通路口的定點街景。','路 街','外苑前交差点','UC9XF0EUJZUHSMXFQZ7rNYJQ']]},
+ {name:'澀谷',at:[35.66,139.70],wx:'澀谷',cams:[
+  ['8H3nRCFVR6Y','澀谷　スクランブル交差點（ANN 高角度）','渋谷スクランブル交差点 / Shibuya Scramble Crossing Live Camera／ANNnewsCH','最經典的全景機位，綠燈時人潮如海。','街 夜景','渋谷スクランブル交差点','UCGCZAYq5Xxojl_tSXcVJhiQ'],
+  ['dfVK7ld38Ys','澀谷　スクランブル交差點（FNN 低角度）','いまの渋谷・スクランブル交差点 ライブカメラ／FNNプライムオンライン','另一側低角度，看得到大螢幕與 109 方向。','街 夜景','渋谷駅前','UCoQBJMzcwmXrRSHBFAlTsIw'],
+  ['d1JuNg7knNo','澀谷　センター街入口主拱門前','渋谷センター街 メインアーチ前 ライブ配信／渋谷センター商店街','商店街官方鏡頭，入口拱門最熱鬧處。','街 夜景','渋谷センター街','UCfCxyg8waxuAPxa8WmBY49g'],
+  ['EaRgJQ--2eE','澀谷　センター街麥當勞前','渋谷センター街 マクドナルド前 ライブカメラ／渋谷センター商店街','中心街深處人流與店家燈光。','街 夜景','渋谷センター街 マクドナルド','UCfCxyg8waxuAPxa8WmBY49g'],
+  ['ocQygJpZnhU','澀谷　宮益坂交差點（往 MIYASHITA PARK 方向）','渋谷愛ビジョン・宮益坂交差点ライブカメラ／渋谷愛ビジョン','東口側宮益坂路口，離宮下公園一街之遙。','街 路','宮益坂交差点','UCfvMaqBPqsHXSbmmKzpDvow'],
+  ['f50R4vDlCmA','澀谷　iTSCOM 澀谷街景機位','渋谷 ライブカメラ LIVE Camera/ Tokyo Shibuya／iTSCOM','有線電視穩定鏡頭，看澀谷天氣人潮。','街','渋谷駅','UCPPFGmTUyM4iDIgp2_zJi5g']]},
+ {name:'銀座・有樂町・新橋',at:[35.67,139.76],wx:'銀座',cams:[
+  ['1Xm5bjdI5hU','銀座　數寄屋橋スクランブル交差點','銀座ライブカメラ 数寄屋橋スクランブル交差点／朝日新聞LIVE','銀座地標路口，東急 PLAZA 與 SONY 大樓夜燈。','街 夜景 路','数寄屋橋交差点','UCaHr0a1x8zmQ1dxanCeuesA'],
+  ['L5lWkxN_Kso','有樂町　新幹線有樂町彎道・東京駅 Train View','東京駅トレインビュー・新幹線ライブカメラ（有楽町カーブ）／東京駅トレインビュー🚄ライブカメラ','新幹線與山手線並行過彎，鐵道迷必看。','鐵','有楽町駅','UC6Ljvl0Kghy9Fhe6SXViTPw'],
+  ['4OHc1tvQnCY','新橋　新橋駅方向街景','東京・新橋駅方面ライブカメラ／SBSnews6','銀座南端上班族之街，夜間居酒屋燈火。','街 路','新橋駅','UCOLVB0iYK8ahQ0mFn-lF-8g'],
+  ['upP3XFnZ-Zs','新橋・汐留　MILE ZERO SHIMBASHI 機位','MILE ZERO SHIMBASHI 新橋〇零哩（新橋・汐留 ライブカメラ）／古河産業株式会社','新橋汐留交界，鐵道起點地標視角。','街 鐵','新橋 汐留','UCpeOSC88eDaWC-0bfuJJlhQ']]},
+ {name:'東京鐵塔・汐留・築地',at:[35.66,139.75],wx:'東京鐵塔',cams:[
+  ['nu6NE55_X7A','東京鐵塔　官方即時鏡頭','現在の東京タワーライブカメラ／東京タワー公式チャンネル','官方直播鐵塔本體，夜間點燈色彩即時看。','夜景','東京タワー','UCKyXyJMijwyBebgI9wmzFcw'],
+  ['MkjS74wqklY','東京都心　飯店高樓夜景全景','東京の夜景 🌃｜東京シティビュー・ホテルから24時間ライブ配信／tokyocityviewhotel','高樓層俯瞰都心夜景，燈海一覽。','夜景','東京シティビュー','UC-hjlVGXdI1MvhIKY8wi2DQ'],
+  ['VM18f-IIUTw','汐留　共同通信 4K 高樓機位','東京・汐留 ライブカメラ live stream of Shimbashi,Tokyo／共同通信LiveCamera','4K 俯瞰汐留高樓群與鐵道，夕陽夜景皆美。','夜景 鐵 夕','汐留','UCRZMs9s1P6o0b1nGibmtkJA'],
+  ['bKVGdsMVuMA','築地　望灣岸・彩虹橋','東京・築地ライブカメラ 湾岸やレインボーブリッジのある風景／朝日新聞LIVE','從築地遠眺彩虹橋與灣區夜景。','夜景 海','築地','UCaHr0a1x8zmQ1dxanCeuesA'],
+  ['n8EzBzyGV5Q','港區・築地　夕燒與都心景色','東京ライブカメラ｜港区・築地｜夕焼けと都心の景色｜24時間配信／東京ライブカメラ | Tokyo Live Cam','夕陽時段最美，都心天際線變色。','夕 夜景','築地 港区','UCkAB51Lbgor6SW8aE4S3zuQ'],
+  ['W0V8-6WrgBY','濱松町　濱松町駅鐵道機位（東京鐵塔腳下）','東京・浜松町駅 ライブカメラ Live Stream of Hamamatsu-cho railway tracks／共同通信LiveCamera','山手線・京濱東北線・單軌電車頻繁進出。','鐵 街','浜松町駅','UCRZMs9s1P6o0b1nGibmtkJA']]},
+ {name:'晴空塔・淺草・隅田川',at:[35.71,139.81],wx:'晴空塔',cams:[
+  ['LHHXZdYmN_Y','晴空塔　正面定點鏡頭','東京スカイツリーライブカメラ TOKYO SKY TREE Live Camera／株式会社エッチ・エス・ストロング','晴空塔全景，夜間點燈變化清楚。','夜景','東京スカイツリー','UCSqjZfzC1g6fhMNx8F8rfng'],
+  ['xdjEmXaf8o8','晴空塔　與隅田川・東東京全景','東京ライブカメラ｜スカイツリー＆隅田川｜東東京の景色｜24時間配信／東京ライブカメラ | Tokyo Live Cam','晴空塔與隅田川同框，下町夜景。','夜景 海','隅田川 スカイツリー','UCkAB51Lbgor6SW8aE4S3zuQ'],
+  ['MwcMURMzJ7A','淺草　隅田川屋形船碼頭望晴空塔（4K）','【4K】ライブカメラ-日本-浅草-隅田川-スカイツリー-屋形船／船宿あみ清','4K 河畔視角，屋形船燈光與晴空塔。','夜景 海','浅草 隅田川 屋形船','UCuS18SHV5Nhqi9OtreOBmnA']]},
+ {name:'台場・彩虹橋',at:[35.63,139.77],wx:'台場',cams:[
+  ['kGG1CaeQ9oM','台場　彩虹橋與首都高（FNN）','お台場・レインボーブリッジ - 首都高 ライブカメラ Rainbow Bridge／FNNプライムオンライン','電視台鏡頭，彩虹橋夜間彩燈與車流。','夜景 海 路','レインボーブリッジ','UCoQBJMzcwmXrRSHBFAlTsIw'],
+  ['PN_lkPdGAjI','台場　台場海濱公園＆富士電視台（4K HDR）','Odaiba Live Camera お台場ライブカメラ | Odaiba Beach & FUJI TV - 4K HDR LIVE／Tokyo Views LIVE','4K HDR 看富士電視台球體與海灘夕景。','夜景 海 夕','お台場海浜公園','UCaaSp7JYkACHR-Sr-p3OHeQ'],
+  ['V1rDmWK4Dd8','台場　台場海濱公園屋形船・海灘','【お台場ライブカメラ】お台場海浜公園 屋形船 お台場ビーチ フジテレビ／EN DAIBA','屋形船點點燈火飄過台場海面。','海 夜景','お台場ビーチ','UCMaXtOvzgcCQt7MZwJmr7XA'],
+  ['DN4D5j-XCSc','台場　彩虹橋 24h 定點（4K）','4K お台場レインボーブリッジ24hライブカメラ／DAIBAR CITY','彩虹橋正面 4K，點燈時段最壯觀。','夜景 海','レインボーブリッジ','UC_U5q2g0XQHWe4ntV8fiuIA']]},
+ {name:'東京駅・丸之內',at:[35.68,139.77],wx:'東京駅',cams:[
+  ['ZN4gh5IOowM','東京駅　丸之內口紅磚站舍正面','東京駅丸の内口ライブカメラ／大丸有協議会','官方協議會鏡頭，紅磚站舍夜間打燈。','夜景 街','東京駅 丸の内駅前広場','UCoS1S0V-QdSl_xe29G8mKcQ'],
+  ['1oNQ9HoxAEE','東京駅　新幹線月台高空俯瞰','【東京駅 ライブ】天カメを見ながら鉄道について語り合う雑談部屋／日テレ鉄道部','高空看新幹線進出東京站。','鐵','東京駅','UCLizOnUQUuR0FW58PP-ZACA']]},
+ {name:'成田機場',at:[35.77,140.39],wx:'成田',cams:[
+  ['OuCbntsMsWY','成田機場　A 跑道南側','成田空港ライブカメラ A滑走路(南側）＠朝日新聞成田支局／朝日新聞LIVE','新聞社官方鏡頭，A 跑道起降近距離；D1 落地、D8 起飛前先看天氣。','空','成田空港 A滑走路','UCaHr0a1x8zmQ1dxanCeuesA'],
+  ['1nNkpxB7Bak','成田機場　さくらの山公園觀機點','NARITA AIRPORT (さくらの山) からライブ配信中／Charlie FURUSHO NRT Base','知名觀機公園視角，起飛爬升正面。','空 自然','成田市さくらの山','UCvJZPd6aw2lb54M4E-vtwjw'],
+  ['I-QwJs-f7Xs','成田機場　航班資訊＋起降畫面','成田空港 ライブ｜RJAA Narita International Airport｜フライト情報・発着案内／AirTraffic Monitor Japan','畫面疊了起降班表，出發或回程當天最好用。','空','成田国際空港','UCSgoguyyfrF5m2DpaVdFgMg']]}
+]},
+{id:'yokohama',name:'橫濱・湘南',desc:'橫濱港未來・東名高速・江之島・鎌倉・小田原',areas:[
+ {name:'橫濱　港未來・橫濱港',at:[35.45,139.64],wx:'橫濱',cams:[
+  ['f3qvRKzN33s','橫濱　tvk 電視台屋頂定點（港未來全景）','横浜定点ライブカメラ テレビ神奈川屋上／テレビ神奈川 tvk3ch','神奈川地方電視台官方機位，穩定可靠。','夜景 海','横浜みなとみらい','UCtDEkfJlNHq_ONjQnsX5YeA'],
+  ['Uu37SpkYaEw','橫濱　港未來天際線 4K 全景','【4K LIVE】横浜みなとみらい全景 ライブカメラ／Japan Live Camera','地標塔、摩天輪、洲際飯店一次入鏡。','夜景 海','横浜みなとみらい','UCnpVhaYEaUYwiQaFdqoPK0g'],
+  ['wsHr-ez_XOw','橫濱　大棧橋・山下公園・冰川丸','【24時間LIVE】横浜 大さん橋・山下公園・氷川丸・横浜マリンタワー／Japan Live Camera','郵輪停靠與海洋塔夜間點燈，中華街就在山下公園後面。','夜景 海','横浜 大さん橋','UCnpVhaYEaUYwiQaFdqoPK0g'],
+  ['QcOxy2_KBrc','橫濱　港未來＋海灣大橋雙景','ライブカメラ みなとみらい、ベイブリッジ、横浜港／横浜港ライブカメラ','港灣船隻進出與大橋同框。','夜景 海','横浜港','UCm8DGdhRoGe-GPCXfCT65og'],
+  ['c4IeJyKWEpU','橫濱　海灣大橋特寫（無聲）','【4K LIVE】横浜ベイブリッジ・横浜港 ライブカメラ（ズーム／無音）／Japan Live Camera','大橋車流與夜間藍色燈光特寫。','夜景 路 海','横浜ベイブリッジ','UCnpVhaYEaUYwiQaFdqoPK0g'],
+  ['38br2iznW_s','橫濱　汽車道步道（往紅磚倉庫）','横浜汽車道ライブカメラ／横浜汽車道ライブカメラ','紅磚倉庫方向行人步道與海景。','街 海','横浜 汽車道','UCKtFn0R-NGm6cocqdoGAQTA']]},
+ {name:'東名・首都高　橫濱周邊道路',at:[35.53,139.55],wx:'東名',cams:[
+  ['LzlrHXS-ebM','橫濱青葉 IC　東名×首都高交流道','《4K》【iTSCOMライブ配信】横浜青葉IC ライブカメラ／iTSCOM','有線電視官方，東名進出橫濱車流一目了然。','路','横浜青葉IC','UCPPFGmTUyM4iDIgp2_zJi5g'],
+  ['kew_qSHz_lw','東名高速　港北 PA 下行線','【ライブカメラ】東名高速道路 港北パーキングエリア 下り／K55','D2 出發前先看東名下行是否塞車。','路','東名高速 港北パーキングエリア','UCs33DOFYmH27UiQ0twvZRAw'],
+  ['lo-jjyNuSYg','橫濱　保土谷 Bypass 新保土谷 IC','【YCV Live カメラ】保土ヶ谷バイパス 新保土ヶ谷IC／【公式】YCVチャンネル','橫濱市區往東名的主要連絡道車況。','路','新保土ヶ谷IC','UC70kwyzDZKpofJVyDZ0BaHQ'],
+  ['lvlFx0PAJ-k','海老名・厚木　相模川與圈央道','【LIVE】神奈川の真ん中を流れる相模川ライブカメラ 厚木 海老名 圏央道付近／相模川ライブカメラ','海老名 SA 周邊的天氣與河景。','路 自然','相模川 海老名','UCg9QtOKSEptfh2IxsqyZ5AA'],
+  ['4ZHJ7zIRF10','厚木　小田急線列車（浪漫特快）','【LIVE】新宿～小田原を走る小田急線ライブカメラ 厚木駅付近 ロマンスカー／相模川ライブカメラ','新宿到小田原的浪漫特快即時通過。','鐵','小田急 厚木駅','UCg9QtOKSEptfh2IxsqyZ5AA']]},
+ {name:'江之島・湘南海岸',at:[35.31,139.48],wx:'江之島',cams:[
+  ['xPgeZzojY5o','江之島　片瀨東濱海灘','【江の島ライブカメラ1】片瀬海岸東浜 Enoshima LiveCamera 24Hours／FlyingSuika','江之島正面海灘全景，人潮與海況。','海 夕','片瀬東浜海岸','UCfoiWJgMmg4p9olz1WE0-9A'],
+  ['ywXRfMLuw78','江之島　島體特寫（海蠟燭燈塔）','【江の島ライブカメラ2】江の島ズーム Enoshima LiveCamera 24Hours／FlyingSuika','夜間海蠟燭燈塔點燈特寫。','夜景 海','江の島','UCfoiWJgMmg4p9olz1WE0-9A'],
+  ['DoC_PlS1P_M','江之島　遊艇港','【LIVE】江の島ヨットハーバー ライブカメラ／【公式】リビエラ Riviera Official','官方頻道，奧運帆船場地即時畫面，停車場在旁邊。','海','江の島ヨットハーバー','UC811znPqrm4Oqs4P-rGN9yg'],
+  ['DZWA9Xicaxg','湘南　鵠沼～新江之島水族館前海岸','湘南 鵠沼〜新江ノ島水族館前 ライブ配信／NAMIARUMOVIE','衝浪聖地鵠沼海岸浪況，國道 134 沿線。','海 夕','鵠沼海岸','UCV3arNLjYmBubfETmAAzS4w'],
+  ['FMf4XEP2ZY4','茅崎　南方海灘望江之島','湘南茅ヶ崎 Beach and Waves（江ノ島）2026 ライブ／湘南茅ヶ崎 Beach and Waves','茅崎遠眺江之島與烏帽子岩方向。','海 夕','サザンビーチちがさき','UC_UHINSFCpBr68YW56HYQ2Q']]},
+ {name:'鎌倉・七里濱',at:[35.32,139.55],wx:'鎌倉',fuji:true,cams:[
+  ['PFqSE8GNfnE','七里濱　富士山＋江之島遠眺','富士山・江ノ島ライブカメラ 湘南 鎌倉 波情報【The Noon 七里ヶ浜 Studio カメラ1】／湘南ライブカメラ','晴天可同框富士山與江之島夕陽。','山 海 夕','七里ヶ浜','UC_9dgNP8GvfhUURELouR3Dg'],
+  ['DgIbfgFdGVI','七里濱　江之電＋國道 134 號','江ノ電・134号線ライブカメラ 湘南 鎌倉 渋滞情報【The NOON 七里ケ浜 Studio ライブカメラ2】／湘南ライブカメラ','D4 走的 134 號海岸公路車況與江之電同框。','路 鐵 海','国道134号 七里ヶ浜','UC_9dgNP8GvfhUURELouR3Dg'],
+  ['wq5J3SZSdX8','鎌倉高校前　海岸與三浦半島','【Live!】鎌倉高校前・七里ヶ浜・三浦半島ライブカメラ 波情報／湘南ライブカメラ','灌籃高手平交道一帶的海景與天色。','海 鐵 夕','鎌倉高校前駅','UC_9dgNP8GvfhUURELouR3Dg'],
+  ['fV0PtrgPF6g','七里濱　江之電平交道特寫','【Live】江ノ電ライブカメラ 七里ヶ浜踏切 行会川 鎌倉 湘南／湘南ライブカメラ','江之電列車近距離通過平交道。','鐵 街','江ノ電 七里ヶ浜駅','UC_9dgNP8GvfhUURELouR3Dg'],
+  ['VOix1wTjheQ','鎌倉　若宮大路段葛（往鶴岡八幡宮）','鎌倉 若宮大路 段葛ライブカメラ「置石fm.」 Japan Kamakura Live Camera／置石fm. 鎌倉ライブカメラ','參道人潮與路況，判斷何時進鎌倉。','街 路','鎌倉 段葛','UCb3sHyV4iH4bGP_YCVzq0xA'],
+  ['hhCiK7tX1nA','由比濱・材木座　海灘咖啡機位','由比ガ浜 材木座 Daisy\'s Cafe ライブ配信／KOCHA KOCHA','由比濱海灘與材木座海岸日常。','海 夕','由比ヶ浜','UCGFuPjKT8m6h-3WeQWDTbTA']]},
+ {name:'小田原',at:[35.26,139.15],wx:'小田原',fuji:true,cams:[
+  ['KiMeFMZ-_ms','小田原　屋頂望富士山與新幹線','【LIVE】新光電子株式会社 屋上ライブカメラ（富士山、新幹線、小田原ー鴨宮）／新光電子株式会社Shinkoh-elecs.','富士山、新幹線與小田原天氣一次看。','山 鐵','小田原 鴨宮','UCvH1EV3qs86KgF-tbOVdmyQ'],
+  ['fjnTFm74CxE','小田原　東海道新幹線小田原站','Live東海道新幹線小田原駅ライブカメラ Shinkansen Odawara Station Live Camera／こだまらいふ Kodama life','新幹線高速通過與停靠即時畫面。','鐵','小田原駅','UC9yuSASu1r3dKOvEmZwnptQ'],
+  ['2GRpW4tNMVA','小田原城　城內護城河','神奈川県小田原市城内ケルトお堀ライブカメラ／神奈川県小田原市城内ケルトお堀ライブカメラ','小田原城護城河與城址公園氛圍。','自然 街','小田原城','UCHBOhqAOhWr0iOMuZBK4miQ'],
+  ['qFbwIfGddUE','小田原　早川漁港停車場','神奈川県小田原市早川漁港駐車場ライブカメラ／神奈川県小田原市早川漁港駐車場ライブカメラ','D2 午餐吃海鮮前，先看漁港停車位是否已滿。','路 海','小田原 早川漁港','UCSORUQnYSCWHyErA3n49YfQ'],
+  ['o_sr2cxz9rU','小田原　相模灣全景','小田原から見える相模湾ライブカメラ／小田原から見える相模湾ライブカメラ','135 號終點海景，順看當天天氣海況。','海 夕','小田原 相模湾','UCWCAJfC4w-khE0yhIMtFU8Q']]}
+]},
+{id:'hakone',name:'箱根・富士',desc:'箱根・河口湖・富士吉田・山中湖・御殿場・十國峠',areas:[
+ {name:'箱根　蘆之湖・湯本・乙女峠',at:[35.20,139.03],wx:'箱根',fuji:true,cams:[
+  ['maMMEh-2Bsk','箱根大観山　富士山＋蘆之湖俯瞰','富士山・芦ノ湖ライブカメラ ～箱根大観山・アネスト岩田ターンパイク箱根より～／箱根ターンパイク株式会社 Official YouTube Channel','轉盤道最高點，富士山與蘆之湖同框；D2 上 Skyline 前先看這支。','山 夕 路','箱根大観山','UCEdkwjq31H4y3xfPST9ZFtg'],
+  ['qYnCG4J26d8','箱根 元箱根　蘆之湖畔飯店湖面機位','雲海の宿 ホテル四季の館箱根芦ノ湖 ライブ配信／【公式】日本ハウス・ホテル&リゾート','湖畔飯店直拍蘆之湖，清晨常見雲海。','自然 山','箱根 芦ノ湖','UC-HXHzxEer-YxkeHAjsBlvA'],
+  ['YCtAXDnsyYY','箱根　蘆之湖遊船 SORAKAZE 船上機位','「箱根遊船 SORAKAZE」ライブカメラ／フジヤマNAVI','遊覽船船上視角，隨船巡航蘆之湖。','自然 山','箱根遊船 元箱根港','UCwzJctz6m-0wG_evkheecZA'],
+  ['vkrxatb9n84','箱根湯本　溫泉街・早川沿岸','箱根全山ウェブカメラ箱根湯本／箱根全山ウェブカメラ箱根湯本','箱根町官方鏡頭，看湯本溫泉街人潮與天氣。','街 自然','箱根湯本','UCMvoqnZFzcPubp4zErbDYlQ'],
+  ['SPNhgp86M_M','乙女峠　國道 138 號富士山眺望','箱根全山ウェブカメラ乙女峠／箱根全山ウェブカメラ乙女峠','箱根往御殿場必經隘口，富士山正面全景，D3 會經過。','山 路','乙女峠','UCoXSony4Fgr3WS0aLlIBj6A'],
+  ['LZ3XwYo6e0c','仙石原　芒草原一帶街景','神奈川県足柄下郡箱根町仙石原ライブカメラ／神奈川県足柄下郡箱根町仙石原ライブカメラ','秋季芒草季前後仙石原的即時天候。','街 自然','仙石原','UCau1O0L9FBRxXbHAsyxNwSw']]},
+ {name:'河口湖',at:[35.51,138.76],wx:'河口湖',fuji:true,cams:[
+  ['1cnReFAU04k','河口湖　湖畔富士山正面','【LIVE】河口湖からの「富士山ライブカメラ」／【KTV】ケーブルテレビ河口湖','河口湖有線電視官方，湖面逆富士首選；D3 清晨先看這支。','自然 山','河口湖','UCK9eHUAiJeNA2i_1TcgZcfw'],
+  ['bdUbACCWmoY','河口湖　大石公園北岸＋富士山','【LIVE】河口湖大石公園からの「富士山ライブカメラ」／【KTV】ケーブルテレビ河口湖','大石公園掃帚草與富士山，紅葉季必看。','自然 山','河口湖 大石公園','UCK9eHUAiJeNA2i_1TcgZcfw'],
+  ['Sv9hcJ3k5h4','河口湖　富士山全景纜車山頂展望台 4K','【4K】富士山ライブカメラ ～河口湖～富士山パノラマロープウェイ／フジヤマNAVI','天上山纜車頂 4K 俯瞰河口湖與富士山。','山 自然','富士山パノラマロープウェイ','UCwzJctz6m-0wG_evkheecZA'],
+  ['PW6zhYOkunI','河口湖駅前　站前街景＋富士山','【Kawaguchiko Station Live Camera in Japan】富士急行線河口湖駅前／UTYテレビ山梨公式チャンネル','河口湖站前巴士、遊客與富士山同框；ガスト河口湖店在站北 1.2 km。','街 鐵 山','河口湖駅','UCk2oG--VyYST4SYyQkeadjA'],
+  ['oe7SMLOEQk0','河口湖北岸　Mizno 飯店湖景','富士山＆河口湖ライブカメラ / Mt.Fuji & Lake Kawaguchiko livestream from Mizno hotel／official MIZNO HOTEL','北岸飯店角度，夜間可見湖畔燈光與紅葉迴廊方向。','自然 山 夜景','河口湖 ミズノホテル','UCdI9Vn0aIzNOdlIZkAy-VnA']]},
+ {name:'富士急樂園・富士吉田・忍野',at:[35.47,138.80],wx:'富士吉田',fuji:true,cams:[
+  ['_6nLps25Kws','富士急樂園　FUJIYAMA 塔頂機位','FUJIYAMAタワーライブカメラ／Live stream of Mt.Fuji from "FUJIYAMA TOWER", Fuji-Q Highland／フジヤマNAVI','雲霄飛車塔頂俯瞰樂園與富士山，D3 開園前看人潮。','山 街','富士急ハイランド','UCwzJctz6m-0wG_evkheecZA'],
+  ['PxzwnWh1dKk','忍野八海　富士山 4K','世界遺産富士山ライブカメラ(忍野八海から)[4K]／FujiyamaTV - FujigokoTV','忍野八海湧泉村前富士山，4K 畫質最佳。','自然 山','忍野八海','UCcuadYD11H2Eti8AEOP7Buw'],
+  ['0KMeH_vh0Bk','富士吉田　富士山駅屋頂露台','FUJISAN ROOFTOP TERRACE 富士山駅屋上ライブカメラ／フジヤマNAVI','富士山站屋頂正對富士山，市街與電車同框。','山 街 鐵','富士山駅','UCwzJctz6m-0wG_evkheecZA'],
+  ['2RBil3H-fAA','忍野村　二十曲峠展望台 4K','【4K LIVE】忍野村二十曲峠展望テラス～SORA no IRO～／忍野村公式','忍野村官方，高處俯瞰忍野盆地與富士山夕景。','山 夕','二十曲峠','UCRDIwmg6CFDF6yRuojYbGPw'],
+  ['D4-4JKfQ_Zc','富士吉田　中曽根住宅區街道＋富士山','山梨県富士吉田市中曽根ライブカメラ／山梨県富士吉田市中曽根ライブカメラ','富士吉田市街直線道路盡頭的富士山。','街 山','富士吉田市 中曽根','UCOZ9bDOtj5Ke2lvOV7vAM0A']]},
+ {name:'山中湖',at:[35.42,138.87],wx:'山中湖',fuji:true,cams:[
+  ['F2NbYrc-gBU','山中湖　湖畔富士山','【LIVE】山中湖からの「富士山ライブカメラ」／【KTV】ケーブルテレビ河口湖','山中湖湖畔正面富士山，D3 下山順遊前先看。','自然 山','山中湖','UCK9eHUAiJeNA2i_1TcgZcfw'],
+  ['Gn2CJjzY068','山中湖　Hotel Mt. Fuji 高台','ホテルマウント富士ライブカメラ/Live Camera Hotel Mt.fuji／フジヤマNAVI','大出山高台飯店俯瞰山中湖全景與富士山。','山 自然 夕','ホテルマウント富士','UCwzJctz6m-0wG_evkheecZA'],
+  ['WjVH-0qSwOw','山中湖　芙蓉台高處眺望','【LIVE】山中湖芙蓉台ライブカメラ 【“Mt. Fuji Live 24/7”】／株式会社忍野CATV','忍野有線電視官方，芙蓉台高處看富士山。','山','山中湖 芙蓉台','UCho5sR8l5OCLFgQa22bSbrQ'],
+  ['EDmEOeWNbtU','山中湖　パノラマ台方向全景','【LIVE】富士山中湖 パノラマライブカメラ／富士山中湖パノラマライブカメラ','山中湖寬幅全景，パノラマ台／三國峠的能見度用這支判斷。','自然 山','山中湖 パノラマ台','UC4vlCNw-GtuaQiA-nn8bwvg']]},
+ {name:'御殿場',at:[35.31,138.93],wx:'御殿場',fuji:true,cams:[
+  ['rBwmWq48zAs','御殿場　SBS 情報攝影機・富士山','【 Mt.Fuji LIVE】SBS TV Web LIVE!（富士山ライブ：御殿場情報カメラ）／SBS（静岡放送）','靜岡放送官方，御殿場側富士山東面近距離；Premium Outlets 在同一側。','山 街','御殿場市','UC4K74vf5snEHSjYVfytMksw'],
+  ['Joer2U0vki4','裾野　富士山二合目 ぐりんぱ樂園','富士山二合目のテーマパーク「ぐりんぱ」（静岡県）ライブカメラ／フジヤマNAVI','御殿場往富士山二合目，最貼近山體的機位。','山 自然','ぐりんぱ','UCwzJctz6m-0wG_evkheecZA']]},
+ {name:'十國峠・三島',at:[35.10,139.03],wx:'十國峠',fuji:true,cams:[
+  ['4Hro9QIrsYA','十國峠　山頂望富士山','十国峠ライブカメラ（富士山ビュー）／フジヤマNAVI','D3 進熱海前的最後一個展望點，先看富士山露臉再決定上不上山。','山 夕','十国峠','UCwzJctz6m-0wG_evkheecZA'],
+  ['jBPc3TGZin8','十國峠　山頂望駿河灣','十国峠ライブカメラ（駿河湾ビュー）／フジヤマNAVI','俯瞰三島市街與駿河灣，夜間市區燈海。','海 夜景 山','十国峠','UCwzJctz6m-0wG_evkheecZA'],
+  ['u1q4gtNf3nw','三島　梅名市區街道','静岡県三島市梅名ライブカメラ／静岡県三島市梅名ライブカメラ','三島市區即時路況與天候，三島スカイウォーク的天氣參考。','街 路','三島市 梅名','UCGuQRqfTXVgevDMzu2iCLRg']]}
+]},
+{id:'atami',name:'熱海・伊豆',desc:'熱海・國道 135 號・真鶴・伊東',areas:[
+ {name:'熱海',at:[35.10,139.07],wx:'熱海',cams:[
+  ['EGbjDf5nVGQ','熱海　熱海駅前廣場','熱海駅前広場ライブカメラ／熱海市道路状況公式チャンネル','市府官方機位，出站人潮與足湯廣場；平和通商店街就在旁邊。','街 鐵','熱海駅','UCmSLlWU4A_JEgGwXHF8qjNQ'],
+  ['MTf4GaekUXU','熱海　山腰飯店俯瞰熱海灣與市區','熱海ライブカメラ　天空のホテル夢寿庵／熱海 天空のホテル夢寿庵 Mujuan','高處俯視熱海灣夜景與初島方向。','夜景 海 夕','熱海 天空のホテル夢寿庵','UCqj51LGirw17ZyP0dc2HVuA']]},
+ {name:'國道 135 號　熱海→小田原',at:[35.14,139.10],wx:'真鶴',cams:[
+  ['CQaQuVDtB0Q','熱海　國道 135 號海岸道（Shell 加油站前）','熱海シェル前ライブカメラ／熱海市道路状況公式チャンネル','看沿海國道車流，D4 出發前確認路況。','路 海','熱海 東海岸町 国道135号','UCmSLlWU4A_JEgGwXHF8qjNQ'],
+  ['8VrR7WAmKXw','熱海　國道 135 號田原本町交差點','田原本町交差点1ライブカメラ／熱海市道路状況公式チャンネル','熱海市區進出 135 號的關鍵路口。','路 街','熱海 田原本町交差点','UCmSLlWU4A_JEgGwXHF8qjNQ'],
+  ['efJFIxmZcbU','江之浦　國道 135 號海岸線（真鶴北側）','神奈川県小田原市江之浦貝焼食堂ライブカメラ／神奈川県小田原市江之浦ライブカメラ','真鶴到小田原間的海岸公路實景。','海 路','小田原市 江之浦','UCexRWOULT1Cp9h37RKiixlA']]},
+ {name:'伊東・東伊豆',at:[34.97,139.10],wx:'伊東',cams:[
+  ['zk0_n1fT0_g','伊東　Marine Town 港區與海岸','伊東マリンタウン のライブ配信／伊東マリンタウン','道之驛港邊實景，看海況與遊艇。','海 街','伊東マリンタウン','UC3T7kfb1lgIsVVZ-MZYuxbw'],
+  ['zVuPixUaugk','東伊豆 熱川　片瀬海岸 4K','【ライブカメラ・４K】絶景　東伊豆　熱川　片瀬海岸／The East Coast Of The Izu Peninsula.','4K 東伊豆海岸線，日出與海面極美。','海 自然 夕','東伊豆町 片瀬海岸','UCJmcX1-3OyZr7rGWSFc-1rg'],
+  ['sptRTsRU-n8','天城高原　伊豆 Skyline 南端','天城高原サービスセンター　公式ライブ配信／伊豆天城リゾート公式チャンネル','Skyline 南端高原天候與雲海參考。','山 自然','天城高原','UC7oOa4k0ct8rvJvMU8znyEg']]}
+]}
+];
+
+/* Trip data mirrors trip.html (Autumn Road Trip 2026-11-07 → 11-14).
+   c: camera name prefixes (matched against the zh column, up to 3 per prefix)
+   wx: weather areas shown for that day */
+const TRIP={name:'Autumn Road Trip 2026',start:'2026-11-07',days:[
+ {d:1,md:'11/07',t:'成田降落，直奔橫濱',car:false,
+  r:'成田 16:50 落地 → N\'EX 46 號 18:45 → 橫濱 20:19 → 地鐵藍線阪東橋 → Hotel BUSTEL（伊勢佐木町）→ 周邊覓食',
+  n:'飯店入住到 22:00 止，改搭 50 號會逼近底線。',
+  c:['成田機場','橫濱'],wx:['成田','橫濱']},
+ {d:2,md:'11/08',t:'箱根山道與蘆之湖操駕',car:true,
+  r:'関内店 10:30 取車 → 東名（海老名 SA）→ 小田原午餐 → 箱根新道 → 蘆之湖 Skyline →（備選 御殿場 Outlets）→ 河口湖 Super Hotel → 20:00 紅葉迴廊夜楓',
+  n:'Skyline 通行費 ¥1,000 僅收現金；富士山被雲遮改繞熱海小新《燒肉之路》巡禮再進河口湖。',
+  c:['東名高速','橫濱青葉','小田原','箱根大観山','箱根','乙女峠','河口湖'],wx:['橫濱','小田原','箱根','河口湖']},
+ {d:3,md:'11/09',t:'富士急樂園，南下湘南海岸',car:true,
+  r:'河口湖 → 富士急樂園（09:00 開園前到）→ 東富士五湖道路 → 御殿場IC → 東名・圏央道 → 國道 134 → 江の島大橋 → 江之島 Enoshima Hotel（Enospa 溫泉）',
+  n:'雨天備案：棄富士急改御殿場 Outlets。江の島大橋車道 22:00–翌 5:00 封閉。',
+  c:['河口湖','富士急樂園','山中湖','御殿場','乙女峠','江之島'],wx:['河口湖','山中湖','御殿場','江之島']},
+ {d:4,md:'11/10',t:'江之島、鎌倉，傍晚回橫濱',car:true,
+  r:'江之島晨遊（島上住客特權）→ 鎌倉高校前（過橋搭江ノ電兩站）→ 回島取車 → 鎌倉大佛 → 國道 134 → 橫濱 APA Bay Tower 卸行李 → 関内店 20:00 前還車',
+  n:'還車 20:00 同門市打烊，抓 19:00–19:30 到店、先加滿油；16:30–17:00 離開鎌倉避開尖峰。',
+  c:['江之島','七里濱','鎌倉高校前','鎌倉','橫濱'],wx:['江之島','橫濱']},
+ {d:5,md:'11/11',t:'試乘 Z → 新宿高球 → 池袋燒肉',car:false,
+  r:'日產全球總部藝廊 10:00 試乘 FAIRLADY Z → 進東京住 Minn 日本橋水天宮前 → 新宿 Victoria Golf／Alpen → 池袋 Sunshine City → 焼肉あぶる',
+  n:'試乘 10/28 開放預約；あぶる 10/11 訂位。',
+  c:['橫濱','新宿'],wx:['橫濱','新宿']},
+ {d:6,md:'11/12',t:'原宿潮牌與銀座鐵板燒',car:false,
+  r:'明治神宮 → 原宿・貓街 → 竹下通 Kiddy Land → 表參道 → 銀座線直達銀座 → 和牛鐵板燒（候選・需預約）',
+  c:['原宿','青山','銀座','有樂町'],wx:['原宿','銀座']},
+ {d:7,md:'11/13',t:'澀谷深度探索與完美燒肉',car:false,
+  r:'宮下公園 → Shibuya PARCO 6F（Nintendo／Pokémon／CAPCOM）→ Shibuya Sky（搶 15:40–16:00 場次）→ 燒肉 → 唐吉訶德',
+  c:['澀谷'],wx:['澀谷']},
+ {d:8,md:'11/14',t:'帶著滿滿回憶返台',car:false,
+  r:'10:00 退房 → 走 1 分鐘到 T-CAT → 利木津巴士（11:00–11:30 班次）→ 成田 → 15:30 起飛',
+  n:'飯店隔壁就是 T-CAT，完全不用扛行李搭電車。',
+  c:['成田機場'],wx:['成田']}
+]};
+
+/* Flatten areas into one table; day/night, weather and recommendations work per area. */
+const AREAS=[];
+REGIONS.forEach(r=>r.areas.forEach(a=>{
+  AREAS.push({key:AREAS.length, name:a.name, wx:a.wx, at:a.at, region:r.name, fuji:!!a.fuji,
+              cams:a.cams.map(c=>({id:c[0],zh:c[1],why:c[3],tags:c[4]||'',ch:c[6]||''}))});
+}));
+
+/* Only these place names go into the ticker; every area still gets weather. */
+const TICKER=['新宿','橫濱','江之島','小田原','箱根','河口湖','山中湖','御殿場','熱海','成田'];
+/* Areas used for the "can you see Fuji today" panel. */
+const FUJI_AREAS=['河口湖','富士吉田','山中湖','御殿場','箱根','十國峠'];
+
+/* Sunrise / sunset (astronomical) */
+const RAD=Math.PI/180;
+function sun(ms,lat,lon){
+  const d=ms/86400000+2440587.5-2451545.0, lw=-lon;
+  const n=Math.round(d-0.0009-lw/360);
+  const Js=2451545.0009+lw/360+n;
+  const M=(357.5291+0.98560028*(Js-2451545))%360;
+  const C=1.9148*Math.sin(M*RAD)+0.02*Math.sin(2*M*RAD)+0.0003*Math.sin(3*M*RAD);
+  const L=(M+C+180+102.9372)%360;
+  const Jt=Js+0.0053*Math.sin(M*RAD)-0.0069*Math.sin(2*L*RAD);
+  const dec=Math.asin(Math.sin(L*RAD)*Math.sin(23.4397*RAD));
+  const cw=(Math.sin(-0.833*RAD)-Math.sin(lat*RAD)*Math.sin(dec))/(Math.cos(lat*RAD)*Math.cos(dec));
+  if(Math.abs(cw)>1) return null;
+  const w=Math.acos(cw)/RAD, J=v=>new Date((v-2440587.5)*86400000);
+  return {rise:J(Jt-w/360), set:J(Jt+w/360)};
+}
+const hm=(d,tz)=>d.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz});
+
+/* WMO weather code → Chinese label */
+const WMO={0:'晴',1:'晴時多雲',2:'多雲',3:'陰',45:'霧',48:'霧淞',
+  51:'毛毛雨',53:'毛毛雨',55:'毛毛雨',56:'凍雨',57:'凍雨',
+  61:'小雨',63:'雨',65:'大雨',66:'凍雨',67:'凍雨',
+  71:'小雪',73:'雪',75:'大雪',77:'霰',
+  80:'陣雨',81:'陣雨',82:'強陣雨',85:'陣雪',86:'強陣雪',
+  95:'雷雨',96:'雷雨',99:'雷雨'};
+const RAINY=new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99]);
+const SNOWY=new Set([71,73,75,77,85,86]);
+
+/* Layout */
+/* Channels that restart their stream several times a day get a /channel/ID/live link,
+   which always resolves to the channel's current live stream. Thumbnails still use the videoId. */
+const YT=(id,ch)=> ch ? 'https://www.youtube.com/channel/'+ch+'/live'
+                      : 'https://www.youtube.com/watch?v='+id;
+const MAPQ=id=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(id);
+const FAVKEY='tk_fav';
+let FAV=[];
+try{ FAV=JSON.parse(localStorage.getItem(FAVKEY)||'[]'); }catch(e){ FAV=[]; }
+const isFav=id=>FAV.indexOf(id)>=0;
+
+let total=0, ai=-1;
+document.getElementById('board').innerHTML = REGIONS.map(r=>{
+  let rn=0;
+  const areas=r.areas.map(a=>{
+    rn+=a.cams.length; ai++;
+    const cards=a.cams.map(([id,zh,jp,why,tags,q,ch])=>`
+      <div class="cam" data-id="${id}" data-a="${ai}" data-tags="${tags||''}">
+        <a class="cam-link" href="${YT(id,ch)}" target="_blank" rel="noopener">
+          <span class="shot" data-id="${id}">
+            <span class="dot"><i></i><em class="lbl">LIVE</em></span>
+            <img alt="${zh} 即時畫面" loading="lazy" decoding="async">
+            <span class="fail">畫面暫時取不到<br>點進去看直播</span>
+            <span class="nite">這裡太陽已經下山，畫面暗是正常的</span>
+            <span class="yt"><span>用 YouTube 開啟 ↗</span></span>
+          </span>
+          <span class="meta">
+            <span class="zh">${zh}</span>
+            <span class="jp">${jp}</span>
+            <span class="why">${why}</span>
+          </span>
+        </a>
+        <span class="cam-act">
+          <button class="fav" type="button" aria-pressed="${isFav(id)}"
+            aria-label="收藏 ${zh}" title="收藏">${isFav(id)?'★':'☆'}</button>
+          <a href="${MAPQ(q||zh)}" target="_blank" rel="noopener" title="在 Google 地圖看這個地點">地圖</a>
+        </span>
+      </div>`).join('');
+    return `<div class="area"><h3>${a.name}</h3><div class="grid">${cards}</div></div>`;
+  }).join('');
+  total+=rn;
+  return `<section class="region" data-r="${r.id}">
+    <div class="region-head"><h2>${r.name}</h2><p>${r.desc}</p><span class="n">${rn} 支</span></div>
+    ${areas}</section>`;
+}).join('');
+
+/* Frame loading: only visible cards, stop when scrolled away (saves mobile data). */
+const shots=[...document.querySelectorAll('.shot')];
+const visible=new Set();
+function load(sh){
+  const img=sh.querySelector('img');
+  const url=`https://i.ytimg.com/vi/${sh.dataset.id}/hqdefault_live.jpg?t=${Date.now()}`;
+  const probe=new Image();
+  probe.onload=()=>{ img.src=url; img.classList.add('on'); sh.classList.remove('err'); paintBadges(); };
+  probe.onerror=()=>{ if(!img.classList.contains('on')){ sh.classList.add('err'); paintBadges(); } };
+  probe.src=url;
+}
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){ if(!visible.has(e.target)){ visible.add(e.target); load(e.target); } }
+  else visible.delete(e.target);
+}),{rootMargin:'320px'});
+shots.forEach(s=>io.observe(s));
+
+let lastRefresh=Date.now();
+setInterval(()=>{ visible.forEach(load); lastRefresh=Date.now(); }, 60000);
+setInterval(()=>{
+  const el=document.getElementById('age');
+  if(!el) return;
+  el.textContent = `畫面 ${Math.round((Date.now()-lastRefresh)/1000)} 秒前更新`;
+}, 1000);
+
+/* Camera status badge: LIVE / night / no frame */
+const NIGHT_OK=['夜景','街','路','空','鐵'];   // these still show something after dark
+let nightBy={};
+function paintBadges(){
+  document.querySelectorAll('.cam').forEach(c=>{
+    const sh=c.querySelector('.shot'), lbl=c.querySelector('.lbl');
+    const tags=(c.dataset.tags||'').split(' ');
+    const dark = nightBy[c.dataset.a] && !tags.some(t=>NIGHT_OK.indexOf(t)>=0);
+    sh.classList.toggle('night', !!dark);
+    if(sh.classList.contains('err')) lbl.textContent='無畫面';
+    else if(dark) lbl.textContent='夜間';
+    else lbl.textContent='LIVE';
+  });
+}
+
+/* Favourites */
+document.getElementById('board').addEventListener('click',e=>{
+  const b=e.target.closest('.fav'); if(!b) return;
+  e.preventDefault();
+  const card=b.closest('.cam'), id=card.dataset.id;
+  const i=FAV.indexOf(id);
+  if(i>=0) FAV.splice(i,1); else FAV.push(id);
+  try{ localStorage.setItem(FAVKEY,JSON.stringify(FAV)); }catch(err){}
+  b.setAttribute('aria-pressed',String(i<0));
+  b.textContent = i<0 ? '★' : '☆';
+  const c=document.getElementById('fcount'); if(c) c.textContent=FAV.length?`收藏 ${FAV.length}`:'收藏';
+  if(curMode==='fav') applyFilter();
+});
+
+/* Filters: region + mode (favourites / driving / Fuji) */
+let curR='all', curMode='';
+const nav=document.getElementById('filters');
+nav.innerHTML =
+  [{id:'all',name:'全部'}].concat(REGIONS.map(r=>({id:r.id,name:r.name})))
+    .map((c,i)=>`<button data-r="${c.id}" aria-pressed="${i===0}">${c.name}</button>`).join('')
+  + '<span class="sep"></span>'
+  + `<button class="mode" data-m="fav" aria-pressed="false" id="fcount">${FAV.length?'收藏 '+FAV.length:'收藏'}</button>`
+  + '<button class="mode" data-m="road" aria-pressed="false">自駕・路面</button>'
+  + '<button class="mode" data-m="fuji" aria-pressed="false">富士山</button>'
+  + '<span class="age" id="age">畫面 0 秒前更新</span>';
+
+nav.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.r){ curR=b.dataset.r; }
+  else if(b.dataset.m){ curMode = curMode===b.dataset.m ? '' : b.dataset.m; }
+  nav.querySelectorAll('button[data-r]').forEach(x=>
+    x.setAttribute('aria-pressed',String(x.dataset.r===curR)));
+  nav.querySelectorAll('button[data-m]').forEach(x=>
+    x.setAttribute('aria-pressed',String(x.dataset.m===curMode)));
+  applyFilter();
+  // The bar is sticky, so the viewport is left where it is; jumping to the top was disorienting.
+});
+
+function applyFilter(){
+  let shown=0;
+  document.querySelectorAll('.cam').forEach(c=>{
+    const inR = curR==='all' || c.closest('.region').dataset.r===curR;
+    let inM=true;
+    const tags=(c.dataset.tags||'');
+    if(curMode==='fav')  inM = isFav(c.dataset.id);
+    if(curMode==='road') inM = tags.indexOf('路')>=0;
+    if(curMode==='fuji') inM = AREAS[c.dataset.a].fuji && tags.indexOf('山')>=0;
+    c.hidden = !(inR&&inM);
+    if(!c.hidden) shown++;
+  });
+  document.querySelectorAll('.area').forEach(a=>{
+    a.hidden = !a.querySelector('.cam:not([hidden])');
+  });
+  document.querySelectorAll('section.region').forEach(s=>{
+    s.hidden = !s.querySelector('.cam:not([hidden])');
+  });
+  document.getElementById('empty').hidden = shown>0;
+  document.getElementById('empty').textContent =
+    curMode==='fav' ? '還沒有收藏。在卡片右上角點 ☆ 就會收進來。'
+                    : '這個條件下沒有攝影機。';
+  document.getElementById('road').hidden = curMode!=='road';
+  if(curMode==='road') paintRoad();
+}
+
+/* "How to use": collapsed by default, not remembered. */
+document.getElementById('howBtn').addEventListener('click',e=>{
+  const box=document.getElementById('howBox'), b=e.currentTarget;
+  const open=box.hidden;
+  box.hidden=!open;
+  b.setAttribute('aria-expanded',String(open));
+  b.textContent = open ? '怎麼用 ▴' : '怎麼用 ▾';
+});
+
+/* Theme toggle: system → light → dark → system. First paint is handled in <head>. */
+const THEMEKEY='tk_theme';
+const THEMES=[['','◐ 跟隨系統'],['light','☀ 淺色'],['dark','🌙 深色']];
+let themeVal=''; try{ themeVal=localStorage.getItem(THEMEKEY)||''; }catch(e){}
+const themeBtn=document.getElementById('themeBtn');
+function paintTheme(){
+  if(themeVal) document.documentElement.setAttribute('data-theme',themeVal);
+  else document.documentElement.removeAttribute('data-theme');
+  themeBtn.textContent=(THEMES.find(x=>x[0]===themeVal)||THEMES[0])[1];
+}
+paintTheme();
+themeBtn.addEventListener('click',()=>{
+  const i=THEMES.findIndex(x=>x[0]===themeVal);
+  themeVal=THEMES[(i+1)%THEMES.length][0];
+  try{ themeVal ? localStorage.setItem(THEMEKEY,themeVal)
+                : localStorage.removeItem(THEMEKEY); }catch(e){}
+  paintTheme();
+});
+
+/* Ticker ⇄ grid, remembered in localStorage */
+const GRIDKEY='tk_wxgrid';
+let gridOn=false; try{ gridOn=localStorage.getItem(GRIDKEY)==='1'; }catch(e){}
+const gridBtn=document.getElementById('gridBtn');
+function paintGrid(){
+  document.getElementById('wxTrack').hidden=gridOn;
+  document.getElementById('wxGrid').hidden=!gridOn;
+  gridBtn.setAttribute('aria-expanded',String(gridOn));
+  gridBtn.textContent = gridOn ? '收合跑馬燈 ▴' : '展開比較 ▾';
+}
+paintGrid();
+gridBtn.addEventListener('click',()=>{
+  gridOn=!gridOn;
+  try{ gridOn ? localStorage.setItem(GRIDKEY,'1')
+              : localStorage.removeItem(GRIDKEY); }catch(e){}
+  paintGrid();
+});
+
+/* Generic in-place toggles */
+function toggler(btnId,boxId,label){
+  document.getElementById(btnId).addEventListener('click',e=>{
+    const box=document.getElementById(boxId), b=e.currentTarget;
+    const open=box.hidden;
+    box.hidden=!open;
+    b.setAttribute('aria-expanded',String(open));
+    b.textContent = open ? label+' ▴' : label+' ▾';
+  });
+}
+toggler('packBtn','packBox','帶什麼');
+toggler('fujiBtn','fujiBox','富士山看得到嗎');
+
+/* Top law bar: switch to driving mode, then scroll to the full explanation. */
+document.getElementById('lawBar').addEventListener('click',e=>{
+  e.preventDefault();
+  if(curMode!=='road'){
+    curMode='road';
+    nav.querySelectorAll('button[data-m]').forEach(x=>
+      x.setAttribute('aria-pressed',String(x.dataset.m===curMode)));
+    applyFilter();
+  }
+  document.getElementById('road').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+/* Weather (Open-Meteo, no key, CORS enabled, one request for every area). */
+const WXBY={};
+
+/* Clothing icons drawn inline; thresholds in °C. */
+const WEAR=[
+  [25,'短袖',
+   '<path d="M8.5 3 4 5.5 2 9.5l3.2 1.8L6.5 9.5V21h11V9.5l1.3 1.8L22 9.5 20 5.5 15.5 3a3.6 3.6 0 0 1-7 0Z"/>'],
+  [20,'長袖襯衫',
+   '<path d="M8.5 3 4.5 5 2.5 15l3.2.8L7 10v11h10V10l1.3 5.8 3.2-.8L19.5 5l-4-2a3.6 3.6 0 0 1-7 0Z"/>'],
+  [14,'薄外套',
+   '<path d="M8.5 3 4.5 5 2.5 15l3.2.8L7 10v11h10V10l1.3 5.8 3.2-.8L19.5 5l-4-2-3.5 4Z"/><path d="M12 7v14" stroke-width="1.3"/>'],
+  [7,'厚外套',
+   '<path d="M8 3 4 5.2 2 15.5l3.4.9L6.8 10v12h10.4V10l1.4 6.4 3.4-.9L20 5.2 16 3l-4 4.4Z"/><path d="M12 7.4V22" stroke-width="1.3"/><path d="M8 3l4 4.4L16 3" stroke-width="1.3"/>'],
+  [0,'大衣＋圍巾',
+   '<path d="M8 4.6 4 6.6 2 16.4l3.4.9L6.8 11v11h10.4V11l1.4 6.3 3.4-.9L20 6.6l-4-2-4 3.6Z"/><path d="M12 8.2V22" stroke-width="1.3"/><path d="M8.6 3.2c1.4 1.4 5.4 1.4 6.8 0" stroke-width="1.9"/><path d="M10.4 3.8 9.6 7M13.6 3.8l.8 3.2" stroke-width="1.5"/>'],
+  [-99,'羽絨＋手套帽子',
+   '<path d="M7.6 4.8 3.6 7 1.8 16.6l3.4.9L6.6 11.4V22h10.8V11.4l1.4 6.1 3.4-.9L20.4 7l-4-2.2-4.4 3.4Z"/><path d="M6.6 13h10.8M6.6 16.6h10.8M6.6 19.6h10.8" stroke-width="1.1"/><path d="M8.2 3.4c1.4 1.4 6.2 1.4 7.6 0" stroke-width="2.1"/>']
+];
+function wear(t){ return WEAR.find(w => t >= w[0]) || WEAR[WEAR.length-1]; }
+/* Rain gear hint from precipitation probability and current code. */
+function rainGear(w){
+  if(w.pp>=70 || (w.cur&&RAINY.has(w.cur.code))) return '帶傘＋防水外套';
+  if(w.pp>=50) return '帶折傘';
+  if(w.pp>=30) return '傘放車上';
+  return '不用帶傘';
+}
+function wearSVG(t,size){
+  const w=wear(t);
+  return `<svg class="wx-fig" viewBox="0 0 24 24" width="${size}" height="${size}" `
+       + `role="img" aria-label="${w[1]}"><g fill="none" stroke="currentColor" `
+       + `stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">${w[2]}</g></svg>`;
+}
+
+async function loadWeather(){
+  const url='https://api.open-meteo.com/v1/forecast'
+    + '?latitude='  + AREAS.map(a=>a.at[0]).join(',')
+    + '&longitude=' + AREAS.map(a=>a.at[1]).join(',')
+    + '&current=temperature_2m,precipitation,weather_code,cloud_cover,wind_speed_10m'
+    + '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code'
+    + '&hourly=visibility,cloud_cover'
+    // 16 days is the maximum; the trip panel uses it when the trip is close enough.
+    + '&timezone=Asia%2FTokyo&forecast_days=16';
+  const res=await fetch(url);
+  if(!res.ok) throw new Error(res.status);
+  const data=await res.json();
+
+  const jh=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Tokyo'})).getHours();
+  AREAS.forEach((a,i)=>{
+    const one=Array.isArray(data)?data[i]:data;
+    const d=one.daily, c=one.current||null;
+    const hv=one.hourly&&one.hourly.visibility, hc=one.hourly&&one.hourly.cloud_cover;
+    WXBY[a.key]={
+      hi:Math.round(d.temperature_2m_max[0]),
+      lo:Math.round(d.temperature_2m_min[0]),
+      pp:d.precipitation_probability_max[0] ?? 0,
+      code:d.weather_code[0],
+      wet:RAINY.has(d.weather_code[0]) || (d.precipitation_probability_max[0]||0)>=60,
+      vis:(hv && hv[jh]!=null) ? hv[jh] : null,          // metres
+      cloud:c ? c.cloud_cover : ((hc && hc[jh]!=null) ? hc[jh] : null),
+      cur:c?{t:c.temperature_2m,p:c.precipitation,code:c.weather_code,wind:c.wind_speed_10m}:null,
+      days:d.time.map((t,k)=>({date:t, hi:Math.round(d.temperature_2m_max[k]),
+        lo:Math.round(d.temperature_2m_min[k]), pp:d.precipitation_probability_max[k]??0,
+        code:d.weather_code[k]}))
+    };
+  });
+
+  const list=AREAS.filter(a=>TICKER.indexOf(a.wx)>=0)
+    .sort((a,b)=>TICKER.indexOf(a.wx)-TICKER.indexOf(b.wx));
+
+  const items=list.map(a=>{
+      const w=WXBY[a.key];
+      return '<span class="wx-item">'
+        + `<span class="wx-city">${a.wx}</span>`
+        + '<span class="wx-slot" title="晝間"><span class="wx-tag">晝</span>'
+        +   wearSVG(w.hi,26) + `<span class="wx-t wx-hi">${w.hi}°</span></span>`
+        + '<span class="wx-slot" title="朝晚"><span class="wx-tag">朝晚</span>'
+        +   wearSVG(w.lo,26) + `<span class="wx-t wx-lo">${w.lo}°</span></span>`
+        + `<span class="wx-p${w.wet?' wet':''}">降雨 ${w.pp}%</span>`
+        + `<span class="wx-w">${WMO[w.code]||''}・${wear(w.hi)[1]}・${rainGear(w)}</span>`
+        + '</span>';
+    }).join('');
+  document.getElementById('wxRun').innerHTML = items + items;   // two copies for a seamless loop
+
+  document.getElementById('wxGrid').innerHTML = list.map(a=>{
+    const w=WXBY[a.key];
+    return '<div class="wg-cell">'
+      + `<div class="wg-city">${a.wx}</div>`
+      + '<div class="wg-t">'
+      +   '<span class="wx-slot" title="晝間"><span class="wx-tag">晝</span>'
+      +     wearSVG(w.hi,24) + `<span class="wx-t wx-hi">${w.hi}°</span></span>`
+      +   '<span class="wx-slot" title="朝晚"><span class="wx-tag">朝晚</span>'
+      +     wearSVG(w.lo,24) + `<span class="wx-t wx-lo">${w.lo}°</span></span>`
+      + '</div>'
+      + `<div class="wg-p${w.wet?' wet':''}">降雨 ${w.pp}%</div>`
+      + `<div class="wg-w">${WMO[w.code]||''}</div>`
+      + `<div class="wg-w">${wear(w.hi)[1]}・${rainGear(w)}</div>`
+      + '</div>';
+  }).join('');
+
+  document.getElementById('wx').hidden = false;
+  startTicker();
+  paintFuji();
+  tick();
+  if(curMode==='road') paintRoad();
+  if(window.paintTripWx) paintTripWx();
+}
+
+/* Fuji visibility: derived from cloud cover, weather code and visibility at the viewing spots.
+   This is a rough model, not an observation. */
+function fujiState(w){
+  if(!w) return null;
+  const code=w.cur?w.cur.code:w.code, cloud=w.cloud, vis=w.vis;
+  if(code===45||code===48||(vis!=null&&vis<3000)) return {k:'stop',s:'起霧・看不到'};
+  if(RAINY.has(code)||SNOWY.has(code)) return {k:'stop',s:'降水中・看不到'};
+  if(cloud!=null){
+    if(cloud<=30) return {k:'go',s:'看得到機率高'};
+    if(cloud<=70) return {k:'warn',s:'山頭可能被雲遮'};
+    return {k:'stop',s:'雲層厚・大概看不到'};
+  }
+  if(code<=1) return {k:'go',s:'看得到機率高'};
+  if(code===2) return {k:'warn',s:'山頭可能被雲遮'};
+  return {k:'stop',s:'陰・大概看不到'};
+}
+function paintFuji(){
+  const list=AREAS.filter(a=>FUJI_AREAS.indexOf(a.wx)>=0)
+    .sort((a,b)=>FUJI_AREAS.indexOf(a.wx)-FUJI_AREAS.indexOf(b.wx));
+  const rows=list.map(a=>{
+    const w=WXBY[a.key], st=fujiState(w);
+    if(!st) return '';
+    const mark={go:'🟢',warn:'🟡',stop:'🔴'}[st.k];
+    const code=w.cur?w.cur.code:w.code;
+    return `<div class="fuji-i">
+      <div class="fh"><b>${a.wx}</b><span class="fv fv-${st.k}">${mark} ${st.s}</span></div>
+      <div class="fs">${WMO[code]||''}　雲量 <em>${w.cloud!=null?Math.round(w.cloud)+'%':'—'}</em>
+        　能見度 <em>${w.vis!=null?(w.vis>=10000?'10 km+':Math.round(w.vis/100)/10+' km'):'—'}</em></div>
+    </div>`;
+  }).join('');
+  document.getElementById('fujiBox').innerHTML =
+    `<h5>富士山現在看得到嗎</h5>
+     <p class="fuji-cap">依各觀景點的雲量、天氣與能見度換算，<strong>不是觀測值</strong>。
+       秋冬清晨最清楚，午後常起雲；蘆之湖 Skyline、三國峠、十國峠請以最接近的那一格判斷。</p>
+     <div class="fuji-list">${rows}</div>
+     <p class="fuji-src">要看實際畫面，點上面篩選列的「富士山」只留富士山機位。
+       官方：<a href="https://www.fujigoko.tv/" target="_blank" rel="noopener">富士五湖 TV ↗</a>
+       <a href="https://www.fujisan-navi.jp/" target="_blank" rel="noopener">フジヤマ NAVI ↗</a></p>`;
+}
+
+/* Ticker: driven by rAF, not CSS animation (CSS animation is disabled by reduced-motion). */
+let tickerOn=false;
+function startTicker(){
+  const run=document.getElementById('wxRun');
+  const track=document.querySelector('.wx-track');
+  if(tickerOn) return;
+  tickerOn=true;
+  const SPEED=31;
+  let x=0, last=null, paused=false;
+  track.addEventListener('mouseenter',()=>paused=true);
+  track.addEventListener('mouseleave',()=>paused=false);
+  track.addEventListener('touchstart',()=>paused=true, {passive:true});
+  track.addEventListener('touchend',  ()=>paused=false,{passive:true});
+  function step(ts){
+    if(last===null) last=ts;
+    const dt=Math.min((ts-last)/1000,0.1);
+    last=ts;
+    const half=run.scrollWidth/2;
+    if(!paused && half>0){
+      x-=SPEED*dt;
+      if(-x>=half) x+=half;
+      run.style.transform='translateX('+x.toFixed(1)+'px)';
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+loadWeather().catch(()=>{});
+setInterval(()=>loadWeather().catch(()=>{}), 30*60*1000);
+
+/* Recommendations: derived from sun position, current weather code and camera tags.
+   One camera per area at most. */
+function recommend(now){
+  const out=[];
+  AREAS.forEach(a=>{
+    const s=sun(now.getTime(),a.at[0],a.at[1]);
+    const w=WXBY[a.key];
+    const night = s ? (now<s.rise||now>s.set) : false;
+    const afterSet = s ? (now>s.set && now-s.set<45*60000) : false;
+    const nearSet  = s ? (s.set-now>0  && s.set-now<40*60000) : false;
+    const nearRise = s ? (now-s.rise>0 && now-s.rise<40*60000) : false;
+    const code = w ? (w.cur ? w.cur.code : w.code) : null;
+    const clear   = code!==null && code<=1;
+    const partly  = code===2;
+    const foggy   = code===45||code===48;
+    const raining = code!==null && RAINY.has(code);
+    const fujiOK  = a.fuji && w && fujiState(w) && fujiState(w).k==='go';
+
+    a.cams.forEach(c=>{
+      const t=(c.tags||'').split(' '), has=k=>t.indexOf(k)>=0;
+      let sc=0, why='', photo=false;
+      if(night){
+        if(has('夜景'))     { sc=88; why='現在是夜間，這支拍得到燈景'; }
+        else if(has('街'))  { sc=68; why='夜間・市區有街燈，看得到人與車'; }
+        else if(has('空'))  { sc=62; why='夜間・機場照明亮著'; }
+        else if(has('鐵'))  { sc=58; why='夜間・車站與列車燈光'; }
+        else if(has('路'))  { sc=54; why='夜間・路燈下看得出路面狀況'; }
+        else                { sc=8;  why='夜間・這支會是全黑'; }
+        if(afterSet && (has('夜景')||has('街'))){ sc+=9; why='日落剛過的藍調時刻，天還沒全黑'; photo=true; }
+        if(raining && sc>40) why+='，而且正在下雨';
+      }else{
+        if(raining){
+          if(has('路'))      { sc=80; why='正在下雨・看得出路面濕滑程度'; }
+          else if(has('街')) { sc=74; why='正在下雨・市區人潮與雨勢'; }
+          else if(has('海')) { sc=40; why='下雨・海面灰濛'; }
+          else if(has('山')) { sc=20; why='下雨・山看不到'; }
+          else               { sc=45; why='下雨中'; }
+        }else if(foggy){
+          if(has('街')||has('路')) { sc=58; why='起霧・市區還看得到東西'; }
+          else                     { sc=20; why='起霧・山與海會被整個蓋住'; }
+        }else if(clear||partly){
+          if(has('山')&&fujiOK) { sc=95; why='晴・富士山現在露臉了'; photo=true; }
+          else if(has('山'))    { sc=clear?80:55; why=clear?'晴・山看得清楚':'多雲・山頭可能被遮'; }
+          else if(has('海'))    { sc=72; why='晴・海面通透'; }
+          else if(has('空'))    { sc=66; why='晴・跑道與雲層都看得到'; }
+          else if(has('自然'))  { sc=64; why='晴・湖面與樹色清楚'; }
+          else                  { sc=58; why='晴・日間畫面清楚'; }
+        }else{
+          if(has('街')||has('路')) { sc=58; why='陰・市區畫面正常'; }
+          else if(has('山'))       { sc=30; why='雲層低・山頭可能被蓋住'; }
+          else                     { sc=45; why='陰天'; }
+        }
+        if((nearSet||nearRise) && !raining && !foggy
+           && (has('夕')||has('海')||has('夜景')||(has('山')&&a.fuji))){
+          sc+=22; why=(nearSet?'日落前後':'日出前後')+'・光線最好的時段'; photo=true;
+        }
+      }
+      const wtxt = w ? `${a.wx} ${w.cur?Math.round(w.cur.t):w.hi}°　${WMO[code]||''}` : a.wx;
+      out.push({sc,why,photo,zh:c.zh,id:c.id,ch:c.ch,area:a.key,wtxt});
+    });
+  });
+  out.sort((p,q)=>q.sc-p.sc);
+  const seen=new Set(), top=[];
+  for(const o of out){
+    if(seen.has(o.area)) continue;
+    seen.add(o.area); top.push(o);
+    if(top.length===3) break;
+  }
+  return top;
+}
+
+/* The three cards are built once; afterwards only text and href change, never innerHTML,
+   otherwise a tap on mobile lands on a freshly re-created element and misses. */
+const MEDAL=['①','②','③'];
+let recBuilt=false;
+function buildRec(){
+  document.getElementById('recList').innerHTML = MEDAL.map(m=>
+    `<a class="rec-card" href="https://www.youtube.com/" target="_blank" rel="noopener" hidden>
+      <span class="rec-rank">${m}</span>
+      <span class="rec-b">
+        <span class="rec-n"></span>
+        <span class="rec-w"></span>
+        <span class="rec-x"></span>
+      </span>
+    </a>`).join('');
+  recBuilt=true;
+}
+function paintRec(now){
+  const top=recommend(now);
+  const box=document.getElementById('rec');
+  if(!top.length || top[0].sc<=10){ box.hidden=true; return; }
+  if(!recBuilt) buildRec();
+  document.querySelectorAll('.rec-card').forEach((a,i)=>{
+    const o=top[i];
+    if(!o){ a.hidden=true; return; }
+    const href=YT(o.id,o.ch);
+    if(a.getAttribute('href')!==href) a.setAttribute('href',href);
+    const n=a.querySelector('.rec-n'), w=a.querySelector('.rec-w'), x=a.querySelector('.rec-x');
+    const nt=o.zh+(o.photo?'　📸':'');
+    if(n.textContent!==nt)     n.textContent=nt;
+    if(w.textContent!==o.why)  w.textContent=o.why;
+    if(x.textContent!==o.wtxt) x.textContent=o.wtxt;
+    a.hidden=false;
+  });
+  box.hidden=false;
+}
+
+/* Road reading: temperature, precipitation, fog and wind only. Not official road status. */
+function roadState(w){
+  if(!w||!w.cur) return null;
+  const t=w.cur.t, p=w.cur.p||0, code=w.cur.code, wind=w.cur.wind||0;
+  const fog=code===45||code===48||(w.vis!=null&&w.vis<1000);
+  if(SNOWY.has(code))          return {k:'stop', s:'降雪・山區路面危險'};
+  if(fog)                      return {k:'stop', s:'濃霧・能見度差'};
+  if(t<=0)                     return {k:'warn', s:'冰點以下・橋面與陰面結霜'};
+  if(t<=3 && p>0)              return {k:'warn', s:'低溫濕路・注意背陰處'};
+  if(RAINY.has(code) && code>=63) return {k:'warn', s:'大雨・視線與煞車距離'};
+  if(wind>=40)                 return {k:'warn', s:'強風・海岸與橋上小心'};
+  if(p>0||RAINY.has(code))     return {k:'go',   s:'濕路面'};
+  if(t<=3)                     return {k:'go',   s:'低溫・清晨留意結霜'};
+  return {k:'go', s:'一般路面'};
+}
+function paintRoad(){
+  const rows=AREAS.map(a=>{
+    const w=WXBY[a.key], st=roadState(w);
+    if(!st) return `<div class="road-i"><span class="rd-n">${a.name}</span>
+      <span class="rd-s">—</span></div>`;
+    const mark={go:'🟢',warn:'🟡',stop:'🔴'}[st.k];
+    return `<div class="road-i">
+      <span class="rd-n">${a.name}</span>
+      <span class="rd-t">${Math.round(w.cur.t)}°</span>
+      <span class="rd-s rd-${st.k}">${mark} ${st.s}</span></div>`;
+  }).join('');
+  document.getElementById('roadList').innerHTML=rows;
+  const any=AREAS.some(a=>{const s=roadState(WXBY[a.key]); return s&&s.k!=='go';});
+  document.getElementById('roadCap').innerHTML = any
+    ? '依 Open-Meteo 的當地氣溫、降水與能見度換算，<strong>不是官方路況</strong>。實際通行狀況請看下面的官方連結。'
+    : '目前各區沒有結霜、濃霧或大雨條件。判讀依 Open-Meteo 換算，<strong>不是官方路況</strong>；'
+      + '箱根與熱海峠的霧常在清晨與入夜後才出現。';
+}
+
+/* My trip: mirrors trip.html. `c` lists camera name prefixes; `wx` lists weather areas. */
+function renderTrip(){
+  const el=document.getElementById('trip');
+  const jnow=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));
+  const j0=new Date(jnow.getFullYear(),jnow.getMonth(),jnow.getDate());
+  const s=TRIP.start.split('-').map(Number);
+  const st=new Date(s[0],s[1]-1,s[2]);
+  const gap=Math.round((j0-st)/86400000);
+  const todayIdx = (gap>=0 && gap<TRIP.days.length) ? gap : -1;
+  let sel = todayIdx>=0 ? todayIdx : 0;
+  const cd = todayIdx>=0 ? `旅行中・第 ${todayIdx+1} 天`
+           : gap<0 ? `距離出發還有 ${-gap} 天` : '行程已結束';
+
+  el.innerHTML =
+    `<div class="trip-h"><h4>我的行程　${TRIP.name}</h4>
+       <span class="cd">${cd}</span>
+       <button class="off" type="button" id="tripOff">關閉這一區</button></div>
+     <div class="trip-days" id="tripDays"></div>
+     <div class="trip-body" id="tripBody"></div>`;
+  try{ if(localStorage.getItem('tk_tripoff')==='1'){ el.hidden=true; } else el.hidden=false; }
+  catch(e){ el.hidden=false; }
+
+  document.getElementById('tripDays').innerHTML = TRIP.days.map((d,i)=>
+    `<button type="button" data-i="${i}" aria-pressed="${i===sel}"
+       class="${i===todayIdx?'today':''}">DAY ${d.d}<b>${d.md}</b></button>`).join('');
+
+  const allCams=[]; AREAS.forEach(a=>a.cams.forEach(c=>allCams.push({...c,areaKey:a.key})));
+  function camsFor(prefixes){
+    const out=[]; const seen=new Set();
+    (prefixes||[]).forEach(p=>{
+      let n=0;
+      allCams.forEach(c=>{
+        if(n>=3 || seen.has(c.id)) return;
+        if(c.zh.startsWith(p)){ out.push(c); seen.add(c.id); n++; }
+      });
+    });
+    return out;
+  }
+  function wxFor(d){
+    const date=`${TRIP.start.slice(0,4)}-${d.md.replace('/','-').padStart(5,'0')}`;
+    return (d.wx||[]).map(name=>{
+      const a=AREAS.find(x=>x.wx===name); if(!a) return '';
+      const w=WXBY[a.key]; if(!w) return `<span>${name}　—</span>`;
+      const f=(w.days||[]).find(x=>x.date===date);
+      if(f) return `<span>${name}　<b>${f.lo}°～${f.hi}°</b>　${WMO[f.code]||''}　降雨 ${f.pp}%</span>`;
+      return `<span>${name}　現在 <b>${w.cur?Math.round(w.cur.t):w.hi}°</b>　${WMO[w.cur?w.cur.code:w.code]||''}</span>`;
+    }).join('');
+  }
+  function paintDay(){
+    const d=TRIP.days[sel];
+    const cams=camsFor(d.c).map(c=>
+      `<a href="${YT(c.id,c.ch)}" target="_blank" rel="noopener">${c.zh}</a>`).join('');
+    const wx=wxFor(d);
+    const date=`${TRIP.start.slice(0,4)}-${d.md.replace('/','-')}`;
+    const inRange=AREAS.some(a=>WXBY[a.key]&&(WXBY[a.key].days||[]).some(x=>x.date===date));
+    document.getElementById('tripBody').innerHTML =
+      `<div class="trip-title">DAY ${d.d}　${d.md}　${d.t}
+         <span class="trip-car${d.car?' on':''}">${d.car?'🚗 自駕日':'🚃 大眾運輸'}</span></div>
+       <div class="trip-route">${d.r}</div>`
+      + (d.n?`<div class="trip-route" style="color:var(--ember)">※ ${d.n}</div>`:'')
+      + (cams?`<div class="trip-sec"><h5>這天用得到的攝影機</h5><div class="trip-cams">${cams}</div></div>`:'')
+      + (wx?`<div class="trip-sec"><h5>${inRange?'這天的預報':'各站現在的天氣'}</h5><div class="trip-wx">${wx}</div>
+             <p class="mc-hint">${inRange?'Open-Meteo 16 天預報，越接近越準。':'出發前 16 天內會換成當天預報。'}</p></div>`:'')
+      + `<a class="trip-link" href="trip.html#day-${d.d}">看完整行程 →</a>`;
+  }
+  window.paintTripWx=paintDay;
+  paintDay();
+
+  document.getElementById('tripDays').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    sel=+b.dataset.i;
+    document.querySelectorAll('#tripDays button').forEach(x=>
+      x.setAttribute('aria-pressed',String(+x.dataset.i===sel)));
+    paintDay();
+  });
+  document.getElementById('tripOff').addEventListener('click',()=>{
+    try{ localStorage.setItem('tk_tripoff','1'); }catch(e){}
+    el.hidden=true;
+  });
+}
+renderTrip();
+
+/* Clock, day/night and recommendations every 20 seconds */
+function tick(){
+  const now=new Date();
+  const twWeek=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+  const jpWeek=['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日'];
+  const jd=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));
+  const td=new Date(now.toLocaleString('en-US',{timeZone:'Asia/Taipei'}));
+  const diff = jd.getDate()!==td.getDate()
+    ? `<em>台灣為 ${td.getMonth()+1}月${td.getDate()}日</em>` : '';
+  document.getElementById('today').innerHTML =
+    `${jd.getFullYear()}年${jd.getMonth()+1}月${jd.getDate()}日${diff}`;
+  document.getElementById('weekday').textContent =
+    `${twWeek[jd.getDay()]}　${jpWeek[jd.getDay()]}`;
+  document.getElementById('jst').textContent=hm(now,'Asia/Tokyo');
+  document.getElementById('twt').textContent=hm(now,'Asia/Taipei');
+
+  let dark=0;
+  AREAS.forEach(a=>{
+    const s=sun(now.getTime(),a.at[0],a.at[1]);
+    const n = s ? (now<s.rise||now>s.set) : false;
+    nightBy[a.key]=n; if(n) dark++;
+  });
+  paintBadges();
+
+  const s=sun(now.getTime(),35.6895,139.6917);      // Tokyo (Shinjuku) as the headline reference
+  const dn=document.getElementById('dn'), nt=document.getElementById('dnNote');
+  if(s){
+    const light=now>=s.rise&&now<=s.set;
+    dn.textContent=light?'東京現在是白天':'東京現在是夜間';
+    nt.textContent=light?`東京日落 ${hm(s.set,'Asia/Tokyo')}`
+      :`東京日出 ${hm(s.rise,'Asia/Tokyo')}`;
+  }else{ dn.textContent='—'; }
+
+  const bn=document.getElementById('briefNote');
+  let rainN=0, fujiGo=0, fujiN=0;
+  AREAS.forEach(a=>{
+    const w=WXBY[a.key]; if(!w) return;
+    const code=w.cur?w.cur.code:w.code;
+    if(RAINY.has(code)) rainN++;
+    if(a.fuji && FUJI_AREAS.indexOf(a.wx)>=0){ fujiN++; const f=fujiState(w); if(f&&f.k==='go') fujiGo++; }
+  });
+  const nightTxt = dark>=AREAS.length*0.6
+    ? '🌙 多數戶外攝影機已進入夜間，山區、湖畔與海岸會是全黑——這是正常的，不是壞掉。'
+    : (dark>0 ? '🌙 部分地區已經天黑，卡片上標「夜間」的那幾支畫面會很暗。' : '');
+  if(rainN>=AREAS.length*0.5)      bn.textContent='☔ 關東多數地區正在下雨。'+(dark>0?'　'+nightTxt:'');
+  else if(rainN>0)                 bn.textContent=`☔ 部分地區正在下雨（${rainN} 區）。`+(dark>0?'　'+nightTxt:'');
+  else if(!dark && fujiN && fujiGo>=Math.ceil(fujiN/2)) bn.textContent='🗻 富士山周邊雲量少，現在是看富士山的好時機。';
+  else                             bn.textContent=nightTxt;
+
+  paintRec(now);
+}
+tick(); setInterval(tick,20000);
+applyFilter();
+
+document.getElementById('foot').innerHTML =
+  `收錄 ${total} 支 YouTube 直播，建檔時逐支確認為直播中且畫面正常<br>` +
+  `畫面重複的機位只留一支；無法確認畫面的已排除`;
+</script>
+</body>
+</html>
