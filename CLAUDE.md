@@ -36,6 +36,8 @@ GSAP animations: header entrance + parallax and day-card hover lift live in a si
 
 Day cards show only the day's prose, the amber 用餐建議 note, rose deadline blocks (D4 還車 / D5 日產試乘) and the 宿 chip; every reference block (導航節點, 景點, 順遊備選, 購物打擊清單, ACG, 時間軸估算) is a `<details class="opt">` collapsed behind a one-line `.opt-sum` summary — the itinerary is meant to read as a plan, not a schedule to keep up with. Keep new day content to that three-tier colour scheme (rose = hard deadline, amber = food, neutral = everything else). `beforeprint`/`afterprint` handlers open and re-close all `<details>` so printing is complete. Icons from Lucide CDN.
 
+On phones the day cards run edge to edge: the round D1–D8 markers and the decorative vertical rail (`before:` gradient on the `.space-y-12` container) are both `md:`-only, and the day number rides inside the card header as a small `md:hidden` pill. Do not bring the marker column back below `md` — it costs ~55px of a 390px screen and makes the rail visible as a stray line.
+
 ### `betting.html`
 Single-file app with all state, logic, and rendering in one `<script>` block:
 - **Storage**: `localStorage` under key `wc-betting-tracker-v1`; `load()`/`save()` handle serialization.
