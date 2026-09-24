@@ -627,7 +627,7 @@
         </div>
 
         <div class="education-note">
-          娛樂與教學用途：籌碼全為虛擬，不涉及真實金錢；籌碼與戰績只存在這台裝置的瀏覽器。<br>
+          娛樂與教學用途：籌碼全為虛擬，不涉及真實金錢；不會存檔，重新整理頁面就全部重來（籌碼回到 1,000）。<br>
           鍵盤：<kbd>1</kbd>–<kbd>4</kbd> 把籌碼直接下在主注、<kbd>⌫</kbd> 撤回、<kbd>空白鍵</kbd> 發牌／同注再發、<kbd>H</kbd> 要牌、<kbd>S</kbd> 停牌、<kbd>D</kbd> 加倍、<kbd>P</kbd> 分牌、<kbd>R</kbd> 投降、保險 <kbd>Y</kbd> / <kbd>N</kbd>。
         </div>
       </div>
@@ -764,7 +764,7 @@
         <div class="rule-card"><h4>9. Insurance 保險／Even Money</h4>只在莊家明牌為 A 時、Peek 之前提供。保險注為原注 1/2；若莊家 Blackjack，保險賠 2:1。你自己拿 Blackjack 時，買保險就等於 Even Money（確定贏 1 倍）。基本策略兩者都不買。</div>
         <div class="rule-card"><h4>10. Dealer Peek</h4>莊家明牌 A 或 10 點牌時先偷看暗牌。若是 Blackjack 就立刻亮牌結束：你也是 Blackjack 則和局，否則只輸原注（還沒有機會加倍或分牌）。</div>
         <div class="rule-card"><h4>11. 賠率速查</h4><b>Blackjack</b> 3:2｜<b>一般贏</b> 1:1｜<b>保險</b> 2:1｜<b>和局 Push</b> 退回下注｜<b>投降</b> 退回一半｜<b>爆牌</b> 立即輸掉該手下注，即使莊家之後也爆牌。副注賠率見第 17、18 條。</div>
-        <div class="rule-card"><h4>12. 牌靴與洗牌</h4>6 副牌共 312 張，洗牌後切牌卡隨機插在 72%–78% 之間；發到切牌卡的那一局打完後，下一局開始前重新洗牌。重新整理頁面也會換上新牌靴。</div>
+        <div class="rule-card"><h4>12. 牌靴與洗牌</h4>6 副牌共 312 張，洗牌後切牌卡隨機插在 72%–78% 之間；發到切牌卡的那一局打完後，下一局開始前重新洗牌。本頁不存檔：重新整理頁面就全部重來——新牌靴、籌碼回到 1,000、戰績清空。</div>
         <div class="rule-card"><h4>13. 策略教練</h4>每一次決策都會和基本策略表（與策略練習頁同一份）比對，並說明原因；打開「策略提示」會直接以金框標出建議動作。吻合率只計算你實際做過的決策（含保險）。</div>
         <div class="rule-card"><h4>14. 即時機率怎麼算</h4>下一張爆牌率、莊家最終點數分佈與停牌勝率，都以「你還沒看到的牌」（牌靴剩餘 + 莊家暗牌）的組成計算；莊家 Peek 過後會排除莊家 Blackjack 的可能。莊家分佈用目前組成近似每一張補牌。</div>
         <div class="rule-card"><h4>15. Hi-Lo 算牌</h4>2–6 記 +1、7–9 記 0、10/J/Q/K/A 記 −1，累加得流水數；除以剩餘副數得真數。真數越高代表剩下的 10 與 A 越多，Blackjack 與加倍對玩家越有利。本頁只做教學顯示，策略建議不會因算牌而改變。</div>
@@ -794,7 +794,6 @@
 const DECKS=6, START_BANK=1000, MIN_BET=10, MAX_BET=2000, SIDE_MAX=500, HISTORY_MAX=12;
 const CHIPS=[10,50,100,500];
 const CHIP_COLOR={10:'#1d5fae',50:'#c8581b',100:'#26211c',500:'#6c2d91'};
-const STORE_KEY='blackjack-game-v1';
 const SPOTS=['pairs','main','t213'];
 const SPOT_NAME={main:'主注',pairs:'完美對子',t213:'21+3'};
 const PAIRS_PAYS=[
@@ -980,41 +979,17 @@ const G={
   insurance:0,peeked:false,peeking:false,dealerBJ:false,
   roundStart:START_BANK,lastNet:null,busy:false,lastCell:null,
   hint:false,showCount:false,sideOpen:true,collapsed:[],
-  sessionNet:0,sessionRounds:0,   // since this page load — never saved, so a refresh zeroes it
   stats:freshStats(),history:[]
 };
 let cardSeq=0,handSeq=0;
 const renderedIds=new Set();
 
-/* ---------- Persistence ---------- */
-function load(){
-  try{
-    const raw=localStorage.getItem(STORE_KEY);if(!raw)return;
-    const d=JSON.parse(raw);
-    if(Number.isFinite(d.bankroll))G.bankroll=Math.max(0,Math.round(d.bankroll));
-    if(d.lastBets&&typeof d.lastBets==='object')
-      for(const k of SPOTS)if(Number.isFinite(d.lastBets[k]))G.lastBets[k]=Math.max(0,d.lastBets[k]);
-    if(CHIPS.includes(d.chip))G.chip=d.chip;
-    if(typeof d.sideOpen==='boolean')G.sideOpen=d.sideOpen;
-    if(Array.isArray(d.collapsed))G.collapsed=d.collapsed.filter(x=>typeof x==='string');
-    if(Number.isFinite(d.lastNet))G.lastNet=d.lastNet;
-    G.hint=!!d.hint;G.showCount=!!d.showCount;
-    if(d.stats&&typeof d.stats==='object')G.stats={...freshStats(),...d.stats};
-    if(Array.isArray(d.history))G.history=d.history.slice(0,HISTORY_MAX);
-  }catch(e){}
-}
-function save(){
-  // Mid-round the stakes are already off the bankroll; store the pre-round
-  // bankroll so a reload voids the round instead of forfeiting the stake.
-  const inRound=!['betting','settled'].includes(G.phase);
-  try{
-    localStorage.setItem(STORE_KEY,JSON.stringify({
-      bankroll:inRound?G.roundStart:G.bankroll,lastBets:G.lastBets,lastNet:G.lastNet,chip:G.chip,
-      hint:G.hint,showCount:G.showCount,sideOpen:G.sideOpen,collapsed:G.collapsed,
-      stats:G.stats,history:G.history
-    }));
-  }catch(e){}
-}
+/* ---------- No persistence ----------
+   Nothing is saved on purpose: a page refresh starts over with 1,000 chips,
+   empty stats and default switches. Earlier versions stored progress under
+   this key — delete it so an old save can never come back. */
+const LEGACY_STORE_KEY='blackjack-game-v1';
+function clearLegacySave(){try{localStorage.removeItem(LEGACY_STORE_KEY);}catch(e){}}
 
 /* ---------- Shoe ---------- */
 let shoe=[],pos=0,cutPos=0,seen={},running=0;
@@ -1151,7 +1126,7 @@ function setBets(b){
 function betsFit(b){
   return betTotal(b)<=G.bankroll&&b.main<=MAX_BET&&b.pairs<=SIDE_MAX&&b.t213<=SIDE_MAX;
 }
-function selectChip(v){G.chip=v;save();render();}
+function selectChip(v){G.chip=v;render();}
 function placeChip(spot,v=G.chip){
   if(G.phase!=='betting')return;
   const b=G.bets;
@@ -1391,7 +1366,6 @@ function finishRound(){
   for(const h of G.hands)h.net=NET_MULT[h.result]*h.bet;
   const net=G.bankroll-G.roundStart;
   G.lastNet=net;
-  G.sessionNet+=net;G.sessionRounds++;
   const s=G.stats;
   s.rounds++;s.net+=net;
   s.peak=Math.max(s.peak,G.bankroll);
@@ -1415,7 +1389,6 @@ function finishRound(){
     net
   });
   if(G.history.length>HISTORY_MAX)G.history.length=HISTORY_MAX;
-  save();
   render();
 }
 
@@ -1433,7 +1406,6 @@ function refill(){
   G.bankroll+=START_BANK;
   G.stats.refills++;
   G.stats.peak=Math.max(G.stats.peak,G.bankroll);
-  save();
   toBetting();
   toast(`已補充 ${fmt(START_BANK)} 虛擬籌碼`);
 }
@@ -1442,21 +1414,19 @@ function resetAll(){
   if(!confirm('要把籌碼重設為 1,000，並清除戰績、牌局紀錄與本次輸贏嗎？'))return;
   G.bankroll=START_BANK;G.stats=freshStats();G.history=[];
   G.lastNet=null;G.lastBets={main:0,pairs:0,t213:0};G.lastCell=null;
-  G.sessionNet=0;G.sessionRounds=0;
   newShoe();
   hideFeedback();
   G.phase='betting';
-  save();
   toBetting();
   toast('已重置籌碼與戰績，並換上新牌靴');
 }
-function toggleHint(){G.hint=!G.hint;save();render();}
-function toggleCount(){G.showCount=!G.showCount;save();renderShoe();}
-function toggleSide(){G.sideOpen=!G.sideOpen;save();applyPanels();}
+function toggleHint(){G.hint=!G.hint;render();}
+function toggleCount(){G.showCount=!G.showCount;renderShoe();}
+function toggleSide(){G.sideOpen=!G.sideOpen;applyPanels();}
 function toggleCollapse(id){
   const i=G.collapsed.indexOf(id);
   if(i<0)G.collapsed.push(id);else G.collapsed.splice(i,1);
-  save();applyPanels();
+  applyPanels();
 }
 function applyPanels(){
   $('layout').classList.toggle('no-side',!G.sideOpen);
@@ -1657,10 +1627,10 @@ function renderStatus(){
   last.textContent=G.lastNet==null?'—':signed(G.lastNet);
   last.className='v '+(G.lastNet==null?'':tone(G.lastNet));
   const sess=$('sessionStat');
-  sess.textContent=signed(G.sessionNet);
-  sess.className='v '+tone(G.sessionNet);
-  $('sessionSub').textContent=G.sessionRounds?`${G.sessionRounds} 局 · 刷新歸零`:'刷新歸零';
   const s=G.stats;
+  sess.textContent=signed(s.net);
+  sess.className='v '+tone(s.net);
+  $('sessionSub').textContent=s.rounds?`${s.rounds} 局 · 刷新歸零`:'刷新歸零';
   $('matchStat').textContent=s.decisions?Math.round(100*s.matches/s.decisions)+'%':'—';
   $('hintBtn').setAttribute('aria-pressed',String(G.hint));
 }
@@ -1920,7 +1890,7 @@ function renderStats(){
     ['局數',fmt(s.rounds)],
     ['手牌 勝/和/敗',`${s.wins}/${s.pushes}/${s.losses}`],
     ['Blackjack',s.blackjacks],
-    ['歷史累計輸贏',signed(s.net),tone(s.net)],
+    ['平均每局',s.rounds?signed(Math.round(s.net/s.rounds)):'—',s.rounds?tone(Math.round(s.net/s.rounds)):''],
     ['最高籌碼',fmt(s.peak)],
     ['單局最大贏',s.biggestWin>0?'+'+fmt(s.biggestWin):'—'],
     ['策略吻合',s.decisions?`${s.matches}/${s.decisions}`:'—'],
@@ -2073,7 +2043,7 @@ document.addEventListener('click',e=>{
 });
 
 /* ---------- Init ---------- */
-load();
+clearLegacySave();
 newShoe();
 renderStrategyTables();
 renderPayTables();
