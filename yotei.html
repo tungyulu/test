@@ -2,8 +2,18 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0E0F12" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F3EFE6" media="(prefers-color-scheme: light)">
+<!-- 加入主畫面：iPhone 主畫面版有自己的儲存空間，不會被 Safari「7 天沒開就清掉網站資料」清掉 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="羊蹄收集">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon" href="assets/yotei-icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/yotei-icon-192.png">
+<link rel="manifest" href="yotei.webmanifest">
 <title>羊蹄山戰鬼 收集清單</title>
 <style>
   /* ---------- tokens: dark (sumi ink) is the base palette ---------- */
@@ -142,6 +152,32 @@
   .overall .pct { font: 600 13px/1 var(--mono); color: var(--gold); min-width: 3.2em; text-align: right; }
   .track { flex: 1; height: 6px; background: var(--rule); border-radius: 99px; overflow: hidden; }
   .track i { display: block; height: 100%; width: 0; background: var(--gold); border-radius: inherit; transition: width .3s ease; }
+
+  .store { margin: 12px 0 0; font-size: 12.5px; color: var(--ink-3); }
+  .store.ok::first-letter { color: var(--gold); }
+  .store.warn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    max-width: 36rem;
+  }
+  .tip {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 10px 0 0;
+    padding: 9px 10px 9px 12px;
+    max-width: 36rem;
+    border: 1px solid var(--rule-2);
+    border-radius: 10px;
+    background: var(--surface);
+    font-size: 13px;
+    color: var(--ink-2);
+    position: relative;
+  }
+  .tip b { color: var(--ink); }
+  .tip .btn { flex: none; height: 30px; padding: 0 10px; font-size: 12.5px; }
 
   /* ---------- sticky category chips ---------- */
   .chips-bar {
@@ -402,6 +438,11 @@
       <span class="track"><i id="allBar"></i></span>
       <span class="pct" id="allPct">0%</span>
     </div>
+    <p class="store" id="store" role="status"></p>
+    <p class="tip" id="homeTip" hidden>
+      <span>📱 iPhone 建議按 Safari 的<b>分享 →「加入主畫面」</b>，以後從主畫面圖示打開：Safari 會清掉 7 天沒開的網站資料，主畫面版不會。主畫面版的進度和 Safari 是分開的，已經在 Safari 勾過的，先用頁尾「匯出進度」→ 在主畫面版「匯入進度」。</span>
+      <button class="btn" type="button" id="tipClose">知道了</button>
+    </p>
   </div>
 </header>
 
@@ -930,7 +971,11 @@
   const KEY = 'yotei-checklist-v1';          // { itemId: 1 }
   const PKEY = 'yotei-checklist-prefs-v1';   // { cat, region, src, hide }
   const read = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
-  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } };
+  // App 內預覽、無痕模式、封鎖網站資料時 localStorage 會丟例外：先試寫一次，畫面上直接講清楚。
+  const canStore = (() => {
+    try { localStorage.setItem('__yotei_probe__', '1'); localStorage.removeItem('__yotei_probe__'); return true; } catch (e) { return false; }
+  })();
 
   const SRC = { tc: '繁中', sc: '簡中', en: 'EN' };
   const REGION = Object.fromEntries(REGIONS.map(r => [r.id, r]));
@@ -947,8 +992,17 @@
   try { fromHash = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
   if (fromHash && CATS.some(c => c.id === fromHash)) prefs.cat = fromHash;
 
-  const save = () => write(KEY, done);
+  const save = () => { showSaved(write(KEY, done)); askPersist(); };
   const savePrefs = () => write(PKEY, prefs);
+
+  // Ask the browser to keep our data even under storage pressure (Chrome/Firefox/Safari 17+).
+  // Called from a tick, so browsers that prompt see a user gesture.
+  let askedPersist = false;
+  function askPersist() {
+    if (askedPersist || !navigator.storage || !navigator.storage.persist) return;
+    askedPersist = true;
+    navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => {});
+  }
 
   /* =====================================================================
    * LINKS
@@ -1328,6 +1382,26 @@
     srcList.append(li);
   });
   $('asof').textContent = ASOF;
+
+  // ---- storage status line + iPhone home-screen tip ----
+  const storeEl = $('store');
+  function setStore(kind, text) { storeEl.className = 'store ' + kind; storeEl.textContent = text; }
+  function showSaved(ok) {
+    if (!ok) { setStore('warn', '⚠ 這次沒存成功：瀏覽器目前不讓網頁存資料（無痕模式或空間不足？），重新整理後勾選會不見。'); return; }
+    const t = new Date();
+    const hm = String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
+    setStore('ok', `✓ ${hm} 已自動存到這台裝置，下次打開還在`);
+  }
+  const loaded = Object.keys(done).filter(id => byId[id]).length;
+  if (!canStore) setStore('warn', '⚠ 這個畫面存不了勾選（App 內預覽、無痕模式都會這樣），關掉就不見。請用 Safari 或 Chrome 打開 tungyulu.github.io/test/yotei.html。');
+  else if (loaded) setStore('ok', `✓ 已載入上次的進度（${loaded} 項）；勾選會自動存在這台裝置`);
+  else setStore('ok', '✓ 勾選會自動存在這台裝置，下次打開還在');
+
+  const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const standalone = navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+  const tip = $('homeTip');
+  tip.hidden = !(canStore && isIOS && !standalone && !prefs.tipDone);
+  $('tipClose').addEventListener('click', () => { prefs.tipDone = true; savePrefs(); tip.hidden = true; });
 
   // ---- init ----
   const none = el('p', 'empty', '沒有符合條件的項目。');

@@ -1,0 +1,16 @@
+{
+  "name": "羊蹄山戰鬼 收集清單",
+  "short_name": "羊蹄收集",
+  "description": "Ghost of Yōtei 全收集清單：逐項打勾，進度存在這台裝置。",
+  "lang": "zh-Hant",
+  "start_url": "yotei.html",
+  "scope": "yotei.html",
+  "display": "standalone",
+  "background_color": "#0E0F12",
+  "theme_color": "#0E0F12",
+  "icons": [
+    { "src": "assets/yotei-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/yotei-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/yotei-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
