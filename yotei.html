@@ -1,0 +1,901 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark light">
+<title>羊蹄山戰鬼 收集清單</title>
+<style>
+  /* ---------- tokens: dark (sumi ink) is the base palette ---------- */
+  :root {
+    --bg:        #0E0F12;
+    --bg-2:      #15171C;
+    --surface:   #17191F;
+    --surface-2: #1E2128;
+    --rule:      #2A2E37;
+    --rule-2:    #3A3F4B;
+    --ink:       #ECE8DF;
+    --ink-2:     #B4AFA4;
+    --ink-3:     #8A857B;
+    --accent:    #E0524F;
+    --accent-bg: rgba(224, 82, 79, .12);
+    --gold:      #D8B25E;
+    --gold-bg:   rgba(216, 178, 94, .14);
+    --on-gold:   #1A150A;
+    --mtn:       #1B1E25;
+    --snow:      #2A2E37;
+    --sun:       #7E2A2A;
+    --shadow:    0 1px 0 rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.25);
+
+    --sans:  system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "PingFang TC",
+             "Microsoft JhengHei", sans-serif;
+    --serif: "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PMingLiU",
+             "MingLiU", serif;
+    --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg:        #F3EFE6;
+      --bg-2:      #EAE4D7;
+      --surface:   #FFFCF6;
+      --surface-2: #F6F1E7;
+      --rule:      #E2DACB;
+      --rule-2:    #CFC5B3;
+      --ink:       #1D1B17;
+      --ink-2:     #56514A;
+      --ink-3:     #7D776D;
+      --accent:    #B3262B;
+      --accent-bg: rgba(179, 38, 43, .08);
+      --gold:      #8E6814;
+      --gold-bg:   rgba(142, 104, 20, .11);
+      --on-gold:   #FFF9EC;
+      --mtn:       #DDD5C5;
+      --snow:      #F3EFE6;
+      --sun:       #D9796F;
+      --shadow:    0 1px 0 rgba(29,27,23,.04), 0 6px 20px rgba(29,27,23,.06);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:        #F3EFE6;
+    --bg-2:      #EAE4D7;
+    --surface:   #FFFCF6;
+    --surface-2: #F6F1E7;
+    --rule:      #E2DACB;
+    --rule-2:    #CFC5B3;
+    --ink:       #1D1B17;
+    --ink-2:     #56514A;
+    --ink-3:     #7D776D;
+    --accent:    #B3262B;
+    --accent-bg: rgba(179, 38, 43, .08);
+    --gold:      #8E6814;
+    --gold-bg:   rgba(142, 104, 20, .11);
+    --on-gold:   #FFF9EC;
+    --mtn:       #DDD5C5;
+    --snow:      #F3EFE6;
+    --sun:       #D9796F;
+    --shadow:    0 1px 0 rgba(29,27,23,.04), 0 6px 20px rgba(29,27,23,.06);
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--bg-2), var(--bg));
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero .mt {
+    position: absolute;
+    right: 0; bottom: -1px;
+    width: min(520px, 90%);
+    height: auto;
+    pointer-events: none;
+  }
+  .hero .wrap { position: relative; padding-top: 18px; padding-bottom: 22px; }
+  .back {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--ink-3);
+    text-decoration: none;
+    padding: 4px 0;
+  }
+  .back:hover { color: var(--ink); }
+  .eyebrow {
+    margin: 18px 0 6px;
+    font: 600 11px/1.2 var(--mono);
+    letter-spacing: .2em;
+    color: var(--gold);
+  }
+  h1 {
+    margin: 0;
+    font: 700 clamp(30px, 8vw, 44px)/1.15 var(--serif);
+    letter-spacing: .05em;
+  }
+  h1 small {
+    display: inline-block;
+    font-size: .48em;
+    font-weight: 600;
+    color: var(--ink-2);
+    margin-left: .35em;
+    letter-spacing: .12em;
+  }
+  .lede { margin: 10px 0 0; color: var(--ink-2); font-size: 14px; max-width: 36em; }
+  .overall { display: flex; align-items: center; gap: 14px; margin-top: 18px; max-width: 30rem; }
+  .overall .num { font: 700 26px/1 var(--mono); white-space: nowrap; }
+  .overall .num small { font-size: 14px; color: var(--ink-3); font-weight: 500; }
+  .overall .pct { font: 600 13px/1 var(--mono); color: var(--gold); min-width: 3.2em; text-align: right; }
+  .track { flex: 1; height: 6px; background: var(--rule); border-radius: 99px; overflow: hidden; }
+  .track i { display: block; height: 100%; width: 0; background: var(--gold); border-radius: inherit; transition: width .3s ease; }
+
+  /* ---------- sticky category chips ---------- */
+  .chips-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    background: color-mix(in srgb, var(--bg) 90%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .chips {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 10px 16px;
+    max-width: 860px;
+    margin: 0 auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 36px;
+    padding: 0 12px 0 6px;
+    border: 1px solid var(--rule-2);
+    border-radius: 99px;
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 13.5px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .chip.all { padding-left: 12px; }
+  .chip .k {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font: 700 12.5px/1 var(--serif);
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+  .chip .c { font: 12px/1 var(--mono); color: var(--ink-3); }
+  .chip[aria-pressed="true"] { border-color: var(--gold); color: var(--ink); background: var(--gold-bg); }
+  .chip.full .k { background: var(--gold); color: var(--on-gold); }
+  .chip:focus-visible, .bulk:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* ---------- tools ---------- */
+  .tools { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 0 4px; }
+  .tools .search { flex: 1 1 100%; position: relative; }
+  .tools input[type="search"] {
+    width: 100%;
+    height: 42px;
+    padding: 0 12px 0 36px;
+    border: 1px solid var(--rule-2);
+    border-radius: 10px;
+    background: var(--surface);
+    outline: none;
+  }
+  .tools input[type="search"]:focus { border-color: var(--gold); }
+  .tools .search svg { position: absolute; left: 11px; top: 12px; width: 18px; height: 18px; color: var(--ink-3); }
+  .tools select {
+    height: 38px;
+    padding: 0 28px 0 10px;
+    border: 1px solid var(--rule-2);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-2); cursor: pointer; margin-left: auto; min-height: 38px; }
+  .switch input { width: 18px; height: 18px; accent-color: var(--gold); margin: 0; }
+
+  /* ---------- category sections ---------- */
+  main { padding-bottom: 24px; }
+  .cat { margin: 22px 0 30px; scroll-margin-top: 70px; }
+  .cat-head { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+  .badge {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    background: var(--accent-bg);
+    display: grid; place-items: center;
+    font: 700 20px/1 var(--serif);
+  }
+  .cat.full .badge { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+  h2 { margin: 0; font: 700 20px/1.3 var(--serif); letter-spacing: .03em; }
+  h2 small { font: 500 12px/1 var(--sans); color: var(--ink-3); margin-left: 6px; letter-spacing: .02em; white-space: nowrap; }
+  .meta { margin: 3px 0 0; font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+  .count { font: 600 14px/1 var(--mono); color: var(--ink-3); white-space: nowrap; }
+  .count b { color: var(--ink); font-size: 20px; }
+  .cat > .track { margin: 12px 0 10px; height: 4px; }
+  .guides { margin: 0; font-size: 12.5px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  .guides a { color: var(--gold); text-decoration: none; }
+  .guides a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .note {
+    margin: 10px 0 0;
+    padding: 8px 12px;
+    border-left: 2px solid var(--gold);
+    background: var(--gold-bg);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--ink-2);
+  }
+  .empty { margin: 12px 0 0; padding: 14px; text-align: center; font-size: 14px; color: var(--ink-3); border: 1px dashed var(--rule-2); border-radius: 12px; }
+
+  .region { margin-top: 12px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+  .region-head { display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; background: var(--surface-2); border-bottom: 1px solid var(--rule); }
+  .region-head h3 { margin: 0; font: 600 14.5px/1.3 var(--serif); letter-spacing: .08em; }
+  .region-head .rc { font: 12px/1 var(--mono); color: var(--ink-3); }
+  .region.full .region-head .rc { color: var(--gold); }
+  .bulk {
+    margin-left: auto;
+    height: 30px;
+    padding: 0 10px;
+    border: 1px solid var(--rule-2);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--ink-3);
+    font-size: 12.5px;
+    cursor: pointer;
+  }
+  .bulk:hover { color: var(--ink); border-color: var(--ink-3); }
+
+  ul.items { list-style: none; margin: 0; padding: 0; }
+  .item { display: flex; gap: 12px; align-items: flex-start; padding: 11px 14px; border-top: 1px solid var(--rule); }
+  .item:first-child { border-top: 0; }
+  .ck { position: relative; flex: none; width: 24px; height: 24px; margin-top: 1px; }
+  .ck input {
+    position: absolute;
+    left: -10px; top: -10px;
+    width: 44px; height: 44px;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .ck .box {
+    display: block;
+    width: 24px; height: 24px;
+    border: 1.5px solid var(--rule-2);
+    border-radius: 7px;
+    background: var(--bg);
+    pointer-events: none;
+    transition: background .15s, border-color .15s;
+  }
+  .ck .box::after {
+    content: '';
+    position: absolute;
+    left: 8px; top: 3.5px;
+    width: 7px; height: 13px;
+    border: solid var(--on-gold);
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg) scale(.6);
+    opacity: 0;
+    transition: opacity .15s, transform .15s;
+  }
+  .ck input:checked + .box { background: var(--gold); border-color: var(--gold); }
+  .ck input:checked + .box::after { opacity: 1; transform: rotate(45deg) scale(1); }
+  .ck input:focus-visible + .box { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .body { min-width: 0; flex: 1; }
+  .name { font-weight: 600; text-decoration: none; word-break: break-word; }
+  a.name[href] { cursor: pointer; }
+  a.name[href]:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--gold); }
+  .name .ext { color: var(--gold); font-size: .8em; margin-left: 5px; font-weight: 500; }
+  .sub { display: block; margin-top: 1px; font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+  .item.done .name { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--ink-3); font-weight: 500; }
+  .item.done .ext { display: none; }
+  .item.done .sub { opacity: .75; }
+
+  /* ---------- footer ---------- */
+  footer { border-top: 1px solid var(--rule); padding: 22px 0 40px; color: var(--ink-3); font-size: 13px; }
+  footer h4 { margin: 0 0 6px; font: 600 13px var(--sans); color: var(--ink-2); }
+  footer ul { margin: 0 0 16px; padding-left: 18px; }
+  footer li { margin: 2px 0; }
+  footer a { color: var(--gold); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px; }
+  .btn {
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid var(--rule-2);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink-2);
+    font-size: 13.5px;
+    cursor: pointer;
+  }
+  .btn:hover { color: var(--ink); border-color: var(--ink-3); }
+  .btn.primary { background: var(--gold); border-color: var(--gold); color: var(--on-gold); font-weight: 600; }
+  .btn.danger:hover { color: var(--accent); border-color: var(--accent); }
+
+  dialog {
+    width: min(520px, calc(100% - 32px));
+    padding: 18px;
+    border: 1px solid var(--rule-2);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+  }
+  dialog::backdrop { background: rgba(0,0,0,.55); }
+  dialog h4 { margin: 0 0 6px; font: 700 17px var(--serif); }
+  dialog p { margin: 0 0 10px; font-size: 13.5px; color: var(--ink-2); }
+  dialog textarea {
+    width: 100%;
+    height: 140px;
+    padding: 10px;
+    border: 1px solid var(--rule-2);
+    border-radius: 10px;
+    background: var(--bg);
+    font: 12px/1.5 var(--mono);
+    resize: vertical;
+  }
+  dialog .row { display: flex; gap: 8px; justify-content: flex-end; align-items: center; margin-top: 12px; }
+  dialog .msg { margin-right: auto; font-size: 13px; color: var(--gold); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <svg class="mt" viewBox="0 0 520 150" aria-hidden="true">
+    <circle cx="378" cy="54" r="30" fill="var(--sun)" opacity=".55"/>
+    <path d="M0 150 L40 142 C120 128 175 96 222 58 C236 46 246 36 252 30 L286 30 C293 36 303 46 317 58 C364 96 419 128 480 140 L520 146 L520 150 Z" fill="var(--mtn)"/>
+    <path d="M252 30 L286 30 C293 36 303 46 317 58 L304 64 L293 56 L282 66 L270 55 L259 66 L247 57 L233 64 L222 58 C236 46 246 36 252 30 Z" fill="var(--snow)"/>
+  </svg>
+  <div class="wrap">
+    <a class="back" href="index.html">← 回小工具首頁</a>
+    <p class="eyebrow">GHOST OF YŌTEI · 全收集</p>
+    <h1>羊蹄山戰鬼<small>收集清單</small></h1>
+    <p class="lede">對照網路攻略逐項打勾（進度只存在這台裝置的瀏覽器）。還沒完成的項目點名稱，會開啟那一項所在的攻略頁。</p>
+    <div class="overall">
+      <span class="num" id="allNum">0<small> / 0</small></span>
+      <span class="track"><i id="allBar"></i></span>
+      <span class="pct" id="allPct">0%</span>
+    </div>
+  </div>
+</header>
+
+<div class="chips-bar">
+  <nav class="chips" id="chips" aria-label="收集類別"></nav>
+</div>
+
+<div class="wrap">
+  <div class="tools">
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder="搜尋名稱、地點、獎勵…" aria-label="搜尋" autocomplete="off">
+    </label>
+    <select id="region" aria-label="地區"></select>
+    <select id="src" aria-label="點名稱時開啟的攻略語言">
+      <option value="tc">繁中攻略</option>
+      <option value="sc">簡中攻略</option>
+      <option value="en">英文攻略</option>
+    </select>
+    <label class="switch"><input type="checkbox" id="hide"> 只看未完成</label>
+  </div>
+
+  <main id="list"></main>
+
+  <footer>
+    <div class="actions">
+      <button class="btn" type="button" id="exportBtn">匯出進度</button>
+      <button class="btn" type="button" id="importBtn">匯入進度</button>
+      <button class="btn danger" type="button" id="resetBtn">全部清除</button>
+    </div>
+    <h4>資料來源</h4>
+    <ul id="sources"></ul>
+    <p id="asof"></p>
+  </footer>
+</div>
+
+<dialog id="io">
+  <h4 id="ioTitle">匯出進度</h4>
+  <p id="ioHelp"></p>
+  <textarea id="ioText" spellcheck="false"></textarea>
+  <div class="row">
+    <span class="msg" id="ioMsg"></span>
+    <button class="btn" type="button" id="ioClose">關閉</button>
+    <button class="btn primary" type="button" id="ioApply">匯入</button>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =====================================================================
+   * DATA
+   * ===================================================================== */
+  /*DATA-BEGIN*/
+  const ASOF = "資料整理中：目前只有狼穴，其餘類別補齊中。";
+
+  // 地區：順序＝遊戲裡解鎖的先後。
+  const REGIONS = [
+    { id: "grass", name: "羊蹄草原", en: "Yōtei Grasslands" },
+    { id: "tokachi", name: "十勝連峰", en: "Tokachi Range" },
+    { id: "ishikari", name: "石狩平原", en: "Ishikari Plain" },
+    { id: "nayoro", name: "名寄荒野", en: "Nayoro Wilds" },
+    { id: "teshio", name: "天鹽山脊", en: "Teshio Ridge" },
+    { id: "oshima", name: "渡島海岸", en: "Oshima Coast" },
+    { id: "yotei", name: "羊蹄山", en: "Mount Yōtei" },
+    { id: "any", name: "不分地區", en: "" },
+  ];
+
+  const SOURCES = [
+    { name: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001872-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E6%94%BB%E7%95%A5%E5%8C%AF%E9%9B%86", desc: "繁中攻略匯集" },
+    { name: "遊民星空 GamerSky", url: "https://www.gamersky.com/z/ghost-of-yotei/handbook/", desc: "簡中攻略專題（各類收集一地區一頁）" },
+  ];
+
+  // 繁→簡（只收項目名稱用到的字），給遊民星空的 #:~:text= 用。
+  const T2S = {
+    '傷':'伤','殘':'残','獵':'猎','舊':'旧','風':'风',
+  };
+
+  /* 每一類：
+   *   guides.tc / sc / en = 該類攻略頁；pages = { 地區id: 分頁號 }（遊民星空 <id>_N.shtml）
+   *   items: id 一旦發布就不要改（勾選紀錄用它存）；新增項目給新 id，不要重新編號。
+   *   n = 名稱（沒有就用 unit + no）、h = 位置提示、rw = 獎勵、en = 英文名（英文攻略的 text fragment）
+   *   url = { tc|sc|en: 專屬這一項的攻略頁 }（有的話優先於 guides） */
+  const CATS = [
+    {
+      id: "wolf", k: "狼", name: "狼穴", en: "Wolf Dens", unit: "狼穴",
+      meta: "跟著金鳥找到狼穴、隨狼擊敗敵人 → 狼技能點",
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001888-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E5%9C%B0%E5%9C%96%E7%8B%BC%E7%A9%B4%E4%BD%8D%E7%BD%AE%E4%B8%80%E8%A6%BD" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021921.shtml" },
+      },
+      items: [
+        { id: "wolf-01", r: "grass", n: "大山狼穴", h: "草原中心偏左上，鴉巢望樓旁" },
+        { id: "wolf-02", r: "grass", n: "青山狼穴", h: "草原右側，說書人雨月的家旁" },
+        { id: "wolf-03", r: "tokachi", n: "獵人之望狼穴", h: "羊蹄草原通往十勝連峰的入口" },
+        { id: "wolf-04", r: "tokachi", n: "嚎林狼穴", h: "十勝連峰右上角" },
+        { id: "wolf-05", r: "ishikari", n: "殘焰狼穴" },
+        { id: "wolf-06", r: "ishikari", n: "舊傷狼穴" },
+        { id: "wolf-07", r: "nayoro", n: "白痕狼穴" },
+        { id: "wolf-08", r: "teshio", n: "冰湖狼穴" },
+        { id: "wolf-09", r: "teshio", n: "寒風狼穴" },
+        { id: "wolf-10", r: "oshima", n: "瀑布狼穴" },
+      ],
+    },
+  ];
+  /*DATA-END*/
+
+  /* =====================================================================
+   * STATE
+   * ===================================================================== */
+  const KEY = 'yotei-checklist-v1';          // { itemId: 1 }
+  const PKEY = 'yotei-checklist-prefs-v1';   // { cat, region, src, hide }
+  const read = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
+  const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+  const SRC = { tc: '繁中', sc: '簡中', en: 'EN' };
+  const REGION = Object.fromEntries(REGIONS.map(r => [r.id, r]));
+  const byId = {};
+  CATS.forEach(cat => cat.items.forEach(it => { byId[it.id] = { cat, it }; }));
+
+  let done = read(KEY);
+  if (!done || typeof done !== 'object' || Array.isArray(done)) done = {};
+  const prefs = Object.assign({ cat: 'all', region: 'all', src: 'tc', hide: false }, read(PKEY) || {});
+  if (prefs.cat !== 'all' && !CATS.some(c => c.id === prefs.cat)) prefs.cat = 'all';
+  if (prefs.region !== 'all' && !REGION[prefs.region]) prefs.region = 'all';
+  if (!SRC[prefs.src]) prefs.src = 'tc';
+  const fromHash = decodeURIComponent(location.hash.slice(1));
+  if (fromHash && CATS.some(c => c.id === fromHash)) prefs.cat = fromHash;
+
+  const save = () => write(KEY, done);
+  const savePrefs = () => write(PKEY, prefs);
+
+  /* =====================================================================
+   * LINKS
+   * ===================================================================== */
+  // Text fragment (#:~:text=) makes the browser scroll to and highlight the
+  // item's name on a long guide page; pages that don't contain the text just
+  // open at the top. "-" is the fragment's own delimiter, so encode it too.
+  const frag = s => '#:~:text=' + encodeURIComponent(s).replace(/-/g, '%2D');
+  const toSC = s => s.replace(/[㐀-鿿]/g, c => T2S[c] || c);
+
+  function guideFor(cat, src) {
+    return cat.guides[src] || cat.guides.tc || cat.guides.sc || cat.guides.en;
+  }
+  function pageUrl(g, region) {
+    const n = g.pages && g.pages[region];
+    if (!n || n === 1) return g.url;
+    return g.url.replace(/(\.s?html?)$/, '_' + n + '$1');
+  }
+  function itemHref(cat, it, src) {
+    const g = guideFor(cat, src);
+    const s = cat.guides[src] ? src : Object.keys(cat.guides)[0];
+    let url = (it.url && it.url[s]) || pageUrl(g, it.r);
+    const text = s === 'en' ? it.en : s === 'sc' ? (it.sc || (it.n && toSC(it.n))) : it.n;
+    if (text && g.frag !== false && url.indexOf('#') < 0) url += frag(text);
+    return url;
+  }
+  const label = (cat, it) => it.n || `${cat.unit} ${it.no}`;
+
+  /* =====================================================================
+   * BUILD
+   * ===================================================================== */
+  const $ = id => document.getElementById(id);
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  const norm = s => (s || '').toLowerCase().replace(/\s+/g, '');
+
+  const list = $('list');
+  const chipsNav = $('chips');
+  const rows = [];            // { id, cat, it, li, a, box }
+  const secs = {};            // catId -> { sec, count, fill, empty, groups: [...] }
+  const chips = {};           // catId|'all' -> { btn, c }
+
+  function makeChip(id, k, name) {
+    const b = el('button', 'chip' + (id === 'all' ? ' all' : ''));
+    b.type = 'button';
+    b.dataset.cat = id;
+    if (k) b.append(el('span', 'k', k));
+    b.append(el('span', null, name));
+    const c = el('span', 'c');
+    b.append(c);
+    b.addEventListener('click', () => selectCat(id));
+    chipsNav.append(b);
+    chips[id] = { btn: b, c };
+  }
+  makeChip('all', null, '全部');
+
+  CATS.forEach(cat => {
+    makeChip(cat.id, cat.k, cat.name);
+
+    const sec = el('section', 'cat');
+    sec.id = 'cat-' + cat.id;
+    const head = el('div', 'cat-head');
+    head.append(el('span', 'badge', cat.k));
+    const tt = el('div');
+    const h2 = el('h2', null, cat.name);
+    h2.append(el('small', null, cat.en));
+    tt.append(h2);
+    if (cat.meta) tt.append(el('p', 'meta', cat.meta));
+    head.append(tt);
+    const count = el('div', 'count');
+    head.append(count);
+    sec.append(head);
+
+    const track = el('div', 'track');
+    const fill = el('i');
+    track.append(fill);
+    sec.append(track);
+
+    const g = el('p', 'guides');
+    g.append(el('span', null, '攻略：'));
+    ['tc', 'sc', 'en'].forEach(s => {
+      const gd = cat.guides[s];
+      if (!gd) return;
+      const a = el('a', null, `${SRC[s]}・${gd.site}`);
+      a.href = gd.url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      g.append(a);
+    });
+    sec.append(g);
+    if (cat.note) sec.append(el('p', 'note', cat.note));
+
+    const groups = [];
+    REGIONS.forEach(r => {
+      const items = cat.items.filter(it => it.r === r.id);
+      if (!items.length) return;
+      const box = el('div', 'region');
+      const rh = el('div', 'region-head');
+      rh.append(el('h3', null, r.name));
+      const rc = el('span', 'rc');
+      rh.append(rc);
+      const bulk = el('button', 'bulk');
+      bulk.type = 'button';
+      rh.append(bulk);
+      box.append(rh);
+      const ul = el('ul', 'items');
+      const grpRows = items.map(it => {
+        const row = makeRow(cat, it, r);
+        ul.append(row.li);
+        return row;
+      });
+      box.append(ul);
+      sec.append(box);
+      const grp = { r: r.id, box, rc, bulk, rows: grpRows };
+      bulk.addEventListener('click', () => bulkToggle(cat, r, grp));
+      groups.push(grp);
+    });
+
+    const empty = el('p', 'empty');
+    empty.hidden = true;
+    sec.append(empty);
+    list.append(sec);
+    secs[cat.id] = { cat, sec, count, fill, empty, groups };
+  });
+
+  function makeRow(cat, it, r) {
+    const li = el('li', 'item');
+    const ck = el('label', 'ck');
+    const input = el('input');
+    input.type = 'checkbox';
+    input.setAttribute('aria-label', '已完成：' + label(cat, it));
+    ck.append(input, el('span', 'box'));
+    const body = el('div', 'body');
+    const a = el('a', 'name');
+    a.append(document.createTextNode(label(cat, it)));
+    a.append(el('span', 'ext', '↗'));
+    body.append(a);
+    const subs = [it.h, it.rw && ('獎勵：' + it.rw)].filter(Boolean);
+    if (subs.length) body.append(el('span', 'sub', subs.join(' · ')));
+    li.append(ck, body);
+
+    const row = {
+      id: it.id, cat, it, li, a, input,
+      idx: norm([label(cat, it), it.h, it.rw, it.en, r.name, cat.name, cat.en].join(' ')),
+    };
+    input.addEventListener('change', () => {
+      if (input.checked) done[it.id] = 1; else delete done[it.id];
+      save();
+      paintRow(row);
+      refreshCounts();
+      if (prefs.hide) scheduleFilter();
+    });
+    rows.push(row);
+    return row;
+  }
+
+  function paintRow(row) {
+    const isDone = !!done[row.id];
+    row.input.checked = isDone;
+    row.li.classList.toggle('done', isDone);
+    if (isDone) {
+      row.a.removeAttribute('href');
+      row.a.removeAttribute('target');
+      row.a.removeAttribute('rel');
+    } else {
+      row.a.href = itemHref(row.cat, row.it, prefs.src);
+      row.a.target = '_blank';
+      row.a.rel = 'noopener';
+    }
+  }
+
+  /* =====================================================================
+   * COUNTS & FILTERS
+   * ===================================================================== */
+  const inRegion = r => prefs.region === 'all' || r === prefs.region;
+
+  function refreshCounts() {
+    let all = 0, got = 0;
+    rows.forEach(row => { all++; if (done[row.id]) got++; });
+    $('allNum').innerHTML = `${got}<small> / ${all}</small>`;
+    const pct = all ? Math.round(got / all * 100) : 0;
+    $('allBar').style.width = pct + '%';
+    $('allPct').textContent = pct + '%';
+
+    let fAll = 0, fGot = 0;
+    CATS.forEach(cat => {
+      const s = secs[cat.id];
+      let t = 0, d = 0;
+      s.groups.forEach(g => {
+        const gd = g.rows.filter(r => done[r.id]).length;
+        const full = gd === g.rows.length;
+        g.rc.textContent = `${gd} / ${g.rows.length}`;
+        g.box.classList.toggle('full', full);
+        g.bulk.textContent = full ? '清除本區' : '本區全勾';
+        if (inRegion(g.r)) { t += g.rows.length; d += gd; }
+      });
+      fAll += t; fGot += d;
+      s.count.innerHTML = `<b>${d}</b> / ${t}`;
+      s.fill.style.width = (t ? d / t * 100 : 0) + '%';
+      const full = t > 0 && d === t;
+      s.sec.classList.toggle('full', full);
+      chips[cat.id].c.textContent = `${d}/${t}`;
+      chips[cat.id].btn.classList.toggle('full', full);
+      chips[cat.id].btn.hidden = t === 0;
+    });
+    chips.all.c.textContent = `${fGot}/${fAll}`;
+  }
+
+  let filterTimer = 0;
+  function scheduleFilter() {
+    clearTimeout(filterTimer);
+    filterTimer = setTimeout(applyFilters, 650);
+  }
+
+  function applyFilters() {
+    clearTimeout(filterTimer);
+    const q = norm($('q').value);
+    let shownAny = false;
+    CATS.forEach(cat => {
+      const s = secs[cat.id];
+      const catOn = prefs.cat === 'all' || prefs.cat === cat.id;
+      let vis = 0, inScope = 0;
+      s.groups.forEach(g => {
+        const on = catOn && inRegion(g.r);
+        let gv = 0;
+        g.rows.forEach(row => {
+          const show = on && (!prefs.hide || !done[row.id]) && (!q || row.idx.includes(q));
+          row.li.hidden = !show;
+          if (show) gv++;
+        });
+        if (on) inScope += g.rows.length;
+        g.box.hidden = gv === 0;
+        vis += gv;
+      });
+      let hide = !catOn || (vis === 0 && (q || (prefs.cat === 'all' && (inScope === 0 || prefs.hide))));
+      s.sec.hidden = hide;
+      s.empty.hidden = hide || vis > 0;
+      if (!hide && vis === 0) {
+        s.empty.textContent = inScope === 0
+          ? `${REGION[prefs.region].name}沒有這一類。`
+          : `✓ ${prefs.region === 'all' ? '' : REGION[prefs.region].name}${cat.name}已全部完成`;
+      }
+      if (!hide) shownAny = true;
+    });
+    $('noneMsg').hidden = shownAny;
+  }
+
+  /* =====================================================================
+   * ACTIONS
+   * ===================================================================== */
+  function selectCat(id) {
+    prefs.cat = id;
+    savePrefs();
+    Object.entries(chips).forEach(([k, c]) => c.btn.setAttribute('aria-pressed', String(k === id)));
+    history.replaceState(null, '', id === 'all' ? location.pathname + location.search : '#' + id);
+    applyFilters();
+    const top = list.getBoundingClientRect().top + window.scrollY - document.querySelector('.chips-bar').offsetHeight - 8;
+    if (window.scrollY > top) window.scrollTo({ top, behavior: 'smooth' });
+    centerChip(id, true);
+  }
+
+  // Horizontal-only scroll of the chip row (scrollIntoView would also move the page).
+  function centerChip(id, smooth) {
+    const b = chips[id].btn;
+    const left = b.offsetLeft - (chipsNav.clientWidth - b.offsetWidth) / 2;
+    chipsNav.scrollTo({ left: Math.max(0, left), behavior: smooth ? 'smooth' : 'auto' });
+  }
+
+  function bulkToggle(cat, r, grp) {
+    const full = grp.rows.every(row => done[row.id]);
+    const msg = full
+      ? `把「${r.name}」的${cat.name}（${grp.rows.length} 項）全部取消勾選？`
+      : `把「${r.name}」的${cat.name}剩下 ${grp.rows.filter(row => !done[row.id]).length} 項全部勾成已完成？`;
+    if (!confirm(msg)) return;
+    grp.rows.forEach(row => { if (full) delete done[row.id]; else done[row.id] = 1; paintRow(row); });
+    save();
+    refreshCounts();
+    applyFilters();
+  }
+
+  function repaintAll() {
+    rows.forEach(paintRow);
+    refreshCounts();
+    applyFilters();
+  }
+
+  // ---- region / source / hide / search ----
+  const regionSel = $('region');
+  regionSel.append(new Option('全部地區', 'all'));
+  REGIONS.forEach(r => { if (CATS.some(c => c.items.some(it => it.r === r.id))) regionSel.append(new Option(r.name, r.id)); });
+  regionSel.value = prefs.region;
+  regionSel.addEventListener('change', () => { prefs.region = regionSel.value; savePrefs(); refreshCounts(); applyFilters(); });
+
+  const srcSel = $('src');
+  srcSel.value = prefs.src;
+  srcSel.addEventListener('change', () => { prefs.src = srcSel.value; savePrefs(); rows.forEach(paintRow); });
+
+  const hideBox = $('hide');
+  hideBox.checked = !!prefs.hide;
+  hideBox.addEventListener('change', () => { prefs.hide = hideBox.checked; savePrefs(); applyFilters(); });
+
+  $('q').addEventListener('input', applyFilters);
+
+  // ---- export / import / reset ----
+  const io = $('io'), ioText = $('ioText'), ioMsg = $('ioMsg'), ioApply = $('ioApply');
+  function openIO(mode) {
+    ioMsg.textContent = '';
+    if (mode === 'export') {
+      const ids = Object.keys(done).filter(id => byId[id]);
+      $('ioTitle').textContent = '匯出進度';
+      $('ioHelp').textContent = `共 ${ids.length} 項已完成。把下面整串文字傳到另一台裝置，在那邊按「匯入進度」貼上。`;
+      ioText.value = JSON.stringify({ app: 'yotei-checklist', v: 1, done: ids });
+      ioText.readOnly = true;
+      ioApply.hidden = true;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ioText.value).then(() => { ioMsg.textContent = '已複製到剪貼簿'; }, () => {});
+      }
+    } else {
+      $('ioTitle').textContent = '匯入進度';
+      $('ioHelp').textContent = '貼上從另一台裝置「匯出進度」得到的文字。匯入會取代這台裝置目前的勾選。';
+      ioText.value = '';
+      ioText.readOnly = false;
+      ioApply.hidden = false;
+    }
+    if (typeof io.showModal === 'function') io.showModal(); else io.setAttribute('open', '');
+    if (mode === 'export') ioText.select(); else ioText.focus();
+  }
+  const closeIO = () => { if (typeof io.close === 'function') io.close(); else io.removeAttribute('open'); };
+  $('exportBtn').addEventListener('click', () => openIO('export'));
+  $('importBtn').addEventListener('click', () => openIO('import'));
+  $('ioClose').addEventListener('click', closeIO);
+  ioApply.addEventListener('click', () => {
+    let data;
+    try { data = JSON.parse(ioText.value.trim()); } catch (e) { ioMsg.textContent = '看不懂這串文字，請確認整段都有貼上。'; return; }
+    const ids = Array.isArray(data) ? data : (data && Array.isArray(data.done) ? data.done : null);
+    if (!ids) { ioMsg.textContent = '格式不對：找不到已完成清單。'; return; }
+    const valid = ids.filter(id => typeof id === 'string' && byId[id]);
+    if (!confirm(`匯入 ${valid.length} 個已完成項目，取代目前的 ${Object.keys(done).length} 個？`)) return;
+    done = {};
+    valid.forEach(id => { done[id] = 1; });
+    save();
+    repaintAll();
+    closeIO();
+  });
+  $('resetBtn').addEventListener('click', () => {
+    if (!confirm('把所有勾選全部清掉？（建議先「匯出進度」備份）')) return;
+    done = {};
+    save();
+    repaintAll();
+  });
+
+  // ---- footer: sources ----
+  const srcList = $('sources');
+  SOURCES.forEach(s => {
+    const li = el('li');
+    const a = el('a', null, s.name);
+    a.href = s.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    li.append(a, document.createTextNode(s.desc ? ' — ' + s.desc : ''));
+    srcList.append(li);
+  });
+  $('asof').textContent = ASOF;
+
+  // ---- init ----
+  const none = el('p', 'empty', '沒有符合條件的項目。');
+  none.id = 'noneMsg';
+  none.hidden = true;
+  list.append(none);
+  Object.entries(chips).forEach(([k, c]) => c.btn.setAttribute('aria-pressed', String(k === prefs.cat)));
+  repaintAll();
+  if (prefs.cat !== 'all') centerChip(prefs.cat, false);
+}());
+</script>
+</body>
+</html>
