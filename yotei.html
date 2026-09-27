@@ -165,6 +165,9 @@
     -webkit-overflow-scrolling: touch;
   }
   .chips::-webkit-scrollbar { display: none; }
+  @media (min-width: 900px) and (hover: hover) {
+    .chips { flex-wrap: wrap; justify-content: center; overflow: visible; max-width: none; padding: 10px 24px; }
+  }
   .chip {
     flex: none;
     display: inline-flex;
@@ -195,8 +198,18 @@
   .chip:focus-visible, .bulk:focus-visible, .btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
   /* ---------- tools ---------- */
-  .tools { display: flex; flex-wrap: wrap; gap: 10px; padding: 16px 0 4px; }
-  .tools .search { flex: 1 1 100%; position: relative; }
+  .tools {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 16px 0 4px;
+  }
+  .tools .search { grid-column: 1 / -1; position: relative; }
+  @media (min-width: 640px) {
+    .tools { grid-template-columns: minmax(0, 1fr) 11rem 11rem auto; }
+    .tools .search { grid-column: auto; }
+  }
   .tools input[type="search"] {
     width: 100%;
     height: 42px;
@@ -209,7 +222,8 @@
   .tools input[type="search"]:focus { border-color: var(--gold); }
   .tools .search svg { position: absolute; left: 11px; top: 12px; width: 18px; height: 18px; color: var(--ink-3); }
   .tools select {
-    height: 38px;
+    width: 100%;
+    height: 42px;
     padding: 0 28px 0 10px;
     border: 1px solid var(--rule-2);
     border-radius: 10px;
@@ -217,7 +231,7 @@
     color: var(--ink);
     font-size: 14px;
   }
-  .switch { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-2); cursor: pointer; margin-left: auto; min-height: 38px; }
+  .switch { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; color: var(--ink-2); cursor: pointer; min-height: 42px; white-space: nowrap; }
   .switch input { width: 18px; height: 18px; accent-color: var(--gold); margin: 0; }
 
   /* ---------- category sections ---------- */
@@ -316,6 +330,7 @@
   .item.done .name { color: var(--ink-3); text-decoration: line-through; text-decoration-color: var(--ink-3); font-weight: 500; }
   .item.done .ext { display: none; }
   .item.done .sub { opacity: .75; }
+  .sub .en { font-style: italic; letter-spacing: .01em; }
 
   /* ---------- footer ---------- */
   footer { border-top: 1px solid var(--rule); padding: 22px 0 40px; color: var(--ink-3); font-size: 13px; }
@@ -420,6 +435,7 @@
     <h4>資料來源</h4>
     <ul id="sources"></ul>
     <p id="asof"></p>
+    <p>沒有收錄：懸賞目標、傳說任務、錢彈、風鈴等（找不到完整清單）。</p>
   </footer>
 </div>
 
@@ -442,54 +458,467 @@
    * DATA
    * ===================================================================== */
   /*DATA-BEGIN*/
-  const ASOF = "資料整理中：目前只有狼穴，其餘類別補齊中。";
+  const ASOF = "資料整理：2026-09-27，依網路攻略彙整。繁中攻略網站的名稱多半是從簡中攻略轉寫，和遊戲內的叫法可能略有出入；已知遊戲內叫法不同的，名稱用遊戲內的，攻略寫法標在下面。";
 
   // 地區：順序＝遊戲裡解鎖的先後。
   const REGIONS = [
     { id: "grass", name: "羊蹄草原", en: "Yōtei Grasslands" },
+    { id: "yotei", name: "羊蹄山", en: "Mount Yōtei" },
     { id: "tokachi", name: "十勝連峰", en: "Tokachi Range" },
     { id: "ishikari", name: "石狩平原", en: "Ishikari Plain" },
     { id: "nayoro", name: "名寄荒野", en: "Nayoro Wilds" },
     { id: "teshio", name: "天鹽山脊", en: "Teshio Ridge" },
     { id: "oshima", name: "渡島海岸", en: "Oshima Coast" },
-    { id: "yotei", name: "羊蹄山", en: "Mount Yōtei" },
-    { id: "any", name: "不分地區", en: "" },
+    { id: "any", name: "不分地區", en: "Anywhere" },
+    { id: "unk", name: "地區未確認", en: "Region unconfirmed" },
   ];
 
   const SOURCES = [
-    { name: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001872-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E6%94%BB%E7%95%A5%E5%8C%AF%E9%9B%86", desc: "繁中攻略匯集" },
-    { name: "遊民星空 GamerSky", url: "https://www.gamersky.com/z/ghost-of-yotei/handbook/", desc: "簡中攻略專題（各類收集一地區一頁）" },
+    { name: "娛樂計程車・羊蹄山戰鬼攻略匯集", url: "https://www.entertainment14.net/blog/post/111001872-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E6%94%BB%E7%95%A5%E5%8C%AF%E9%9B%86", desc: "繁中，各類收集一篇一類" },
+    { name: "steamXO・全探索圖文流程攻略", url: "https://www.steamxo.com/2025/10/11/3665056", desc: "繁中" },
+    { name: "遊民星空・羊蹄山之魂攻略大全", url: "https://www.gamersky.com/z/ghost-of-yotei/handbook/", desc: "簡中，各類收集一個地區一頁" },
+    { name: "巴哈姆特・全獎盃條件心得", url: "https://forum.gamer.com.tw/C.php?bsn=37154&snA=1899", desc: "繁中獎盃名稱" },
+    { name: "PowerPyx・All Collectibles", url: "https://www.powerpyx.com/ghost-of-yotei-all-collectibles-locations-guide/", desc: "英文，全收集總表" },
+    { name: "Neoseeker・Ghost of Yōtei", url: "https://www.neoseeker.com/ghost-of-yotei/", desc: "英文，靜思祭壇／溫泉有分地區頁" },
+    { name: "Game8・List of All Collectibles", url: "https://game8.co/games/Ghost-of-Yotei/archives/551779", desc: "英文，三味線一首一頁" },
   ];
 
   // 繁→簡（只收項目名稱用到的字），給遊民星空的 #:~:text= 用。
   const T2S = {
-    '傷':'伤','殘':'残','獵':'猎','舊':'旧','風':'风',
+    '側':'侧','傷':'伤','別':'别','呂':'吕','場':'场','壇':'坛','宮':'宫','寧':'宁','島':'岛','師':'师','廟':'庙','廢':'废',
+    '後':'后','徑':'径','復':'复','惡':'恶','懸':'悬','採':'采','撓':'挠','斷':'断','時':'时','曠':'旷','東':'东','棧':'栈',
+    '樹':'树','橋':'桥','機':'机','櫻':'樱','殘':'残','氣':'气','淵':'渊','淺':'浅','溫':'温','漁':'渔','澤':'泽','濕':'湿',
+    '濤':'涛','灘':'滩','灣':'湾','營':'营','牆':'墙','獵':'猎','磯':'矶','節':'节','範':'范','築':'筑','篤':'笃','紀':'纪',
+    '紅':'红','結':'结','綠':'绿','緋':'绯','線':'线','緣':'缘','繡':'绣','罰':'罚','舊':'旧','莊':'庄','華':'华','葉':'叶',
+    '處':'处','觸':'触','詭':'诡','語':'语','護':'护','軍':'军','農':'农','鉗':'钳','銀':'银','鋪':'铺','錦':'锦','鏡':'镜',
+    '鐵':'铁','閉':'闭','開':'开','閻':'阎','關':'关','雙':'双','雲':'云','霧':'雾','靜':'静','頂':'顶','風':'风','飛':'飞',
+    '餓':'饿','餘':'余','髏':'髅','魚':'鱼','鯡':'鲱','鳥':'鸟','鳴':'鸣','鶴':'鹤','齋':'斋',
   };
 
   /* 每一類：
    *   guides.tc / sc / en = 該類攻略頁；pages = { 地區id: 分頁號 }（遊民星空 <id>_N.shtml）
    *   items: id 一旦發布就不要改（勾選紀錄用它存）；新增項目給新 id，不要重新編號。
-   *   n = 名稱（沒有就用 unit + no）、h = 位置提示、rw = 獎勵、en = 英文名（英文攻略的 text fragment）
+   *   guides.*.regionUrl = { 地區id: 該地區專頁 }（英文 Neoseeker 這種一區一頁的網址）；frag: false = 不加 #:~:text=
+   *   n = 名稱（沒有就用 unit + no）、a = 攻略網站的寫法（和遊戲內不同時）、f = 捲動用的關鍵字（預設 a 或 n）
+   *   h = 位置提示、rw = 獎勵、en = 英文名（英文攻略的 text fragment；showEn 的類別會顯示出來）
    *   url = { tc|sc|en: 專屬這一項的攻略頁 }（有的話優先於 guides） */
   const CATS = [
     {
-      id: "wolf", k: "狼", name: "狼穴", en: "Wolf Dens", unit: "狼穴",
-      meta: "跟著金鳥找到狼穴、隨狼擊敗敵人 → 狼技能點",
+      id: "altar", k: "祭", name: "靜思祭壇", en: "Altars of Reflection", unit: "祭壇",
+      meta: "在祭壇前行禮 → 技能點，學一項新技藝 · 獎盃「潛心靜思」＝任 30 座",
+      note: "每個六人幫營地裡都有一座（22 座），攻下營地就會重生在祭壇前。其他祭壇沒有正式名稱，先用附近的地標稱呼；下面的英文是英文攻略的叫法，方便對照。還有 8 座攻略摘要沒寫到位置，標成「？」。",
+      showEn: true,
+      fragOnlyF: true,   // 名稱是自己取的地標描述，只用 f 當捲動關鍵字
       guides: {
-        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001888-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E5%9C%B0%E5%9C%96%E7%8B%BC%E7%A9%B4%E4%BD%8D%E7%BD%AE%E4%B8%80%E8%A6%BD" },
-        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021921.shtml" },
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001887-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E5%9C%B0%E5%9C%96%E7%A5%AD%E5%A3%87%E4%BD%8D%E7%BD%AE%E4%B8%80%E8%A6%BD" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021905.shtml", pages: {"grass": 1, "yotei": 1, "tokachi": 2, "ishikari": 3, "nayoro": 4, "teshio": 5, "oshima": 6} },
+        en: { site: "Neoseeker", url: "https://www.neoseeker.com/ghost-of-yotei/Altars_of_Reflection", regionUrl: {"grass": "https://www.neoseeker.com/ghost-of-yotei/Yotei_Grasslands_-_Altars_of_Reflection", "yotei": "https://www.neoseeker.com/ghost-of-yotei/Mount_Yotei_-_Altars_of_Reflection", "tokachi": "https://www.neoseeker.com/ghost-of-yotei/Tokachi_Range_-_Altars_of_Reflection", "ishikari": "https://www.neoseeker.com/ghost-of-yotei/Ishikari_Plain_-_Altars_of_Reflection", "nayoro": "https://www.neoseeker.com/ghost-of-yotei/Nayoro_Wilds_-_Altars_of_Reflection", "teshio": "https://www.neoseeker.com/ghost-of-yotei/Teshio_Ridge_-_Altars_of_Reflection", "oshima": "https://www.neoseeker.com/ghost-of-yotei/Oshima_Coast_-_Altars_of_Reflection"}, frag: false },
       },
       items: [
-        { id: "wolf-01", r: "grass", n: "大山狼穴", h: "草原中心偏左上，鴉巢望樓旁" },
-        { id: "wolf-02", r: "grass", n: "青山狼穴", h: "草原右側，說書人雨月的家旁" },
-        { id: "wolf-03", r: "tokachi", n: "獵人之望狼穴", h: "羊蹄草原通往十勝連峰的入口" },
-        { id: "wolf-04", r: "tokachi", n: "嚎林狼穴", h: "十勝連峰右上角" },
-        { id: "wolf-05", r: "ishikari", n: "殘焰狼穴" },
-        { id: "wolf-06", r: "ishikari", n: "舊傷狼穴" },
-        { id: "wolf-07", r: "nayoro", n: "白痕狼穴" },
-        { id: "wolf-08", r: "teshio", n: "冰湖狼穴" },
-        { id: "wolf-09", r: "teshio", n: "寒風狼穴" },
-        { id: "wolf-10", r: "oshima", n: "瀑布狼穴" },
+        { id: "altar-01", r: "yotei", n: "山頂火山口", h: "走羊蹄神社登頂、拿完護身符後滑進中央火山口", en: "Mount Yotei summit" },
+        { id: "altar-02", r: "grass", n: "齋藤軍營", f: "齋藤軍營", h: "六人幫營地內，攻下後就站在祭壇前", en: "Saito Compound" },
+        { id: "altar-03", r: "grass", n: "齋藤募兵營地", f: "齋藤募兵營地", h: "六人幫營地內，攻下後就站在祭壇前", en: "Saito Recruitment Camp" },
+        { id: "altar-04", r: "grass", n: "岩莊", f: "岩莊", h: "六人幫營地內，攻下後就站在祭壇前（定山湖一帶）", en: "Outcrop Homestead" },
+        { id: "altar-05", r: "grass", n: "墓地", en: "Graveyard" },
+        { id: "altar-06", r: "grass", n: "石柱藏身處", h: "不在營地裡，爬上去的路線比較刁鑽", en: "Stone Spire Hideout" },
+        { id: "altar-07", r: "grass", n: "平次郎大師的庭院", f: "平次郎", h: "「精力之曲」支線的庭院", en: "Master Heijiro's Garden" },
+        { id: "altar-08", r: "grass", n: "洞穴祭壇", f: "洞穴祭壇", h: "豪華版「旅人地圖」指的祭壇", en: "Cave Altar" },
+        { id: "altar-09", r: "grass", n: "洞窟", en: "Three Terrors Cave" },
+        { id: "altar-10", r: "grass", n: "曠野溫泉後方", h: "溫泉後方下坡，跳到對面樹枝再連跳到石柱", en: "Wild Clearing Hot Spring" },
+        { id: "altar-11", r: "grass", n: "支線「鏡中迷途」", f: "鏡中迷途", h: "跟著支線走到的祭壇", en: "Lost in Reflection" },
+        { id: "altar-12", r: "grass", n: "南部海岸", en: "Southern Coast" },
+        { id: "altar-13", r: "grass", n: "瀑布祭壇", f: "瀑布祭壇", h: "豪華版「旅人地圖」指的祭壇", en: "Waterfall Altar" },
+        { id: "altar-14", r: "tokachi", n: "富良野磨坊", f: "富良野磨坊", h: "六人幫營地內，攻下後就站在祭壇前（富良野客棧正北方）", en: "Huranui Mill" },
+        { id: "altar-15", r: "tokachi", n: "沼莊", f: "沼莊", h: "六人幫營地內，攻下後就站在祭壇前（濕地）", en: "Marshland Homestead" },
+        { id: "altar-16", r: "tokachi", n: "熊洞", h: "石臼盆地：砍開洞口竹子或從上方破洞跳下去，要先打倒熊", en: "Bamboo Rock" },
+        { id: "altar-17", r: "tokachi", n: "紀念樹", h: "十勝連峰西北角", en: "Monument Tree" },
+        { id: "altar-18", r: "tokachi", n: "沙流平原", en: "Saru Plains" },
+        { id: "altar-19", r: "tokachi", n: "新冠川小島", h: "蘿蔔農家東南、日高雙池附近的河中小島（可能有浪人坐在旁邊）", en: "Niikappu River" },
+        { id: "altar-20", r: "tokachi", n: "濕地洞窟頂", h: "決鬥樹東邊，用鉤索拉開洞窟柵欄後一路爬到頂", en: "Tomamu Marshlands" },
+        { id: "altar-21", r: "ishikari", n: "鯡魚漁場", f: "鯡魚漁場", h: "六人幫營地內，攻下後就站在祭壇前", en: "Nishin Fishery" },
+        { id: "altar-22", r: "ishikari", n: "斷角要塞", f: "斷角要塞", h: "六人幫營地內，攻下後就站在祭壇前", en: "Broken Horn Garrison" },
+        { id: "altar-23", r: "ishikari", n: "猛火鐵匠鋪", f: "猛火鐵匠鋪", h: "六人幫營地內，攻下後就站在祭壇前", en: "Bold Kaji Forge" },
+        { id: "altar-24", r: "ishikari", n: "蒙面者採石場", f: "蒙面者採石場", h: "六人幫營地內，攻下後就站在祭壇前", en: "Masked Man's Quarry" },
+        { id: "altar-25", r: "ishikari", n: "東伐木場", f: "東伐木場", h: "六人幫營地內，攻下後就站在祭壇前", en: "Higashi Lumberyard" },
+        { id: "altar-26", r: "ishikari", n: "猛火鐵匠鋪東側", h: "營地外面、就在營地旁邊的另一座", en: "Bold Kaji Forge East" },
+        { id: "altar-27", r: "ishikari", n: "妖怪巢", en: "Yokai's Nest" },
+        { id: "altar-28", r: "ishikari", n: "白鹿林", en: "White Deer Woodlands" },
+        { id: "altar-29", r: "ishikari", n: "高橋師範的道場", en: "Sensei Takahashi's Dojo" },
+        { id: "altar-30", r: "ishikari", n: "森林", en: "Urara Forest" },
+        { id: "altar-31", r: "ishikari", n: "熊岩", en: "Bear Rock" },
+        { id: "altar-32", r: "ishikari", n: "海灣", en: "Howling Cove" },
+        { id: "altar-33", r: "ishikari", n: "石狩川南段", en: "Southern Ishikari River" },
+        { id: "altar-34", r: "nayoro", n: "南部山丘", h: "可以攀爬上去的山丘頂", en: "South Nayoro Wilds" },
+        { id: "altar-35", r: "nayoro", n: "西側懸崖頂", h: "用鉤索爬上懸崖", en: "West Nayoro Wilds" },
+        { id: "altar-36", r: "nayoro", no: "？1", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-37", r: "teshio", n: "路口商棧", f: "路口商棧", h: "六人幫營地內，攻下後就站在祭壇前；祭壇前有九尾機關盒", en: "Crossroads Trading Post" },
+        { id: "altar-38", r: "teshio", n: "地吹溫泉藏身處", f: "地吹溫泉藏身處", h: "隱藏藏身處（要先解狐狸雕像謎題）內，攻下後就站在祭壇前", en: "Snow Drift Springs Hideout" },
+        { id: "altar-39", r: "teshio", n: "雪枯藏身處", f: "雪枯藏身處", h: "隱藏藏身處（要先解狐狸雕像謎題）內，攻下後就站在祭壇前", en: "Snow's Blight Hideout" },
+        { id: "altar-40", r: "teshio", n: "中島冰洞藏身處", f: "中島冰洞藏身處", h: "隱藏藏身處（要先解狐狸雕像謎題）內，攻下後就站在祭壇前", en: "Nakajima Ice Cave Hideout" },
+        { id: "altar-41", r: "teshio", n: "荒廢村莊", f: "荒廢村莊", h: "六人幫營地內，攻下後就站在祭壇前", en: "Deserted Village" },
+        { id: "altar-42", r: "teshio", n: "宗谷港", f: "宗谷港", h: "六人幫營地內，攻下後就站在祭壇前", en: "Soya Port" },
+        { id: "altar-43", r: "teshio", n: "稻荷岬藏身處", f: "稻荷岬藏身處", h: "隱藏藏身處（要先解狐狸雕像謎題）內，攻下後就站在祭壇前", en: "Cape Inari Hideout" },
+        { id: "altar-44", r: "teshio", n: "封閉建築・守護者之森", h: "森林南側的密竹林裡，要先解開建築的機關", en: "Sentinel Forest" },
+        { id: "altar-45", r: "teshio", n: "封閉建築・紅葉森林北", h: "要先解開建築的機關", en: "Crimson Forest" },
+        { id: "altar-46", r: "teshio", n: "封閉建築・船骸淺灘", h: "淺灘中央，要先解開建築的機關", en: "Shipwreck Shoal" },
+        { id: "altar-47", r: "teshio", n: "封閉建築・佐呂別森林", h: "森林西南，要先解開建築的機關", en: "Sarobetsu Forest" },
+        { id: "altar-48", r: "teshio", n: "西緣懸崖", h: "地圖西緣中段的懸崖邊" },
+        { id: "altar-49", r: "teshio", no: "？1", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-50", r: "teshio", no: "？2", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-51", r: "teshio", no: "？3", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-52", r: "teshio", no: "？4", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-53", r: "teshio", no: "？5", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-54", r: "oshima", n: "大磯漁村", f: "大磯漁村", h: "六人幫營地內，攻下後就站在祭壇前", en: "Oiso Fishing Village" },
+        { id: "altar-55", r: "oshima", n: "岩崎農莊", f: "岩崎農莊", h: "六人幫營地內，攻下後就站在祭壇前（唐津川北岸、弁天港西北）", en: "Iwasaki Farmstead" },
+        { id: "altar-56", r: "oshima", n: "美山村", f: "美山村", h: "六人幫營地內，攻下後就站在祭壇前", en: "Miyama Village" },
+        { id: "altar-57", r: "oshima", n: "齋藤炮兵哨站", f: "齋藤炮兵哨站", h: "六人幫營地內，攻下後就站在祭壇前（松前城東邊）", en: "Saito Artillery Outpost" },
+        { id: "altar-58", r: "oshima", n: "春日村", f: "春日村", h: "六人幫營地內，攻下後就站在祭壇前（唐津川出海口、弁天港西南）", en: "Kasuga Village" },
+        { id: "altar-59", r: "oshima", n: "松前城", h: "從後門進去後右轉", en: "Matsumae Castle" },
+        { id: "altar-60", r: "oshima", no: "？1", h: "攻略摘要沒寫到這一座" },
+        { id: "altar-61", r: "oshima", no: "？2", h: "攻略摘要沒寫到這一座" },
+      ],
+    },
+    {
+      id: "shrine", k: "社", name: "神社", en: "Shrine Climbs", unit: "神社",
+      meta: "爬上山頂神龕 → 護身符（羊蹄神社給兩枚）· 獎盃「心神合一」＝全神社＋全溫泉＋全竹場",
+      note: "清風神社在主線「惡鬼」中會自動完成。天鹽山脊的兩座要先把半弓升級出火焰箭。",
+      guides: {
+        tc: { site: "steamXO", url: "https://www.steamxo.com/2025/10/02/3656182" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2022532.shtml", pages: {"grass": 1, "tokachi": 2, "ishikari": 3, "nayoro": 4, "teshio": 5, "oshima": 6, "yotei": 1} },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-shrine-climbs-locations/" },
+      },
+      items: [
+        { id: "shrine-01", r: "yotei", n: "羊蹄神社", h: "羊蹄山山頂，面向瀑布從右側攀點上山", rw: "父親的護身符＋母親的護身符", en: "Mount Yotei Shrine" },
+        { id: "shrine-02", r: "grass", n: "鳴澤神社", h: "草原東南緣，說書人之家往南、道路西側山丘", rw: "金屋子護身符", en: "Fall's Rest Shrine" },
+        { id: "shrine-03", r: "grass", n: "小根山神社", h: "草原東北緣，往十勝連峰的山口右側，找白色鳥居", rw: "天若日子護身符", en: "Blooming Ridge Shrine" },
+        { id: "shrine-04", r: "tokachi", n: "旭宮神社", h: "十勝連峰最西側，從旅店沿白花小徑往西北", rw: "將門護身符", en: "Amber Respite Shrine" },
+        { id: "shrine-05", r: "tokachi", n: "飛兔神社", h: "十勝連峰東緣，日高林與雙池之間的白花小徑鳥居", rw: "經津主神護身符", en: "Faithful Leap Shrine" },
+        { id: "shrine-06", r: "tokachi", n: "霧立神社", h: "往名寄荒野入口右側，從大湖南側渡口往上爬", rw: "吉備津彥護身符", en: "Risen Fog Shrine" },
+        { id: "shrine-07", r: "ishikari", n: "清風神社", h: "主線「惡鬼」劇情中必經，會自動完成", rw: "八幡神護身符", en: "Azure Wind Shrine" },
+        { id: "shrine-08", r: "ishikari", n: "高天日神社", h: "石狩平原西南角，鯡魚漁場附近", rw: "伊邪那岐護身符", en: "Sun's Peak Shrine" },
+        { id: "shrine-09", r: "ishikari", n: "千曲神社", h: "石狩平原東側，沿溪往上游、森林北方", rw: "火產靈神護符", en: "Winding Tears Shrine" },
+        { id: "shrine-10", r: "nayoro", n: "霜野神社", h: "名寄荒野西北，會崩的木橋、洞窟攀柱、鉤索盪過斷橋", rw: "日本武尊護身符", en: "Patient Frost Shrine" },
+        { id: "shrine-11", r: "teshio", n: "冰高神社", h: "結冰湖泊北方；火焰箭點四個火盆再轉機關（也有攻略寫作「寒峰神社」）", rw: "少彥名護身符", en: "Chilled Peak Shrine" },
+        { id: "shrine-12", r: "teshio", n: "火閻神社", h: "從交易所往北找入口", rw: "療煙護身符", en: "Enduring Hold Shrine" },
+        { id: "shrine-13", r: "oshima", n: "百草神社", h: "渡島海岸的海灣，春日村正南方", rw: "建御雷神護身符", en: "Budding Grace Shrine" },
+      ],
+    },
+    {
+      id: "spring", k: "湯", name: "溫泉", en: "Hot Springs", unit: "溫泉",
+      meta: "泡湯 → 生命上限提升 · 獎盃「心神合一」的一部分",
+      note: "還沒找到繁中／簡中的溫泉專文，點名稱會開英文攻略該地區那一頁並捲到那一座。只有 4 座查到中文名；第 16 座的地區攻略摘要沒寫到。",
+      showEn: true,
+      guides: {
+        en: { site: "Neoseeker", url: "https://www.neoseeker.com/ghost-of-yotei/Hot_Springs" },
+      },
+      items: [
+        { id: "spring-01", r: "grass", n: "曠野溫泉", h: "影子旅店東北、靜思祭壇北邊的山丘", en: "Wild Clearing Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Yotei_Grasslands_-_Hot_Springs"} },
+        { id: "spring-02", r: "grass", no: 2, h: "草原西緣，森林小湖旁", en: "Yotei's Shadow Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Yotei_Grasslands_-_Hot_Springs"} },
+        { id: "spring-03", r: "grass", n: "展望溫泉", h: "南岸懸崖下的岩架，金鳥會帶你下崖", en: "Horizon's View Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Yotei_Grasslands_-_Hot_Springs"} },
+        { id: "spring-04", r: "grass", no: 4, h: "地圖最北，往石狩平原道路左側的岩壁上", en: "Hidden Cliff Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Yotei_Grasslands_-_Hot_Springs"} },
+        { id: "spring-05", r: "tokachi", no: 5, h: "十勝連峰北部平原，齋藤營地東邊山丘", en: "Quiet Valley Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Tokachi_Range_-_Hot_Springs"} },
+        { id: "spring-06", r: "tokachi", no: 6, h: "十勝連峰北部草原", en: "Grassy Fields Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Tokachi_Range_-_Hot_Springs"} },
+        { id: "spring-07", r: "ishikari", n: "雲海溫泉", h: "妖怪巢東南的大岩丘上", en: "Cloud View Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Ishikari_Plain_-_Hot_Springs"} },
+        { id: "spring-08", r: "ishikari", no: 8, h: "廢棄道場西北的山丘", en: "Smoky Mountains Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Ishikari_Plain_-_Hot_Springs"} },
+        { id: "spring-09", r: "ishikari", no: 9, h: "石狩市集東北、隔著石狩川的山丘（熊岩）", en: "Bear Rock Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Ishikari_Plain_-_Hot_Springs"} },
+        { id: "spring-10", r: "nayoro", n: "洞徑溫泉", h: "從西側懸崖進入洞窟群", en: "Cave Path Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Nayoro_Wilds_-_Hot_Springs"} },
+        { id: "spring-11", r: "teshio", no: 11, h: "紅鶴旅店", en: "Red Crane Inn Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Teshio_Ridge_-_Hot_Springs"} },
+        { id: "spring-12", r: "teshio", no: 12, h: "雪堆溫泉神社北邊的隆起岩地", en: "Black Bowl Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Teshio_Ridge_-_Hot_Springs"} },
+        { id: "spring-13", r: "teshio", no: 13, h: "天鹽山脊西北部的高山", en: "Valley View Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Teshio_Ridge_-_Hot_Springs"} },
+        { id: "spring-14", r: "oshima", no: 14, h: "渡島海岸的丘陵一帶", en: "Cliff View Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Oshima_Coast_-_Hot_Springs"} },
+        { id: "spring-15", r: "oshima", no: 15, h: "地圖最北中央，深山村東北", en: "Distant Castle Hot Spring", url: {"en": "https://www.neoseeker.com/ghost-of-yotei/Oshima_Coast_-_Hot_Springs"} },
+        { id: "spring-16", r: "unk", no: 16, h: "攻略摘要沒寫到這一座，請用英文總表對照" },
+      ],
+    },
+    {
+      id: "bamboo", k: "竹", name: "擊竹", en: "Bamboo Strikes", unit: "竹場",
+      meta: "照節奏按鍵斬斷竹子 → 精力上限提升 · 獎盃「心神合一」＝全神社＋全溫泉＋全竹場",
+      note: "這一類攻略摘要只查到總數，名稱和地區沒查到，先用編號；點下去會開英文攻略的全 15 處總表。先學「精力之曲」，彈奏時風會帶你找竹場。",
+      guides: {
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-bamboo-strike-locations/" },
+      },
+      items: [
+        { id: "bamboo-01", r: "unk", no: 1 },
+        { id: "bamboo-02", r: "unk", no: 2 },
+        { id: "bamboo-03", r: "unk", no: 3 },
+        { id: "bamboo-04", r: "unk", no: 4 },
+        { id: "bamboo-05", r: "unk", no: 5 },
+        { id: "bamboo-06", r: "unk", no: 6 },
+        { id: "bamboo-07", r: "unk", no: 7 },
+        { id: "bamboo-08", r: "unk", no: 8 },
+        { id: "bamboo-09", r: "unk", no: 9 },
+        { id: "bamboo-10", r: "unk", no: 10 },
+        { id: "bamboo-11", r: "unk", no: 11 },
+        { id: "bamboo-12", r: "unk", no: 12 },
+        { id: "bamboo-13", r: "unk", no: 13 },
+        { id: "bamboo-14", r: "unk", no: 14 },
+        { id: "bamboo-15", r: "unk", no: 15 },
+      ],
+    },
+    {
+      id: "wolf", k: "狼", name: "狼穴", en: "Wolf Dens", unit: "狼穴",
+      meta: "跟著金鳥找到狼穴、隨狼擊敗敵人 → 狼技能點 · 完成任 4 處學會「狼之曲」 · 全 10 處有獎盃",
+      note: "遊戲裡有些狼穴叫「○○狼巢」，名稱先寫遊戲內的叫法，攻略網站的寫法標在下面。",
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001888-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E5%9C%B0%E5%9C%96%E7%8B%BC%E7%A9%B4%E4%BD%8D%E7%BD%AE%E4%B8%80%E8%A6%BD" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021921.shtml", pages: {"grass": 1, "tokachi": 2, "ishikari": 3, "nayoro": 4, "teshio": 5, "oshima": 6} },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-wolf-den-locations/" },
+      },
+      items: [
+        { id: "wolf-01", r: "grass", n: "大山狼穴", h: "草原中央偏左上，鴉巢望樓旁；跟狼到齋藤軍營地清敵", en: "Great Mountain Wolf Den" },
+        { id: "wolf-02", r: "grass", n: "綠丘狼巢", a: "青山狼穴", h: "草原右側，說書人雨月的家旁", en: "Green Hill Wolf Den" },
+        { id: "wolf-03", r: "tokachi", n: "獵人台狼巢", a: "獵人之望狼穴", h: "羊蹄草原進入十勝連峰的入口、舊望樓旁；跟狼往北擊敗獵人", en: "Hunter's Watch Wolf Den" },
+        { id: "wolf-04", r: "tokachi", n: "嚎林狼穴", h: "十勝連峰右上角（沙流平原）；打開籠子救出三隻狼", en: "Howling Fields Wolf Den" },
+        { id: "wolf-05", r: "ishikari", n: "餘火狼巢", a: "殘焰狼穴", h: "燒毀營地的殘骸之間", en: "Dying Fire Wolf Den" },
+        { id: "wolf-06", r: "ishikari", n: "舊傷狼穴", h: "石狩平原北部、留萌川西側，周圍有敵人", en: "Old Wound Wolf Den" },
+        { id: "wolf-07", r: "nayoro", n: "白痕狼穴", h: "兩條支流交會處的河岸，岩石上有一棵樹", en: "White Scars Wolf Den" },
+        { id: "wolf-08", r: "teshio", n: "冷湖狼巢", a: "冰湖狼穴", h: "佐呂別湖東側的岩壁後", en: "Cold Lake Wolf Den" },
+        { id: "wolf-09", r: "teshio", n: "刺風狼巢", a: "寒風狼穴", h: "守護者之森北方、廢棄獵屋附近", en: "Biting Wind Wolf Den" },
+        { id: "wolf-10", r: "oshima", n: "瀑布狼穴", h: "齋藤砲兵前哨東側", en: "Waterfall Wolf Den" },
+      ],
+    },
+    {
+      id: "fox", k: "狐", name: "狐穴", en: "Fox Dens", unit: "狐穴",
+      meta: "跟著狐狸走到稻荷神社 → 護身符 · 獎盃「稻荷守護」＝全 11 處＋金色狐狸面具",
+      note: "11 處都完成後，到天鹽山脊北部經猿拂燈塔進入聖林：把左右各 2 座狐狸雕像轉成兩兩相對、小狐狸雕像放上門前底座，進門後跟著小熊走，和裡面的女性 NPC 對話，就能拿到金色狐狸面具。",
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111002027-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E7%8B%90%E7%A9%B4%E5%9C%B0%E5%9C%96%E9%BB%9E%E4%BD%8D%E5%8F%8A%E7%8B%90%E7%8B%B8%E9%9D%A2%E5%85%B7%E7%8D%B2%E5%8F%96%E6%96%B9%E6%B3%95" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021924.shtml", pages: {"grass": 1, "tokachi": 2, "ishikari": 3, "nayoro": 4, "teshio": 5, "oshima": 6} },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-fox-den-locations/" },
+      },
+      items: [
+        { id: "fox-01", r: "grass", n: "湖畔狐穴", a: "湖景狐穴", rw: "刺腕護身符" },
+        { id: "fox-02", r: "grass", n: "流水狐穴", rw: "忍魂護身符" },
+        { id: "fox-03", r: "grass", n: "丘陵狐穴", a: "草丘狐穴", h: "草原左上、通往石狩平原的入口旁；途中要把 NPC 拉上來、一起拉開牆縫", rw: "猛投護身符" },
+        { id: "fox-04", r: "tokachi", n: "日向原狐穴", a: "暖原狐穴", h: "夕張湖一帶", rw: "佑弓護身符" },
+        { id: "fox-05", r: "tokachi", n: "林語狐穴", h: "靜內林一帶", rw: "拾遺護身符" },
+        { id: "fox-06", r: "ishikari", n: "火焰狐穴", a: "烈火狐穴", h: "石狩農場一帶", rw: "必勝護身符" },
+        { id: "fox-07", r: "ishikari", n: "雙徑狐穴" },
+        { id: "fox-08", r: "nayoro", n: "清水狐穴" },
+        { id: "fox-09", r: "teshio", n: "曲河狐穴", a: "曲流狐穴", h: "天鹽川一帶，到點就看得到入口", rw: "偏財護身符" },
+        { id: "fox-10", r: "teshio", n: "高牆狐穴", h: "入口被幾名匪徒堵住，先清敵再跟狐狸", rw: "殘影護身符" },
+        { id: "fox-11", r: "oshima", n: "朱森狐穴", a: "緋林狐穴", h: "松前城旁" },
+      ],
+    },
+    {
+      id: "camp", k: "營", name: "六人幫營地", en: "Yōtei Six Camps", unit: "營地",
+      meta: "清光敵人奪回據點，營地裡都有一座靜思祭壇 · 全 22 處有獎盃",
+      note: "4 處隱藏藏身處要先解開附近神社的狐狸雕像謎題才進得去；名寄荒野沒有營地。先學「復仇之曲」，彈奏時風會指向營地。",
+      showEn: true,
+      guides: {
+        tc: { site: "steamXO", url: "https://www.steamxo.com/2025/10/05/3660872" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2023494.shtml", pages: {"grass": 1, "ishikari": 2, "tokachi": 3, "teshio": 4, "oshima": 5} },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-yotei-six-camps-locations/" },
+      },
+      items: [
+        { id: "camp-01", r: "grass", n: "齋藤軍營", en: "Saito Compound" },
+        { id: "camp-02", r: "grass", n: "齋藤募兵營地", en: "Saito Recruitment Camp" },
+        { id: "camp-03", r: "grass", n: "岩莊", h: "定山湖一帶", en: "Outcrop Homestead" },
+        { id: "camp-04", r: "tokachi", n: "富良野磨坊", h: "富良野客棧正北方的河邊，要打進內層要塞；懸賞目標也在這", en: "Huranui Mill" },
+        { id: "camp-05", r: "tokachi", n: "沼莊", h: "富良野客棧東方的濕地；清敵後和中央的俘虜對話", en: "Marshland Homestead" },
+        { id: "camp-06", r: "ishikari", n: "鯡魚漁場", h: "石狩平原入口西側", en: "Nishin Fishery" },
+        { id: "camp-07", r: "ishikari", n: "斷角要塞", h: "海灘北方、石狩市集西側的崖上", en: "Broken Horn Garrison" },
+        { id: "camp-08", r: "ishikari", n: "猛火鐵匠鋪", h: "石狩平原中央", en: "Bold Kaji Forge" },
+        { id: "camp-09", r: "ishikari", n: "蒙面者採石場", h: "松前軍營地再往北一小段", en: "Masked Man's Quarry" },
+        { id: "camp-10", r: "ishikari", n: "東伐木場", h: "石狩川分岔處北方；要打小頭目", en: "Higashi Lumberyard" },
+        { id: "camp-11", r: "teshio", n: "路口商棧", h: "紅葉森林南側；沒有首領，清光敵人即可；祭壇前有機關盒", en: "Crossroads Trading Post" },
+        { id: "camp-12", r: "teshio", n: "地吹溫泉藏身處", h: "隱藏：從紅葉森林的地吹溫泉神社點亮正確的狐狸雕像開門，營地上層還有第二道狐狸謎題", en: "Snow Drift Springs Hideout" },
+        { id: "camp-13", r: "teshio", n: "雪枯藏身處", h: "隱藏：西北的雪枯神社，點燭台、轉狐狸雕像、把兩隻小狐狸搬到大門前", en: "Snow's Blight Hideout" },
+        { id: "camp-14", r: "teshio", n: "中島冰洞藏身處", h: "隱藏：佐呂別湖西北，入口兩座狐狸雕像轉成背對大門", en: "Nakajima Ice Cave Hideout" },
+        { id: "camp-15", r: "teshio", n: "荒廢村莊", h: "函岳一帶", en: "Deserted Village" },
+        { id: "camp-16", r: "teshio", n: "宗谷港", h: "和支線「鎖鐮之路」同一條路", en: "Soya Port" },
+        { id: "camp-17", r: "teshio", n: "稻荷岬藏身處", h: "隱藏：由稻荷岬神社進入", en: "Cape Inari Hideout" },
+        { id: "camp-18", r: "oshima", n: "美山村", en: "Miyama Village" },
+        { id: "camp-19", r: "oshima", n: "齋藤炮兵哨站", h: "松前城東邊", en: "Saito Artillery Outpost" },
+        { id: "camp-20", r: "oshima", n: "春日村", h: "和一個懸賞目標同地點", en: "Kasuga Village" },
+        { id: "camp-21", r: "oshima", n: "岩崎農莊", h: "唐津川北岸、弁天港西北", en: "Iwasaki Farmstead" },
+        { id: "camp-22", r: "oshima", n: "大磯漁村", en: "Oiso Fishing Village" },
+      ],
+    },
+    {
+      id: "sumie", k: "墨", name: "水墨畫", en: "Sumi-e Paintings", unit: "水墨畫",
+      meta: "畫下風景 → 頭部外觀（斗笠／頭帶／面具）· 獎盃「丹青之心」＝地圖上的 15 幅",
+      note: "另外 3 幅跟著支線任務出現、不算獎盃，攻略沒列名字，先用編號。",
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111002028-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E6%B0%B4%E5%A2%A8%E7%95%AB%E6%94%B6%E9%9B%86%E6%94%BB%E7%95%A5" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021976.shtml", pages: {"grass": 1, "tokachi": 2, "ishikari": 3, "nayoro": 4, "teshio": 5, "oshima": 6} },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-sumi-e-painting-locations/" },
+      },
+      items: [
+        { id: "sumie-01", r: "grass", n: "慎鉗水墨", h: "海邊祭壇附近", rw: "求知斗笠" },
+        { id: "sumie-02", r: "grass", n: "梅鶴水墨", rw: "失落頭帶" },
+        { id: "sumie-03", r: "grass", n: "羊蹄山水墨", rw: "羊蹄頭帶" },
+        { id: "sumie-04", r: "grass", n: "逐蛙水墨", h: "定山湖旁", rw: "少年斗笠" },
+        { id: "sumie-05", r: "tokachi", n: "空明水墨", rw: "自由面具" },
+        { id: "sumie-06", r: "tokachi", n: "季節之色水墨", rw: "四時頭帶" },
+        { id: "sumie-07", r: "ishikari", n: "浪濤水墨", h: "海岸邊的山頂，攀岩後走繩索上去" },
+        { id: "sumie-08", r: "ishikari", n: "逆根水墨" },
+        { id: "sumie-09", r: "ishikari", n: "鳥啼水墨", h: "和懸賞「龜人龜吉」同一段流程" },
+        { id: "sumie-10", r: "nayoro", n: "寧靜可坦水墨" },
+        { id: "sumie-11", r: "nayoro", n: "枯木水墨" },
+        { id: "sumie-12", r: "teshio", n: "凝結之時水墨", h: "本區兩幅其中一幅在神社入口就看得到畫石（荒野頭帶）" },
+        { id: "sumie-13", r: "teshio", n: "嚎叫群狼水墨" },
+        { id: "sumie-14", r: "oshima", n: "迷羽水墨", h: "本區兩幅其中一幅在松前居所（風雅斗笠）" },
+        { id: "sumie-15", r: "oshima", n: "御櫻水墨" },
+        { id: "sumie-16", r: "any", no: "任務 1", h: "支線任務中的水墨畫，不算獎盃" },
+        { id: "sumie-17", r: "any", no: "任務 2", h: "支線任務中的水墨畫，不算獎盃" },
+        { id: "sumie-18", r: "any", no: "任務 3", h: "支線任務中的水墨畫，不算獎盃" },
+      ],
+    },
+    {
+      id: "song", k: "曲", name: "三味線樂曲", en: "Shamisen Songs", unit: "樂曲",
+      meta: "彈奏學會的曲子 → 風會指向對應的活動 · 獎盃「有其母必有其女」＝全 8 首",
+      note: "先拿曲子再找收集最省事：康健→溫泉、精力→擊竹、狼→狼穴、神社→神社、阿伊努→阿伊努物品、復仇→六人幫營地。懸賞「罪人相馬」的相馬之曲是額外曲目，不算在 8 首裡。",
+      guides: {
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2023471.shtml" },
+        en: { site: "Game8", url: "https://game8.co/games/Ghost-of-Yotei/archives/552721" },
+      },
+      items: [
+        { id: "song-01", r: "any", n: "篤之曲", h: "序章在篤的家學三味線時自動學會（沒有指引效果）", en: "Atsu's Song", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557674"} },
+        { id: "song-02", r: "grass", n: "精力之曲", h: "→ 擊竹｜羊蹄草原支線：平次郎大師的庭院", en: "Song of Spirit", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557672"} },
+        { id: "song-03", r: "tokachi", n: "復仇之曲", h: "→ 六人幫營地｜十勝連峰「樂師營地」：捐錢給彈三味線的浪人，跟他回營地生火", en: "Song of Revenge", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557667"} },
+        { id: "song-04", r: "tokachi", n: "阿伊努之曲", h: "→ 阿伊努物品｜完成十勝連峰與名寄荒野兩處阿伊努樂師的支線", en: "Song of the Ainu", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557671"} },
+        { id: "song-05", r: "ishikari", n: "康健之曲", h: "→ 溫泉｜石狩平原西北海岸懸崖頂的三味線練習處", en: "Song of Well-Being", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557670"} },
+        { id: "song-06", r: "teshio", n: "浮華之曲", h: "→ 外觀裝備｜天鹽山脊紅鶴旅店西側的三味線練習處", en: "Song of Vanity", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557673"} },
+        { id: "song-07", r: "any", n: "狼之曲", h: "→ 狼穴｜完成任意 4 個狼穴後自動學會", en: "Song of the Wolf", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557669"} },
+        { id: "song-08", r: "any", n: "神社之曲", h: "→ 神社｜野外紮營時隨機遇到路過的樂師來教", en: "Song of Shrines", url: {"en": "https://game8.co/games/Ghost-of-Yotei/archives/557668"} },
+      ],
+    },
+    {
+      id: "place", k: "景", name: "特別地點", en: "Special Places", unit: "特別地點",
+      meta: "獎盃「交心大地」＝找齊全部 10 處",
+      note: "這一類攻略摘要只查到總數，名稱和地區沒查到，先用編號；點下去會開全部 10 處的總表。",
+      guides: {
+        tc: { site: "steamXO", url: "https://www.steamxo.com/2025/10/05/3664149" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2023118.shtml" },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-special-places-locations/" },
+      },
+      items: [
+        { id: "place-01", r: "unk", no: 1 },
+        { id: "place-02", r: "unk", no: 2 },
+        { id: "place-03", r: "unk", no: 3 },
+        { id: "place-04", r: "unk", no: 4 },
+        { id: "place-05", r: "unk", no: 5 },
+        { id: "place-06", r: "unk", no: 6 },
+        { id: "place-07", r: "unk", no: 7 },
+        { id: "place-08", r: "unk", no: 8 },
+        { id: "place-09", r: "unk", no: 9 },
+        { id: "place-10", r: "unk", no: 10 },
+      ],
+    },
+    {
+      id: "temple", k: "廟", name: "山之廟", en: "Mountain Reliquaries", unit: "山之廟",
+      meta: "石柱上的謎題，照提示和附近的物件互動解開（有的攻略叫「石之廟」）",
+      guides: {
+        tc: { site: "steamXO", url: "https://www.steamxo.com/2025/10/03/3659102" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2023129.shtml" },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-mountain-reliquary-puzzles-locations-solutions/" },
+      },
+      items: [
+        { id: "temple-01", r: "unk", n: "勇氣之廟", url: {"sc": "https://www.gamersky.com/handbook/202510/2023129.shtml"} },
+        { id: "temple-02", r: "unk", n: "不撓之廟", url: {"sc": "https://www.gamersky.com/handbook/202510/2023129_2.shtml"} },
+        { id: "temple-03", r: "unk", n: "力量之廟", url: {"sc": "https://www.gamersky.com/handbook/202510/2023129_3.shtml"} },
+        { id: "temple-04", r: "teshio", n: "慈悲之廟", h: "和冰高神社同一條路上", url: {"sc": "https://www.gamersky.com/handbook/202510/2023129_4.shtml"} },
+        { id: "temple-05", r: "unk", n: "信念之廟", url: {"sc": "https://www.gamersky.com/handbook/202510/2023129_5.shtml", "tc": "https://www.entertainment14.net/blog/post/111002252-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E4%BF%A1%E5%BF%B5%E4%B9%8B%E5%BB%9F%E8%A7%A3%E5%AF%86%E6%96%B9%E6%B3%95"} },
+      ],
+    },
+    {
+      id: "box", k: "盒", name: "九尾機關盒", en: "Nine Tails' Puzzle Boxes", unit: "機關盒",
+      meta: "全部在天鹽山脊：屍體 1、稻荷祭壇 4、六人幫營地 3、隱藏藏身處 4",
+      note: "隱藏藏身處要先解開地圖邊緣的狐狸雕像謎題才進得去。遊戲內的盒名照取得順序給（第 1 個是「趣意盒」），和攻略的 01–12 編號無關；只有 01、03、08 查得到地名。",
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111002020-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E6%A9%9F%E9%97%9C%E7%9B%92%E4%BD%8D%E7%BD%AE%E5%8F%8A%E8%A7%A3%E8%AC%8E%E6%94%BB%E7%95%A5" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2023065.shtml" },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-nine-tails-puzzle-box-locations-solutions/" },
+      },
+      items: [
+        { id: "box-01", r: "teshio", n: "機關盒 01・常青林", f: "機關盒01", h: "地圖「常青林」的「青」字處，木板結構下的敵人屍體旁" },
+        { id: "box-02", r: "teshio", no: "02", f: "機關盒02" },
+        { id: "box-03", r: "teshio", n: "機關盒 03・船骸淺灘", f: "機關盒03", h: "東側海岸道路往西邊岩壁下的雪地看，「船骸淺灘」與「猿拂川」之間" },
+        { id: "box-04", r: "teshio", no: "04", f: "機關盒04" },
+        { id: "box-05", r: "teshio", no: "05", f: "機關盒05" },
+        { id: "box-06", r: "teshio", no: "06", f: "機關盒06" },
+        { id: "box-07", r: "teshio", no: "07", f: "機關盒07" },
+        { id: "box-08", r: "teshio", n: "機關盒 08・雪枯藏身處", f: "機關盒08", h: "隱藏藏身處裡的靜思祭壇前；先到西北部的雪枯神社解開入口" },
+        { id: "box-09", r: "teshio", no: "09", f: "機關盒09" },
+        { id: "box-10", r: "teshio", no: "10", f: "機關盒10" },
+        { id: "box-11", r: "teshio", no: "11", f: "機關盒11" },
+        { id: "box-12", r: "teshio", no: "12", f: "機關盒12" },
+      ],
+    },
+    {
+      id: "pillar", k: "柱", name: "亡者之柱", en: "Pillars of the Fallen", unit: "亡者之柱",
+      meta: "找到柱子 → 劍具（武器外觀，不影響能力）· 沒有獎盃",
+      note: "這一類攻略對地區的說法不一，只有 13 座查得到名稱或位置，其餘先用編號。先學「浮華之曲」，彈奏時風會帶你找外觀裝備。",
+      showEn: true,
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111001891-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E5%9C%B0%E5%9C%96%E4%BA%A1%E8%80%85%E4%B9%8B%E6%9F%B1%E4%BD%8D%E7%BD%AE%E4%B8%80%E8%A6%BD" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202509/2021980.shtml", pages: {"grass": 1, "yotei": 1, "tokachi": 2, "ishikari": 3, "nayoro": 4, "teshio": 5, "oshima": 6} },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-pillars-of-the-fallen-locations/" },
+      },
+      items: [
+        { id: "pillar-01", r: "grass", n: "不屈風暴", h: "南部海岸；接支線「與陌生人共飲」時順路，跟著 NPC 沿白色記號往下爬", en: "Unyielding Tempest" },
+        { id: "pillar-02", r: "grass", n: "銀杏之罰", h: "俯瞰田野的岩壁頂端，從左側坡道上去（要先完成主線「惡鬼」）", en: "Ginkgo's Reckoning" },
+        { id: "pillar-03", r: "grass", n: "餓者骷髏", h: "草原中間偏上的河邊空地，鴉巢望樓北方", en: "Bones of Gashadokuro" },
+        { id: "pillar-04", r: "yotei", n: "星淵", h: "羊蹄神社登頂拿完護身符後左轉，沿山道走一小段", en: "Starlight Abyss" },
+        { id: "pillar-05", r: "tokachi", n: "花開錦繡", h: "一座小山頂上" },
+        { id: "pillar-06", r: "tokachi", no: 6, h: "富良野客棧往南過河，找大岩石" },
+        { id: "pillar-07", r: "tokachi", no: 7, h: "地圖上「新冠川」字樣北方的林間空地" },
+        { id: "pillar-08", r: "ishikari", n: "衣蛸之觸", h: "石狩平原北部，沿留萌川一路走到北端", en: "Koromodako's Reach" },
+        { id: "pillar-09", r: "teshio", n: "雪中血", h: "爬上來後先往右前方走", en: "Blood in Snow" },
+        { id: "pillar-10", r: "teshio", no: 10, h: "天鹽山脊通往名寄荒野的入口，煙霧花叢處" },
+        { id: "pillar-11", r: "oshima", no: 11, h: "松前居所：進十兵衛的家，從後門出去" },
+        { id: "pillar-12", r: "unk", n: "稻荷之詭", h: "攻略對地區說法不一（石狩平原或天鹽山脊）", en: "Inari's Ruse" },
+        { id: "pillar-13", r: "unk", n: "惡名凶刃" },
+        { id: "pillar-14", r: "unk", no: 14 },
+        { id: "pillar-15", r: "unk", no: 15 },
+        { id: "pillar-16", r: "unk", no: 16 },
+        { id: "pillar-17", r: "unk", no: 17 },
+        { id: "pillar-18", r: "unk", no: 18 },
+        { id: "pillar-19", r: "unk", no: 19 },
+        { id: "pillar-20", r: "unk", no: 20 },
+      ],
+    },
+    {
+      id: "ainu", k: "阿", name: "阿伊努物品", en: "Ainu Items", unit: "阿伊努物品",
+      meta: "升級「西圖來努長袍」：5 件 → Lv2、再 10 件 → Lv3、再 15 件 → Lv4 · 沒有獎盃",
+      note: "穿著長袍時，附近有物品會出現綠色螢火蟲；學會「阿伊努之曲」後彈奏，風會帶路。攻略把物品編成 01–30，只查到 03–07 的位置說明，其餘先放在「地區未確認」。",
+      guides: {
+        tc: { site: "娛樂計程車", url: "https://www.entertainment14.net/blog/post/111002026-%E7%BE%8A%E8%B9%84%E5%B1%B1%E6%88%B0%E9%AC%BC-%E5%85%A8%E9%98%BF%E4%BC%8A%E5%8A%AA%E7%89%A9%E5%93%81%E6%94%B6%E9%9B%86%E6%94%BB%E7%95%A5" },
+        sc: { site: "遊民星空", url: "https://www.gamersky.com/handbook/202510/2023270.shtml" },
+        en: { site: "PowerPyx", url: "https://www.powerpyx.com/ghost-of-yotei-all-ainu-items-locations/" },
+      },
+      items: [
+        { id: "ainu-01", r: "unk", no: "01", f: "阿伊努物品01" },
+        { id: "ainu-02", r: "unk", no: "02", f: "阿伊努物品02" },
+        { id: "ainu-03", r: "grass", no: "03", f: "阿伊努物品03", h: "兩座瀑布之間的河灘底部" },
+        { id: "ainu-04", r: "grass", no: "04", f: "阿伊努物品04", h: "湖中央" },
+        { id: "ainu-05", r: "grass", no: "05", f: "阿伊努物品05", h: "草原西側地圖邊緣的小營地" },
+        { id: "ainu-06", r: "grass", no: "06", f: "阿伊努物品06", h: "河邊被樹林圍住的小營地，要砍開竹子才進得去" },
+        { id: "ainu-07", r: "grass", no: "07", f: "阿伊努物品07", h: "河岸小營地的大樹下落葉堆；在物品欄查看後會觸發支線「阿伊努傳家寶」" },
+        { id: "ainu-08", r: "unk", no: "08", f: "阿伊努物品08" },
+        { id: "ainu-09", r: "unk", no: "09", f: "阿伊努物品09" },
+        { id: "ainu-10", r: "unk", no: "10", f: "阿伊努物品10" },
+        { id: "ainu-11", r: "unk", no: "11", f: "阿伊努物品11" },
+        { id: "ainu-12", r: "unk", no: "12", f: "阿伊努物品12" },
+        { id: "ainu-13", r: "unk", no: "13", f: "阿伊努物品13" },
+        { id: "ainu-14", r: "unk", no: "14", f: "阿伊努物品14" },
+        { id: "ainu-15", r: "unk", no: "15", f: "阿伊努物品15" },
+        { id: "ainu-16", r: "unk", no: "16", f: "阿伊努物品16" },
+        { id: "ainu-17", r: "unk", no: "17", f: "阿伊努物品17" },
+        { id: "ainu-18", r: "unk", no: "18", f: "阿伊努物品18" },
+        { id: "ainu-19", r: "unk", no: "19", f: "阿伊努物品19" },
+        { id: "ainu-20", r: "unk", no: "20", f: "阿伊努物品20" },
+        { id: "ainu-21", r: "unk", no: "21", f: "阿伊努物品21" },
+        { id: "ainu-22", r: "unk", no: "22", f: "阿伊努物品22" },
+        { id: "ainu-23", r: "unk", no: "23", f: "阿伊努物品23" },
+        { id: "ainu-24", r: "unk", no: "24", f: "阿伊努物品24" },
+        { id: "ainu-25", r: "unk", no: "25", f: "阿伊努物品25" },
+        { id: "ainu-26", r: "unk", no: "26", f: "阿伊努物品26" },
+        { id: "ainu-27", r: "unk", no: "27", f: "阿伊努物品27" },
+        { id: "ainu-28", r: "unk", no: "28", f: "阿伊努物品28" },
+        { id: "ainu-29", r: "unk", no: "29", f: "阿伊努物品29" },
+        { id: "ainu-30", r: "unk", no: "30", f: "阿伊努物品30" },
       ],
     },
   ];
@@ -514,7 +943,8 @@
   if (prefs.cat !== 'all' && !CATS.some(c => c.id === prefs.cat)) prefs.cat = 'all';
   if (prefs.region !== 'all' && !REGION[prefs.region]) prefs.region = 'all';
   if (!SRC[prefs.src]) prefs.src = 'tc';
-  const fromHash = decodeURIComponent(location.hash.slice(1));
+  let fromHash = '';
+  try { fromHash = decodeURIComponent(location.hash.slice(1)); } catch (e) {}
   if (fromHash && CATS.some(c => c.id === fromHash)) prefs.cat = fromHash;
 
   const save = () => write(KEY, done);
@@ -527,21 +957,23 @@
   // item's name on a long guide page; pages that don't contain the text just
   // open at the top. "-" is the fragment's own delimiter, so encode it too.
   const frag = s => '#:~:text=' + encodeURIComponent(s).replace(/-/g, '%2D');
-  const toSC = s => s.replace(/[㐀-鿿]/g, c => T2S[c] || c);
+  const toSC = s => s.replace(/[\u3400-\u9fff]/g, c => T2S[c] || c);
 
-  function guideFor(cat, src) {
-    return cat.guides[src] || cat.guides.tc || cat.guides.sc || cat.guides.en;
-  }
+  // The chosen language if this category has a guide in it, otherwise the
+  // next one that exists (繁中 → 簡中 → 英文).
+  const srcFor = (cat, src) => [src, 'tc', 'sc', 'en'].find(s => cat.guides[s]);
   function pageUrl(g, region) {
+    if (g.regionUrl && g.regionUrl[region]) return g.regionUrl[region];
     const n = g.pages && g.pages[region];
     if (!n || n === 1) return g.url;
-    return g.url.replace(/(\.s?html?)$/, '_' + n + '$1');
+    return g.url.replace(/(\.s?html?)$/, '_' + n + '$1');   // 遊民星空: <id>_N.shtml
   }
   function itemHref(cat, it, src) {
-    const g = guideFor(cat, src);
-    const s = cat.guides[src] ? src : Object.keys(cat.guides)[0];
+    const s = srcFor(cat, src);
+    const g = cat.guides[s];
     let url = (it.url && it.url[s]) || pageUrl(g, it.r);
-    const text = s === 'en' ? it.en : s === 'sc' ? (it.sc || (it.n && toSC(it.n))) : it.n;
+    const key = it.f || (cat.fragOnlyF ? null : it.a || it.n);
+    const text = s === 'en' ? it.en : s === 'sc' ? (it.sc || (key && toSC(key))) : key;
     if (text && g.frag !== false && url.indexOf('#') < 0) url += frag(text);
     return url;
   }
@@ -660,13 +1092,23 @@
     a.append(document.createTextNode(label(cat, it)));
     a.append(el('span', 'ext', '↗'));
     body.append(a);
-    const subs = [it.h, it.rw && ('獎勵：' + it.rw)].filter(Boolean);
-    if (subs.length) body.append(el('span', 'sub', subs.join(' · ')));
+    const subs = [it.a && `攻略寫作「${it.a}」`, it.h, it.rw && ('獎勵：' + it.rw)].filter(Boolean);
+    const showEn = cat.showEn && it.en;
+    if (subs.length || showEn) {
+      const sub = el('span', 'sub', subs.join(' · '));
+      if (showEn) {
+        if (subs.length) sub.append(' · ');
+        const en = el('span', 'en', it.en);
+        en.lang = 'en';
+        sub.append(en);
+      }
+      body.append(sub);
+    }
     li.append(ck, body);
 
     const row = {
       id: it.id, cat, it, li, a, input,
-      idx: norm([label(cat, it), it.h, it.rw, it.en, r.name, cat.name, cat.en].join(' ')),
+      idx: norm([label(cat, it), it.a, it.h, it.rw, it.en, r.name, cat.name, cat.en].join(' ')),
     };
     input.addEventListener('change', () => {
       if (input.checked) done[it.id] = 1; else delete done[it.id];
