@@ -223,6 +223,8 @@
   .sold-info { font-size: 12.5px; text-align: right; line-height: 1.35; }
   .sold-info .num { font-size: 18px; font-weight: 700; }
   .editor { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; align-items: center; }
+  /* 輸入成交價時，輸入框自己佔一整行，不去擠名字欄（否則 auto 欄會被撐寬、備註被擠成一字一行） */
+  .row.editing .act { grid-area: auto / 1 / auto / -1; justify-content: flex-end; padding-top: 8px; border-top: 1px dashed var(--rule); }
   .editor input { width: 64px; border: 1px solid var(--rule-2); border-radius: 7px; padding: 4px 6px; background: var(--surface); font: 600 16px var(--display); }
   .editor input[aria-invalid="true"] { border-color: var(--bad); }
   .editor .msg { flex-basis: 100%; text-align: right; font-size: 11.5px; color: var(--ink-3); }
@@ -232,7 +234,7 @@
 
   @container (max-width: 999px) {
     .row {
-      grid-template-columns: 40px minmax(0, 1fr) auto auto auto;
+      grid-template-columns: 40px minmax(140px, 1fr) auto auto auto;
       grid-template-areas: "rk who price idx act" "heat heat heat heat heat";
     }
     .heat { grid-template-columns: repeat(9, minmax(0, 1fr)); }
@@ -951,6 +953,7 @@ function filtered() {
 
 function rowHTML(p, mk, rankIn) {
   const sold = state.sold[p.id];
+  const editing = state.editing === p.id;
   const punted = new Set(state.punts);
   const tags = [];
   if (p.rookie) tags.push('<span class="tag rook">新秀</span>');
@@ -971,7 +974,7 @@ function rowHTML(p, mk, rankIn) {
     return `<span class="c ${off ? 'off' : zClass(p.z[c])}" tabindex="0" data-c="${c}"><b>${CAT_LABEL[c]}</b><i>${statText(p, c)}</i></span>`;
   }).join('');
   let act;
-  if (state.editing === p.id) {
+  if (editing) {
     act = `<div class="editor"><input type="number" inputmode="numeric" min="1" max="200" step="1" id="bid-${p.id}" value="${Math.max(1, Math.round(up))}" aria-label="成交價">
       <button type="button" class="btn small" data-act="other">別人買</button>
       <button type="button" class="btn small solid" data-act="mine">我買的</button>
@@ -983,7 +986,7 @@ function rowHTML(p, mk, rankIn) {
   } else {
     act = `<button type="button" class="btn small" data-act="edit">成交</button>`;
   }
-  return `<li class="row${sold ? ' sold' : ''}${sold && sold.m ? ' mine' : ''}" data-id="${p.id}">
+  return `<li class="row${sold ? ' sold' : ''}${sold && sold.m ? ' mine' : ''}${editing ? ' editing' : ''}" data-id="${p.id}">
     <div class="rk"><span class="n num">${rankIn}</span><span class="pos">${p.pos.join(' · ')}</span></div>
     <div class="who">
       <div class="nm"><span class="name">${esc(p.name)}</span><span class="tm">${p.team} ${TEAM_ZH[p.team] || ''}<span class="pos-inline"> · ${p.pos.join('/')}</span>${p.espn ? ' · ESPN #' + p.espn : ''}</span><span class="tags">${tags.join('')}</span></div>
