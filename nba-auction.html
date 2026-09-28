@@ -1,0 +1,1221 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NBA 拍賣選秀板</title>
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  /* ---------- tokens：亮色為基底，暗色覆寫 ---------- */
+  :root {
+    --ground:    #EEF1F4;
+    --surface:   #FFFFFF;
+    --surface-2: #F6F8FA;
+    --rule:      #D9DFE5;
+    --rule-2:    #C3CBD4;
+    --ink:       #141A21;
+    --ink-2:     #4A5561;
+    --ink-3:     #5F6B78;
+    --accent:    #D9531E;   /* 籃球皮革橘：按鈕、選取狀態 */
+    --accent-ink:#A83E10;   /* 橘色文字與實心徽章 */
+    --on-accent: #FFFFFF;
+    --accent-bg: rgba(217, 83, 30, .10);
+    --good-ink:  #006300;  --good-bg: rgba(12, 163, 12, .11);  --good: #0CA30C;
+    --warn-ink:  #8A5A00;  --warn-bg: rgba(250, 178, 25, .18); --warn: #FAB219;
+    --bad-ink:   #B02A2A;  --bad-bg:  rgba(208, 59, 59, .10);  --bad:  #D03B3B;
+    --series:    #2a78d6;
+    /* 九項熱度（發散：紅 = 弱項、藍 = 強項、灰 = 平均） */
+    --h-3: #c63c3b; --h-2: #ee9695; --h-1: #f8d3d2; --h0: #eceae6; --h1: #cde2fb; --h2: #86b6ef; --h3: #256abf;
+    --hi-3: #FFFFFF; --hi-2: #141A21; --hi-1: #141A21; --hi0: #141A21; --hi1: #141A21; --hi2: #141A21; --hi3: #FFFFFF;
+    --shadow: 0 1px 2px rgba(20, 26, 33, .06), 0 10px 28px rgba(20, 26, 33, .07);
+    --display: "Barlow Condensed", "Roboto Condensed", "Arial Narrow", system-ui, sans-serif;
+    --sans: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:    #0D1116;
+      --surface:   #141A21;
+      --surface-2: #1A212A;
+      --rule:      #26303B;
+      --rule-2:    #34404D;
+      --ink:       #E8EDF2;
+      --ink-2:     #B3BECA;
+      --ink-3:     #8E9AA8;
+      --accent:    #FF7A3D;
+      --accent-ink:#FF8A52;
+      --on-accent: #141A21;
+      --accent-bg: rgba(255, 122, 61, .15);
+      --good-ink:  #3BC43B;  --good-bg: rgba(12, 163, 12, .18);
+      --warn-ink:  #FAB219;  --warn-bg: rgba(250, 178, 25, .16);
+      --bad-ink:   #F07070;  --bad-bg:  rgba(208, 59, 59, .20);
+      --series:    #3987e5;
+      --h-3: #e66767; --h-2: #9b3434; --h-1: #4a2426; --h0: #2b3139; --h1: #1d3a5f; --h2: #1c5cab; --h3: #5598e7;
+      --hi-3: #0E1217; --hi-2: #E8EDF2; --hi-1: #E8EDF2; --hi0: #E8EDF2; --hi1: #E8EDF2; --hi2: #E8EDF2; --hi3: #0E1217;
+      --shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .3);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:    #0D1116;
+    --surface:   #141A21;
+    --surface-2: #1A212A;
+    --rule:      #26303B;
+    --rule-2:    #34404D;
+    --ink:       #E8EDF2;
+    --ink-2:     #B3BECA;
+    --ink-3:     #8E9AA8;
+    --accent:    #FF7A3D;
+    --accent-ink:#FF8A52;
+    --on-accent: #141A21;
+    --accent-bg: rgba(255, 122, 61, .15);
+    --good-ink:  #3BC43B;  --good-bg: rgba(12, 163, 12, .18);
+    --warn-ink:  #FAB219;  --warn-bg: rgba(250, 178, 25, .16);
+    --bad-ink:   #F07070;  --bad-bg:  rgba(208, 59, 59, .20);
+    --series:    #3987e5;
+    --h-3: #e66767; --h-2: #9b3434; --h-1: #4a2426; --h0: #2b3139; --h1: #1d3a5f; --h2: #1c5cab; --h3: #5598e7;
+    --hi-3: #0E1217; --hi-2: #E8EDF2; --hi-1: #E8EDF2; --hi0: #E8EDF2; --hi1: #E8EDF2; --hi2: #E8EDF2; --hi3: #0E1217;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .3);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font: 15px/1.55 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  button, input, select { font: inherit; color: inherit; }
+  [hidden] { display: none !important; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .page { max-width: 1440px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+  .num { font-family: var(--display); font-variant-numeric: tabular-nums; }
+
+  /* ---------- 標題 ---------- */
+  .top { padding-block: 22px 18px; display: grid; gap: 6px; }
+  .back { font-size: 13px; color: var(--ink-2); text-decoration: none; width: fit-content; }
+  .back:hover { color: var(--accent-ink); }
+  .eyebrow { margin: 6px 0 0; font: 600 12px/1 var(--display); letter-spacing: .16em; color: var(--accent-ink); }
+  h1 { margin: 0; font: 700 clamp(34px, 6vw, 52px)/1 var(--display); letter-spacing: .01em; text-wrap: balance; }
+  .lede { margin: 4px 0 0; max-width: 68ch; color: var(--ink-2); font-size: 14px; }
+  .asof { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+
+  /* ---------- 置頂拍賣狀態列 ---------- */
+  .bar {
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    margin-inline: -16px; padding: 10px 16px;
+    background: var(--surface); border-block: 1px solid var(--rule);
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px;
+  }
+  .stat { display: grid; gap: 1px; min-width: 0; }
+  .stat .k { font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+  .stat .v { font: 700 24px/1.05 var(--display); white-space: nowrap; }
+  .stat .v small { font: 500 14px var(--display); color: var(--ink-3); margin-left: 2px; }
+  .stat.hot .v { color: var(--accent-ink); }
+  .bar .spacer { flex: 1 1 auto; }
+  .bar-actions { display: flex; gap: 8px; }
+  .btn {
+    appearance: none; border: 1px solid var(--rule-2); background: var(--surface);
+    border-radius: 8px; padding: 6px 12px; font-size: 13.5px; cursor: pointer; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn.solid { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
+  .btn.warn { border-color: var(--bad); color: var(--bad-ink); background: var(--bad-bg); }
+  .btn.small { padding: 4px 9px; font-size: 12.5px; border-radius: 7px; }
+  .jump { display: none; }
+
+  /* ---------- 控制列 ---------- */
+  .controls { display: grid; gap: 10px; padding-block: 14px 10px; }
+  .crow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .clabel { font-size: 12.5px; color: var(--ink-3); }
+  .seg { display: inline-flex; border: 1px solid var(--rule-2); border-radius: 9px; overflow: hidden; background: var(--surface); }
+  .seg button { appearance: none; border: 0; background: none; padding: 6px 12px; font-size: 13.5px; cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--rule); }
+  .seg button[aria-pressed="true"] { background: var(--accent-ink); color: var(--on-accent); font-weight: 700; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    appearance: none; border: 1px solid var(--rule-2); background: var(--surface); border-radius: 999px;
+    padding: 4px 11px; font: 600 13px/1.3 var(--display); letter-spacing: .04em; cursor: pointer;
+  }
+  .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-bg); color: var(--accent-ink); }
+  .chip.punt[aria-pressed="true"] { border-color: var(--bad); background: var(--bad-bg); color: var(--bad-ink); text-decoration: line-through; }
+  .chip:disabled { opacity: .45; cursor: not-allowed; }
+  .search {
+    border: 1px solid var(--rule-2); background: var(--surface); border-radius: 9px; padding: 7px 11px;
+    font-size: 14px; width: min(260px, 100%);
+  }
+  .check { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; cursor: pointer; }
+  .check input { accent-color: var(--accent-ink); width: 16px; height: 16px; margin: 0; }
+  select.sort { border: 1px solid var(--rule-2); background: var(--surface); border-radius: 9px; padding: 6px 8px; font-size: 13.5px; }
+
+  /* ---------- 版面 ---------- */
+  .layout { display: grid; gap: 18px; align-items: start; }
+  @media (min-width: 1360px) {
+    .layout { grid-template-columns: minmax(0, 1fr) 340px; }
+    .side { position: sticky; top: calc(var(--bar-h, 64px) + 12px); max-height: calc(100vh - var(--bar-h, 64px) - 24px); overflow: auto; }
+  }
+  .board { min-width: 0; container-type: inline-size; }
+  .board-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 2px 8px; font-size: 13px; color: var(--ink-2); }
+  .legend { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+  .legend .sw { display: inline-flex; border-radius: 4px; overflow: hidden; }
+  .legend .sw i { width: 14px; height: 10px; display: block; }
+
+  /* ---------- 球員列 ---------- */
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .row {
+    display: grid; gap: 4px 14px; align-items: center;
+    grid-template-columns: 44px minmax(190px, 1fr) 104px 88px auto 92px;
+    grid-template-areas: "rk who price idx heat act";
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 9px 12px;
+  }
+  .row.sold { opacity: .55; }
+  .row.mine { opacity: 1; border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+  .rk { grid-area: rk; display: grid; justify-items: start; gap: 2px; }
+  .rk .n { font: 700 20px/1 var(--display); }
+  .rk .pos { font: 600 11.5px/1.2 var(--display); letter-spacing: .04em; color: var(--ink-3); }
+  .who { grid-area: who; min-width: 0; }
+  .nm { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+  .name { font-weight: 700; font-size: 15.5px; }
+  .tm { font-size: 12.5px; color: var(--ink-2); white-space: nowrap; }
+  .tags { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+  .tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; line-height: 1; padding: 3px 7px; border-radius: 999px; white-space: nowrap; font-weight: 500; }
+  .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .tag.rook { color: var(--accent-ink); background: var(--accent-bg); }
+  .tag.move { color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--rule); }
+  .tag.move::before { display: none; }
+  .tag.target { color: var(--good-ink); background: var(--good-bg); }
+  .tag.over { color: var(--bad-ink); background: var(--bad-bg); }
+  .tag.risk { color: var(--warn-ink); background: var(--warn-bg); }
+  .pos-inline { display: none; }
+  .note { margin: 3px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+  .note .pt { color: var(--accent-ink); font-weight: 500; }
+  .price { grid-area: price; display: grid; gap: 2px; }
+  .price .v { font: 700 28px/1 var(--display); }
+  .price .v.zero { color: var(--ink-3); font-size: 22px; }
+  .price .sub { font-size: 11.5px; color: var(--ink-3); white-space: nowrap; }
+  .price .sub b { font-weight: 600; color: var(--ink-2); }
+  .idx { grid-area: idx; display: grid; grid-template-columns: auto auto; align-items: center; justify-content: start; gap: 4px 6px; }
+  .idx .score { font: 700 24px/1 var(--display); }
+  .grade { font: 700 13px/1 var(--display); padding: 3px 6px; border-radius: 5px; border: 1px solid var(--rule-2); color: var(--ink-2); }
+  .grade.gS { background: var(--accent-ink); border-color: var(--accent-ink); color: var(--on-accent); }
+  .grade.gA { border-color: var(--accent); color: var(--accent-ink); }
+  .meter { grid-column: 1 / -1; height: 5px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--rule); overflow: hidden; width: 78px; }
+  .meter i { display: block; height: 100%; background: var(--accent); border-radius: 0 3px 3px 0; }
+  .heat { grid-area: heat; display: grid; grid-template-columns: repeat(9, 38px); gap: 2px; }
+  .c {
+    display: grid; justify-items: center; gap: 1px; padding: 4px 0 3px; border-radius: 5px; cursor: default;
+    background: var(--h0); color: var(--hi0);
+  }
+  .c b { font: 600 9.5px/1 var(--display); letter-spacing: .05em; opacity: .8; }
+  .c i { font: 600 13.5px/1 var(--display); font-style: normal; font-variant-numeric: tabular-nums; }
+  .c.z-3 { background: var(--h-3); color: var(--hi-3); } .c.z-2 { background: var(--h-2); color: var(--hi-2); }
+  .c.z-1 { background: var(--h-1); color: var(--hi-1); } .c.z1 { background: var(--h1); color: var(--hi1); }
+  .c.z2 { background: var(--h2); color: var(--hi2); } .c.z3 { background: var(--h3); color: var(--hi3); }
+  .c.off { background: repeating-linear-gradient(45deg, var(--surface-2) 0 4px, var(--rule) 4px 5px); color: var(--ink-3); }
+  .c:hover, .c:focus-visible { outline: 2px solid var(--ink); outline-offset: 0; }
+  .act { grid-area: act; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px; }
+  .sold-info { font-size: 12.5px; text-align: right; line-height: 1.35; }
+  .sold-info .num { font-size: 18px; font-weight: 700; }
+  .editor { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; align-items: center; }
+  .editor input { width: 64px; border: 1px solid var(--rule-2); border-radius: 7px; padding: 4px 6px; background: var(--surface); font: 600 16px var(--display); }
+  .editor input[aria-invalid="true"] { border-color: var(--bad); }
+  .editor .msg { flex-basis: 100%; text-align: right; font-size: 11.5px; color: var(--ink-3); }
+  .editor .msg.err { color: var(--bad-ink); }
+  .empty { padding: 28px 12px; text-align: center; color: var(--ink-3); background: var(--surface); border: 1px dashed var(--rule-2); border-radius: 10px; }
+  .more { margin-top: 10px; display: flex; justify-content: center; }
+
+  @container (max-width: 999px) {
+    .row {
+      grid-template-columns: 40px minmax(0, 1fr) auto auto auto;
+      grid-template-areas: "rk who price idx act" "heat heat heat heat heat";
+    }
+    .heat { grid-template-columns: repeat(9, minmax(0, 1fr)); }
+  }
+  @container (max-width: 560px) {
+    .row {
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      grid-template-areas: "rk who price" "heat heat heat" "idx idx act";
+      padding: 9px 10px; column-gap: 10px;
+    }
+    .price { justify-items: end; }
+    .price .sub { white-space: normal; text-align: right; }
+    .idx { grid-template-columns: auto auto auto; align-items: center; }
+    .meter { grid-column: auto; }
+    .act { justify-content: flex-end; }
+    .c b { font-size: 8.5px; }
+    .c i { font-size: 12px; }
+    .rk .pos { display: none; }
+    .pos-inline { display: inline; }
+  }
+  @media (max-width: 1359px) { .jump { display: inline-block; } }
+  @media (max-width: 560px) {
+    .top { padding-block: 14px 12px; gap: 4px; }
+    .lede { font-size: 13px; line-height: 1.5; }
+    .asof { font-size: 11.5px; }
+    .bar { gap: 4px 14px; padding-block: 7px; }
+    .stat .v { font-size: 19px; }
+    .stat .k { font-size: 10.5px; }
+    .bar .long, .seg .long { display: none; }
+    .bar-actions .btn { padding: 5px 9px; font-size: 12.5px; }
+    .controls { gap: 8px; padding-block: 10px 8px; }
+    .crow { gap: 6px 10px; }
+    .crow > .clabel { flex-basis: 100%; margin-bottom: -2px; }
+    .seg { display: flex; width: 100%; }
+    .seg button { flex: 1 1 0; padding: 6px 4px; }
+    .chip { padding: 3px 9px; font-size: 12.5px; }
+    .search { width: 100%; }
+    .check { font-size: 13px; }
+  }
+
+  /* ---------- 側欄 ---------- */
+  .side { display: grid; gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 14px; }
+  .card h2 { margin: 0 0 10px; font: 700 20px/1.1 var(--display); letter-spacing: .02em; }
+  .card h2 small { font: 500 12.5px var(--sans); color: var(--ink-3); margin-left: 6px; letter-spacing: 0; }
+  .card p { margin: 0; }
+  .muted { color: var(--ink-3); font-size: 12.5px; }
+  .team { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .team li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; font-size: 13.5px; padding: 5px 0; border-bottom: 1px solid var(--rule); }
+  .team li:last-child { border-bottom: 0; }
+  .team .p { font: 700 16px var(--display); }
+  .team .x { appearance: none; border: 0; background: none; color: var(--ink-3); cursor: pointer; font-size: 15px; padding: 0 4px; }
+  .team .x:hover { color: var(--bad-ink); }
+  .profile { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 2px; margin-top: 10px; }
+  .profile .c b { font-size: 8.5px; }
+  .profile .c i { font-size: 11.5px; letter-spacing: -.02em; }
+  .posmix { margin-top: 8px; font-size: 12.5px; color: var(--ink-2); }
+  .tiers { display: grid; gap: 5px; }
+  .tier { display: grid; grid-template-columns: 58px minmax(0, 1fr) 40px; align-items: center; gap: 8px; font-size: 12.5px; cursor: default; }
+  .tier .lab { color: var(--ink-2); white-space: nowrap; }
+  .tier .track { position: relative; height: 14px; }
+  .tier .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--series); border-radius: 0 4px 4px 0; max-width: 100%; }
+  .tier .val { font: 700 15px var(--display); text-align: right; }
+  .tier:hover .fill, .tier:focus-visible .fill { filter: brightness(1.12); }
+  .axis { display: grid; grid-template-columns: 58px minmax(0, 1fr) 40px; gap: 8px; font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+  .axis span:nth-child(2) { display: flex; justify-content: space-between; border-top: 1px solid var(--rule-2); padding-top: 2px; }
+  .plans .seg { margin-bottom: 10px; }
+  .plan-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .slot { background: var(--surface-2); border: 1px solid var(--rule); border-radius: 7px; padding: 5px 2px; text-align: center; }
+  .slot .p { font: 700 17px/1 var(--display); display: block; }
+  .slot .r { font-size: 10.5px; color: var(--ink-3); }
+  .plan-note { margin-top: 8px; font-size: 12.5px; color: var(--ink-2); }
+  .rooks { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .rooks li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
+  .rooks li:last-child { border-bottom: 0; }
+  .rooks .t { color: var(--ink-3); font-size: 12px; }
+  .rooks .p { font: 700 16px var(--display); min-width: 34px; text-align: right; }
+  .tips { margin: 0; padding-left: 1.2em; display: grid; gap: 7px; font-size: 13.5px; color: var(--ink-2); }
+  .tips b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- 資料與方法 ---------- */
+  .method { margin-top: 26px; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 16px 18px; }
+  .method h2 { margin: 0 0 8px; font: 700 22px/1.1 var(--display); }
+  .method dl { margin: 0; display: grid; gap: 10px; max-width: 80ch; }
+  .method dt { font-weight: 700; font-size: 14px; }
+  .method dd { margin: 2px 0 0; font-size: 13.5px; color: var(--ink-2); }
+  .method .src { margin-top: 12px; font-size: 12.5px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  .method .src a { color: var(--ink-2); }
+  .store { margin-top: 10px; font-size: 12.5px; color: var(--ink-3); }
+  .store.bad { color: var(--bad-ink); }
+
+  /* ---------- 工具提示 ---------- */
+  .tip {
+    position: fixed; z-index: 50; pointer-events: none; max-width: 240px;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--rule-2); border-radius: 8px;
+    box-shadow: var(--shadow); padding: 7px 9px; font-size: 12.5px; line-height: 1.4;
+  }
+  .tip strong { display: block; font: 700 17px/1.1 var(--display); }
+  .tip span { color: var(--ink-3); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .row { transition: opacity .2s ease, border-color .2s ease; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top">
+    <a class="back" href="index.html">← 回小工具首頁</a>
+    <p class="eyebrow">2026-27 NBA FANTASY · AUCTION DRAFT</p>
+    <h1>NBA 拍賣選秀板</h1>
+    <p class="lede">14 隊、每隊 $200、11 先發＋3 板凳，全聯盟會選走 196 人。建議價由每位球員的 2026-27 預估數據換算，推薦指數再加上傷病風險、成長空間，以及跟 ESPN 排名（市場）的價差。成交後記下價格，上方的預算、最高可出價與通膨會即時更新。</p>
+    <p class="asof">資料基準 2026-09-28（多數球隊 9/29 開訓練營）· 預估數據是估算，不是官方數字，出價前請再確認傷病</p>
+  </header>
+
+  <section class="bar" id="bar" aria-label="我的拍賣狀態">
+    <div class="stat hot"><span class="k">我的剩餘預算</span><span class="v num" id="sLeft">$200<small>/ 200</small></span></div>
+    <div class="stat"><span class="k">已買名額</span><span class="v num" id="sSpots">0<small>/ 14</small></span></div>
+    <div class="stat hot"><span class="k">最高可出價</span><span class="v num" id="sMax">$187</span></div>
+    <div class="stat"><span class="k">聯盟剩餘資金</span><span class="v num" id="sLeague">$2,800</span></div>
+    <div class="stat"><span class="k">通膨係數</span><span class="v num" id="sInfl">×1.00</span></div>
+    <span class="spacer"></span>
+    <div class="bar-actions">
+      <a class="btn jump" href="#myTeam">我的陣容</a>
+      <button class="btn" id="resetBtn" type="button">清除成交紀錄</button>
+    </div>
+  </section>
+
+  <section class="controls" aria-label="篩選與賽制">
+    <div class="crow">
+      <span class="clabel">賽制</span>
+      <div class="seg" role="group" aria-label="賽制">
+        <button type="button" data-fmt="9cat" aria-pressed="true">9-cat</button>
+        <button type="button" data-fmt="8cat" aria-pressed="false">8-cat<span class="long">（不計失誤）</span></button>
+        <button type="button" data-fmt="pts" aria-pressed="false">積分制<span class="long">（Yahoo 預設）</span></button>
+      </div>
+      <span class="clabel">Punt（放棄的類別）</span>
+      <div class="chips" id="punts" role="group" aria-label="放棄的類別"></div>
+    </div>
+    <div class="crow">
+      <input class="search" id="q" type="search" placeholder="搜尋球員（英文名）" aria-label="搜尋球員">
+      <div class="chips" id="posChips" role="group" aria-label="位置"></div>
+      <label class="check"><input type="checkbox" id="fRookie">只看新秀</label>
+      <label class="check"><input type="checkbox" id="fTarget">只看「值得搶」</label>
+      <label class="check"><input type="checkbox" id="fHide">隱藏已成交</label>
+      <label class="check">排序
+        <select class="sort" id="sort" aria-label="排序">
+          <option value="idx">推薦指數</option>
+          <option value="v">建議價</option>
+          <option value="edge">便宜度（建議價 − 市場價）</option>
+          <option value="espn">ESPN 排名</option>
+          <option value="pts">PTS</option><option value="reb">REB</option><option value="ast">AST</option>
+          <option value="stl">STL</option><option value="blk">BLK</option><option value="tpm">3PM</option>
+          <option value="fg">FG%</option><option value="ft">FT%</option><option value="tov">TO（少者優先）</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <div class="layout">
+    <main class="board">
+      <div class="board-head">
+        <span id="count"></span>
+        <span class="legend" aria-hidden="true">九項預估：弱
+          <span class="sw"><i style="background:var(--h-3)"></i><i style="background:var(--h-2)"></i><i style="background:var(--h-1)"></i><i style="background:var(--h0)"></i><i style="background:var(--h1)"></i><i style="background:var(--h2)"></i><i style="background:var(--h3)"></i></span>強（與 196 人平均比）</span>
+      </div>
+      <ol class="list" id="list"></ol>
+      <div class="more"><button class="btn" id="moreBtn" type="button" hidden>顯示全部</button></div>
+    </main>
+
+    <aside class="side">
+      <section class="card" id="myTeam" aria-labelledby="myTeamH">
+        <h2 id="myTeamH">我的陣容<small id="myTeamSub"></small></h2>
+        <ul class="team" id="teamList"></ul>
+        <p class="muted" id="teamEmpty">在左邊按「成交」→ 輸入價格 →「我買的」，球員會出現在這裡。</p>
+        <div id="teamProfile" hidden>
+          <div class="profile" id="profileCells"></div>
+          <p class="posmix" id="posMix"></p>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="tierH">
+        <h2 id="tierH">各輪等級價格<small>每 14 人一輪</small></h2>
+        <div class="tiers" id="tierBars"></div>
+        <div class="axis" aria-hidden="true"><span></span><span id="tierAxis"></span><span></span></div>
+        <p class="muted" style="margin-top:8px">習慣蛇形選秀的話：第 1 輪等級的球員平均值這麼多錢。</p>
+      </section>
+
+      <section class="card plans" aria-labelledby="planH">
+        <h2 id="planH">$200 怎麼分</h2>
+        <div class="seg" role="group" aria-label="預算配置">
+          <button type="button" data-plan="0" aria-pressed="true">均衡</button>
+          <button type="button" data-plan="1" aria-pressed="false">雙核心</button>
+          <button type="button" data-plan="2" aria-pressed="false">深度</button>
+        </div>
+        <div class="plan-grid" id="planGrid"></div>
+        <p class="plan-note" id="planNote"></p>
+      </section>
+
+      <section class="card" aria-labelledby="rookH">
+        <h2 id="rookH">新秀速覽<small>2026 選秀</small></h2>
+        <ul class="rooks" id="rookList"></ul>
+      </section>
+
+      <section class="card" aria-labelledby="tipsH">
+        <h2 id="tipsH">14 隊拍賣要點</h2>
+        <ol class="tips">
+          <li><b>中段最值錢。</b>196 人被選走，自由球員市場很薄，第 3–8 輪等級（約 $12–25）的球員最常被低估，均衡配置通常比全押兩個球星穩。</li>
+          <li><b>看「最高可出價」。</b>它等於剩餘預算 −（剩餘名額 − 1）× $1，避免最後只剩 $1 要補好幾個人。</li>
+          <li><b>留意「通膨後」價格。</b>記下成交價後才會出現。前段大家保守、錢都還在場上時，後段價格會漲；前段有人把錢花光，後段就便宜。</li>
+          <li><b>先提名你不想要的貴球員。</b>標「易溢價」的名字最適合拿來消耗對手預算。</li>
+          <li><b>中鋒最稀缺。</b>籃板、阻攻、FG% 大多來自中鋒，至少留兩個中鋒的預算。</li>
+          <li><b>新秀有熱度溢價。</b>Boozer、Wilson、Dybantsa 常被喊過產值；Lendeborg 這類後段新秀才是撿便宜的地方。</li>
+          <li><b>板凳三格用 $1。</b>買上限高或傷癒後段回來的球員（Butler、Sharpe 這類），季中再換。</li>
+          <li><b>決定 punt 就切換上方的類別。</b>建議價會重算，備註裡標「適合 punt」的球員在你的陣容裡特別值錢。</li>
+        </ol>
+      </section>
+    </aside>
+  </div>
+
+  <section class="method" aria-labelledby="methodH">
+    <h2 id="methodH">資料與方法</h2>
+    <dl>
+      <div><dt>預估數據</dt><dd>以 2025-26 賽季數據、今年夏天的交易與簽約、傷病消息和各隊先發預測為基礎，為每位球員估 2026-27 的每場數據與出賽數；新秀依大學與夏季聯賽表現估算。受限於能查到的資料，ESPN 前 150 名以外的球員角色與傷病沒有逐一確認，訓練營開始後的消息也還沒反映。</dd></div>
+      <div><dt>建議價怎麼算</dt><dd>九項各自換成 z 分數（FG%、FT% 依出手數加權，單項上下限 ±5），加總後減去第 197 名的水準（替補水準），乘上出賽比例（出賽數 ÷ 82），再把 14 × $200 扣掉每人保底 $1 之後的 $2,604，按「價值的 1.2 次方」分配。積分制用 Yahoo 預設：得分 1、籃板 1.2、助攻 1.5、抄截 3、阻攻 3、失誤 −1。</dd></div>
+      <div><dt>市場價</dt><dd>把 ESPN 2026-27 category 排名放到同一條 9-cat 價格曲線上；沒進 ESPN 前 150 名的球員以第 165 名的價格計。建議價高於市場價 = 可能撿便宜，低於 = 別人可能喊得比他的產值還高。</dd></div>
+      <div><dt>推薦指數</dt><dd>70% 價值分數（建議價除以第 5 名的價格再開根號，第 5 名以上都算滿分）＋ 30% 市場價差分數，再加成長空間（0 / +3 / +6）、扣風險（0 / −4 / −10 / −18）。S ≥ 80、A ≥ 68、B ≥ 56、C ≥ 44。積分制沒有對應的 ESPN 排名，市場價差一律算中性。</dd></div>
+      <div><dt>標記</dt><dd>「值得搶」= 建議價比市場價高 $3 以上且至少 25%、風險不高；「易溢價」= 市場價比建議價高 $4 以上且至少 30%；「適合 punt」= 放棄該類別後價值至少變成 1.5 倍、多 $6 以上。</dd></div>
+    </dl>
+    <div class="src">
+      <span>主要來源：</span>
+      <a href="https://www.espn.com/fantasy/basketball/story/_/id/49959975/fantasy-basketball-roto-category-league-rankings-2026-27-nba-season" target="_blank" rel="noopener">ESPN 2026-27 category rankings</a>
+      <a href="https://www.rotowire.com/basketball/article/fantasy-basketball-rookies-2026-27-adp-draft-advice-136655" target="_blank" rel="noopener">RotoWire 新秀 ADP</a>
+      <a href="https://www.nba.com/news/nba-fantasy-expectations-for-top-rookies" target="_blank" rel="noopener">NBA.com 新秀預期</a>
+      <a href="https://www.nba.com/news/2026-nba-draft-order" target="_blank" rel="noopener">NBA.com 2026 選秀結果</a>
+      <a href="https://athlonsports.com/fantasy/fantasy-basketball-2026-27-auction-draft-guide" target="_blank" rel="noopener">Athlon 拍賣指南</a>
+      <a href="https://www.hoopsrumors.com/" target="_blank" rel="noopener">Hoops Rumors 各隊休賽季整理</a>
+    </div>
+    <p class="store" id="store"></p>
+  </section>
+
+</div>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script>
+(function () {
+'use strict';
+
+/*DATA-BEGIN*/
+// 欄位：名字, 球隊, 位置, 出賽, 得分, 籃板, 助攻, 抄截, 阻攻, 三分, 失誤, FG%, FT%, 罰球數, ESPN排名, 風險(0-3), 上升(0-2), 標記(r新秀 n新隊 i傷癒), 備註
+const RAW = [
+['Nikola Jokić','DEN','C',72,28.0,12.5,10.5,1.7,0.7,2.0,3.3,.570,.830,6.6,1,0,0,'','上季得分 28、籃板與助攻都是聯盟第一；9-cat 與積分制都是頭號人選'],
+['Victor Wembanyama','SAS','PF/C',68,26.0,12.0,3.8,1.2,3.8,3.0,3.2,.490,.820,6.0,2,1,1,'','年度最佳防守球員、MVP 候選；阻攻＋三分＋籃板沒有替代品，唯一疑慮是出賽數'],
+['Shai Gilgeous-Alexander','OKC','PG',74,31.0,5.0,6.5,1.7,0.9,2.1,2.4,.530,.885,8.8,3,0,0,'','得分與 FT% 頂級，失誤少，後衛第一人'],
+['Luka Dončić','LAL','PG',68,32.5,8.0,8.5,1.6,0.5,3.8,4.0,.480,.780,8.5,4,1,0,'','上季 33.5 分拿下得分王；LeBron 離隊後球權更多，失誤與 FT% 是代價'],
+['Anthony Edwards','MIN','SG/SF',76,27.5,5.8,4.5,1.3,0.7,3.6,3.1,.460,.830,7.0,5,0,0,'n','LaMelo 加盟分走一些持球，但得分與三分量仍是第一輪等級'],
+['Tyrese Maxey','PHI','PG/SG',72,25.5,4.0,6.5,1.8,0.5,3.2,2.4,.455,.885,6.0,6,0,0,'','Jaylen Brown、LeBron 來了球權稍降，抄截、三分、FT% 依舊'],
+['Donovan Mitchell','CLE','SG/PG',72,26.0,4.6,5.0,1.4,0.3,3.3,2.8,.470,.860,5.6,7,0,0,'','跟 Harden 分攤組織，得分與三分穩定'],
+['Jayson Tatum','BOS','SF/PF',70,27.0,8.5,5.5,1.1,0.5,3.2,2.9,.450,.840,6.5,8,1,0,'i','阿基里斯腱傷後上季末復出；Brown 被交易，他是唯一核心'],
+['Jalen Johnson','ATL','PF',72,22.5,10.3,7.5,1.3,0.8,1.7,3.2,.490,.760,5.2,9,0,1,'','上季 22.5 分 10.3 板 7.9 助入選年度第三隊，全能前鋒'],
+['Scottie Barnes','TOR','SF/SG',76,20.0,8.0,5.8,1.5,1.3,1.5,2.6,.480,.780,4.2,10,0,0,'','抄截＋阻攻＋籃板全面；Kawhi 回歸會分走一點出手'],
+['Cade Cunningham','DET','PG/SG',74,26.0,6.2,9.5,1.3,0.8,2.0,4.2,.470,.840,6.0,11,0,0,'','助攻王候選，失誤偏高是唯一缺點'],
+['Tyrese Haliburton','IND','PG/SG',64,18.0,3.8,9.0,1.4,0.6,2.8,1.9,.460,.860,3.0,12,1,0,'i','阿基里斯腱傷缺席整個 2025-26；助攻/失誤比頂級，復出首季留意狀態'],
+['Amen Thompson','HOU','SF/SG',78,18.0,8.3,5.5,1.6,1.2,0.4,2.4,.535,.700,4.2,13,0,1,'','抄截＋阻攻＋籃板＋FG%；三分與罰球是弱項'],
+['Anthony Davis','WAS','C/PF',58,23.5,11.5,3.2,1.2,2.1,0.6,2.2,.520,.790,6.5,14,2,0,'n','上季交易大限到巫師；每場產值前 10，但出賽數要打折'],
+['Bam Adebayo','MIA','C/PF',74,18.5,10.0,3.8,1.3,0.8,1.6,2.0,.470,.800,4.2,15,0,0,'','Giannis 加盟後得分會少一些；籃板、抄截、罰球穩'],
+['Derrick White','BOS','SG/PG',76,17.5,4.5,5.2,1.2,1.1,3.3,1.7,.445,.890,3.2,16,0,0,'','後衛少見的阻攻＋三分＋FT%，9-cat 寶藏'],
+['Cooper Flagg','DAL','SF/PF',74,22.5,7.2,4.6,1.3,1.0,1.5,2.8,.475,.830,5.8,18,0,2,'','上季年度新秀（21.0 分 6.7 板 4.5 助）；二年級持續成長，Kyrie 回歸後出手更乾淨'],
+['Kawhi Leonard','TOR','SF/PF',60,25.0,6.3,3.6,1.7,0.5,2.5,2.0,.490,.880,5.5,19,2,0,'n','9/14 交易正式回到暴龍；上季 27.9 分 1.9 抄 65 場，35 歲要算休兵'],
+['Karl-Anthony Towns','NYK','C/PF',72,22.0,12.0,3.0,0.8,0.7,2.1,2.6,.500,.840,5.0,20,0,0,'','會投三分的中鋒，籃板＋FT% 雙強'],
+['Giannis Antetokounmpo','MIA','PF/C',62,28.0,10.8,5.8,0.9,1.0,0.3,3.2,.600,.630,9.5,21,2,0,'n','換到熱火；上季小腿、膝蓋只打 36 場。FT% 殺手，punt FT% 才划算'],
+['Jamal Murray','DEN','PG',72,23.0,4.3,6.8,1.1,0.4,3.0,2.3,.475,.880,3.6,22,1,0,'','Jokić 身邊的得分手，三分與 FT% 穩'],
+['LaMelo Ball','MIN','PG',64,21.0,5.2,7.2,1.3,0.4,3.5,3.2,.425,.870,3.8,23,2,0,'n','四方交易到灰狼、續約 5 年；跟 Edwards 共享球權，腳踝傷史要打折'],
+['Jalen Duren','DET','C',76,17.5,11.5,2.8,0.9,1.2,0.0,1.9,.630,.700,4.6,24,1,1,'','籃板＋FG% 大戶；受限自由球員合約狀態選前再確認'],
+['Pascal Siakam','IND','PF/SF',74,21.0,7.0,3.8,1.1,0.5,1.5,2.2,.505,.780,4.6,25,0,0,'','Haliburton 回歸後球權回落，但效率穩'],
+['James Harden','CLE','PG/SG',72,20.0,5.3,7.8,1.3,0.6,2.8,3.6,.420,.870,6.5,26,1,0,'','37 歲，新約 3 年；助攻＋三分＋FT%，失誤與 FG% 是代價'],
+['Mikal Bridges','NYK','SF/SG',80,17.5,4.3,4.0,1.4,0.7,2.2,1.6,.495,.830,2.4,27,0,0,'','鐵人不缺賽，全面無短板'],
+['Evan Mobley','CLE','PF/C',72,18.5,9.3,3.5,0.9,1.6,1.0,2.0,.545,.730,4.2,28,0,0,'','阻攻＋籃板＋FG%，罰球略拖'],
+['Kevin Durant','HOU','PF/SF',68,24.5,5.8,4.0,0.8,1.0,2.1,2.8,.515,.870,5.4,29,1,0,'','38 歲，效率仍在；留意休兵'],
+['Alperen Şengün','HOU','C',76,20.5,10.3,5.8,1.2,1.0,0.3,3.2,.505,.720,5.5,30,0,0,'','中鋒版控球；FT% 與失誤拖累 9-cat，積分制更香'],
+['Jalen Brunson','NYK','PG',72,26.0,3.1,7.0,0.8,0.1,2.4,2.4,.485,.830,7.0,31,0,0,'','得分大戶，但抄截、阻攻、籃板少，9-cat 價值低於名氣'],
+['Nickeil Alexander-Walker','ATL','SG/PG',78,19.0,3.4,3.6,1.3,0.6,3.1,1.6,.455,.840,3.2,32,0,0,'','年度進步獎（20.8 分 3.2 三分）；3-and-D 在 9-cat 很值錢'],
+['Domantas Sabonis','SAC','C/PF',70,19.0,13.0,6.0,0.8,0.4,0.5,3.1,.590,.750,4.6,33,1,0,'','籃板＋助攻＋FG%；阻攻少'],
+['Stephen Curry','GSW','PG',62,24.0,4.2,5.8,1.1,0.4,4.4,2.9,.450,.920,4.3,34,1,0,'','38 歲；三分與 FT% 仍是頂級'],
+['Lauri Markkanen','UTA','PF/SF',66,22.5,6.8,2.0,0.8,0.5,3.0,1.6,.470,.885,5.5,35,1,0,'','Peterson、JJJ 加入分走球權，三分＋FT% 仍強'],
+['Jalen Williams','OKC','SF/SG',70,21.0,5.3,5.0,1.5,0.6,1.8,2.2,.485,.810,4.2,36,1,0,'','雷霆第二得分點，抄截多'],
+['Josh Giddey','CHI','PG/SG',74,18.5,8.8,8.5,1.1,0.5,1.8,3.3,.455,.800,3.2,37,0,0,'','準大三元型控衛，公牛新教練 Splitter 體系核心'],
+['Naz Reid','CHA','C/PF',76,17.5,8.0,2.8,1.1,1.0,2.4,1.8,.470,.800,2.8,38,0,1,'n','從灰狼替補變黃蜂先發，三分＋阻攻的中鋒'],
+['Dyson Daniels','ATL','SG/PG',76,12.0,6.5,5.8,2.1,0.7,0.4,2.0,.500,.650,2.0,39,0,0,'','聯盟抄截王級別；三分與罰球要靠別人補'],
+['Kon Knueppel','CHA','SF/SG',78,19.0,5.3,3.8,0.9,0.3,3.3,2.0,.455,.890,3.4,40,0,1,'','年度新秀第二名；LaMelo 被交易後球權增加'],
+['Devin Booker','PHX','PG/SG',72,25.0,4.2,6.8,0.9,0.3,2.1,3.0,.465,.880,7.0,41,0,0,'','得分與 FT% 強，防守數據少'],
+['Desmond Bane','ORL','SG/SF',74,19.5,4.8,4.3,1.1,0.4,2.4,2.1,.470,.880,3.4,42,0,0,'','均衡型得分後衛'],
+['Michael Porter Jr.','BKN','SF/PF',68,23.0,7.3,3.0,1.0,0.5,3.3,2.3,.475,.810,4.2,43,1,0,'','籃網第一得分手；Randle 加盟會分一點球'],
+['Donovan Clingan','POR','C',76,12.5,11.0,2.2,0.7,2.0,0.5,1.6,.540,.660,2.4,44,0,1,'','阻攻＋籃板，三年級持續長'],
+['Onyeka Okongwu','ATL','C',74,15.0,7.8,3.0,1.1,1.1,1.2,1.5,.490,.760,3.2,45,0,0,'','上季 15.2 分 7.6 板、抄阻各 1.1，開始投三分'],
+['Trey Murphy III','NOP','SF/SG',70,20.5,5.6,3.6,1.3,0.6,3.0,1.9,.465,.880,4.2,46,0,0,'','上季 21.5 分 3.2 三分、FT 88.6%，鵜鶘第一得分手'],
+['Walker Kessler','LAL','C',70,12.5,11.5,1.8,0.7,2.3,0.1,1.2,.670,.580,2.8,47,1,1,'n','簽換到湖人（4 年 1.3 億）；肩傷後復出，跟 Luka 打擋拆吃空接'],
+['Trae Young','WAS','PG',70,23.0,3.2,10.5,1.1,0.2,3.0,4.4,.420,.880,7.0,48,1,0,'n','一月被換到巫師；助攻王級別，但失誤與 FG% 在 9-cat 很傷'],
+['Kyrie Irving','DAL','PG',60,22.0,4.3,5.0,1.2,0.4,2.8,2.3,.470,.900,3.8,49,2,0,'i','前十字韌帶傷缺席整季，自稱訓練營無限制；34 歲'],
+['Jarrett Allen','CLE','C',72,13.5,10.0,2.0,0.8,1.1,0.0,1.3,.660,.690,3.8,50,0,0,'','FG% 籃板阻攻穩定供應'],
+['Austin Reaves','LAL','SG/PG',68,21.5,4.8,5.6,1.1,0.3,2.8,2.8,.470,.870,6.4,51,1,0,'','上季 23.3 分；LeBron 走後是湖人第二持球點'],
+['Chet Holmgren','OKC','C/PF',62,16.5,8.7,2.0,0.7,1.9,1.6,1.6,.520,.790,3.8,52,1,1,'','阻攻＋三分＋FG% 的稀有中鋒，出賽數是變數'],
+['De\'Aaron Fox','SAS','PG/SG',72,19.0,3.9,6.3,1.3,0.4,1.8,2.3,.480,.780,4.6,53,0,0,'','上季 18.6 分 6.2 助，馬刺控衛'],
+['Darius Garland','LAC','PG',66,20.0,2.7,7.0,1.1,0.1,2.7,2.9,.460,.870,3.8,54,2,0,'n','換到快艇當第一持球者；腳趾傷反覆'],
+['Brandon Miller','CHA','SF/SG',70,21.5,5.3,3.7,1.1,0.8,3.0,2.3,.440,.840,3.8,55,1,1,'','LaMelo 走後是黃蜂第一選擇'],
+['Rudy Gobert','MIN','C',74,11.0,11.0,1.7,0.8,1.5,0.0,1.3,.660,.650,3.2,56,0,0,'','籃板＋阻攻＋FG%，罰球拖'],
+['Caleb Wilson','CHI','PF/SF',70,15.5,7.5,2.3,1.3,1.4,0.5,1.9,.520,.700,3.8,57,1,2,'r','新秀第 4 順位，預計先發約 30 分鐘；抄阻＋FG%，大學罰球 71%、三分 26%'],
+['Dejounte Murray','NOP','SG/PG',66,17.5,5.3,6.3,1.5,0.3,1.9,2.6,.445,.790,2.6,58,2,0,'i','阿基里斯腱傷後上季只打 14 場；健康就是抄截助攻來源'],
+['Reed Sheppard','HOU','SG/PG',76,13.5,3.3,4.3,1.5,0.5,2.7,1.6,.440,.840,1.6,59,1,1,'','三分＋抄截，但 VanVleet 回歸、Smart 加盟壓縮上場時間'],
+['Matas Buzelis','CHI','SF/PF',78,16.0,6.3,2.2,0.9,1.3,2.0,1.5,.460,.790,3.0,60,0,1,'','二年級突破後持續上升，阻攻＋三分前鋒'],
+['Deni Avdija','POR','SF/PF',72,21.0,7.3,5.0,1.0,0.6,1.8,3.0,.470,.790,6.4,61,0,0,'','上季入選全明星；Morant、Lillard 來了之後球權下降'],
+['Alex Sarr','WAS','C/PF',72,14.5,7.2,2.3,0.8,1.9,1.3,1.8,.470,.730,2.8,62,1,1,'','阻攻型長人，但 AD、Ayton 在陣中分時間'],
+['Jaylen Brown','PHI','SF/SG',70,22.5,6.0,4.0,1.2,0.4,2.0,2.7,.475,.780,5.4,63,1,0,'n','交易到 76 人（上季 28.7 分年度第二隊）；跟 Maxey、Embiid、LeBron 分球'],
+['Tyler Herro','MIL','SG/PG',66,22.0,5.0,4.8,0.8,0.2,3.0,2.5,.455,.870,3.8,64,2,0,'ni','Giannis 交易換到公鹿當老大；上季腳傷只打 33 場'],
+['Norman Powell','CHI','SG/SF',70,20.0,3.5,2.5,1.1,0.3,2.8,1.7,.475,.850,4.4,65,1,0,'n','上季熱火全明星，簽約公牛（2 年 4500 萬）'],
+['Franz Wagner','ORL','SF/PF',68,21.5,5.8,4.6,1.2,0.4,1.8,2.3,.470,.810,5.4,66,1,0,'','魔術主要持球者之一，罰球數多'],
+['Brandin Podziemski','GSW','SG/PG',76,14.5,5.5,4.2,1.2,0.3,2.1,1.8,.455,.800,2.0,67,0,1,'','Butler、Moody 長期傷缺，出手變多'],
+['Kel\'el Ware','MIL','C',74,12.0,9.5,1.3,0.7,1.5,0.6,1.2,.560,.720,2.2,68,1,1,'n','Giannis 交易來到公鹿，跟 Turner 搶先發中鋒'],
+['OG Anunoby','NYK','SF/PF',72,16.5,5.0,2.2,1.4,0.8,2.3,1.4,.475,.800,2.8,69,0,0,'','3-and-D 典型，失誤少'],
+['VJ Edgecombe','PHI','SG',74,14.5,5.0,3.6,1.3,0.5,2.0,1.9,.440,.790,3.0,70,1,1,'','二年級，但 Brown、LeBron 加入後角色被壓縮'],
+['Damian Lillard','POR','PG',58,21.0,4.0,6.0,0.9,0.3,3.1,2.5,.430,.910,6.0,71,2,0,'i','阿基里斯腱傷缺席整季，訓練營無限制；36 歲'],
+['Jaren Jackson Jr.','UTA','PF/C',66,17.5,5.8,1.6,1.1,1.5,1.6,2.0,.460,.800,5.0,72,1,0,'n','二月被換到爵士；阻攻＋三分，市場把他排得偏低'],
+['Ty Jerome','MEM','SG/PG',62,16.5,3.2,5.5,1.2,0.3,2.3,2.0,.480,.860,2.8,73,2,0,'i','上季傷病只打 15 場（19.7 分）；健康就是灰熊先發控衛'],
+['LeBron James','PHI','SF/PF',58,17.5,6.5,6.5,0.9,0.5,1.8,3.0,.500,.740,3.5,74,2,0,'n','底薪加盟 76 人，生涯第 24 季；角色縮小'],
+['Fred VanVleet','HOU','PG/SG',66,13.5,3.5,5.3,1.4,0.5,2.6,1.6,.390,.850,2.2,75,2,0,'i','前十字韌帶傷缺席整季後回歸'],
+['Paolo Banchero','ORL','PF/SF',70,23.5,7.7,4.8,0.9,0.6,1.5,2.8,.455,.750,7.5,76,1,0,'','得分籃板多，但 FG%、FT%、失誤在 9-cat 扣分；積分制價值高很多'],
+['Miles Bridges','PHX','SF/PF',76,16.5,6.3,3.0,0.8,0.6,2.0,1.7,.455,.810,2.8,77,0,0,'n','交易到太陽，先發大前鋒'],
+['Cameron Boozer','MEM','PF',74,17.0,8.3,3.3,1.2,0.6,1.2,2.3,.500,.770,4.2,78,0,2,'r','新秀第 3 順位；Morant、JJJ 都走了，先發大前鋒吃大量球權，Yahoo 第一個被選走的新秀'],
+['Ausar Thompson','DET','SF/PF',74,11.5,6.3,3.0,1.8,1.0,0.3,1.4,.515,.640,2.2,79,0,1,'','抄截＋阻攻怪物，罰球與三分是硬傷'],
+['Brandon Ingram','LAC','SF/PF',66,20.5,5.3,4.2,0.8,0.6,1.9,2.6,.470,.820,4.4,80,1,0,'n','Kawhi 交易換到快艇'],
+['Kristaps Porziņģis','GSW','C/PF',55,17.5,7.0,2.2,0.7,1.5,2.1,1.6,.470,.840,3.8,81,2,0,'','會投三分的護框者，但幾乎每季都有傷'],
+['Ivica Zubac','IND','C',74,15.0,11.3,2.3,0.6,1.1,0.0,1.6,.620,.680,3.2,82,0,0,'n','上季交易大限到溜馬，跟 Haliburton 打擋拆'],
+['CJ McCollum','ATL','SG/PG',68,17.5,3.4,4.0,0.9,0.4,2.6,1.9,.450,.800,2.4,83,1,0,'','35 歲，老鷹先發控衛'],
+['Keegan Murray','SAC','PF/SF',72,14.5,6.8,1.8,1.1,0.8,2.1,1.1,.455,.790,2.2,84,0,0,'','低失誤的 3-and-D 前鋒'],
+['Jaden McDaniels','MIN','SF/PF',78,13.5,5.8,2.3,1.2,1.0,1.3,1.4,.490,.810,2.6,85,0,0,'','抄阻都有的側翼'],
+['AJ Dybantsa','WAS','SF',72,18.0,6.0,2.5,1.1,0.6,1.1,2.3,.475,.770,5.5,86,1,2,'r','狀元；Trae、AD、Ayton 在陣中，首年角色不確定，積分制比 9-cat 香'],
+['Julius Randle','BKN','PF',72,19.5,7.3,4.5,0.8,0.3,1.6,2.6,.470,.810,5.4,87,0,0,'n','四方交易到籃網'],
+['Andrew Wiggins','MIA','SF/PF',70,14.0,4.8,2.5,1.1,0.8,2.0,1.4,.470,.780,2.6,88,0,0,'','上季三分 41.4%，熱火先發'],
+['Joel Embiid','PHI','C',45,23.0,8.8,4.0,0.8,1.2,1.0,3.2,.480,.860,8.0,89,3,0,'','每場產值還在，但出賽數是最大問題'],
+['Keyonte George','UTA','PG/SG',74,20.0,4.0,6.0,1.0,0.2,2.8,2.8,.440,.870,4.4,90,0,0,'','剛拿 5 年 1.575 億延長約；Peterson 加入分球'],
+['Immanuel Quickley','TOR','PG/SG',72,16.5,4.6,5.8,1.0,0.2,2.7,1.8,.430,.860,2.8,91,0,0,'',''],
+['Stephon Castle','SAS','PG/SG',76,16.5,5.3,5.5,1.2,0.5,1.3,2.4,.455,.760,4.4,92,0,1,'','三年級持續成長'],
+['Myles Turner','MIL','C',72,13.5,6.3,1.4,0.7,1.7,1.7,1.3,.460,.780,3.0,93,0,0,'','會投三分的護框者，Ware 來了要搶時間'],
+['Paul George','BOS','SF/PF',60,17.0,5.2,3.8,1.4,0.5,2.4,2.2,.430,.860,3.2,94,2,0,'n','Brown 交易換到塞爾提克，36 歲'],
+['Tobias Harris','SAS','PF/SF',70,12.0,5.3,1.9,0.9,0.6,1.0,1.0,.480,.850,2.0,95,1,0,'n','簽約馬刺，輪替角色'],
+['Zion Williamson','NOP','PF/C',58,21.5,6.0,3.8,1.0,0.6,0.1,2.8,.590,.710,7.4,96,2,0,'','上季 62 場是生涯第二多；FG% 大、FT% 拖'],
+['Derik Queen','NOP','C/PF',76,13.0,7.8,3.8,1.0,1.0,0.4,2.1,.520,.700,3.0,97,0,1,'','二年級，上季 11.7 分 7.1 板 3.7 助'],
+['Josh Hart','NYK','SF/SG',74,11.5,8.3,4.8,1.3,0.3,1.2,1.6,.500,.700,2.4,98,0,0,'','籃板助攻型側翼'],
+['Payton Pritchard','BOS','PG/SG',78,15.5,3.9,4.5,0.9,0.1,3.0,1.3,.455,.840,1.8,99,0,0,'','三分量大、失誤少'],
+['John Collins','DET','PF/C',66,13.5,7.0,1.5,0.8,0.9,1.1,1.1,.530,.800,2.6,100,1,0,'n','簽換到活塞'],
+['Collin Gillespie','PHX','PG',76,11.5,3.5,4.5,1.1,0.2,2.4,1.2,.450,.860,1.4,101,0,0,'','續約 4 年，太陽替補控衛'],
+['Dylan Harper','SAS','PG/SG',74,14.0,4.0,4.2,1.2,0.3,1.3,1.8,.480,.800,3.2,102,1,2,'','二年級，替補但上限高'],
+['DeMar DeRozan','DEN','SF/PF',72,14.0,3.6,3.3,0.8,0.3,0.5,1.4,.490,.860,4.6,103,1,0,'n','國王釋出後加盟金塊'],
+['Nikola Vučević','ORL','C',70,14.0,9.0,2.8,0.7,0.6,1.4,1.5,.495,.800,1.6,104,1,0,'n','加盟魔術，36 歲'],
+['Peyton Watson','CLE','SF/PF',74,12.0,4.8,2.2,1.1,1.2,1.4,1.2,.480,.740,2.4,105,1,1,'n','上季多項生涯新高，換到騎士'],
+['Ryan Rollins','MIL','SG/PG',74,13.0,4.2,4.5,1.2,0.3,1.8,1.6,.470,.790,2.0,106,1,0,'','公鹿預計先發控衛，但後場人多'],
+['Coby White','CHA','PG/SG',72,17.5,3.5,4.5,0.8,0.2,2.9,1.9,.445,.880,3.4,107,1,0,'n','續約黃蜂 3 年'],
+['Cason Wallace','OKC','SG/PG',78,10.5,3.5,3.0,1.5,0.5,1.7,1.1,.460,.800,1.2,108,0,1,'','Dort 離隊，先發候選；抄截來源'],
+['Jabari Smith Jr.','HOU','PF/C',76,13.0,7.5,1.5,0.7,0.9,1.8,1.2,.455,.810,2.4,109,0,0,'',''],
+['Kevin Porter Jr.','MIL','SG/PG',58,14.0,4.5,5.3,1.4,0.4,1.6,2.4,.470,.780,2.6,110,2,0,'i','上季兩次膝蓋手術只打 38 場'],
+['Ayo Dosunmu','MIN','SG/PG',76,11.5,3.5,3.3,1.0,0.4,1.4,1.4,.480,.820,1.8,111,0,0,'n',''],
+['Julian Champagnie','SAS','SF/PF',74,11.0,5.8,1.6,0.9,0.6,2.4,0.9,.440,.830,1.4,112,0,0,'','三分＋低失誤，先發大前鋒候選'],
+['Brook Lopez','LAC','C',68,10.0,4.8,1.4,0.5,1.6,1.9,0.9,.450,.800,1.2,113,1,0,'','38 歲，三分＋阻攻'],
+['Zach Edey','MEM','C',62,13.5,11.0,1.4,0.5,1.7,0.1,1.8,.600,.700,3.4,114,2,1,'i','上季腳踝手術只打 11 場，預計訓練營全速'],
+['Daniel Gafford','DAL','C',70,10.0,6.8,1.2,0.6,1.5,0.0,1.0,.690,.680,2.6,115,1,0,'',''],
+['Mitchell Robinson','BOS','C',58,7.0,8.8,1.0,0.9,1.2,0.0,0.8,.620,.480,2.0,116,2,0,'n','從尼克簽到塞爾提克'],
+['Jakob Poeltl','TOR','C',70,12.5,9.3,2.6,0.9,1.2,0.0,1.4,.610,.630,2.4,117,1,0,'',''],
+['Neemias Queta','BOS','C',76,10.0,8.3,1.5,0.7,1.5,0.0,1.2,.650,.720,2.0,118,1,0,'','續約 4 年，跟 Robinson 搶先發'],
+['Quentin Grimes','LAL','SG/SF',72,13.0,3.8,2.8,1.0,0.3,2.2,1.3,.445,.820,2.2,119,0,0,'n','簽約湖人 4 年'],
+['Nic Claxton','CHI','C',70,10.5,7.3,2.0,0.8,1.4,0.0,1.4,.580,.580,2.6,120,1,0,'n','四方交易到公牛'],
+['Egor Dëmin','BKN','PG/SG',72,11.5,3.8,4.8,0.8,0.5,2.3,1.9,.395,.780,1.4,121,1,1,'','三分與助攻量，FG% 很低'],
+['Oso Ighodaro','PHX','PF/C',78,8.5,6.0,2.2,0.9,0.9,0.0,0.9,.620,.650,1.6,122,1,0,'',''],
+['Jake LaRavia','LAL','PF/SF',78,11.0,5.5,2.0,1.1,0.6,1.5,1.0,.470,.800,1.6,123,0,0,'',''],
+['Darryn Peterson','UTA','SG/PG',64,16.5,3.8,3.2,1.2,0.4,2.0,2.0,.435,.810,3.4,124,2,2,'r','新秀第 2 順位；大學 35 場只打 24 場（腿後肌、抽筋），爵士後場擠'],
+['Anthony Black','ORL','PG/SG',76,11.0,3.5,3.5,1.2,0.6,1.0,1.5,.470,.730,2.2,125,1,0,'',''],
+['Kyshawn George','WAS','SG/SF',74,11.5,5.0,3.3,1.1,0.6,1.8,1.7,.420,.780,2.0,126,1,0,'','巫師陣容變擠，可能改打替補'],
+['Ace Bailey','UTA','SF/PF',74,13.5,5.0,1.8,0.8,0.8,1.6,1.5,.450,.800,2.4,127,1,2,'','二年級，跟 Peterson 搶先發'],
+['Jeremiah Fears','NOP','SG/PG',72,12.0,3.2,3.8,1.1,0.2,1.3,2.0,.425,.830,3.0,128,1,1,'',''],
+['Devin Vassell','SAS','SG/SF',70,14.0,3.8,2.8,1.2,0.4,2.4,1.2,.440,.810,1.8,129,1,0,'',''],
+['Jalen Green','PHX','SG/SF',70,19.0,4.0,3.2,0.8,0.3,2.6,2.2,.425,.800,4.6,130,1,0,'','得分多但 FG% 低，積分制比較適合'],
+['Jrue Holiday','POR','PG/SG',66,10.5,4.0,4.0,1.0,0.4,1.7,1.3,.445,.870,1.2,131,1,0,'','36 歲，拓荒者後場人多'],
+['Toumani Camara','POR','PF/SF',78,11.0,5.3,2.2,1.3,0.6,1.9,1.2,.445,.740,1.8,132,0,0,'',''],
+['Isaiah Hartenstein','OKC','C',68,10.0,9.5,3.3,0.8,1.0,0.0,1.4,.590,.680,1.6,133,1,0,'','續約 3 年'],
+['Ja Morant','POR','PG',52,20.0,4.0,7.5,1.1,0.3,1.4,3.3,.445,.800,5.8,134,3,0,'n','交易到拓荒者；上季手肘傷只打 20 場，近三季 246 場只出賽 79 場'],
+['Saddiq Bey','NOP','SF/PF',74,13.5,5.0,2.0,0.8,0.3,1.9,1.2,.440,.850,2.6,135,1,0,'','上季 17.7 分生涯年，今年可能打替補'],
+['Day\'Ron Sharpe','BKN','C',70,9.5,8.0,2.2,1.0,0.9,0.1,1.4,.550,.640,2.2,136,1,0,'','Claxton 走後的先發中鋒候選'],
+['Alex Caruso','OKC','SG/PG',60,6.5,3.0,2.3,1.5,0.5,1.2,0.9,.440,.800,0.8,137,1,0,'','抄截專家'],
+['Dillon Brooks','PHX','SF/SG',72,15.0,3.6,1.8,1.0,0.3,2.1,1.7,.440,.800,2.6,138,0,0,'',''],
+['Darius Acuff Jr.','SAC','PG',72,16.5,3.0,5.5,0.9,0.1,2.2,2.7,.425,.820,3.6,139,1,2,'r','新秀第 7 順位，預計先發控衛；夏聯 FG 35%、失誤 3.8，9-cat 要配 punt FG%'],
+['RJ Barrett','TOR','SF/SG',66,17.0,5.3,3.8,0.8,0.3,1.8,2.3,.470,.680,4.4,140,1,0,'','Kawhi 回歸後出手減少'],
+['Cameron Johnson','DEN','SF/PF',68,13.0,4.2,2.3,0.8,0.4,2.3,1.1,.470,.860,2.0,141,1,0,'',''],
+['Jalen Suggs','ORL','PG/SG',56,13.5,4.0,3.8,1.6,0.8,2.0,2.1,.420,.800,2.6,142,2,0,'','抄阻都多，但年年有傷'],
+['Dereck Lively II','DAL','C',45,8.5,8.0,2.0,0.7,1.5,0.0,1.0,.650,.600,2.0,143,3,0,'i','上季腳傷只打 7 場，健康狀況未知'],
+['Scotty Pippen Jr.','MEM','PG/SG',70,11.0,3.5,4.3,1.4,0.4,1.4,1.7,.440,.770,2.2,144,1,0,'',''],
+['Kyle Filipowski','UTA','C/PF',74,10.5,6.5,2.3,0.8,0.6,1.0,1.2,.480,.740,2.0,145,1,0,'',''],
+['Isaiah Stewart','MEM','C/PF',70,9.5,6.0,1.3,0.5,1.5,0.5,0.9,.540,.750,1.6,146,0,0,'n','從活塞換到灰熊'],
+['Jerami Grant','MEM','PF/SF',66,14.0,3.6,2.2,0.7,0.6,2.0,1.3,.445,.820,3.4,147,1,0,'n','Morant 交易換到灰熊'],
+['Jaime Jaquez Jr.','MIL','SF/SG',74,13.5,5.3,4.2,1.0,0.3,0.7,1.8,.490,.780,3.0,148,0,0,'n','Giannis 交易來到公鹿，預計先發'],
+['Andrew Nembhard','IND','PG/SG',72,12.0,3.3,4.8,1.1,0.3,1.3,1.7,.470,.820,1.8,149,0,0,'',''],
+['Collin Sexton','LAL','SG/PG',72,12.5,2.3,2.8,0.7,0.1,1.5,1.6,.470,.860,2.6,150,1,0,'n','簽約湖人替補'],
+// ---- ESPN 前 150 名以外（14 隊聯盟仍會被選走的深度與新秀） ----
+['Yaxel Lendeborg','GSW','PF/SF',72,11.0,6.3,2.5,1.1,0.9,1.2,1.3,.490,.790,1.8,0,1,2,'r','新秀第 11 順位、夏聯 MVP；Butler、Moody 長期傷缺，全面型 9-cat 拼圖'],
+['Keaton Wagler','LAC','SG',72,12.5,4.0,3.3,0.8,0.3,2.1,1.8,.430,.820,2.4,0,1,2,'r','新秀第 5 順位，在 Garland 旁當副控兼射手'],
+['Mikel Brown Jr.','BKN','PG',70,13.0,3.0,4.5,1.0,0.2,1.9,2.5,.400,.820,3.0,0,2,2,'r','新秀第 6 順位，跟 Traoré、Saraf 搶先發控衛；FG% 很低'],
+['Brayden Burries','MIL','SG',60,8.5,3.0,2.2,0.9,0.3,1.1,1.0,.450,.790,1.4,0,2,2,'r','新秀第 10 順位、夏聯第一隊；開季可能排不進輪替，公鹿擺爛就撿'],
+['Morez Johnson Jr.','DAL','PF/C',66,8.0,5.8,0.9,0.6,1.0,0.3,0.9,.590,.760,1.8,0,2,1,'r','新秀第 9 順位；Lively 一傷就撿，FG%＋籃板＋阻攻'],
+['Hannes Steinbach','CHA','PF/C',66,8.0,6.8,1.0,0.5,0.5,0.3,1.0,.530,.700,1.8,0,2,1,'r','新秀第 14 順位，大學全國籃板王；純籃板來源'],
+['Kingston Flemings','ATL','PG',72,7.5,2.0,3.2,0.8,0.2,0.8,1.3,.440,.800,1.2,0,2,1,'r','新秀第 8 順位，McCollum 替補約 15 分鐘，dynasty 才需要'],
+['Dailyn Swain','CHI','SF',60,7.0,3.8,2.0,0.9,0.3,0.4,1.1,.490,.700,1.8,0,2,1,'r','新秀第 15 順位'],
+['Karim López','MEM','SF/PF',60,6.5,4.0,1.8,0.7,0.4,0.6,1.0,.450,.750,1.2,0,2,1,'r','新秀，灰熊重建隊有機會拿時間'],
+['Aaron Gordon','DEN','PF',62,14.5,5.5,3.0,0.7,0.3,1.4,1.4,.520,.790,3.4,0,2,0,'','腿後肌傷史'],
+['Christian Braun','DEN','SG/SF',76,13.5,5.5,2.5,1.0,0.4,1.1,1.1,.520,.760,2.6,0,1,0,'','ESPN 前 150 名沒列他，出價前先確認健康與角色'],
+['Draymond Green','GSW','PF/C',68,8.5,6.0,5.3,1.3,0.8,1.3,2.1,.420,.690,1.2,0,1,0,'','36 歲，抄阻助攻型'],
+['Jimmy Butler','GSW','SF/PF',30,17.0,5.3,4.8,1.3,0.3,0.6,1.6,.490,.840,7.0,0,3,0,'i','一月十字韌帶斷裂，最快 2027 年 1–2 月回歸，只能當後段收藏'],
+['Gui Santos','GSW','SF',76,11.5,5.0,2.3,1.1,0.4,1.2,1.2,.500,.740,2.0,0,1,1,'','上季最後 31 場 15.4 分，預計先發小前鋒'],
+['Zach LaVine','SAC','SG',60,20.5,4.0,3.8,0.9,0.3,2.9,2.3,.480,.860,3.8,0,2,0,'','ESPN 前 150 名沒列他，可能有未公開的傷病或角色變化，出價前先查'],
+['Malik Monk','SAC','SG',68,13.5,3.0,4.0,0.7,0.3,2.0,1.8,.430,.850,2.6,0,1,0,'','國王第六人兼替補控衛'],
+['De\'Andre Hunter','SAC','SF/PF',70,13.0,4.2,1.6,0.7,0.2,1.6,1.2,.450,.840,3.0,0,1,0,'n',''],
+['Maxime Raynaud','SAC','C',74,9.5,6.5,1.5,0.5,0.6,0.6,1.0,.520,.760,1.8,0,1,1,'','上季末表現好，但被 Sabonis 擋住'],
+['Keldon Johnson','SAS','SF/PF',76,13.5,5.5,1.8,0.7,0.2,1.4,1.3,.480,.790,2.6,0,0,0,'','年度第六人，合約年'],
+['Harrison Barnes','SAS','SF/PF',74,9.5,3.5,1.5,0.6,0.2,1.5,0.8,.470,.830,1.8,0,1,0,'',''],
+['Tari Eason','HOU','PF/SF',68,11.5,6.3,1.4,1.4,0.8,1.3,1.1,.460,.720,2.2,0,1,0,'','抄阻都有的替補前鋒'],
+['Marcus Smart','HOU','SG/PG',60,8.5,2.5,3.3,1.3,0.3,1.3,1.3,.400,.790,1.6,0,2,0,'n','簽約火箭'],
+['Steven Adams','HOU','C',58,5.0,7.3,1.5,0.5,0.8,0.0,0.9,.540,.550,1.2,0,2,0,'',''],
+['Jonathan Kuminga','MIN','SF/PF',66,13.0,5.0,2.0,0.8,0.5,0.8,1.6,.470,.680,3.8,0,2,0,'n','老鷹未執行選項後的去向待確認（有報導指向灰狼）'],
+['Donte DiVincenzo','MIN','SG/SF',70,11.5,4.0,3.2,1.1,0.3,2.4,1.3,.415,.800,1.4,0,1,0,'','LaMelo 來了時間會被分走'],
+['Sam Hauser','BOS','SF/PF',74,9.0,3.8,1.2,0.6,0.3,2.4,0.5,.450,.860,0.6,0,0,0,'','純三分射手'],
+['Max Christie','DAL','SG',76,12.5,3.3,2.3,0.9,0.4,2.2,1.1,.450,.840,1.8,0,0,0,'','獨行俠預計先發得分後衛'],
+['P.J. Washington','DAL','PF',68,13.5,7.0,1.9,1.0,1.0,1.5,1.3,.450,.700,2.6,0,1,0,'','上季傷病不斷只打 56 場'],
+['Naji Marshall','DAL','SF',74,13.0,4.5,3.0,1.0,0.3,0.8,1.5,.500,.750,2.8,0,1,0,'','續約 3 年，輪替主力'],
+['Zaccharie Risacher','DAL','SF',72,10.5,3.8,1.3,0.8,0.4,1.5,1.0,.440,.720,1.6,0,1,1,'n','三方交易到獨行俠'],
+['Santi Aldama','DAL','PF/C',62,10.5,6.0,2.3,0.8,0.7,1.5,1.0,.460,.720,1.4,0,2,0,'n','膝蓋小手術後，訓練營狀況待確認'],
+['Cedric Coward','MEM','SG/SF',74,13.0,5.5,2.3,1.1,0.6,1.7,1.3,.460,.780,2.2,0,0,1,'','二年級，灰熊先發'],
+['Jaylen Wells','MEM','SF/SG',76,11.0,3.8,1.8,1.0,0.4,1.8,1.0,.440,.820,1.8,0,1,0,'',''],
+['D\'Angelo Russell','MEM','PG',60,11.0,2.8,4.8,0.9,0.3,2.0,1.8,.410,.820,1.6,0,2,0,'n',''],
+['Luguentz Dort','ATL','SG/SF',70,8.0,3.6,1.4,0.9,0.4,1.6,0.8,.400,.780,1.2,0,1,0,'n','三方交易到老鷹，替補防守者'],
+['Jock Landale','ATL','C',70,9.5,5.8,1.7,0.5,0.7,0.8,1.0,.510,.760,1.6,0,1,0,'','老鷹替補中鋒'],
+['Dorian Finney-Smith','ATL','PF/SF',60,7.5,4.3,1.4,0.8,0.4,1.7,0.7,.440,.720,0.8,0,1,0,'n','9/22 交易到老鷹'],
+['Bobby Portis','MIA','PF/C',70,12.5,6.8,1.3,0.7,0.5,1.4,0.9,.490,.800,1.2,0,1,0,'n','跟 Giannis 一起換到熱火'],
+['Davion Mitchell','MIA','PG',74,9.5,2.8,6.3,1.1,0.2,1.4,1.6,.480,.730,1.0,0,0,0,'','熱火先發控衛，價值在助攻'],
+['Tim Hardaway Jr.','MIA','SG/SF',76,12.0,2.7,1.5,0.5,0.1,2.6,0.8,.440,.820,1.6,0,1,0,'n','上季第六人獎第三名，簽約熱火'],
+['Klay Thompson','MIA','SG/SF',66,10.5,2.6,1.4,0.5,0.3,2.6,0.8,.400,.870,0.7,0,1,0,'n','獨行俠買斷後加盟熱火，只剩三分'],
+['Nikola Jović','MIA','PF/SF',64,9.5,4.6,3.0,0.8,0.3,1.4,1.4,.460,.800,1.6,0,1,0,'',''],
+['Kyle Kuzma','MIL','PF/SF',68,13.0,5.8,2.4,0.6,0.3,1.4,1.8,.470,.700,2.6,0,1,0,'',''],
+['Gary Trent Jr.','MIL','SG',70,9.0,2.0,1.2,0.8,0.2,2.1,0.6,.420,.820,0.8,0,1,0,'',''],
+['Mark Williams','PHX','C',60,12.5,9.5,1.3,0.8,1.2,0.0,1.3,.600,.720,2.6,0,2,0,'','續約 3 年、太陽先發中鋒，但傷病史長，ESPN 前 150 名沒列'],
+['Jordan Goodwin','PHX','SG/PG',66,7.5,4.2,2.3,1.2,0.3,1.2,0.8,.440,.740,0.8,0,1,0,'',''],
+['Grayson Allen','CHA','SG',66,10.5,3.0,2.5,1.0,0.3,2.5,0.8,.440,.870,1.2,0,1,0,'n','Bridges 交易換到黃蜂'],
+['Royce O\'Neale','CHA','SF/PF',70,9.0,4.5,2.5,1.1,0.4,2.4,0.9,.420,.780,0.6,0,1,0,'n','三分＋抄截的低失誤專才'],
+['Dennis Schröder','CHA','PG',72,11.0,2.5,4.8,0.8,0.1,1.6,1.8,.420,.850,2.0,0,1,0,'n',''],
+['Moussa Diabaté','CHA','C',70,7.5,7.5,1.4,0.8,0.9,0.0,0.9,.600,.620,2.0,0,1,0,'',''],
+['Sam Merrill','CLE','SG',66,9.5,2.5,2.0,0.7,0.2,2.6,0.7,.420,.880,0.7,0,1,0,'',''],
+['Jaylon Tyson','CLE','SF',70,9.0,4.5,2.3,0.8,0.3,1.2,1.0,.470,.780,1.4,0,1,1,'',''],
+['Jusuf Nurkić','UTA','C',66,10.5,9.5,3.0,0.9,0.8,0.6,2.0,.510,.650,2.4,0,1,0,'','Kessler 走後的爵士先發中鋒'],
+['Isaiah Collier','UTA','PG',66,9.0,2.5,5.5,1.0,0.2,0.6,2.1,.460,.700,2.4,0,1,0,'',''],
+['Scoot Henderson','POR','PG',64,10.5,3.0,4.3,0.8,0.3,1.3,2.0,.410,.780,2.2,0,2,1,'','拓荒者控衛人數多，角色不明'],
+['Robert Williams III','POR','C',45,6.5,7.0,1.3,0.8,1.4,0.0,0.9,.620,.620,1.2,0,3,0,'','續約，但出賽數一向很少'],
+['Shaedon Sharpe','POR','SG',22,18.0,4.5,2.8,1.0,0.4,2.2,2.0,.450,.780,4.2,0,3,0,'i','八月半月板撕裂，約 2027 年 2 月底才回來；只適合用最後一格收藏'],
+['Jordan Poole','NOP','SG/PG',70,15.0,2.8,3.8,1.0,0.3,2.6,1.9,.420,.870,2.8,0,1,0,'',''],
+['Herbert Jones','NOP','SF',64,9.5,3.8,2.4,1.6,0.8,1.2,1.2,.420,.830,1.6,0,1,0,'','抄截專家，上季進攻下滑'],
+['Yves Missi','NOP','C',74,9.0,8.3,1.8,0.6,1.5,0.0,1.4,.560,.640,2.2,0,1,1,'','鵜鶘預計先發中鋒'],
+['Bennedict Mathurin','NOP','SG/SF',70,13.5,4.5,1.8,0.6,0.2,1.3,1.5,.440,.820,4.2,0,1,0,'n','簽約鵜鶘，替補得分手'],
+['Ajay Mitchell','OKC','SG/PG',72,11.0,3.0,3.3,0.9,0.3,1.2,1.3,.480,.820,2.2,0,1,1,'','雷霆送走 Dort、Joe、Wiggins 後時間增加'],
+['Jared McCain','OKC','SG',70,10.0,2.2,2.0,0.7,0.1,2.0,1.0,.430,.860,1.2,0,1,0,'n',''],
+['Ja\'Kobe Walter','TOR','SG',70,10.0,3.3,1.5,1.0,0.3,1.8,0.8,.430,.800,1.4,0,1,0,'',''],
+['Collin Murray-Boyles','TOR','PF',70,9.5,6.0,2.3,1.1,0.8,0.3,1.3,.540,.680,2.0,0,1,1,'',''],
+['Deandre Ayton','WAS','C',66,11.5,8.3,1.4,0.6,0.8,0.0,1.4,.590,.720,1.6,0,1,0,'n','從湖人換到巫師，跟 AD、Sarr 分時間'],
+['Bilal Coulibaly','WAS','SF/SG',70,11.0,4.6,2.5,1.3,0.8,1.1,1.5,.450,.760,2.0,0,1,0,'',''],
+['Tre Johnson','WAS','SG',68,12.0,3.0,2.2,0.7,0.2,2.1,1.3,.430,.850,1.8,0,2,1,'',''],
+['Khris Middleton','WAS','SF',55,10.0,3.8,3.0,0.7,0.1,1.2,1.3,.460,.860,1.8,0,2,0,'n','簽換回巫師'],
+['Miles McBride','NYK','PG/SG',70,10.5,2.5,3.0,1.0,0.2,2.2,0.9,.430,.850,1.0,0,0,0,'',''],
+['Wendell Carter Jr.','ORL','C/PF',64,9.5,7.5,1.8,0.6,0.7,0.7,1.1,.500,.740,1.6,0,1,0,'','Vučević 加盟後時間會少'],
+['Tristan da Silva','ORL','SF/PF',74,9.0,3.8,1.8,0.7,0.3,1.6,0.9,.440,.800,1.2,0,1,0,'',''],
+['Andre Drummond','PHI','C',60,7.0,8.0,1.2,0.9,0.6,0.0,1.3,.520,.600,1.6,0,1,0,'',''],
+['Kelly Oubre Jr.','IND','SF/SG',66,12.0,4.8,1.4,1.2,0.6,1.4,1.2,.460,.740,2.6,0,1,0,'n','簽約溜馬'],
+['Aaron Nesmith','IND','SF',62,11.5,4.3,1.4,0.8,0.5,1.8,1.0,.460,.860,2.4,0,2,0,'',''],
+['T.J. McConnell','IND','PG',72,9.0,2.8,4.5,1.1,0.2,0.3,1.4,.510,.800,0.8,0,0,0,'',''],
+['Jay Huff','IND','C',72,8.5,4.0,1.0,0.5,1.8,1.1,0.7,.510,.820,1.0,0,1,0,'','21 分鐘 1.9 阻攻、FT 82%，Zubac 來了時間可能變少'],
+['Jarace Walker','IND','PF',70,9.0,4.8,2.0,0.9,0.6,1.2,1.0,.450,.740,1.2,0,1,1,'',''],
+['Ron Holland II','DET','SF',70,8.5,4.3,1.6,1.2,0.5,0.6,1.2,.450,.700,2.0,0,1,1,'',''],
+['Isaiah Joe','DET','SG',70,9.5,2.8,1.4,0.8,0.2,2.4,0.6,.430,.860,0.8,0,1,0,'n','從雷霆換到活塞'],
+['Kevin Huerter','DET','SG/SF',66,9.5,3.0,2.5,0.7,0.3,1.8,1.0,.430,.780,0.8,0,1,0,'',''],
+['Rui Hachimura','LAC','PF',66,13.0,4.8,1.3,0.7,0.3,1.4,0.9,.500,.760,2.2,0,1,0,'n','簽約快艇'],
+['Bradley Beal','LAC','SG',55,12.0,3.0,3.0,0.9,0.3,1.7,1.6,.470,.820,2.2,0,2,0,'',''],
+['Gradey Dick','LAC','SG/SF',66,10.0,3.0,1.5,0.8,0.3,2.0,0.9,.420,.840,1.2,0,1,0,'n','Kawhi 交易換到快艇'],
+['Sandro Mamukelashvili','LAL','PF/C',74,10.5,5.8,1.8,0.7,0.7,1.2,1.0,.500,.780,1.6,0,1,0,'n','簽約湖人，每分鐘效率高'],
+['Keon Ellis','BKN','SG',72,8.0,3.0,2.0,1.3,0.5,1.7,0.8,.450,.800,0.8,0,1,0,'n','抄截＋阻攻的低用球後衛'],
+['Noah Clowney','BKN','PF',66,10.0,5.0,1.3,0.6,0.8,1.8,0.9,.410,.780,1.4,0,1,0,'',''],
+];
+/*DATA-END*/
+
+/*ENGINE-BEGIN*/
+// ---------- 估值引擎：z-score → 替補水準 → 拍賣金額 ----------
+const LEAGUE = { teams: 14, budget: 200, roster: 14, starters: 11, bench: 3 };
+const SPOTS = LEAGUE.teams * LEAGUE.roster;          // 196 人會被選走
+const TOTAL = LEAGUE.teams * LEAGUE.budget;          // 聯盟總預算 $2,800
+const CATS = ['pts', 'reb', 'ast', 'stl', 'blk', 'tpm', 'fg', 'ft', 'tov'];
+const STAR = 1.2;                                    // 明星溢價：價值^1.2 分配金額（拍賣裡頂級球星本來就貴）
+const ZCAP = 5;                                      // 單項 z 上下限，避免 Giannis 罰球、Wemby 阻攻這種極端值一項定生死
+
+function makePlayers(raw) {
+  const seen = {};
+  return raw.map(r => {
+    const [name, team, pos, gp, pts, reb, ast, stl, blk, tpm, tov, fgp, ftp, fta, espn, risk, up, flags, note] = r;
+    let id = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    if (seen[id]) id += '-' + (++seen[id]); else seen[id] = 1;
+    const ftm = ftp * fta;
+    const fgm = Math.max(0, (pts - tpm - ftm) / 2);   // 2×FGM + 3PM + FTM = 得分
+    const fga = fgp > 0 ? fgm / fgp : 0;
+    return {
+      id, name, team, pos: pos.split('/'), gp, pts, reb, ast, stl, blk, tpm, tov, fgp, ftp, fta, fga,
+      espn: espn || 0, risk, up, rookie: flags.includes('r'), moved: flags.includes('n'), hurt: flags.includes('i'),
+      note: note || '', search: name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(),
+      z: {}, zs: 0, v: 0, rank: 0,
+    };
+  });
+}
+
+// 以前 196 名（反覆收斂）當母體，算出九項 z-score；熱度圖與所有賽制共用同一組 z
+function baseZ(ps) {
+  let pool = ps.slice();
+  for (let it = 0; it < 4; it++) {
+    const sfga = pool.reduce((s, p) => s + p.fga, 0), sfgm = pool.reduce((s, p) => s + p.fga * p.fgp, 0);
+    const sfta = pool.reduce((s, p) => s + p.fta, 0), sftm = pool.reduce((s, p) => s + p.fta * p.ftp, 0);
+    const mfg = sfgm / sfga, mft = sftm / sfta;
+    const raw = p => ({
+      pts: p.pts, reb: p.reb, ast: p.ast, stl: p.stl, blk: p.blk, tpm: p.tpm,
+      fg: (p.fgp - mfg) * p.fga, ft: (p.ftp - mft) * p.fta, tov: -p.tov,
+    });
+    const stats = {};
+    CATS.forEach(c => {
+      const xs = pool.map(p => raw(p)[c]);
+      const m = xs.reduce((a, b) => a + b, 0) / xs.length;
+      const sd = Math.sqrt(xs.reduce((a, b) => a + (b - m) * (b - m), 0) / xs.length) || 1;
+      stats[c] = { m, sd };
+    });
+    ps.forEach(p => {
+      const r = raw(p);
+      CATS.forEach(c => { p.z[c] = Math.max(-ZCAP, Math.min(ZCAP, (r[c] - stats[c].m) / stats[c].sd)); });
+    });
+    const tmp = ps.map(p => ({ p, s: CATS.reduce((a, c) => a + p.z[c], 0) }));
+    tmp.sort((a, b) => b.s - a.s);
+    const R = tmp[Math.min(SPOTS, tmp.length - 1)].s;
+    tmp.forEach(t => { t.var = (t.s - R) * t.p.gp / 82; });
+    tmp.sort((a, b) => b.var - a.var);
+    pool = tmp.slice(0, SPOTS).map(t => t.p);
+  }
+}
+
+// Yahoo 預設積分：得分 1、籃板 1.2、助攻 1.5、抄截 3、阻攻 3、失誤 -1
+const fpts = p => p.pts + 1.2 * p.reb + 1.5 * p.ast + 3 * p.stl + 3 * p.blk - p.tov;
+
+// fmt: '9cat' | '8cat' | 'pts'；punts: Set(類別)。回傳 {list(依價值排序), vmax}
+function valuate(ps, fmt, punts) {
+  const cats = CATS.filter(c => !(fmt === '8cat' && c === 'tov') && !punts.has(c));
+  const score = fmt === 'pts' ? fpts : (p => cats.reduce((a, c) => a + p.z[c], 0));
+  const tmp = ps.map(p => ({ p, s: score(p) }));
+  tmp.sort((a, b) => b.s - a.s);
+  const R = tmp[Math.min(SPOTS, tmp.length - 1)].s;
+  tmp.forEach(t => { t.var = (t.s - R) * t.p.gp / 82; });
+  tmp.sort((a, b) => b.var - a.var);
+  const top = tmp.slice(0, SPOTS).filter(t => t.var > 0);
+  const w = top.reduce((a, t) => a + Math.pow(t.var, STAR), 0);
+  const rate = w > 0 ? (TOTAL - SPOTS) / w : 0;
+  tmp.forEach((t, i) => {
+    t.p.zs = t.s;
+    t.p.var = t.var;
+    t.p.v = t.var > 0 ? 1 + rate * Math.pow(t.var, STAR) : 0;
+    t.p.rank = i + 1;
+  });
+  return { list: tmp.map(t => t.p), vmax: tmp[0] ? tmp[0].p.v : 1 };
+}
+/*ENGINE-END*/
+
+// ---------- 顯示用對照 ----------
+const TEAM_ZH = {
+  ATL: '老鷹', BOS: '塞爾提克', BKN: '籃網', CHA: '黃蜂', CHI: '公牛', CLE: '騎士', DAL: '獨行俠', DEN: '金塊',
+  DET: '活塞', GSW: '勇士', HOU: '火箭', IND: '溜馬', LAC: '快艇', LAL: '湖人', MEM: '灰熊', MIA: '熱火',
+  MIL: '公鹿', MIN: '灰狼', NOP: '鵜鶘', NYK: '尼克', OKC: '雷霆', ORL: '魔術', PHI: '76人', PHX: '太陽',
+  POR: '拓荒者', SAC: '國王', SAS: '馬刺', TOR: '暴龍', UTA: '爵士', WAS: '巫師',
+};
+const CAT_LABEL = { pts: 'PTS', reb: 'REB', ast: 'AST', stl: 'STL', blk: 'BLK', tpm: '3PM', fg: 'FG%', ft: 'FT%', tov: 'TO' };
+const CAT_ZH = { pts: '得分', reb: '籃板', ast: '助攻', stl: '抄截', blk: '阻攻', tpm: '三分球', fg: '投籃命中率', ft: '罰球命中率', tov: '失誤' };
+const POSITIONS = ['ALL', 'PG', 'SG', 'SF', 'PF', 'C'];
+const PLANS = [
+  { name: '均衡', prices: [52, 38, 26, 20, 16, 13, 10, 8, 6, 4, 3, 2, 1, 1],
+    note: '預設推薦。14 隊的自由球員市場很薄，把錢分到第 3–8 輪等級，九項比較不會有大洞。' },
+  { name: '雙核心', prices: [70, 58, 20, 13, 10, 8, 6, 5, 4, 2, 1, 1, 1, 1],
+    note: '搶兩個第一輪球星，其餘靠 $1–6 撿便宜；最好搭配 punt，讓便宜的球員也能補到你要的類別。' },
+  { name: '深度', prices: [32, 28, 25, 22, 20, 17, 15, 12, 10, 8, 5, 3, 2, 1],
+    note: '不碰前 10 名，把錢平均放在第 2–6 輪等級；適合前段大家搶球星、價格被喊高的房間。' },
+];
+const RISK_PEN = [0, 4, 10, 18], UP_BONUS = [0, 3, 6];
+const STORE_KEY = 'nba-auction-2026-v1';
+const PAGE = 80;
+
+// ---------- 狀態 ----------
+const players = makePlayers(RAW);
+baseZ(players);
+const byId = new Map(players.map(p => [p.id, p]));
+
+// 市場價曲線：標準 9-cat（不 punt）的價值排序，套用 ESPN 排名
+const base = valuate(players, '9cat', new Set());
+const curve = base.list.map(p => p.v);
+const mktOf = p => curve[Math.min(curve.length - 1, (p.espn || 165) - 1)] || 0;
+const baseV = new Map(base.list.map(p => [p.id, p.v]));
+players.forEach(p => { p.mkt = mktOf(p); });
+
+// 最適 punt：放棄單一類別後價值變化最大的那一項
+(function findPunts() {
+  CATS.forEach(c => {
+    valuate(players, '9cat', new Set([c])).list.forEach(p => {
+      const b = baseV.get(p.id), v = p.v;
+      if (v >= b * 1.5 && v - b >= 6 && (!p.bestPunt || v > p.bestPunt.v)) p.bestPunt = { c, v };
+    });
+  });
+}());
+
+const state = {
+  fmt: '9cat', punts: [], q: '', pos: 'ALL', rookie: false, target: false, hide: false, sort: 'idx',
+  sold: {}, plan: 0, editing: null, showAll: false,
+};
+let canStore = false;
+try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); canStore = true; } catch (e) { canStore = false; }
+(function load() {
+  if (!canStore) return;
+  try {
+    const s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+    if (!s) return;
+    ['fmt', 'pos', 'sort'].forEach(k => { if (typeof s[k] === 'string') state[k] = s[k]; });
+    ['rookie', 'target', 'hide'].forEach(k => { if (typeof s[k] === 'boolean') state[k] = s[k]; });
+    if (Array.isArray(s.punts)) state.punts = s.punts.filter(c => CATS.includes(c));
+    if (typeof s.plan === 'number') state.plan = s.plan;
+    if (s.sold && typeof s.sold === 'object') {
+      Object.keys(s.sold).forEach(id => {
+        const x = s.sold[id];
+        if (byId.has(id) && x && Number.isFinite(x.p)) state.sold[id] = { p: Math.round(x.p), m: !!x.m };
+      });
+    }
+  } catch (e) { /* 壞掉的存檔就當沒有 */ }
+}());
+let saveFailed = false;
+function save() {
+  if (!canStore) return;
+  try {
+    const { fmt, punts, pos, sort, rookie, target, hide, sold, plan } = state;
+    localStorage.setItem(STORE_KEY, JSON.stringify({ fmt, punts, pos, sort, rookie, target, hide, sold, plan }));
+    saveFailed = false;
+  } catch (e) { saveFailed = true; }
+  renderStore();
+}
+
+// ---------- 計算 ----------
+let current = { list: [], vmax: 1 };
+function recompute() {
+  const punts = state.fmt === 'pts' ? new Set() : new Set(state.punts);
+  current = valuate(players, state.fmt, punts);
+  const isCat = state.fmt !== 'pts';
+  const ref = (current.list[4] || current.list[0]).v;   // 以第 5 名當滿分，前幾名的極端值才不會把其他人壓扁
+  current.list.forEach(p => {
+    const vs = Math.min(100, 100 * Math.sqrt(Math.max(0, p.v) / ref));
+    const m = isCat ? p.mkt : p.v;
+    const edge = Math.max(-1, Math.min(1, (p.v - m) / Math.max(4, m)));
+    const score = 0.7 * vs + 0.3 * (50 + 50 * edge) + UP_BONUS[p.up] - RISK_PEN[p.risk];
+    p.idx = Math.round(Math.max(0, Math.min(100, score)));
+    p.edge = isCat ? p.v - p.mkt : 0;
+    p.target = isCat && p.v >= 3 && p.v - p.mkt >= Math.max(3, 0.25 * p.mkt) && p.risk <= 1;
+    p.over = isCat && p.mkt - p.v >= Math.max(4, 0.3 * p.mkt);
+  });
+}
+function market() {
+  const ids = Object.keys(state.sold);
+  const spent = ids.reduce((a, id) => a + state.sold[id].p, 0);
+  const mine = ids.filter(id => state.sold[id].m);
+  const mySpent = mine.reduce((a, id) => a + state.sold[id].p, 0);
+  const myLeft = LEAGUE.budget - mySpent;
+  const mySpots = LEAGUE.roster - mine.length;
+  const leagueLeft = TOTAL - spent;
+  const spotsLeft = Math.max(0, SPOTS - ids.length);
+  const avail = current.list.filter(p => !state.sold[p.id]).slice(0, spotsLeft);
+  const need = avail.reduce((a, p) => a + Math.max(0, p.v - 1), 0);
+  let infl = spotsLeft > 0 && need > 0 ? (leagueLeft - spotsLeft) / need : 1;
+  infl = Math.max(0.3, Math.min(3, infl));
+  return { spent, mine, mySpent, myLeft, mySpots, maxBid: mySpots > 0 ? Math.max(0, myLeft - (mySpots - 1)) : 0, leagueLeft, spotsLeft, infl, sold: ids.length };
+}
+const adj = (p, infl) => p.v >= 1 ? 1 + (p.v - 1) * infl : p.v;
+const zClass = z => z >= 1.5 ? 'z3' : z >= 0.75 ? 'z2' : z >= 0.25 ? 'z1' : z > -0.25 ? '' : z > -0.75 ? 'z-1' : z > -1.5 ? 'z-2' : 'z-3';
+const gradeOf = s => s >= 80 ? 'S' : s >= 68 ? 'A' : s >= 56 ? 'B' : s >= 44 ? 'C' : 'D';
+const money = v => '$' + Math.round(v).toLocaleString('en-US');
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+function statText(p, c) {
+  if (c === 'fg') return (p.fgp * 100).toFixed(1);
+  if (c === 'ft') return (p.ftp * 100).toFixed(1);
+  return p[c].toFixed(1);
+}
+
+// ---------- 畫面 ----------
+const $ = id => document.getElementById(id);
+const listEl = $('list');
+
+function renderControls() {
+  document.querySelectorAll('[data-fmt]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.fmt === state.fmt)));
+  $('punts').innerHTML = CATS.map(c => `<button type="button" class="chip punt" data-punt="${c}" aria-pressed="${state.punts.includes(c)}" ${state.fmt === 'pts' || (state.fmt === '8cat' && c === 'tov') ? 'disabled' : ''}>${CAT_LABEL[c]}</button>`).join('');
+  $('posChips').innerHTML = POSITIONS.map(ps => `<button type="button" class="chip" data-pos="${ps}" aria-pressed="${state.pos === ps}">${ps === 'ALL' ? '全部' : ps}</button>`).join('');
+  $('fRookie').checked = state.rookie; $('fTarget').checked = state.target; $('fHide').checked = state.hide;
+  $('sort').value = state.sort;
+  document.querySelectorAll('[data-plan]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.plan === state.plan)));
+}
+
+function filtered() {
+  const q = state.q.trim().normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  let xs = current.list.filter(p =>
+    (!q || p.search.includes(q) || p.team.toLowerCase() === q || (TEAM_ZH[p.team] || '').includes(state.q.trim())) &&
+    (state.pos === 'ALL' || p.pos.includes(state.pos)) &&
+    (!state.rookie || p.rookie) &&
+    (!state.target || p.target) &&
+    (!state.hide || !state.sold[p.id]));
+  const s = state.sort;
+  const cmp = {
+    idx: (a, b) => b.idx - a.idx || b.v - a.v,
+    v: (a, b) => b.v - a.v,
+    edge: (a, b) => b.edge - a.edge,
+    espn: (a, b) => (a.espn || 999) - (b.espn || 999) || b.v - a.v,
+  }[s] || ((a, b) => b.z[s] - a.z[s]);
+  return xs.slice().sort(cmp);
+}
+
+function rowHTML(p, mk, rankIn) {
+  const sold = state.sold[p.id];
+  const isCat = state.fmt !== 'pts';
+  const punted = new Set(state.fmt === 'pts' ? [] : state.punts.concat(state.fmt === '8cat' ? ['tov'] : []));
+  const tags = [];
+  if (p.rookie) tags.push('<span class="tag rook">新秀</span>');
+  if (p.target) tags.push('<span class="tag target">值得搶</span>');
+  if (p.over) tags.push('<span class="tag over">易溢價</span>');
+  if (p.risk >= 2) tags.push('<span class="tag risk">' + (p.hurt ? '傷癒/傷病' : '出賽風險') + '</span>');
+  if (p.moved) tags.push('<span class="tag move">新隊</span>');
+  const g = gradeOf(p.idx);
+  const vTxt = p.v >= 0.5 ? money(p.v) : '$0';
+  const up = adj(p, mk.infl);
+  const inflNote = Math.abs(mk.infl - 1) >= 0.02 ? `通膨後 <b>${money(up)}</b>` : '';
+  const mktNote = isCat ? `市場 ${money(p.mkt)}` : '';
+  const sub = p.v >= 0.5 ? [inflNote, mktNote].filter(Boolean).join(' · ') : '替補水準以下';
+  let punt = '';
+  if (p.bestPunt && isCat && !state.punts.includes(p.bestPunt.c)) punt = ` <span class="pt">適合 punt ${CAT_LABEL[p.bestPunt.c]}（→ ${money(p.bestPunt.v)}）</span>`;
+  const cells = CATS.map(c => {
+    const off = punted.has(c);
+    return `<span class="c ${off ? 'off' : zClass(p.z[c])}" tabindex="0" data-c="${c}"><b>${CAT_LABEL[c]}</b><i>${statText(p, c)}</i></span>`;
+  }).join('');
+  let act;
+  if (state.editing === p.id) {
+    act = `<div class="editor"><input type="number" inputmode="numeric" min="1" max="200" step="1" id="bid-${p.id}" value="${Math.max(1, Math.round(up))}" aria-label="成交價">
+      <button type="button" class="btn small" data-act="other">別人買</button>
+      <button type="button" class="btn small solid" data-act="mine">我買的</button>
+      <button type="button" class="btn small" data-act="cancel">取消</button>
+      <span class="msg" id="msg-${p.id}">Enter＝別人買　Shift+Enter＝我買的　Esc＝取消</span></div>`;
+  } else if (sold) {
+    act = `<div class="sold-info"><span class="num">${money(sold.p)}</span><br>${sold.m ? '我買的' : '別人買走'}</div>
+      <button type="button" class="btn small" data-act="undo" aria-label="撤銷 ${esc(p.name)} 的成交">撤銷</button>`;
+  } else {
+    act = `<button type="button" class="btn small" data-act="edit">成交</button>`;
+  }
+  return `<li class="row${sold ? ' sold' : ''}${sold && sold.m ? ' mine' : ''}" data-id="${p.id}">
+    <div class="rk"><span class="n num">${rankIn}</span><span class="pos">${p.pos.join(' · ')}</span></div>
+    <div class="who">
+      <div class="nm"><span class="name">${esc(p.name)}</span><span class="tm">${p.team} ${TEAM_ZH[p.team] || ''}<span class="pos-inline"> · ${p.pos.join('/')}</span>${p.espn ? ' · ESPN #' + p.espn : ''}</span><span class="tags">${tags.join('')}</span></div>
+      <p class="note">${esc(p.note)}${punt}</p>
+    </div>
+    <div class="price"><span class="v num${p.v >= 0.5 ? '' : ' zero'}">${vTxt}</span><span class="sub">${sub}</span></div>
+    <div class="idx" title="推薦指數"><span class="score num">${p.idx}</span><span class="grade g${g}">${g}</span><span class="meter"><i style="width:${p.idx}%"></i></span></div>
+    <div class="heat">${cells}</div>
+    <div class="act">${act}</div>
+  </li>`;
+}
+
+function renderList(mk) {
+  const xs = filtered();
+  const shown = state.showAll || xs.length <= PAGE ? xs : xs.slice(0, PAGE);
+  $('count').textContent = `${xs.length} 位球員 · 排名 # 為目前賽制下的價值排名`;
+  listEl.innerHTML = shown.length
+    ? shown.map(p => rowHTML(p, mk, p.rank)).join('')
+    : '<li class="empty">沒有符合條件的球員，放寬篩選試試。</li>';
+  $('moreBtn').hidden = shown.length >= xs.length;
+  $('moreBtn').textContent = `顯示全部 ${xs.length} 位`;
+  if (state.editing) {
+    const inp = $('bid-' + state.editing);
+    if (inp) { inp.focus(); inp.select(); }
+  }
+}
+
+function renderBar(mk) {
+  $('sLeft').innerHTML = `${money(mk.myLeft)}<small>/ ${LEAGUE.budget}</small>`;
+  $('sSpots').innerHTML = `${mk.mine.length}<small>/ ${LEAGUE.roster}</small>`;
+  $('sMax').textContent = money(mk.maxBid);
+  $('sLeague').innerHTML = `${money(mk.leagueLeft)}<small class="long">已成交 ${mk.sold} 人</small>`;
+  $('sInfl').textContent = '×' + mk.infl.toFixed(2);
+}
+
+function renderTeam(mk) {
+  const mine = mk.mine.map(id => byId.get(id)).sort((a, b) => state.sold[b.id].p - state.sold[a.id].p);
+  $('teamList').innerHTML = mine.map(p => `<li><span>${esc(p.name)} <span class="muted">${p.team} · ${p.pos.join('/')}</span></span><span class="p">${money(state.sold[p.id].p)}</span><button type="button" class="x" data-undo="${p.id}" aria-label="移除 ${esc(p.name)}">×</button></li>`).join('');
+  $('teamEmpty').hidden = mine.length > 0;
+  $('teamProfile').hidden = mine.length === 0;
+  $('myTeamSub').textContent = mine.length ? `${mine.length} 人 · 花了 ${money(mk.mySpent)}` : '';
+  if (mine.length) {
+    $('profileCells').innerHTML = CATS.map(c => {
+      const z = mine.reduce((a, p) => a + p.z[c], 0) / mine.length;
+      return `<span class="c ${zClass(z)}" tabindex="0" data-team="${c}" data-z="${z.toFixed(2)}"><b>${CAT_LABEL[c]}</b><i>${(z >= 0 ? '+' : '') + z.toFixed(1)}</i></span>`;
+    }).join('');
+    const cnt = {}; POSITIONS.slice(1).forEach(ps => { cnt[ps] = mine.filter(p => p.pos.includes(ps)).length; });
+    const c = cnt.C;
+    $('posMix').textContent = `可打位置：PG ${cnt.PG} · SG ${cnt.SG} · SF ${cnt.SF} · PF ${cnt.PF} · C ${c}` + (c < 2 && mine.length >= 6 ? '　中鋒偏少，後面留意籃板與阻攻。' : '') + '　每格是平均 z 分數，紅色的類別可以考慮直接 punt。';
+  }
+}
+
+function renderTiers() {
+  const L = current.list;
+  const tiers = [];
+  for (let t = 0; t < 14; t++) {
+    const s = L.slice(t * 14, t * 14 + 14);
+    if (!s.length) break;
+    tiers.push({ t: t + 1, avg: s.reduce((a, p) => a + p.v, 0) / s.length, hi: s[0].v, lo: s[s.length - 1].v, from: t * 14 + 1, to: t * 14 + s.length });
+  }
+  const max = Math.max(...tiers.map(x => x.avg), 1);
+  const top = Math.ceil(max / 10) * 10;
+  $('tierBars').innerHTML = tiers.map(x => `<div class="tier" tabindex="0" data-tier="${x.t}" data-tip="#${x.from}–${x.to} 平均 ${money(x.avg)}（最高 ${money(x.hi)}、最低 ${money(x.lo)}）">
+    <span class="lab">第 ${x.t} 輪</span><span class="track"><span class="fill" style="width:${(x.avg / top * 100).toFixed(1)}%"></span></span><span class="val">${money(x.avg)}</span></div>`).join('');
+  $('tierAxis').innerHTML = `<span>$0</span><span>$${top / 2}</span><span>$${top}</span>`;
+}
+
+function renderPlan() {
+  const plan = PLANS[state.plan];
+  const L = current.list;
+  const rankFor = price => { const i = L.findIndex(p => p.v <= price); return i < 0 ? L.length : i + 1; };
+  $('planGrid').innerHTML = plan.prices.map(pr => `<span class="slot"><span class="p">$${pr}</span><span class="r">≈ #${rankFor(pr)}</span></span>`).join('');
+  $('planNote').textContent = plan.note + '「≈ #」是這個價格大約買得到的價值排名。';
+}
+
+function renderRookies(mk) {
+  const rs = current.list.filter(p => p.rookie).sort((a, b) => b.idx - a.idx);
+  $('rookList').innerHTML = rs.map(p => {
+    const g = gradeOf(p.idx);
+    const sold = state.sold[p.id];
+    return `<li><span>${esc(p.name)} <span class="t">${TEAM_ZH[p.team]} · ${p.pos.join('/')}${p.target ? ' · 值得搶' : p.over ? ' · 易溢價' : ''}${sold ? ' · 已成交' : ''}</span></span><span class="grade g${g}">${g}</span><span class="p">${p.v >= 0.5 ? money(adj(p, mk.infl)) : '$0'}</span></li>`;
+  }).join('');
+}
+
+function renderStore() {
+  const el = $('store');
+  if (!canStore) { el.className = 'store bad'; el.textContent = '這個瀏覽器不允許存資料（私密模式或內嵌預覽），重新整理後成交紀錄會消失。'; return; }
+  if (saveFailed) { el.className = 'store bad'; el.textContent = '最後一次儲存失敗，成交紀錄可能沒有存到。'; return; }
+  const n = Object.keys(state.sold).length;
+  el.className = 'store';
+  el.textContent = n ? `已存到這台裝置：${n} 筆成交紀錄與篩選設定。` : '成交紀錄與篩選設定會自動存在這台裝置的瀏覽器裡。';
+}
+
+function render() {
+  const mk = market();
+  renderControls();
+  renderBar(mk);
+  renderList(mk);
+  renderTeam(mk);
+  renderTiers();
+  renderPlan();
+  renderRookies(mk);
+  renderStore();
+  syncBarHeight();
+}
+function syncBarHeight() {
+  const h = $('bar').getBoundingClientRect().height;
+  document.documentElement.style.setProperty('--bar-h', Math.round(h) + 'px');
+}
+
+// ---------- 操作 ----------
+function setFmt(f) { state.fmt = f; state.editing = null; recompute(); save(); render(); }
+document.querySelector('.controls').addEventListener('click', e => {
+  const f = e.target.closest('[data-fmt]');
+  if (f) { setFmt(f.dataset.fmt); return; }
+  const pu = e.target.closest('[data-punt]');
+  if (pu && !pu.disabled) {
+    const c = pu.dataset.punt;
+    state.punts = state.punts.includes(c) ? state.punts.filter(x => x !== c) : state.punts.concat(c);
+    recompute(); save(); render(); return;
+  }
+  const po = e.target.closest('[data-pos]');
+  if (po) { state.pos = po.dataset.pos; state.showAll = false; save(); render(); }
+});
+$('q').addEventListener('input', e => { state.q = e.target.value; state.showAll = false; renderList(market()); });
+$('fRookie').addEventListener('change', e => { state.rookie = e.target.checked; save(); render(); });
+$('fTarget').addEventListener('change', e => { state.target = e.target.checked; save(); render(); });
+$('fHide').addEventListener('change', e => { state.hide = e.target.checked; save(); render(); });
+$('sort').addEventListener('change', e => { state.sort = e.target.value; save(); render(); });
+$('moreBtn').addEventListener('click', () => { state.showAll = true; renderList(market()); });
+document.querySelector('.plans').addEventListener('click', e => {
+  const b = e.target.closest('[data-plan]');
+  if (b) { state.plan = +b.dataset.plan; save(); renderControls(); renderPlan(); }
+});
+
+function commit(id, mine) {
+  const inp = $('bid-' + id), msg = $('msg-' + id);
+  const v = Number(inp && inp.value);
+  const fail = t => { if (inp) inp.setAttribute('aria-invalid', 'true'); if (msg) { msg.textContent = t; msg.className = 'msg err'; } };
+  if (!Number.isInteger(v) || v < 1 || v > LEAGUE.budget) { fail('請輸入 1–200 的整數價格'); return; }
+  const mk = market();
+  if (mine && mk.mySpots <= 0) { fail('你的 14 個名額已經滿了'); return; }
+  if (mine && v > mk.maxBid) { fail(`超過你的最高可出價 ${money(mk.maxBid)}（要留 $1 給其他名額）`); return; }
+  state.sold[id] = { p: v, m: mine };
+  state.editing = null;
+  save(); render();
+}
+listEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const id = b.closest('.row').dataset.id;
+  const act = b.dataset.act;
+  if (act === 'edit') { state.editing = id; renderList(market()); }
+  else if (act === 'cancel') { state.editing = null; renderList(market()); }
+  else if (act === 'other' || act === 'mine') commit(id, act === 'mine');
+  else if (act === 'undo') { delete state.sold[id]; save(); render(); }
+});
+listEl.addEventListener('keydown', e => {
+  if (e.target.matches('.editor input')) {
+    const id = e.target.closest('.row').dataset.id;
+    if (e.key === 'Enter') { e.preventDefault(); commit(id, e.shiftKey); }
+    else if (e.key === 'Escape') { state.editing = null; renderList(market()); }
+  }
+});
+$('teamList').addEventListener('click', e => {
+  const b = e.target.closest('[data-undo]');
+  if (b) { delete state.sold[b.dataset.undo]; save(); render(); }
+});
+let resetTimer = 0;
+$('resetBtn').addEventListener('click', e => {
+  const b = e.currentTarget;
+  if (!b.classList.contains('warn')) {
+    b.classList.add('warn'); b.textContent = '再按一次，清除全部成交';
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => { b.classList.remove('warn'); b.textContent = '清除成交紀錄'; }, 4000);
+    return;
+  }
+  clearTimeout(resetTimer);
+  b.classList.remove('warn'); b.textContent = '清除成交紀錄';
+  state.sold = {}; state.editing = null; save(); render();
+});
+
+// ---------- 工具提示（熱度格、輪次長條） ----------
+const tip = $('tip');
+function showTip(el) {
+  let html;
+  if (el.dataset.tier) html = `<strong>第 ${el.dataset.tier} 輪等級</strong><span>${esc(el.dataset.tip)}</span>`;
+  else if (el.dataset.team) {
+    const c = el.dataset.team;
+    html = `<strong>${(+el.dataset.z >= 0 ? '+' : '') + (+el.dataset.z).toFixed(2)}</strong>我的陣容 ${CAT_ZH[c]}（平均 z 分數）`;
+  } else {
+    const p = byId.get(el.closest('.row').dataset.id), c = el.dataset.c;
+    const extra = c === 'fg' ? `，每場 ${p.fga.toFixed(1)} 次出手` : c === 'ft' ? `，每場 ${p.fta.toFixed(1)} 次罰球` : '';
+    const off = el.classList.contains('off') ? '（已 punt，不計分）' : '';
+    html = `<strong>${statText(p, c)}${c === 'fg' || c === 'ft' ? '%' : ''}</strong>${esc(p.name)} ${CAT_ZH[c]}${extra}<br><span>z 分數 ${(p.z[c] >= 0 ? '+' : '') + p.z[c].toFixed(2)}${off}</span>`;
+  }
+  tip.innerHTML = html;
+  tip.hidden = false;
+  const r = el.getBoundingClientRect(), t = tip.getBoundingClientRect();
+  let x = r.left + r.width / 2 - t.width / 2, y = r.top - t.height - 8;
+  if (y < 8) y = r.bottom + 8;
+  x = Math.max(8, Math.min(window.innerWidth - t.width - 8, x));
+  tip.style.left = x + 'px'; tip.style.top = y + 'px';
+}
+const tipTarget = e => e.target.closest && e.target.closest('.c, .tier');
+document.addEventListener('pointerover', e => { const el = tipTarget(e); if (el) showTip(el); });
+document.addEventListener('pointerout', e => { if (e.pointerType !== 'touch' && tipTarget(e)) tip.hidden = true; });
+document.addEventListener('pointerdown', e => { if (!tipTarget(e)) tip.hidden = true; });
+document.addEventListener('focusin', e => { const el = tipTarget(e); if (el) showTip(el); else tip.hidden = true; });
+document.addEventListener('focusout', e => { if (tipTarget(e)) tip.hidden = true; });
+window.addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+window.addEventListener('resize', syncBarHeight);
+
+recompute();
+render();
+window.__auction = { players, state, valuate, recompute, market };
+}());
+</script>
+</body>
+</html>
