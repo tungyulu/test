@@ -308,10 +308,17 @@
   .slot .r { font-size: 10.5px; color: var(--ink-3); }
   .plan-note { margin-top: 8px; font-size: 12.5px; color: var(--ink-2); }
   .rooks { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
-  .rooks li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
+  .rooks li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--rule); font-size: 13.5px; }
   .rooks li:last-child { border-bottom: 0; }
+  .rooks .n { font: 700 15px var(--display); color: var(--ink-3); text-align: right; }
+  .rooks .who2 { display: grid; gap: 2px; min-width: 0; }
+  .rooks .find { appearance: none; border: 0; background: none; padding: 0; text-align: left; font: 600 14px/1.3 var(--sans); color: var(--ink); cursor: pointer; }
+  .rooks .find:hover { color: var(--accent-ink); text-decoration: underline; }
   .rooks .t { color: var(--ink-3); font-size: 12px; }
+  .rooks .cls { display: inline-block; font-size: 11px; line-height: 1; padding: 2px 6px; margin-right: 6px; border-radius: 999px; border: 1px solid var(--rule-2); color: var(--ink-2); }
+  .rooks .cls.c2026 { border-color: transparent; background: var(--accent-bg); color: var(--accent-ink); }
   .rooks .p { font: 700 16px var(--display); min-width: 34px; text-align: right; }
+  .row.flash { outline: 2px solid var(--accent); outline-offset: 2px; }
   .tips { margin: 0; padding-left: 1.2em; display: grid; gap: 7px; font-size: 13.5px; color: var(--ink-2); }
   .tips b { color: var(--ink); font-weight: 600; }
 
@@ -372,7 +379,7 @@
     <div class="crow">
       <input class="search" id="q" type="search" placeholder="搜尋球員（英文名）" aria-label="搜尋球員">
       <div class="chips" id="posChips" role="group" aria-label="位置"></div>
-      <label class="check"><input type="checkbox" id="fRookie">只看新秀</label>
+      <label class="check"><input type="checkbox" id="fRookie">只看近三屆新秀</label>
       <label class="check"><input type="checkbox" id="fTarget">只看「值得搶」</label>
       <label class="check"><input type="checkbox" id="fHide">隱藏已成交</label>
       <label class="check">排序
@@ -430,8 +437,9 @@
       </section>
 
       <section class="card" aria-labelledby="rookH">
-        <h2 id="rookH">新秀速覽<small>2026 選秀</small></h2>
-        <ul class="rooks" id="rookList"></ul>
+        <h2 id="rookH">新秀速覽<small>近三屆選秀 · 我最看好的 15 位</small></h2>
+        <ol class="rooks" id="rookList"></ol>
+        <p class="muted" style="margin-top:8px">2026 新秀、二年級（2025 選秀）、三年級（2024 選秀）一起比，依推薦指數排序，會跟著 punt 設定變。點名字會在上方清單找出他；完整名單請勾「只看近三屆新秀」。</p>
       </section>
 
       <section class="card" aria-labelledby="tipsH">
@@ -480,7 +488,7 @@
 'use strict';
 
 /*DATA-BEGIN*/
-// 欄位：名字, 球隊, 位置, 出賽, 得分, 籃板, 助攻, 抄截, 阻攻, 三分, 失誤, FG%, FT%, 罰球數, ESPN排名, 風險(0-3), 上升(0-2), 標記(r新秀 n新隊 i傷癒), 備註
+// 欄位：名字, 球隊, 位置, 出賽, 得分, 籃板, 助攻, 抄截, 阻攻, 三分, 失誤, FG%, FT%, 罰球數, ESPN排名, 風險(0-3), 上升(0-2), 標記(r 2026 新秀 s 2025 二年級 t 2024 三年級 n新隊 i傷癒), 備註
 const RAW = [
 ['Nikola Jokić','DEN','C',72,28.0,12.5,10.5,1.7,0.7,2.0,3.3,.570,.830,6.6,1,0,0,'','上季得分 28、籃板與助攻都是聯盟第一；9-cat 頭號人選'],
 ['Victor Wembanyama','SAS','PF/C',68,26.0,12.0,3.8,1.2,3.8,3.0,3.2,.490,.820,6.0,2,1,1,'','年度最佳防守球員、MVP 候選；阻攻＋三分＋籃板沒有替代品，唯一疑慮是出賽數'],
@@ -498,7 +506,7 @@ const RAW = [
 ['Anthony Davis','WAS','C/PF',58,23.5,11.5,3.2,1.2,2.1,0.6,2.2,.520,.790,6.5,14,2,0,'n','上季交易大限到巫師；每場產值前 10，但出賽數要打折'],
 ['Bam Adebayo','MIA','C/PF',74,18.5,10.0,3.8,1.3,0.8,1.6,2.0,.470,.800,4.2,15,0,0,'','Giannis 加盟後得分會少一些；籃板、抄截、罰球穩'],
 ['Derrick White','BOS','SG/PG',76,17.5,4.5,5.2,1.2,1.1,3.3,1.7,.445,.890,3.2,16,0,0,'','後衛少見的阻攻＋三分＋FT%，9-cat 寶藏'],
-['Cooper Flagg','DAL','SF/PF',74,22.5,7.2,4.6,1.3,1.0,1.5,2.8,.475,.830,5.8,18,0,2,'','上季年度新秀（21.0 分 6.7 板 4.5 助）；二年級持續成長，Kyrie 回歸後出手更乾淨'],
+['Cooper Flagg','DAL','SF/PF',74,22.5,7.2,4.6,1.3,1.0,1.5,2.8,.475,.830,5.8,18,0,2,'s','上季年度新秀（21.0 分 6.7 板 4.5 助）；二年級持續成長，Kyrie 回歸後出手更乾淨'],
 ['Kawhi Leonard','TOR','SF/PF',60,25.0,6.3,3.6,1.7,0.5,2.5,2.0,.490,.880,5.5,19,2,0,'n','9/14 交易正式回到暴龍；上季 27.9 分 1.9 抄 65 場，35 歲要算休兵'],
 ['Karl-Anthony Towns','NYK','C/PF',72,22.0,12.0,3.0,0.8,0.7,2.1,2.6,.500,.840,5.0,20,0,0,'','會投三分的中鋒，籃板＋FT% 雙強'],
 ['Giannis Antetokounmpo','MIA','PF/C',62,28.0,10.8,5.8,0.9,1.0,0.3,3.2,.600,.630,9.5,21,2,0,'n','換到熱火；上季小腿、膝蓋只打 36 場。FT% 殺手，punt FT% 才划算'],
@@ -520,11 +528,11 @@ const RAW = [
 ['Josh Giddey','CHI','PG/SG',74,18.5,8.8,8.5,1.1,0.5,1.8,3.3,.455,.800,3.2,37,0,0,'','準大三元型控衛，公牛新教練 Splitter 體系核心'],
 ['Naz Reid','CHA','C/PF',76,17.5,8.0,2.8,1.1,1.0,2.4,1.8,.470,.800,2.8,38,0,1,'n','從灰狼替補變黃蜂先發，三分＋阻攻的中鋒'],
 ['Dyson Daniels','ATL','SG/PG',76,12.0,6.5,5.8,2.1,0.7,0.4,2.0,.500,.650,2.0,39,0,0,'','聯盟抄截王級別；三分與罰球要靠別人補'],
-['Kon Knueppel','CHA','SF/SG',78,19.0,5.3,3.8,0.9,0.3,3.3,2.0,.455,.890,3.4,40,0,1,'','年度新秀第二名；LaMelo 被交易後球權增加'],
+['Kon Knueppel','CHA','SF/SG',78,19.0,5.3,3.8,0.9,0.3,3.3,2.0,.455,.890,3.4,40,0,1,'s','年度新秀第二名；LaMelo 被交易後球權增加'],
 ['Devin Booker','PHX','PG/SG',72,25.0,4.2,6.8,0.9,0.3,2.1,3.0,.465,.880,7.0,41,0,0,'','得分與 FT% 強，防守數據少'],
 ['Desmond Bane','ORL','SG/SF',74,19.5,4.8,4.3,1.1,0.4,2.4,2.1,.470,.880,3.4,42,0,0,'','均衡型得分後衛'],
 ['Michael Porter Jr.','BKN','SF/PF',68,23.0,7.3,3.0,1.0,0.5,3.3,2.3,.475,.810,4.2,43,1,0,'','籃網第一得分手；Randle 加盟會分一點球'],
-['Donovan Clingan','POR','C',76,12.5,11.0,2.2,0.7,2.0,0.5,1.6,.540,.660,2.4,44,0,1,'','阻攻＋籃板，三年級持續長'],
+['Donovan Clingan','POR','C',76,12.5,11.0,2.2,0.7,2.0,0.5,1.6,.540,.660,2.4,44,0,1,'t','阻攻＋籃板，三年級持續長'],
 ['Onyeka Okongwu','ATL','C',74,15.0,7.8,3.0,1.1,1.1,1.2,1.5,.490,.760,3.2,45,0,0,'','上季 15.2 分 7.6 板、抄阻各 1.1，開始投三分'],
 ['Trey Murphy III','NOP','SF/SG',70,20.5,5.6,3.6,1.3,0.6,3.0,1.9,.465,.880,4.2,46,0,0,'','上季 21.5 分 3.2 三分、FT 88.6%，鵜鶘第一得分手'],
 ['Walker Kessler','LAL','C',70,12.5,11.5,1.8,0.7,2.3,0.1,1.2,.670,.580,2.8,47,1,1,'n','簽換到湖人（4 年 1.3 億）；肩傷後復出，跟 Luka 打擋拆吃空接'],
@@ -539,18 +547,18 @@ const RAW = [
 ['Rudy Gobert','MIN','C',74,11.0,11.0,1.7,0.8,1.5,0.0,1.3,.660,.650,3.2,56,0,0,'','籃板＋阻攻＋FG%，罰球拖'],
 ['Caleb Wilson','CHI','PF/SF',70,15.5,7.5,2.3,1.3,1.4,0.5,1.9,.520,.700,3.8,57,1,2,'r','新秀第 4 順位，預計先發約 30 分鐘；抄阻＋FG%，大學罰球 71%、三分 26%'],
 ['Dejounte Murray','NOP','SG/PG',66,17.5,5.3,6.3,1.5,0.3,1.9,2.6,.445,.790,2.6,58,2,0,'i','阿基里斯腱傷後上季只打 14 場；健康就是抄截助攻來源'],
-['Reed Sheppard','HOU','SG/PG',76,13.5,3.3,4.3,1.5,0.5,2.7,1.6,.440,.840,1.6,59,1,1,'','三分＋抄截，但 VanVleet 回歸、Smart 加盟壓縮上場時間'],
-['Matas Buzelis','CHI','SF/PF',78,16.0,6.3,2.2,0.9,1.3,2.0,1.5,.460,.790,3.0,60,0,1,'','二年級突破後持續上升，阻攻＋三分前鋒'],
+['Reed Sheppard','HOU','SG/PG',76,13.5,3.3,4.3,1.5,0.5,2.7,1.6,.440,.840,1.6,59,1,1,'t','三分＋抄截，但 VanVleet 回歸、Smart 加盟壓縮上場時間'],
+['Matas Buzelis','CHI','SF/PF',78,16.0,6.3,2.2,0.9,1.3,2.0,1.5,.460,.790,3.0,60,0,1,'t','二年級突破後持續上升，阻攻＋三分前鋒'],
 ['Deni Avdija','POR','SF/PF',72,21.0,7.3,5.0,1.0,0.6,1.8,3.0,.470,.790,6.4,61,0,0,'','上季入選全明星；Morant、Lillard 來了之後球權下降'],
-['Alex Sarr','WAS','C/PF',72,14.5,7.2,2.3,0.8,1.9,1.3,1.8,.470,.730,2.8,62,1,1,'','阻攻型長人，但 AD、Ayton 在陣中分時間'],
+['Alex Sarr','WAS','C/PF',72,14.5,7.2,2.3,0.8,1.9,1.3,1.8,.470,.730,2.8,62,1,1,'t','阻攻型長人，但 AD、Ayton 在陣中分時間'],
 ['Jaylen Brown','PHI','SF/SG',70,22.5,6.0,4.0,1.2,0.4,2.0,2.7,.475,.780,5.4,63,1,0,'n','交易到 76 人（上季 28.7 分年度第二隊）；跟 Maxey、Embiid、LeBron 分球'],
 ['Tyler Herro','MIL','SG/PG',66,22.0,5.0,4.8,0.8,0.2,3.0,2.5,.455,.870,3.8,64,2,0,'ni','Giannis 交易換到公鹿當老大；上季腳傷只打 33 場'],
 ['Norman Powell','CHI','SG/SF',70,20.0,3.5,2.5,1.1,0.3,2.8,1.7,.475,.850,4.4,65,1,0,'n','上季熱火全明星，簽約公牛（2 年 4500 萬）'],
 ['Franz Wagner','ORL','SF/PF',68,21.5,5.8,4.6,1.2,0.4,1.8,2.3,.470,.810,5.4,66,1,0,'','魔術主要持球者之一，罰球數多'],
 ['Brandin Podziemski','GSW','SG/PG',76,14.5,5.5,4.2,1.2,0.3,2.1,1.8,.455,.800,2.0,67,0,1,'','Butler、Moody 長期傷缺，出手變多'],
-['Kel\'el Ware','MIL','C',74,12.0,9.5,1.3,0.7,1.5,0.6,1.2,.560,.720,2.2,68,1,1,'n','Giannis 交易來到公鹿，跟 Turner 搶先發中鋒'],
+['Kel\'el Ware','MIL','C',74,12.0,9.5,1.3,0.7,1.5,0.6,1.2,.560,.720,2.2,68,1,1,'nt','Giannis 交易來到公鹿，跟 Turner 搶先發中鋒'],
 ['OG Anunoby','NYK','SF/PF',72,16.5,5.0,2.2,1.4,0.8,2.3,1.4,.475,.800,2.8,69,0,0,'','3-and-D 典型，失誤少'],
-['VJ Edgecombe','PHI','SG',74,14.5,5.0,3.6,1.3,0.5,2.0,1.9,.440,.790,3.0,70,1,1,'','二年級，但 Brown、LeBron 加入後角色被壓縮'],
+['VJ Edgecombe','PHI','SG',74,14.5,5.0,3.6,1.3,0.5,2.0,1.9,.440,.790,3.0,70,1,1,'s','二年級，但 Brown、LeBron 加入後角色被壓縮'],
 ['Damian Lillard','POR','PG',58,21.0,4.0,6.0,0.9,0.3,3.1,2.5,.430,.910,6.0,71,2,0,'i','阿基里斯腱傷缺席整季，訓練營無限制；36 歲'],
 ['Jaren Jackson Jr.','UTA','PF/C',66,17.5,5.8,1.6,1.1,1.5,1.6,2.0,.460,.800,5.0,72,1,0,'n','二月被換到爵士；阻攻＋三分，市場把他排得偏低'],
 ['Ty Jerome','MEM','SG/PG',62,16.5,3.2,5.5,1.2,0.3,2.3,2.0,.480,.860,2.8,73,2,0,'i','上季傷病只打 15 場（19.7 分）；健康就是灰熊先發控衛'],
@@ -572,17 +580,17 @@ const RAW = [
 ['Joel Embiid','PHI','C',45,23.0,8.8,4.0,0.8,1.2,1.0,3.2,.480,.860,8.0,89,3,0,'','每場產值還在，但出賽數是最大問題'],
 ['Keyonte George','UTA','PG/SG',74,20.0,4.0,6.0,1.0,0.2,2.8,2.8,.440,.870,4.4,90,0,0,'','剛拿 5 年 1.575 億延長約；Peterson 加入分球'],
 ['Immanuel Quickley','TOR','PG/SG',72,16.5,4.6,5.8,1.0,0.2,2.7,1.8,.430,.860,2.8,91,0,0,'',''],
-['Stephon Castle','SAS','PG/SG',76,16.5,5.3,5.5,1.2,0.5,1.3,2.4,.455,.760,4.4,92,0,1,'','三年級持續成長'],
+['Stephon Castle','SAS','PG/SG',76,16.5,5.3,5.5,1.2,0.5,1.3,2.4,.455,.760,4.4,92,0,1,'t','三年級持續成長'],
 ['Myles Turner','MIL','C',72,13.5,6.3,1.4,0.7,1.7,1.7,1.3,.460,.780,3.0,93,0,0,'','會投三分的護框者，Ware 來了要搶時間'],
 ['Paul George','BOS','SF/PF',60,17.0,5.2,3.8,1.4,0.5,2.4,2.2,.430,.860,3.2,94,2,0,'n','Brown 交易換到塞爾提克，36 歲'],
 ['Tobias Harris','SAS','PF/SF',70,12.0,5.3,1.9,0.9,0.6,1.0,1.0,.480,.850,2.0,95,1,0,'n','簽約馬刺，輪替角色'],
 ['Zion Williamson','NOP','PF/C',58,21.5,6.0,3.8,1.0,0.6,0.1,2.8,.590,.710,7.4,96,2,0,'','上季 62 場是生涯第二多；FG% 大、FT% 拖'],
-['Derik Queen','NOP','C/PF',76,13.0,7.8,3.8,1.0,1.0,0.4,2.1,.520,.700,3.0,97,0,1,'','二年級，上季 11.7 分 7.1 板 3.7 助'],
+['Derik Queen','NOP','C/PF',76,13.0,7.8,3.8,1.0,1.0,0.4,2.1,.520,.700,3.0,97,0,1,'s','二年級，上季 11.7 分 7.1 板 3.7 助'],
 ['Josh Hart','NYK','SF/SG',74,11.5,8.3,4.8,1.3,0.3,1.2,1.6,.500,.700,2.4,98,0,0,'','籃板助攻型側翼'],
 ['Payton Pritchard','BOS','PG/SG',78,15.5,3.9,4.5,0.9,0.1,3.0,1.3,.455,.840,1.8,99,0,0,'','三分量大、失誤少'],
 ['John Collins','DET','PF/C',66,13.5,7.0,1.5,0.8,0.9,1.1,1.1,.530,.800,2.6,100,1,0,'n','簽換到活塞'],
 ['Collin Gillespie','PHX','PG',76,11.5,3.5,4.5,1.1,0.2,2.4,1.2,.450,.860,1.4,101,0,0,'','續約 4 年，太陽替補控衛'],
-['Dylan Harper','SAS','PG/SG',74,14.0,4.0,4.2,1.2,0.3,1.3,1.8,.480,.800,3.2,102,1,2,'','二年級，替補但上限高'],
+['Dylan Harper','SAS','PG/SG',74,14.0,4.0,4.2,1.2,0.3,1.3,1.8,.480,.800,3.2,102,1,2,'s','二年級，替補但上限高'],
 ['DeMar DeRozan','DEN','SF/PF',72,14.0,3.6,3.3,0.8,0.3,0.5,1.4,.490,.860,4.6,103,1,0,'n','國王釋出後加盟金塊'],
 ['Nikola Vučević','ORL','C',70,14.0,9.0,2.8,0.7,0.6,1.4,1.5,.495,.800,1.6,104,1,0,'n','加盟魔術，36 歲'],
 ['Peyton Watson','CLE','SF/PF',74,12.0,4.8,2.2,1.1,1.2,1.4,1.2,.480,.740,2.4,105,1,1,'n','上季多項生涯新高，換到騎士'],
@@ -594,21 +602,21 @@ const RAW = [
 ['Ayo Dosunmu','MIN','SG/PG',76,11.5,3.5,3.3,1.0,0.4,1.4,1.4,.480,.820,1.8,111,0,0,'n',''],
 ['Julian Champagnie','SAS','SF/PF',74,11.0,5.8,1.6,0.9,0.6,2.4,0.9,.440,.830,1.4,112,0,0,'','三分＋低失誤，先發大前鋒候選'],
 ['Brook Lopez','LAC','C',68,10.0,4.8,1.4,0.5,1.6,1.9,0.9,.450,.800,1.2,113,1,0,'','38 歲，三分＋阻攻'],
-['Zach Edey','MEM','C',62,13.5,11.0,1.4,0.5,1.7,0.1,1.8,.600,.700,3.4,114,2,1,'i','上季腳踝手術只打 11 場，預計訓練營全速'],
+['Zach Edey','MEM','C',62,13.5,11.0,1.4,0.5,1.7,0.1,1.8,.600,.700,3.4,114,2,1,'it','上季腳踝手術只打 11 場，預計訓練營全速'],
 ['Daniel Gafford','DAL','C',70,10.0,6.8,1.2,0.6,1.5,0.0,1.0,.690,.680,2.6,115,1,0,'',''],
 ['Mitchell Robinson','BOS','C',58,7.0,8.8,1.0,0.9,1.2,0.0,0.8,.620,.480,2.0,116,2,0,'n','從尼克簽到塞爾提克'],
 ['Jakob Poeltl','TOR','C',70,12.5,9.3,2.6,0.9,1.2,0.0,1.4,.610,.630,2.4,117,1,0,'',''],
 ['Neemias Queta','BOS','C',76,10.0,8.3,1.5,0.7,1.5,0.0,1.2,.650,.720,2.0,118,1,0,'','續約 4 年，跟 Robinson 搶先發'],
 ['Quentin Grimes','LAL','SG/SF',72,13.0,3.8,2.8,1.0,0.3,2.2,1.3,.445,.820,2.2,119,0,0,'n','簽約湖人 4 年'],
 ['Nic Claxton','CHI','C',70,10.5,7.3,2.0,0.8,1.4,0.0,1.4,.580,.580,2.6,120,1,0,'n','四方交易到公牛'],
-['Egor Dëmin','BKN','PG/SG',72,11.5,3.8,4.8,0.8,0.5,2.3,1.9,.395,.780,1.4,121,1,1,'','三分與助攻量，FG% 很低'],
-['Oso Ighodaro','PHX','PF/C',78,8.5,6.0,2.2,0.9,0.9,0.0,0.9,.620,.650,1.6,122,1,0,'',''],
+['Egor Dëmin','BKN','PG/SG',72,11.5,3.8,4.8,0.8,0.5,2.3,1.9,.395,.780,1.4,121,1,1,'s','三分與助攻量，FG% 很低'],
+['Oso Ighodaro','PHX','PF/C',78,8.5,6.0,2.2,0.9,0.9,0.0,0.9,.620,.650,1.6,122,1,0,'t',''],
 ['Jake LaRavia','LAL','PF/SF',78,11.0,5.5,2.0,1.1,0.6,1.5,1.0,.470,.800,1.6,123,0,0,'',''],
 ['Darryn Peterson','UTA','SG/PG',64,16.5,3.8,3.2,1.2,0.4,2.0,2.0,.435,.810,3.4,124,2,2,'r','新秀第 2 順位；大學 35 場只打 24 場（腿後肌、抽筋），爵士後場擠'],
 ['Anthony Black','ORL','PG/SG',76,11.0,3.5,3.5,1.2,0.6,1.0,1.5,.470,.730,2.2,125,1,0,'',''],
-['Kyshawn George','WAS','SG/SF',74,11.5,5.0,3.3,1.1,0.6,1.8,1.7,.420,.780,2.0,126,1,0,'','巫師陣容變擠，可能改打替補'],
-['Ace Bailey','UTA','SF/PF',74,13.5,5.0,1.8,0.8,0.8,1.6,1.5,.450,.800,2.4,127,1,2,'','二年級，跟 Peterson 搶先發'],
-['Jeremiah Fears','NOP','SG/PG',72,12.0,3.2,3.8,1.1,0.2,1.3,2.0,.425,.830,3.0,128,1,1,'',''],
+['Kyshawn George','WAS','SG/SF',74,11.5,5.0,3.3,1.1,0.6,1.8,1.7,.420,.780,2.0,126,1,0,'t','巫師陣容變擠，可能改打替補'],
+['Ace Bailey','UTA','SF/PF',74,13.5,5.0,1.8,0.8,0.8,1.6,1.5,.450,.800,2.4,127,1,2,'s','二年級，跟 Peterson 搶先發'],
+['Jeremiah Fears','NOP','SG/PG',72,12.0,3.2,3.8,1.1,0.2,1.3,2.0,.425,.830,3.0,128,1,1,'s',''],
 ['Devin Vassell','SAS','SG/SF',70,14.0,3.8,2.8,1.2,0.4,2.4,1.2,.440,.810,1.8,129,1,0,'',''],
 ['Jalen Green','PHX','SG/SF',70,19.0,4.0,3.2,0.8,0.3,2.6,2.2,.425,.800,4.6,130,1,0,'','得分多但 FG% 低，9-cat 價值有限'],
 ['Jrue Holiday','POR','PG/SG',66,10.5,4.0,4.0,1.0,0.4,1.7,1.3,.445,.870,1.2,131,1,0,'','36 歲，拓荒者後場人多'],
@@ -625,7 +633,7 @@ const RAW = [
 ['Jalen Suggs','ORL','PG/SG',56,13.5,4.0,3.8,1.6,0.8,2.0,2.1,.420,.800,2.6,142,2,0,'','抄阻都多，但年年有傷'],
 ['Dereck Lively II','DAL','C',45,8.5,8.0,2.0,0.7,1.5,0.0,1.0,.650,.600,2.0,143,3,0,'i','上季腳傷只打 7 場，健康狀況未知'],
 ['Scotty Pippen Jr.','MEM','PG/SG',70,11.0,3.5,4.3,1.4,0.4,1.4,1.7,.440,.770,2.2,144,1,0,'',''],
-['Kyle Filipowski','UTA','C/PF',74,10.5,6.5,2.3,0.8,0.6,1.0,1.2,.480,.740,2.0,145,1,0,'',''],
+['Kyle Filipowski','UTA','C/PF',74,10.5,6.5,2.3,0.8,0.6,1.0,1.2,.480,.740,2.0,145,1,0,'t',''],
 ['Isaiah Stewart','MEM','C/PF',70,9.5,6.0,1.3,0.5,1.5,0.5,0.9,.540,.750,1.6,146,0,0,'n','從活塞換到灰熊'],
 ['Jerami Grant','MEM','PF/SF',66,14.0,3.6,2.2,0.7,0.6,2.0,1.3,.445,.820,3.4,147,1,0,'n','Morant 交易換到灰熊'],
 ['Jaime Jaquez Jr.','MIL','SF/SG',74,13.5,5.3,4.2,1.0,0.3,0.7,1.8,.490,.780,3.0,148,0,0,'n','Giannis 交易來到公鹿，預計先發'],
@@ -649,7 +657,7 @@ const RAW = [
 ['Zach LaVine','SAC','SG',60,20.5,4.0,3.8,0.9,0.3,2.9,2.3,.480,.860,3.8,0,2,0,'','ESPN 前 150 名沒列他，可能有未公開的傷病或角色變化，出價前先查'],
 ['Malik Monk','SAC','SG',68,13.5,3.0,4.0,0.7,0.3,2.0,1.8,.430,.850,2.6,0,1,0,'','國王第六人兼替補控衛'],
 ['De\'Andre Hunter','SAC','SF/PF',70,13.0,4.2,1.6,0.7,0.2,1.6,1.2,.450,.840,3.0,0,1,0,'n',''],
-['Maxime Raynaud','SAC','C',74,9.5,6.5,1.5,0.5,0.6,0.6,1.0,.520,.760,1.8,0,1,1,'','上季末表現好，但被 Sabonis 擋住'],
+['Maxime Raynaud','SAC','C',74,9.5,6.5,1.5,0.5,0.6,0.6,1.0,.520,.760,1.8,0,1,1,'s','上季末表現好，但被 Sabonis 擋住'],
 ['Keldon Johnson','SAS','SF/PF',76,13.5,5.5,1.8,0.7,0.2,1.4,1.3,.480,.790,2.6,0,0,0,'','年度第六人，合約年'],
 ['Harrison Barnes','SAS','SF/PF',74,9.5,3.5,1.5,0.6,0.2,1.5,0.8,.470,.830,1.8,0,1,0,'',''],
 ['Tari Eason','HOU','PF/SF',68,11.5,6.3,1.4,1.4,0.8,1.3,1.1,.460,.720,2.2,0,1,0,'','抄阻都有的替補前鋒'],
@@ -661,10 +669,10 @@ const RAW = [
 ['Max Christie','DAL','SG',76,12.5,3.3,2.3,0.9,0.4,2.2,1.1,.450,.840,1.8,0,0,0,'','獨行俠預計先發得分後衛'],
 ['P.J. Washington','DAL','PF',68,13.5,7.0,1.9,1.0,1.0,1.5,1.3,.450,.700,2.6,0,1,0,'','上季傷病不斷只打 56 場'],
 ['Naji Marshall','DAL','SF',74,13.0,4.5,3.0,1.0,0.3,0.8,1.5,.500,.750,2.8,0,1,0,'','續約 3 年，輪替主力'],
-['Zaccharie Risacher','DAL','SF',72,10.5,3.8,1.3,0.8,0.4,1.5,1.0,.440,.720,1.6,0,1,1,'n','三方交易到獨行俠'],
+['Zaccharie Risacher','DAL','SF',72,10.5,3.8,1.3,0.8,0.4,1.5,1.0,.440,.720,1.6,0,1,1,'nt','三方交易到獨行俠'],
 ['Santi Aldama','DAL','PF/C',62,10.5,6.0,2.3,0.8,0.7,1.5,1.0,.460,.720,1.4,0,2,0,'n','膝蓋小手術後，訓練營狀況待確認'],
-['Cedric Coward','MEM','SG/SF',74,13.0,5.5,2.3,1.1,0.6,1.7,1.3,.460,.780,2.2,0,0,1,'','二年級，灰熊先發'],
-['Jaylen Wells','MEM','SF/SG',76,11.0,3.8,1.8,1.0,0.4,1.8,1.0,.440,.820,1.8,0,1,0,'',''],
+['Cedric Coward','MEM','SG/SF',74,13.0,5.5,2.3,1.1,0.6,1.7,1.3,.460,.780,2.2,0,0,1,'s','二年級，灰熊先發'],
+['Jaylen Wells','MEM','SF/SG',76,11.0,3.8,1.8,1.0,0.4,1.8,1.0,.440,.820,1.8,0,1,0,'t',''],
 ['D\'Angelo Russell','MEM','PG',60,11.0,2.8,4.8,0.9,0.3,2.0,1.8,.410,.820,1.6,0,2,0,'n',''],
 ['Luguentz Dort','ATL','SG/SF',70,8.0,3.6,1.4,0.9,0.4,1.6,0.8,.400,.780,1.2,0,1,0,'n','三方交易到老鷹，替補防守者'],
 ['Jock Landale','ATL','C',70,9.5,5.8,1.7,0.5,0.7,0.8,1.0,.510,.760,1.6,0,1,0,'','老鷹替補中鋒'],
@@ -683,34 +691,34 @@ const RAW = [
 ['Dennis Schröder','CHA','PG',72,11.0,2.5,4.8,0.8,0.1,1.6,1.8,.420,.850,2.0,0,1,0,'n',''],
 ['Moussa Diabaté','CHA','C',70,7.5,7.5,1.4,0.8,0.9,0.0,0.9,.600,.620,2.0,0,1,0,'',''],
 ['Sam Merrill','CLE','SG',66,9.5,2.5,2.0,0.7,0.2,2.6,0.7,.420,.880,0.7,0,1,0,'',''],
-['Jaylon Tyson','CLE','SF',70,9.0,4.5,2.3,0.8,0.3,1.2,1.0,.470,.780,1.4,0,1,1,'',''],
+['Jaylon Tyson','CLE','SF',70,9.0,4.5,2.3,0.8,0.3,1.2,1.0,.470,.780,1.4,0,1,1,'t',''],
 ['Jusuf Nurkić','UTA','C',66,10.5,9.5,3.0,0.9,0.8,0.6,2.0,.510,.650,2.4,0,1,0,'','Kessler 走後的爵士先發中鋒'],
-['Isaiah Collier','UTA','PG',66,9.0,2.5,5.5,1.0,0.2,0.6,2.1,.460,.700,2.4,0,1,0,'',''],
+['Isaiah Collier','UTA','PG',66,9.0,2.5,5.5,1.0,0.2,0.6,2.1,.460,.700,2.4,0,1,0,'t',''],
 ['Scoot Henderson','POR','PG',64,10.5,3.0,4.3,0.8,0.3,1.3,2.0,.410,.780,2.2,0,2,1,'','拓荒者控衛人數多，角色不明'],
 ['Robert Williams III','POR','C',45,6.5,7.0,1.3,0.8,1.4,0.0,0.9,.620,.620,1.2,0,3,0,'','續約，但出賽數一向很少'],
 ['Shaedon Sharpe','POR','SG',22,18.0,4.5,2.8,1.0,0.4,2.2,2.0,.450,.780,4.2,0,3,0,'i','八月半月板撕裂，約 2027 年 2 月底才回來；只適合用最後一格收藏'],
 ['Jordan Poole','NOP','SG/PG',70,15.0,2.8,3.8,1.0,0.3,2.6,1.9,.420,.870,2.8,0,1,0,'',''],
 ['Herbert Jones','NOP','SF',64,9.5,3.8,2.4,1.6,0.8,1.2,1.2,.420,.830,1.6,0,1,0,'','抄截專家，上季進攻下滑'],
-['Yves Missi','NOP','C',74,9.0,8.3,1.8,0.6,1.5,0.0,1.4,.560,.640,2.2,0,1,1,'','鵜鶘預計先發中鋒'],
+['Yves Missi','NOP','C',74,9.0,8.3,1.8,0.6,1.5,0.0,1.4,.560,.640,2.2,0,1,1,'t','鵜鶘預計先發中鋒'],
 ['Bennedict Mathurin','NOP','SG/SF',70,13.5,4.5,1.8,0.6,0.2,1.3,1.5,.440,.820,4.2,0,1,0,'n','簽約鵜鶘，替補得分手'],
-['Ajay Mitchell','OKC','SG/PG',72,11.0,3.0,3.3,0.9,0.3,1.2,1.3,.480,.820,2.2,0,1,1,'','雷霆送走 Dort、Joe、Wiggins 後時間增加'],
-['Jared McCain','OKC','SG',70,10.0,2.2,2.0,0.7,0.1,2.0,1.0,.430,.860,1.2,0,1,0,'n',''],
-['Ja\'Kobe Walter','TOR','SG',70,10.0,3.3,1.5,1.0,0.3,1.8,0.8,.430,.800,1.4,0,1,0,'',''],
-['Collin Murray-Boyles','TOR','PF',70,9.5,6.0,2.3,1.1,0.8,0.3,1.3,.540,.680,2.0,0,1,1,'',''],
+['Ajay Mitchell','OKC','SG/PG',72,11.0,3.0,3.3,0.9,0.3,1.2,1.3,.480,.820,2.2,0,1,1,'t','雷霆送走 Dort、Joe、Wiggins 後時間增加'],
+['Jared McCain','OKC','SG',70,10.0,2.2,2.0,0.7,0.1,2.0,1.0,.430,.860,1.2,0,1,0,'nt',''],
+['Ja\'Kobe Walter','TOR','SG',70,10.0,3.3,1.5,1.0,0.3,1.8,0.8,.430,.800,1.4,0,1,0,'t',''],
+['Collin Murray-Boyles','TOR','PF',70,9.5,6.0,2.3,1.1,0.8,0.3,1.3,.540,.680,2.0,0,1,1,'s',''],
 ['Deandre Ayton','WAS','C',66,11.5,8.3,1.4,0.6,0.8,0.0,1.4,.590,.720,1.6,0,1,0,'n','從湖人換到巫師，跟 AD、Sarr 分時間'],
 ['Bilal Coulibaly','WAS','SF/SG',70,11.0,4.6,2.5,1.3,0.8,1.1,1.5,.450,.760,2.0,0,1,0,'',''],
-['Tre Johnson','WAS','SG',68,12.0,3.0,2.2,0.7,0.2,2.1,1.3,.430,.850,1.8,0,2,1,'',''],
+['Tre Johnson','WAS','SG',68,12.0,3.0,2.2,0.7,0.2,2.1,1.3,.430,.850,1.8,0,2,1,'s',''],
 ['Khris Middleton','WAS','SF',55,10.0,3.8,3.0,0.7,0.1,1.2,1.3,.460,.860,1.8,0,2,0,'n','簽換回巫師'],
 ['Miles McBride','NYK','PG/SG',70,10.5,2.5,3.0,1.0,0.2,2.2,0.9,.430,.850,1.0,0,0,0,'',''],
 ['Wendell Carter Jr.','ORL','C/PF',64,9.5,7.5,1.8,0.6,0.7,0.7,1.1,.500,.740,1.6,0,1,0,'','Vučević 加盟後時間會少'],
-['Tristan da Silva','ORL','SF/PF',74,9.0,3.8,1.8,0.7,0.3,1.6,0.9,.440,.800,1.2,0,1,0,'',''],
+['Tristan da Silva','ORL','SF/PF',74,9.0,3.8,1.8,0.7,0.3,1.6,0.9,.440,.800,1.2,0,1,0,'t',''],
 ['Andre Drummond','PHI','C',60,7.0,8.0,1.2,0.9,0.6,0.0,1.3,.520,.600,1.6,0,1,0,'',''],
 ['Kelly Oubre Jr.','IND','SF/SG',66,12.0,4.8,1.4,1.2,0.6,1.4,1.2,.460,.740,2.6,0,1,0,'n','簽約溜馬'],
 ['Aaron Nesmith','IND','SF',62,11.5,4.3,1.4,0.8,0.5,1.8,1.0,.460,.860,2.4,0,2,0,'',''],
 ['T.J. McConnell','IND','PG',72,9.0,2.8,4.5,1.1,0.2,0.3,1.4,.510,.800,0.8,0,0,0,'',''],
 ['Jay Huff','IND','C',72,8.5,4.0,1.0,0.5,1.8,1.1,0.7,.510,.820,1.0,0,1,0,'','21 分鐘 1.9 阻攻、FT 82%，Zubac 來了時間可能變少'],
 ['Jarace Walker','IND','PF',70,9.0,4.8,2.0,0.9,0.6,1.2,1.0,.450,.740,1.2,0,1,1,'',''],
-['Ron Holland II','DET','SF',70,8.5,4.3,1.6,1.2,0.5,0.6,1.2,.450,.700,2.0,0,1,1,'',''],
+['Ron Holland II','DET','SF',70,8.5,4.3,1.6,1.2,0.5,0.6,1.2,.450,.700,2.0,0,1,1,'t',''],
 ['Isaiah Joe','DET','SG',70,9.5,2.8,1.4,0.8,0.2,2.4,0.6,.430,.860,0.8,0,1,0,'n','從雷霆換到活塞'],
 ['Kevin Huerter','DET','SG/SF',66,9.5,3.0,2.5,0.7,0.3,1.8,1.0,.430,.780,0.8,0,1,0,'',''],
 ['Rui Hachimura','LAC','PF',66,13.0,4.8,1.3,0.7,0.3,1.4,0.9,.500,.760,2.2,0,1,0,'n','簽約快艇'],
@@ -743,6 +751,7 @@ function makePlayers(raw) {
     return {
       id, name, team, pos: pos.split('/'), gp, pts, reb, ast, stl, blk, tpm, tov, fgp, ftp, fta, fga,
       espn: espn || 0, risk, up, rookie: flags.includes('r'), moved: flags.includes('n'), hurt: flags.includes('i'),
+      cls: flags.includes('r') ? 2026 : flags.includes('s') ? 2025 : flags.includes('t') ? 2024 : 0,   // 近三屆選秀
       note: note || '', search: name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(),
       z: {}, zs: 0, v: 0, rank: 0,
     };
@@ -810,6 +819,7 @@ const TEAM_ZH = {
   POR: '拓荒者', SAC: '國王', SAS: '馬刺', TOR: '暴龍', UTA: '爵士', WAS: '巫師',
 };
 const CAT_LABEL = { pts: 'PTS', reb: 'REB', ast: 'AST', stl: 'STL', blk: 'BLK', tpm: '3PM', fg: 'FG%', ft: 'FT%', tov: 'TO' };
+const CLS_LABEL = { 2026: '新秀', 2025: '二年級', 2024: '三年級' };
 const CAT_ZH = { pts: '得分', reb: '籃板', ast: '助攻', stl: '抄截', blk: '阻攻', tpm: '三分球', fg: '投籃命中率', ft: '罰球命中率', tov: '失誤' };
 const POSITIONS = ['ALL', 'PG', 'SG', 'SF', 'PF', 'C'];
 const PLANS = [
@@ -938,7 +948,7 @@ function filtered() {
   let xs = current.list.filter(p =>
     (!q || p.search.includes(q) || p.team.toLowerCase() === q || (TEAM_ZH[p.team] || '').includes(state.q.trim())) &&
     (state.pos === 'ALL' || p.pos.includes(state.pos)) &&
-    (!state.rookie || p.rookie) &&
+    (!state.rookie || p.cls > 0) &&
     (!state.target || p.target) &&
     (!state.hide || !state.sold[p.id]));
   const s = state.sort;
@@ -957,6 +967,7 @@ function rowHTML(p, mk, rankIn) {
   const punted = new Set(state.punts);
   const tags = [];
   if (p.rookie) tags.push('<span class="tag rook">新秀</span>');
+  else if (p.cls) tags.push(`<span class="tag move">${CLS_LABEL[p.cls]}</span>`);
   if (p.target) tags.push('<span class="tag target">值得搶</span>');
   if (p.over) tags.push('<span class="tag over">易溢價</span>');
   if (p.risk >= 2) tags.push('<span class="tag risk">' + (p.hurt ? '傷癒/傷病' : '出賽風險') + '</span>');
@@ -1062,12 +1073,19 @@ function renderPlan() {
   $('planNote').textContent = plan.note + '「≈ #」是這個價格大約買得到的價值排名。';
 }
 
+// 近三屆選秀（2024–2026）裡推薦指數最高的 15 位
 function renderRookies(mk) {
-  const rs = current.list.filter(p => p.rookie).sort((a, b) => b.idx - a.idx);
-  $('rookList').innerHTML = rs.map(p => {
+  const rs = current.list.filter(p => p.cls).sort((a, b) => b.idx - a.idx || b.v - a.v).slice(0, 15);
+  $('rookList').innerHTML = rs.map((p, i) => {
     const g = gradeOf(p.idx);
     const sold = state.sold[p.id];
-    return `<li><span>${esc(p.name)} <span class="t">${TEAM_ZH[p.team]} · ${p.pos.join('/')}${p.target ? ' · 值得搶' : p.over ? ' · 易溢價' : ''}${sold ? ' · 已成交' : ''}</span></span><span class="grade g${g}">${g}</span><span class="p">${p.v >= 0.5 ? money(adj(p, mk.infl)) : '$0'}</span></li>`;
+    const bits = [TEAM_ZH[p.team], p.pos.join('/')];
+    if (p.target) bits.push('值得搶'); else if (p.over) bits.push('易溢價');
+    if (sold) bits.push(sold.m ? '我買的' : '已成交');
+    return `<li><span class="n num">${i + 1}</span>
+      <span class="who2"><button type="button" class="find" data-find="${p.id}" aria-label="在清單找出 ${esc(p.name)}">${esc(p.name)}</button>
+      <span class="t"><span class="cls c${p.cls}">${CLS_LABEL[p.cls]}</span>${bits.join(' · ')}</span></span>
+      <span class="grade g${g}">${g}</span><span class="p">${p.v >= 0.5 ? money(adj(p, mk.infl)) : '$0'}</span></li>`;
   }).join('');
 }
 
@@ -1147,6 +1165,24 @@ listEl.addEventListener('keydown', e => {
     if (e.key === 'Enter') { e.preventDefault(); commit(id, e.shiftKey); }
     else if (e.key === 'Escape') { state.editing = null; renderList(market()); }
   }
+});
+// 點新秀速覽的名字：用搜尋把他叫出來、捲過去、閃一下
+let flashTimer = 0;
+$('rookList').addEventListener('click', e => {
+  const b = e.target.closest('[data-find]');
+  if (!b) return;
+  const p = byId.get(b.dataset.find);
+  state.q = p.name; $('q').value = p.name;
+  state.pos = 'ALL'; state.target = false; state.showAll = false;
+  if (state.hide && state.sold[p.id]) state.hide = false;
+  save(); render();
+  const row = listEl.querySelector(`.row[data-id="${p.id}"]`);
+  if (!row) return;
+  const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  row.scrollIntoView({ block: 'center', behavior: smooth ? 'smooth' : 'auto' });
+  row.classList.add('flash');
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => row.classList.remove('flash'), 1600);
 });
 $('teamList').addEventListener('click', e => {
   const b = e.target.closest('[data-undo]');
