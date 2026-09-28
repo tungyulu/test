@@ -18,7 +18,7 @@
 | [golf.html](https://tungyulu.github.io/test/golf.html) | 高爾夫揮桿分析 · 丟入手機影片自動找擊球瞬間、量下桿節奏推估桿頭速度與飛行距離，能追到球時疊上 tracer；另有正面慢動作手動量測 |
 | [blackjack.html](https://tungyulu.github.io/test/blackjack.html) | 21點機率決策挑戰 · 隨機牌局練基本策略，對照策略表計分 |
 | [blackjack-game.html](https://tungyulu.github.io/test/blackjack-game.html) | 21點實戰牌桌 · 同一套規則實際開打：虛擬籌碼下注（主注＋完美對子／21+3 副注）、可加 1–4 位照基本策略打的電腦玩家、6 副牌靴、策略教練、即時機率與 Hi-Lo 算牌，數據面板可開關 |
-| [nba-auction.html](https://tungyulu.github.io/test/nba-auction.html) | NBA Fantasy 拍賣選秀板（2026-27）· 14 隊每隊 $200、11 先發＋3 板凳：約 230 位球員的建議價與推薦指數（新秀、傷病、ESPN 市場價差）、九項熱度圖、9-cat／8-cat／積分制與 punt 重算，成交後即時算剩餘預算、最高可出價與通膨（存本機） |
+| [nba-auction.html](https://tungyulu.github.io/test/nba-auction.html) | NBA Fantasy 拍賣選秀板（2026-27）· 傳統 9 項、14 隊每隊 $200、11 先發＋3 板凳：約 230 位球員的建議價與推薦指數（新秀、傷病、ESPN 市場價差）、九項熱度圖、punt 重算，成交後即時算剩餘預算、最高可出價與通膨（存本機） |
 | [yotei.html](https://tungyulu.github.io/test/yotei.html) | 羊蹄山戰鬼（Ghost of Yōtei）收集清單 · 依類別／地區逐項打勾（存本機），未完成的點名稱開對應攻略頁（繁中／簡中／英文可切換）；iPhone 建議 Safari「分享 → 加入主畫面」，進度才不會被 Safari 7 天清除 |
 
 ## golf-tracer.py
