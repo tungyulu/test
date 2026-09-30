@@ -1,0 +1,443 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-30T10:16:39+00:00",
+  "title": "Design System: 旅のしおり · 關東秋季紅葉巡航",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Federal Blue Ink",
+        "canonical": "oklch(43.3% 0.138 264.9)",
+        "tonalRamp": [
+          "#030044",
+          "#041665",
+          "#1a3887",
+          "#3658aa",
+          "#5479cf",
+          "#749bf4",
+          "#98c2ff",
+          "#d3efff"
+        ]
+      },
+      "ink-rule": {
+        "role": "primary",
+        "displayName": "Ink Rule",
+        "canonical": "oklch(43.3% 0.138 264.9)",
+        "tonalRamp": [
+          "#030044",
+          "#041665",
+          "#1a3887",
+          "#3658aa",
+          "#5479cf",
+          "#749bf4",
+          "#98c2ff",
+          "#d3efff"
+        ]
+      },
+      "desk": {
+        "role": "primary",
+        "displayName": "Desk (Federal Blue)",
+        "canonical": "oklch(43.3% 0.138 264.9)",
+        "tonalRamp": [
+          "#030044",
+          "#041665",
+          "#1a3887",
+          "#3658aa",
+          "#5479cf",
+          "#749bf4",
+          "#98c2ff",
+          "#d3efff"
+        ]
+      },
+      "red": {
+        "role": "secondary",
+        "displayName": "Riso Red",
+        "canonical": "oklch(61.6% 0.197 26.5)",
+        "tonalRamp": [
+          "#3e0000",
+          "#650000",
+          "#8b0000",
+          "#b20013",
+          "#da3a37",
+          "#ff6158",
+          "#ff897d",
+          "#ffd0c4"
+        ]
+      },
+      "red-ink": {
+        "role": "secondary",
+        "displayName": "Legible Red",
+        "canonical": "oklch(54.0% 0.187 23.1)",
+        "tonalRamp": [
+          "#3c0000",
+          "#620000",
+          "#880000",
+          "#af0d25",
+          "#d63f44",
+          "#fe6465",
+          "#ff8c89",
+          "#ffd1cb"
+        ]
+      },
+      "red-ink-deep": {
+        "role": "secondary",
+        "displayName": "Pressed Red",
+        "tonalRamp": [
+          "#3c0000",
+          "#620000",
+          "#880000",
+          "#af0d25",
+          "#d63f44",
+          "#fe6465",
+          "#ff8c89",
+          "#ffd1cb"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "White Stock",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "lemon": {
+        "role": "neutral",
+        "displayName": "レモン Lemon",
+        "canonical": "oklch(89.8% 0.139 99.3)",
+        "tonalRamp": [
+          "#1a0500",
+          "#362000",
+          "#533d00",
+          "#725d00",
+          "#927d00",
+          "#b49f1b",
+          "#dac54e",
+          "#fcf0af"
+        ]
+      },
+      "mizu": {
+        "role": "neutral",
+        "displayName": "水色 Mizu",
+        "canonical": "oklch(87.8% 0.040 234.3)",
+        "tonalRamp": [
+          "#000d19",
+          "#0d2735",
+          "#2a4352",
+          "#476271",
+          "#668292",
+          "#87a3b4",
+          "#acc9db",
+          "#e0f2fd"
+        ]
+      },
+      "wakakusa": {
+        "role": "neutral",
+        "displayName": "若草 Wakakusa",
+        "canonical": "oklch(88.0% 0.083 125.8)",
+        "tonalRamp": [
+          "#040f00",
+          "#1a2a00",
+          "#35470e",
+          "#52662f",
+          "#71864e",
+          "#92a86f",
+          "#b7ce93",
+          "#e6f5d1"
+        ]
+      },
+      "momo": {
+        "role": "neutral",
+        "displayName": "桃 Momo",
+        "canonical": "oklch(86.2% 0.057 23.7)",
+        "tonalRamp": [
+          "#1e0102",
+          "#3b1816",
+          "#5a3331",
+          "#7b514e",
+          "#9c706d",
+          "#bf918e",
+          "#e7b6b3",
+          "#ffe6e4"
+        ]
+      },
+      "fuji": {
+        "role": "neutral",
+        "displayName": "藤 Fuji",
+        "canonical": "oklch(85.9% 0.046 302.5)",
+        "tonalRamp": [
+          "#0f061b",
+          "#281e36",
+          "#443a54",
+          "#625873",
+          "#827794",
+          "#a498b6",
+          "#c9bedd",
+          "#f2ebfe"
+        ]
+      },
+      "staple": {
+        "role": "neutral",
+        "displayName": "Staple Steel",
+        "tonalRamp": [
+          "#1f2127",
+          "#353941",
+          "#4d525c",
+          "#666c77",
+          "#80868f",
+          "#a3a9b4",
+          "#c4c9d1",
+          "#eef0f3"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Cover title only, vertical-rl, with red plate offset."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Day numbers (66px) and the cover countdown (50px)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Chapter band titles."
+      },
+      "headline-day": {
+        "displayName": "Day Headline",
+        "purpose": "Day band titles, balanced."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Lodging/transport entry headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose, max 36em."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Notes, stub details, plan dates, box headings."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tracked section headings followed by a rule."
+      },
+      "stub-time": {
+        "displayName": "Stub Time",
+        "purpose": "Time in a ticket stub's tear-off."
+      }
+    },
+    "shadows": [],
+    "materials": [
+      {
+        "name": "grain",
+        "value": "SVG fractalNoise (baseFrequency .85) tinted ink, opacity .075, mix-blend-mode multiply",
+        "purpose": "Paper tooth over every sheet and the cover."
+      },
+      {
+        "name": "halftone",
+        "value": "radial-gradient(circle, rgba(42,74,155,.22) 1.1px, transparent 1.4px) 7px 7px, masked to fade upward, 64px",
+        "purpose": "Halftone gutter at the foot of the cover."
+      },
+      {
+        "name": "misregistration",
+        "value": "red copy of the glyphs translate(3px,2.5px) (numerals 2.5px,2px), multiply, opacity .8–.85",
+        "purpose": "Second-ink plate behind heavy type."
+      },
+      {
+        "name": "rough",
+        "value": "feTurbulence .85 + feDisplacementMap scale 2.4",
+        "purpose": "Pressed-ink edge on stamps, hanko and checkboxes."
+      },
+      {
+        "name": "double-rule",
+        "value": "4px double var(--ink)",
+        "purpose": "Foot of every page band; head of meal notes, plan, dish lists, asides."
+      },
+      {
+        "name": "cut",
+        "value": "1px dashed var(--ink)",
+        "purpose": "切り取り線 between slips, the lodging line, perforations."
+      },
+      {
+        "name": "memo-ruling",
+        "value": "repeating-linear-gradient(transparent 0 35px, var(--ink-rule) 35px 36px)",
+        "purpose": "Ruled lines of the memo page."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ink-press",
+        "value": "200ms cubic-bezier(.2,.9,.25,1); scale 1.18→1, rotate (rot−6deg)→rot, opacity 0→.92",
+        "purpose": "到著章 stamp landing. The signature motion."
+      },
+      {
+        "name": "check-pop",
+        "value": "opacity 120ms ease; transform 180ms cubic-bezier(.2,.9,.25,1.2); scale .5→1.12, rotate −12→−6deg",
+        "purpose": "Red check mark on a checklist tick."
+      },
+      {
+        "name": "colour-state",
+        "value": "150ms ease",
+        "purpose": "Link and cover-button colour changes on hover."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all transitions and animations off; smooth scrolling off",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "desk",
+        "value": "800px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Cover Button",
+      "kind": "button",
+      "refersTo": "cover-button",
+      "description": "Bordered white-stock action on the cover (翻開目錄, 行前準備).",
+      "html": "<a class=\"ds-cover-btn\" href=\"#\">翻開目錄</a>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-cover-btn{display:inline-flex;align-items:center;gap:7px;min-height:46px;padding:0 16px;border:1.5px solid var(--ink);border-radius:4px;background:var(--paper);color:var(--ink);font:400 15px/1.8 var(--font);text-decoration:none;transition:background-color .15s ease,color .15s ease}.ds-cover-btn:hover{background:var(--ink);color:var(--paper)}.ds-cover-btn:focus-visible{outline:2px dashed var(--red-ink);outline-offset:3px}"
+    },
+    {
+      "name": "Today Button",
+      "kind": "button",
+      "refersTo": "cover-button-today",
+      "description": "Solid red cover action shown only during the trip.",
+      "html": "<a class=\"ds-cover-btn-today\" href=\"#\">今天的頁</a>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-cover-btn-today{display:inline-flex;align-items:center;min-height:46px;padding:0 16px;border:1.5px solid var(--red-ink);border-radius:4px;background:var(--red-ink);color:#fff;font:400 15px/1.8 var(--font);text-decoration:none;transition:background-color .15s ease}.ds-cover-btn-today:hover{background:#a8222c}.ds-cover-btn-today:focus-visible{outline:2px dashed var(--red-ink);outline-offset:3px}"
+    },
+    {
+      "name": "Index Tabs",
+      "kind": "nav",
+      "refersTo": "index-tab",
+      "description": "Sticky strip of stock-coloured tabs on the blue desk; active rises with a red top edge, today is solid red. No animation.",
+      "html": "<nav class=\"ds-tabs\"><a class=\"ds-tab\" style=\"--stock:#f4df6a\" href=\"#\">封面</a><a class=\"ds-tab\" style=\"--stock:#bedcee\" href=\"#\">日程</a><a class=\"ds-tab ds-on\" style=\"--stock:#cae2a6\" href=\"#\">2<small>日目</small></a><a class=\"ds-tab ds-today\" href=\"#\">3<small>日目</small></a><a class=\"ds-tab\" style=\"--stock:#d6caea\" href=\"#\">5<small>日目</small></a></nav>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-tabs{display:flex;gap:4px;padding:8px 10px 0;background:var(--desk)}.ds-tab{display:inline-flex;align-items:baseline;gap:1px;min-height:40px;padding:11px 12px 8px;border-radius:7px 7px 0 0;border-top:3px solid transparent;background:var(--stock);color:var(--ink);font:400 14px/1 var(--font);text-decoration:none;transform:translateY(5px)}.ds-tab small{font-size:11.5px}.ds-tab:hover{text-decoration:underline;text-underline-offset:3px}.ds-tab:focus-visible{outline:2px dashed var(--red-ink);outline-offset:3px}.ds-on{transform:none;border-top-color:var(--red-ink)}.ds-today{background:var(--red-ink);color:#fff}"
+    },
+    {
+      "name": "Ticket Stub",
+      "kind": "custom",
+      "refersTo": "ticket-stub",
+      "description": "A day's hard commitment: time in the tear-off, subject and detail, and a hanko.",
+      "html": "<div class=\"ds-stub\"><span class=\"ds-stub-t\">10:30</span><span class=\"ds-stub-b\"><span class=\"ds-stub-w\">関内店取車</span><span class=\"ds-stub-d\">トヨタレンタカー · GR Yaris · 預約 98119828100</span></span><span class=\"ds-hanko\">予約済</span></div>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-stub{position:relative;display:grid;grid-template-columns:78px minmax(0,1fr) auto;align-items:center;min-height:64px;border:1.5px solid var(--ink);border-radius:6px;background:var(--paper);color:var(--ink);font-family:var(--font)}.ds-stub::before,.ds-stub::after{content:'';position:absolute;left:71px;width:14px;height:14px;border:1.5px solid var(--ink);border-radius:50%;background:var(--paper)}.ds-stub::before{top:-8px;clip-path:inset(50% 0 0 0)}.ds-stub::after{bottom:-8px;clip-path:inset(0 0 50% 0)}.ds-stub-t{align-self:stretch;display:flex;align-items:center;justify-content:center;border-right:1.5px dashed var(--ink);font-size:23px;line-height:1;color:var(--red-ink);font-variant-numeric:tabular-nums}.ds-stub-b{display:flex;flex-direction:column;gap:2px;padding:10px 10px 10px 14px;min-width:0}.ds-stub-w{font-size:16px;line-height:1.4}.ds-stub-d{font-size:13px;line-height:1.55}.ds-hanko{display:inline-grid;place-items:center;width:48px;height:48px;margin-right:10px;border:2px solid currentColor;border-radius:50%;color:var(--red-ink);font-size:12px;line-height:1;transform:rotate(-12deg)}"
+    },
+    {
+      "name": "Stock Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Pill carrying the day or chapter stock, e.g. the day label on lodging entries.",
+      "html": "<span class=\"ds-chip\" style=\"--stock:#cae2a6\">D2 · 11/08</span> <span class=\"ds-chip\" style=\"--stock:#d6caea\">D5–D7 · 11/11–13</span>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-chip{display:inline-block;font:400 12.5px/1.4 var(--font);padding:2px 9px;border:1.5px solid var(--ink);border-radius:999px;background:var(--stock,transparent);color:var(--ink);white-space:nowrap}"
+    },
+    {
+      "name": "Ruled Box",
+      "kind": "card",
+      "refersTo": "ruled-box",
+      "description": "Ruled container with its heading set into the top rule; the must variant is red.",
+      "html": "<div class=\"ds-box\"><span class=\"ds-box-h\">N'EX 成田特快 · 直達橫濱</span><p>46號 18:45 發車 → 20:19 (橫濱)</p></div><div class=\"ds-box ds-must\"><span class=\"ds-box-h\">還車 11/10 20:00</span><p>関内店 20:00 關門。</p></div>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-box{margin:26px 0 16px;padding:16px 14px 12px;border:1.5px solid var(--ink);border-radius:4px;background:var(--paper);color:var(--ink);font:400 15.5px/1.8 var(--font)}.ds-box p{margin:2px 0 0}.ds-box-h{display:inline-block;margin:-29px 0 6px -6px;padding:0 6px;background:var(--paper);font-size:13.5px;line-height:1.6}.ds-must{border:2px solid var(--red-ink)}.ds-must .ds-box-h{color:var(--red-ink)}"
+    },
+    {
+      "name": "Checklist Item",
+      "kind": "input",
+      "description": "Hand-ruled checkbox ticked with a red check that pops in; text strikes through in red.",
+      "html": "<label class=\"ds-ck\"><input type=\"checkbox\" checked><span class=\"ds-ck-box\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m5 12.5 4.2 4.2L19 7\"/></svg></span><span class=\"ds-ck-t\">護照（效期 6 個月以上）</span></label>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-ck{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:start;padding:14px 0;border-bottom:1px solid var(--ink-rule);color:var(--ink);font:400 15px/1.75 var(--font);cursor:pointer}.ds-ck input{position:absolute;opacity:0;width:1px;height:1px}.ds-ck-box{position:relative;display:grid;place-items:center;width:26px;height:26px}.ds-ck-box::before{content:'';position:absolute;inset:0;border:2px solid var(--ink);border-radius:2px}.ds-ck-box svg{width:24px;height:24px;color:var(--red);opacity:0;transform:scale(.5) rotate(-12deg);transition:opacity .12s ease,transform .18s cubic-bezier(.2,.9,.25,1.2)}.ds-ck input:checked+.ds-ck-box svg{opacity:1;transform:scale(1.12) rotate(-6deg)}.ds-ck input:focus-visible+.ds-ck-box{outline:2px dashed var(--red-ink);outline-offset:3px}.ds-ck input:checked~.ds-ck-t{text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:1.5px}"
+    },
+    {
+      "name": "Arrival Stamp",
+      "kind": "custom",
+      "refersTo": "arrival-stamp",
+      "description": "到著章: dashed circle that takes a pressed red station stamp on tap (signature interaction).",
+      "html": "<button class=\"ds-stamp\" type=\"button\"><span class=\"ds-stamp-e\">到著章</span></button>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-stamp{position:relative;display:grid;place-items:center;width:116px;height:116px;padding:0;border:2px dashed var(--ink);border-radius:50%;background:transparent;color:var(--ink);font:400 13px/1 var(--font);letter-spacing:.14em;cursor:pointer}.ds-stamp:hover{border-color:var(--red-ink)}.ds-stamp:focus-visible{outline:2px dashed var(--red-ink);outline-offset:3px}.ds-stamp:active .ds-stamp-e{color:var(--red);animation:ds-press .2s cubic-bezier(.2,.9,.25,1) both}@keyframes ds-press{from{transform:rotate(-12deg) scale(1.18);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:.92}}"
+    },
+    {
+      "name": "Appendix Slip",
+      "kind": "custom",
+      "description": "Folded 付録 slip holding optional material behind a dashed cut.",
+      "html": "<details class=\"ds-slip\"><summary><svg class=\"ds-chev\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m9 6 6 6-6 6\"/></svg>導航節點預先設定</summary><div class=\"ds-slip-b\">橫濱取車 → 東名高速 → 小田原 → 箱根新道 → 河口湖</div></details>",
+      "css": ":host{--ink:#2a4a9b;--ink-rule:rgba(42,74,155,.38);--red:#e3443f;--red-ink:#c42c36;--paper:#fff;--desk:#2a4a9b;--lemon:#f4df6a;--mizu:#bedcee;--wakakusa:#cae2a6;--momo:#f5c4c0;--fuji:#d6caea;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--heavy:'Zen Maru Heavy','Huninn Shiori',sans-serif} .ds-slip{border-bottom:1px dashed var(--ink);color:var(--ink);font-family:var(--font)}.ds-slip>summary{list-style:none;display:flex;align-items:center;gap:8px;min-height:48px;padding:6px 0;cursor:pointer;font-size:15px;line-height:1.5}.ds-slip>summary::-webkit-details-marker{display:none}.ds-slip>summary:hover{color:var(--red-ink)}.ds-slip>summary:focus-visible{outline:2px dashed var(--red-ink);outline-offset:3px}.ds-chev{width:1.1em;height:1.1em}.ds-slip[open] .ds-chev{transform:rotate(90deg)}.ds-slip-b{padding:2px 0 18px 26px;font-size:15px;line-height:1.8}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Two-Ink Shiori",
+    "overview": "**Creative North Star: \"The Two-Ink Shiori\"**\n\nThe itinerary is the hand-made 旅のしおり two friends staple together before a trip, printed on a risograph with exactly two drums. Federal Blue prints every word and every rule; riso red is reserved for what cannot slip. Each page is a sheet of stock: white paper for reading, coloured 色上質紙 (レモン, 水色, 若草, 桃, 藤) for the cover, page bands, index tabs and chips. The sheets sit on a desk of the same blue ink, so the booklet reads as an object laid down rather than an app shell.\n\nDensity is a printed booklet's, not a dashboard's: one page per day, generous 1.8 body leading, sections divided by rules rather than boxes. Depth is paper only. There is a faint multiply grain over every sheet, a halftone gutter at the foot of the cover, a deliberate red-plate misregistration behind the heavy numerals, and a displacement filter that roughens stamps and hand-ruled checkboxes. Optional material is folded away into 付録 slips; the red ticket stubs carry the day's hard commitments.\n\nConfirmed rejections: cream grounds, terracotta, gradients used as fills, glass, card shadows, and the timeline-of-cards app shell.",
+    "keyCharacteristics": [
+      "Two inks only (blue, red) on white or coloured stock; everything else is paper.",
+      "Hierarchy by size and rule weight, never by grey tint.",
+      "Rules are the structure: 1.5px solid, 1px dashed cuts, 4px double rules, 2px dotted leaders.",
+      "Heavy rounded numerals with a red misregistration shadow for the title, day numbers and countdown.",
+      "Red belongs to hard commitments: booking times, deadlines, hanko, stamps, today.",
+      "One authored motion: the ink press."
+    ],
+    "rules": [
+      {
+        "name": "The Two Drums Rule",
+        "body": "Text and rules print in blue or red and nothing else. White text appears only knocked out of a solid red or blue fill (today's tab and button, the hovered cover button, the out-of-booklet tabs on the desk).",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Is a Promise Rule",
+        "body": "Red marks a booking time, a deadline, a hanko, a stamp or today. A suggestion, a tip or a highlight never gets red; the lemon marker underline is for emphasis.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Plate Rule",
+        "body": "`red` is for large graphic marks; any red text under display size uses `red-ink`, which holds 5.58:1 on white.",
+        "section": "colors"
+      },
+      {
+        "name": "The Size Not Grey Rule",
+        "body": "Secondary text is never tinted grey or faded. It is smaller, and that is all: `.dim` shrinks to 0.92em in full ink.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Heavy Rule",
+        "body": "The heavy face exists only for the title, the countdown and day numerals. Its subset cannot set anything else, and nothing else should want it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Paper Only Rule",
+        "body": "No `box-shadow`, no blur, no gradient fills. If something needs to stand forward, give it a different stock or a heavier rule.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do print every word and rule in `ink` or `red-ink`; use `red` only for large marks (stamps, plates, check marks).",
+      "Do set a page's stock once with a `stock-*` class and let the band, tab, chips and dots inherit `--stock`.",
+      "Do put each day's bookings and deadlines in ticket stubs with a hanko, and fold everything optional into 付録 slips.",
+      "Do close every page band with a 4px double rule, and use 1px dashed cuts for slips and tear-off lines.",
+      "Do build hierarchy from size alone (15.5px body, 13.5px small, 14px tracked labels).",
+      "Do keep tap targets at 44–50px and body text at AA contrast on its stock.",
+      "Do re-subset Huninn Shiori with `tools/trip-font.py` after changing any text.",
+      "Do mark today with the red double rule, the 今天 hanko and the red tab together."
+    ],
+    "donts": [
+      "Don't add box shadows, blur, glass or gradient fills; depth is stock, rule and grain.",
+      "Don't use cream or terracotta grounds.",
+      "Don't tint secondary text grey or reduce its opacity.",
+      "Don't give suggestions, tips or highlights red.",
+      "Don't fill today's band red; the band keeps its stock.",
+      "Don't animate tabs, page changes or reveals; the only authored motion is the ink press and the check-mark pop.",
+      "Don't set anything but the title, countdown and day numerals in Zen Maru Heavy.",
+      "Don't add a side rail or marker column that costs phone width.",
+      "Don't load CSS, fonts or icons from a CDN; the booklet must render fully styled offline."
+    ]
+  }
+}
