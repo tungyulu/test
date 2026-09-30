@@ -9,8 +9,10 @@ This is a static HTML project with no build system or package manager. All HTML 
 ## Files
 
 - **`index.html`** — Site hub / navigation page (我的小工具). Displays twelve destination cards linking to the sub-pages below. Served at the GitHub Pages root (`https://tungyulu.github.io/test/`).
-- **`trip.html`** — Japan road trip itinerary (關東秋季紅葉巡航: 東京 / 河口湖 / 湘南), an 8-day travel schedule as a tabbed app shell (總覽 / 逐日行程 / 住宿 / 美食 / 交通) with timeline-style day cards inside the itinerary panel. The tab bar also carries a dashed link button to `livecam.html`.
-- **`livecam.html`** — Live-camera dashboard (東京近郊即時影像) for the trip: YouTube live cams grouped by region (新宿/澀谷/原宿/銀座/橫濱/江之島鎌倉/箱根/河口湖/熱海/成田), with TW/JP clocks, per-area Open-Meteo weather + clothing advice, a Fuji visibility panel, drive-road readings, and a 「我的行程」 section whose `TRIP` constant mirrors trip.html's 8 days (day title/route/cameras/weather areas — keep it in sync when the itinerary changes). Self-contained inline CSS/JS; external requests only to Google Fonts, YouTube thumbnails and Open-Meteo. Links back to `index.html` and `trip.html`.
+- **`trip.html`** — Japan road trip itinerary (關東秋季紅葉巡航: 東京 / 河口湖 / 湘南), redesigned as a 旅のしおり (hand-stapled trip booklet): cover, contents, 日程表, one page per day, lodging / transport / food chapters, 行前準備 checklist, back cover. Offline-first single file (no CSS, icon or font CDN). Its sticky index-tab strip ends in two out-links, 影像 → `livecam.html` and 舊版 → `trip-v1.html`.
+- **`trip-v1.html`** — The pre-redesign itinerary (tabbed app shell with Tailwind build inlined), kept as-is and reachable from `trip.html`. Content still matches the booklet as of the redesign; new content goes into `trip.html` only.
+- **`tools/trip-font.py`** — Re-subsets the inlined Huninn font in `trip.html` from the page's current text (`pip install fonttools brotli`; `--check` only reports missing glyphs). Run it after any content edit that may introduce new characters.
+- **`livecam.html`** — Live-camera dashboard (東京近郊即時影像) for the trip: YouTube live cams grouped by region (新宿/澀谷/原宿/銀座/橫濱/江之島鎌倉/箱根/河口湖/熱海/成田), with TW/JP clocks, per-area Open-Meteo weather + clothing advice, a Fuji visibility panel, drive-road readings, and a 「我的行程」 section whose `TRIP` constant mirrors the itinerary's 8 days (day title/route/cameras/weather areas — keep it in sync when the itinerary changes). Self-contained inline CSS/JS; external requests only to Google Fonts, YouTube thumbnails and Open-Meteo. Links back to `index.html` and `trip.html`.
 - **`betting.html`** — Sports betting tracker (世界盃運彩投注紀錄) for parlay/system bets, with combinatorics calculations, real-time profit/loss dashboard, and localStorage persistence.
 - **`yacht.html`** — Yacht dice game (快艇骰子), 5-dice 13-category game supporting 1P-vs-CPU and 2P modes with greedy CPU AI and GSAP animations.
 - **`usage.html`** — Claude Code usage dashboard (方案額度儀表板) showing `/usage`-style limit bars with auto-refresh. Standalone paste-token direct mode only (no local-server mode).
@@ -29,10 +31,23 @@ This is a static HTML project with no build system or package manager. All HTML 
 ### `index.html`
 Single-file static hub page. No state, no localStorage. Twelve `<a class="nav-card">` block links in a custom CSS grid (`.card-grid`, `repeat(2, 1fr)`, single column under 600px — twelve cards fill six rows of two). GSAP entrance animation (stagger) and hover lift, both guarded via `window.matchMedia` checks for `prefers-reduced-motion` and `(hover: hover) and (pointer: fine)`. Uses `gsap.set` + `gsap.to` (not `gsap.from` or `gsap.matchMedia` object form — the latter fires the callback once per matching condition and causes duplicate tweens).
 
-### `trip.html`
+### `trip.html` (旅のしおり)
+Product truth lives in `PRODUCT.md` (scope: this itinerary only); the visual system in `DESIGN.md` + `.impeccable/design.json`; the dev-only direction contract in `.impeccable/surfaces/trip-html.md` (never copy it into the page). Generated once from `trip-v1.html`'s content, then maintained by hand — edit `trip.html` directly.
+
+Structure, top to bottom: `header.cover#cover` (vertical title, countdown/today stamp, actions) → `nav.tabs` (sticky index tabs, one per page, coloured by paper stock) → `main`: `#contents` 目錄 → `#plan` 日程表 (8 rows + `#flight-info` stubs) → `article.sheet.day#day-1…8` → `#stay` (`#stay-d1…d5`) → `#transport` (`#transport-rental/-nex/-drive/-tokyo`) → `#food` (`#food-odawara/-kawaguchiko/-shonan/-shinjuku/-ginza/-shibuya`) → `#pretrip-checklist` → `footer#back` (phone numbers, links, memo lines). Old tab hashes `#overview`/`#days` are aliased in JS; every other old anchor id still exists.
+
+Two inks only: `--ink` (Federal Blue) prints all text and rules; `--red-ink`/`--red` print hard commitments only (booking times, deadlines, 予約済/締切 hanko, stamps). Paper stocks `--lemon/--mizu/--wakakusa/--momo/--fuji` colour the cover, page bands and tabs via `.stock-*` classes (橫濱 mizu, 河口湖 wakakusa, 江之島 momo, 東京 fuji, chapters lemon). No secondary grey text — hierarchy is size, never tint.
+
+Each day page: `.band` (N日目, date, move icons + tag, title, folio) → `.promises` "今天的約定": `ul.stubs > li.stub.stub-{booked|due|todo|plain}` ticket stubs (time, what, detail, hanko) — **when a booking or deadline changes, update the stub AND the prose/box that mention it** → prose `p.prose` → `.meal` 用餐 → `.box` / `.box.must` (red, hard deadline) ruled boxes with an `h4.box-h` label → `.bed` → `.appendix` of `details.slip` folded slips (optional material: nav points, sightseeing, alternates, shopping, ACG; `details.slip.faint` = 時間軸估算 — the user does not want timelines visible by default) → `button.stamp` 到著章.
+
+JS (inline, vanilla): trip-date logic (`START` 2026-11-07, 8 days) drives the cover stamp, `.is-today` page + `today-hanko`, past-tab check marks, the 今天的頁 button and the no-hash auto-jump; checklist persists to localStorage `trip-checklist-v1` keyed by `data-ck` (same key and ids as trip-v1, so ticks carry over; add a new id for a new item, never renumber); 到著章 stamps persist to `shiori-stamps-v1`; scroll-spy marks the active `.tab`; print opens all slips. Icons are an inline SVG `<symbol>` sprite (`<svg class="ic"><use href="#i-name"/></svg>`, 24-unit grid, 1.8 stroke) — use those, not emoji. Font: `'Huninn Shiori'` = jf open 粉圓 (SIL OFL) subset inlined as WOFF2; **run `python3 tools/trip-font.py` after adding text**, or new characters render in the fallback face.
+
+### `trip-v1.html` (legacy)
+The pre-redesign page, documented below for reference. Not linked from `index.html`; reached from `trip.html`. Don't add new content here.
+
 Tabbed app shell (modeled on an external Hokkaido itinerary page): a sticky top tab bar switches five panels — `panel-overview` (route dot-map, five stop cards D1/D2/D3/D4/D5–D8, flights, pre-trip checklist), `panel-days` (D1–D8 timeline cards + day-chip row), `panel-stay` (lodging cards per stop, anchors `#stay-d1…d5`), `panel-food` (restaurant picks grouped by area, each with a Google Maps search link + 💡 note; includes Gusto 河口湖店/新宿靖国通店/藤澤 and 焼肉ここから alongside Negishi), `panel-transport` (booked Toyota Rent-a-Car 関内店 details — GR Yaris, 11/08 10:30 pick-up to 11/10 20:00 return — plus N'EX airport legs, D2–D4 drive routes with warnings, and D5–D8 Tokyo rail notes). The stay/food/transport panels each carry their own sticky `.sec-chips` row (same pattern as `.day-chips`) driven by `gotoSection()`.
 
-**Offline-first.** Tailwind is **not** loaded from the CDN — the classes this page actually uses are pre-compiled and inlined in a `<style>` block, because the browser-JIT CDN build leaves the page completely unstyled whenever the network is unavailable (which is the normal state on the road). After changing any Tailwind class, rebuild: `npx tailwindcss@3 -i in.css -o out.css --minify` with `content: ['trip.html']`, and replace the inlined block. Classes that only ever appear inside JS string literals (the `showTab` active-tab toggles, the `today` badge, the checklist progress colours) must stay as whole literal class strings or the scanner will miss them. GSAP and Lucide are still CDN-loaded and both already degrade gracefully.
+**Offline-first.** Tailwind is **not** loaded from the CDN — the classes this page actually uses are pre-compiled and inlined in a `<style>` block, because the browser-JIT CDN build leaves the page completely unstyled whenever the network is unavailable (which is the normal state on the road). After changing any Tailwind class, rebuild: `npx tailwindcss@3 -i in.css -o out.css --minify` with `content: ['trip-v1.html']`, and replace the inlined block. Classes that only ever appear inside JS string literals (the `showTab` active-tab toggles, the `today` badge, the checklist progress colours) must stay as whole literal class strings or the scanner will miss them. GSAP and Lucide are still CDN-loaded and both already degrade gracefully.
 
 Vanilla JS only: `showTab()` / `gotoDay()` / `gotoFood()` / `gotoSection()` toggle `.hidden`, sync tab styles, and `history.replaceState` the hash; init routing supports `#overview/#days/#stay/#food/#transport`, legacy `#day-N`, `#food-*`, `#stay-*`, `#transport-*`, `#flight-info`. Stateful bits: the pre-trip checklist persists to localStorage `trip-checklist-v1` keyed by each input's `data-ck` (add a new key when adding an item; never renumber) and shows an `n / total` counter; `TRIP_START` + `tripDayIndex()` drive the header button (countdown before the trip, 「今天是 Dn」 during it), the `is-today` outline, the dimmed past day-chips, and the no-hash auto-jump to today's card. An IntersectionObserver scroll-spy lights the matching `[data-chip]` via `.chip-on`.
 
@@ -133,9 +148,9 @@ Content-only static page — the odd one out: **no JS at all and no CDN requests
 ## External Dependencies (CDN only)
 
 All pages except `dyson.html`, `invest.html`, `blackjack.html`, `blackjack-game.html` and `yotei.html` (which are fully self-contained) load from CDN — no local dependencies to install (`golf.html` loads only GSAP core + Google Fonts; `nba-auction.html` only Google Fonts):
-- Tailwind CSS (`cdn.tailwindcss.com`) — **not** on `trip.html`, which inlines a pre-compiled build so it still works offline
-- GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (trip, betting), SplitText (yacht); index and golf load core only.
-- Lucide icons (`unpkg.com/lucide@latest`) — trip, betting
+- Tailwind CSS (`cdn.tailwindcss.com`) — **not** on `trip.html` (hand-written CSS) or `trip-v1.html` (pre-compiled build inlined); both work offline
+- GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (trip-v1, betting), SplitText (yacht); index and golf load core only.
+- Lucide icons (`unpkg.com/lucide@latest`) — trip-v1, betting
 - Google Fonts — Noto Sans TC (all pages)
 
 ## Impeccable (design skill + hooks)
@@ -147,7 +162,7 @@ It was **not** installed with `npx impeccable install`: in Claude Code cloud ses
 ## GSAP Usage Notes
 
 - **`index.html`**: Use `window.matchMedia().matches` + `gsap.set`/`gsap.to`. Do NOT use `gsap.matchMedia().add(objectForm)` — it fires the callback once per matching condition, causing duplicate stagger tweens.
-- **`trip.html`** / **`betting.html`** / **`yacht.html`** / **`golf.html`**: Use `gsap.matchMedia().add(objectForm, cb)` — these pages already do so correctly, reading `ctx.conditions` inside a single callback.
+- **`trip-v1.html`** / **`betting.html`** / **`yacht.html`** / **`golf.html`**: Use `gsap.matchMedia().add(objectForm, cb)` — these pages already do so correctly, reading `ctx.conditions` inside a single callback.
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
