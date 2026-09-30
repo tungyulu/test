@@ -138,6 +138,12 @@ All pages except `dyson.html`, `invest.html`, `blackjack.html`, `blackjack-game.
 - Lucide icons (`unpkg.com/lucide@latest`) — trip, betting
 - Google Fonts — Noto Sans TC (all pages)
 
+## Impeccable (design skill + hooks)
+
+[Impeccable](https://github.com/pbakaus/impeccable) is installed at project scope for Claude Code: the skill in `.claude/skills/impeccable/`, four `impeccable-*` subagents in `.claude/agents/`, and three hooks in `.claude/settings.json` — `SessionStart` (prep), `PostToolUse` on `Edit|Write` (fast anti-pattern check on the UI file just edited, injected back as context to triage), and `Stop` (full-rule "deep pass", 30 s budget). All three call the skill's `scripts/impeccable` launcher, which fetches and sha256-verifies its engine binary into `~/.impeccable/bin/<version>/` on first run (about 1.5 s, once per container). Run `.claude/skills/impeccable/scripts/impeccable detect <file>` for a manual scan.
+
+It was **not** installed with `npx impeccable install`: in Claude Code cloud sessions the installer's signed-bundle download goes through `github.com/pbakaus/impeccable/releases/latest`, which the egress proxy blocks (HTTP 403), so `npx impeccable install` / `update` fail there. The files were instead copied from upstream's own committed Claude build (`.claude/skills/impeccable`, `.claude/agents/impeccable-*.md`, and the `hooks` block of its `.claude/settings.json`) at commit `0d6b47e`, skill/engine version 0.1.8. To update in a cloud session, shallow-clone upstream and re-copy those same three pieces; locally, `npx impeccable update` should work. To silence the hooks without uninstalling, delete the `hooks` key from `.claude/settings.json`.
+
 ## GSAP Usage Notes
 
 - **`index.html`**: Use `window.matchMedia().matches` + `gsap.set`/`gsap.to`. Do NOT use `gsap.matchMedia().add(objectForm)` — it fires the callback once per matching condition, causing duplicate stagger tweens.
