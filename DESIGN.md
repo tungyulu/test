@@ -4,9 +4,10 @@ description: The trip itinerary as a two-ink risograph booklet printed on colour
 colors:
   ink: "#2a4a9b"
   ink-rule: "rgba(42, 74, 155, .38)"
-  red: "#e3443f"
-  red-ink: "#c42c36"
-  red-ink-deep: "#a8222c"
+  red: "#c42c36"
+  red-ink: "#a0202c"
+  red-ink-deep: "#861a24"
+  red-plate: "#e3443f"
   paper: "#ffffff"
   desk: "#2a4a9b"
   lemon: "#f4df6a"
@@ -167,8 +168,9 @@ A two-drum riso palette: one cool blue ink, one warm red ink, and five pale pape
 - **Ink Rule** (`ink-rule`): the same blue thinned for hairlines between list rows (dishes, checklist items, phone rows), link underlines at rest, and the memo page's ruled lines. Rules only, never text.
 
 ### Secondary
-- **Riso Red** (`red`): the second drum as ink on paper: the cover countdown stamp, the 到著章 impression, the misregistered plate behind heavy numerals, the red check mark and its strike-through. Graphic marks only.
-- **Legible Red** (`red-ink`): red used for text and state: stub times on booked and due stubs, hanko text and rings, the `must` box border and heading, today's tab and plan row, the double rule under today's band, link hover, and the dashed focus ring.
+- **Riso Red** (`red`): the second drum as ink on white paper: the 到著章 impression, the red check mark and its strike-through. Graphic marks only, and only on white (5.58:1).
+- **Plate Red** (`red-plate`): the bright riso tone kept for the misregistered plate behind the cover title and the day numerals. Decorative only, never text, never a mark that carries information.
+- **Legible Red** (`red-ink`): red used for text and state: stub times on booked and due stubs, hanko text and rings, the cover countdown stamp (it sits on lemon), today's 今天 hanko, the `must` box border and heading, today's tab and plan row, the double rule under today's band, link hover, and the dashed focus ring. Holds ≥4.9:1 on white and on every paper stock (7.67 white, 5.70 lemon, 5.36 mizu, 5.46 wakakusa, 4.95 momo, 4.93 fuji).
 - **Pressed Red** (`red-ink-deep`): hover state of the red today button only.
 
 ### Neutral
@@ -182,7 +184,7 @@ A two-drum riso palette: one cool blue ink, one warm red ink, and five pale pape
 
 **The Red Is a Promise Rule.** Red marks a booking time, a deadline, a hanko, a stamp or today. A suggestion, a tip or a highlight never gets red; the lemon marker underline is for emphasis.
 
-**The Red Plate Rule.** `red` is for large graphic marks; any red text under display size uses `red-ink`, which holds 5.58:1 on white.
+**The Red Plate Rule.** Anything red that carries information prints in `red-ink`, which holds AA on every surface in the booklet; `red` is for stamps and check marks on white paper; `red-plate` is only the offset plate under heavy numerals. Before adding red to a new surface, check it against that surface — a coloured stock drops the contrast of any red.
 
 ## Typography
 
@@ -283,7 +285,7 @@ The back cover carries phone numbers and links in 50px rows over ink-rule hairli
 ## Do's and Don'ts
 
 ### Do:
-- **Do** print every word and rule in `ink` or `red-ink`; use `red` only for large marks (stamps, plates, check marks).
+- **Do** print every word and rule in `ink` or `red-ink`; use `red` only for stamps and check marks on white, and `red-plate` only for the misregistration plate.
 - **Do** set a page's stock once with a `stock-*` class and let the band, tab, chips and dots inherit `--stock`.
 - **Do** put each day's bookings and deadlines in ticket stubs with a hanko, and fold everything optional into 付録 slips.
 - **Do** close every page band with a 4px double rule, and use 1px dashed cuts for slips and tear-off lines.

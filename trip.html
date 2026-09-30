@@ -15,8 +15,9 @@
 :root {
   --ink: #2a4a9b;
   --ink-rule: rgba(42, 74, 155, .38);
-  --red: #e3443f;
-  --red-ink: #c42c36;
+  --red: #c42c36;        /* stamps, rings, check marks — on white paper (5.6:1) */
+  --red-ink: #a0202c;    /* red text + hanko — ≥4.9:1 on paper and every stock */
+  --red-plate: #e3443f;  /* decorative misregistration plate only, never text */
   --paper: #ffffff;
   --desk: #2a4a9b;
   --lemon: #f4df6a;
@@ -144,7 +145,7 @@ a.xref .ic { margin-left: .2em; }
   margin-top: auto;
   margin-bottom: 18px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: var(--red);
+  color: var(--red-ink);
   transform: rotate(-9deg);
   mix-blend-mode: multiply;
   filter: url(#rough);
@@ -169,7 +170,7 @@ a.xref .ic { margin-left: .2em; }
   /* second-ink misregistration: the red plate landed a hair low and right */
   content: attr(data-ink);
   position: absolute; inset: 0;
-  color: var(--red);
+  color: var(--red-plate);
   transform: translate(3px, 2.5px);
   mix-blend-mode: multiply;
   opacity: .85;
@@ -190,7 +191,7 @@ a.xref .ic { margin-left: .2em; }
 }
 .cover-btn:hover { background: var(--ink); color: var(--paper); }
 .cover-btn.is-today { background: var(--red-ink); border-color: var(--red-ink); color: #fff; }
-.cover-btn.is-today:hover { background: #a8222c; }
+.cover-btn.is-today:hover { background: #861a24; }
 .cover-btn[hidden] { display: none; }
 
 /* ------------------------------------------------------------ index tabs */
@@ -240,7 +241,7 @@ a.xref .ic { margin-left: .2em; }
 .band-meta { grid-column: 1 / -1; margin: 6px 0 0; font-size: 14px; line-height: 1.7; }
 .day .band-n { grid-row: 1 / 3; margin: 0; font-size: 18px; line-height: 1; align-self: end; }
 .day .band-n .num { display: block; position: relative; z-index: 0; font-family: var(--heavy); font-weight: 900; font-size: 66px; line-height: .82; margin-bottom: 2px; }
-.day .band-n .num::before { content: attr(data-ink); position: absolute; inset: 0; z-index: -1; color: var(--red); transform: translate(2.5px, 2px); mix-blend-mode: multiply; opacity: .8; }
+.day .band-n .num::before { content: attr(data-ink); position: absolute; inset: 0; z-index: -1; color: var(--red-plate); transform: translate(2.5px, 2px); mix-blend-mode: multiply; opacity: .8; }
 .day .band-date { margin: 0; font-size: 21px; line-height: 1.2; }
 .day .band-tag { margin: 4px 0 0; font-size: 13.5px; line-height: 1.2; display: flex; align-items: center; gap: 5px; }
 .day .band-title { margin-top: 14px; font-size: 24px; line-height: 1.4; }
