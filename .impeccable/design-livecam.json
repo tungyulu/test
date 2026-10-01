@@ -1,0 +1,828 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-01T08:20:06+00:00",
+  "title": "Design System: 東京近郊即時影像 · 車站告示系統",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Platform Concrete",
+        "canonical": "#e2e1db",
+        "tonalRamp": [
+          "#0c0b08",
+          "#262521",
+          "#43423d",
+          "#62615c",
+          "#83827d",
+          "#a6a59f",
+          "#cac9c3",
+          "#f0efe9"
+        ],
+        "dark": "#121315"
+      },
+      "ground-ink": {
+        "role": "neutral",
+        "displayName": "Concrete Ink",
+        "canonical": "#17191c",
+        "tonalRamp": [
+          "#090b0e",
+          "#232528",
+          "#404246",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9cd",
+          "#eceff3"
+        ],
+        "dark": "#e8e8e4"
+      },
+      "sign": {
+        "role": "neutral",
+        "displayName": "Station Sign White",
+        "canonical": "#fbfbf8",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252523",
+          "#424240",
+          "#61615f",
+          "#828280",
+          "#a5a5a2",
+          "#c9c9c6",
+          "#efefec"
+        ],
+        "dark": "#ecebe6"
+      },
+      "sign-ink": {
+        "role": "neutral",
+        "displayName": "Sign Ink",
+        "canonical": "#15171a",
+        "tonalRamp": [
+          "#090b0e",
+          "#232528",
+          "#404246",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9ce",
+          "#eceff3"
+        ]
+      },
+      "sign-2": {
+        "role": "neutral",
+        "displayName": "Sign Sub-line",
+        "canonical": "#41464e",
+        "tonalRamp": [
+          "#080b12",
+          "#21252d",
+          "#3d424a",
+          "#5c626a",
+          "#7d838c",
+          "#a0a5af",
+          "#c3cad3",
+          "#e9eff9"
+        ]
+      },
+      "sign-rule": {
+        "role": "neutral",
+        "displayName": "Sign Edge",
+        "canonical": "#d3d2cc",
+        "tonalRamp": [
+          "#0c0b07",
+          "#262521",
+          "#43423d",
+          "#62615c",
+          "#83827d",
+          "#a6a59f",
+          "#cac9c3",
+          "#f0efe8"
+        ],
+        "dark": "#c9c8c2"
+      },
+      "plate": {
+        "role": "neutral",
+        "displayName": "Panel Enamel",
+        "canonical": "#fbfbf8",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252523",
+          "#424240",
+          "#61615f",
+          "#828280",
+          "#a5a5a2",
+          "#c9c9c6",
+          "#efefec"
+        ],
+        "dark": "#1c1e22"
+      },
+      "plate-ink": {
+        "role": "neutral",
+        "displayName": "Panel Ink",
+        "canonical": "#15171a",
+        "tonalRamp": [
+          "#090b0e",
+          "#232528",
+          "#404246",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9ce",
+          "#eceff3"
+        ],
+        "dark": "#ecebe6"
+      },
+      "plate-2": {
+        "role": "neutral",
+        "displayName": "Panel Secondary Ink",
+        "canonical": "#41464e",
+        "tonalRamp": [
+          "#080b12",
+          "#21252d",
+          "#3d424a",
+          "#5c626a",
+          "#7d838c",
+          "#a0a5af",
+          "#c3cad3",
+          "#e9eff9"
+        ],
+        "dark": "#b4b8be"
+      },
+      "plate-rule": {
+        "role": "neutral",
+        "displayName": "Panel Rule",
+        "canonical": "#d3d2cc",
+        "tonalRamp": [
+          "#0c0b07",
+          "#262521",
+          "#43423d",
+          "#62615c",
+          "#83827d",
+          "#a6a59f",
+          "#cac9c3",
+          "#f0efe8"
+        ],
+        "dark": "#34373c"
+      },
+      "plate-soft": {
+        "role": "neutral",
+        "displayName": "Panel Hover",
+        "canonical": "#efeee9",
+        "tonalRamp": [
+          "#0c0b08",
+          "#262521",
+          "#43423e",
+          "#62615d",
+          "#83827e",
+          "#a6a5a0",
+          "#cac9c4",
+          "#efeee9"
+        ],
+        "dark": "#25282d"
+      },
+      "navy": {
+        "role": "primary",
+        "displayName": "Guide Navy",
+        "canonical": "#1c2943",
+        "tonalRamp": [
+          "#020920",
+          "#18243e",
+          "#34425e",
+          "#52617f",
+          "#7283a2",
+          "#94a5c6",
+          "#b8caec",
+          "#ddefff"
+        ],
+        "dark": "#2a3a5c"
+      },
+      "navy-ink": {
+        "role": "primary",
+        "displayName": "Guide Navy Ink",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "exit": {
+        "role": "secondary",
+        "displayName": "Exit Yellow",
+        "canonical": "#ffd100",
+        "tonalRamp": [
+          "#230000",
+          "#431700",
+          "#633800",
+          "#855900",
+          "#a87b00",
+          "#cc9f00",
+          "#f2c400",
+          "#ffea3f"
+        ]
+      },
+      "exit-ink": {
+        "role": "secondary",
+        "displayName": "Exit Ink",
+        "canonical": "#111111",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "housing": {
+        "role": "neutral",
+        "displayName": "Housing Black",
+        "canonical": "#0b0c0d",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#242526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#a4a5a7",
+          "#c8c9cb",
+          "#edeff0"
+        ]
+      },
+      "housing-2": {
+        "role": "neutral",
+        "displayName": "Housing Charcoal",
+        "canonical": "#191b1e",
+        "tonalRamp": [
+          "#090b0e",
+          "#232528",
+          "#404246",
+          "#5f6165",
+          "#808286",
+          "#a2a5a9",
+          "#c6c9cd",
+          "#eceff3"
+        ]
+      },
+      "housing-rule": {
+        "role": "neutral",
+        "displayName": "Housing Rule",
+        "canonical": "#2c2f33",
+        "tonalRamp": [
+          "#090b0f",
+          "#222529",
+          "#3f4246",
+          "#5e6166",
+          "#7f8387",
+          "#a2a5aa",
+          "#c6c9cf",
+          "#ebeff4"
+        ]
+      },
+      "housing-ink": {
+        "role": "neutral",
+        "displayName": "Housing Ink",
+        "canonical": "#e9e9e6",
+        "tonalRamp": [
+          "#0b0b09",
+          "#252523",
+          "#424240",
+          "#61615f",
+          "#828280",
+          "#a5a5a2",
+          "#c9c9c6",
+          "#efefec"
+        ]
+      },
+      "housing-2ink": {
+        "role": "neutral",
+        "displayName": "Housing Label Ink",
+        "canonical": "#a9adb3",
+        "tonalRamp": [
+          "#090b0f",
+          "#22252a",
+          "#3f4247",
+          "#5e6167",
+          "#7f8388",
+          "#a1a5ab",
+          "#c5c9d0",
+          "#ebeff5"
+        ]
+      },
+      "led-off": {
+        "role": "secondary",
+        "displayName": "Unlit Dot",
+        "canonical": "#24221f",
+        "tonalRamp": [
+          "#0d0b08",
+          "#272522",
+          "#44423e",
+          "#63615d",
+          "#84827e",
+          "#a7a5a1",
+          "#cbc9c5",
+          "#f1eeea"
+        ],
+        "note": "JS constant OFF in the LED renderer, not a CSS custom property."
+      },
+      "amber": {
+        "role": "secondary",
+        "displayName": "LED Amber",
+        "canonical": "#ffa526",
+        "tonalRamp": [
+          "#2f0000",
+          "#520000",
+          "#762400",
+          "#9a4700",
+          "#c06a00",
+          "#e68e00",
+          "#ffb33b",
+          "#ffd867"
+        ],
+        "note": "Also JS constants AMB/GRN/RED; LIFT/SHADE tables are keyed by this hex."
+      },
+      "green": {
+        "role": "secondary",
+        "displayName": "LED Green",
+        "canonical": "#4fe070",
+        "tonalRamp": [
+          "#001800",
+          "#003800",
+          "#005900",
+          "#007c00",
+          "#00a030",
+          "#29c556",
+          "#61ea7d",
+          "#92ffa7"
+        ],
+        "note": "Also JS constants AMB/GRN/RED; LIFT/SHADE tables are keyed by this hex."
+      },
+      "red": {
+        "role": "secondary",
+        "displayName": "LED Red",
+        "canonical": "#ff4d3d",
+        "tonalRamp": [
+          "#3b0000",
+          "#650000",
+          "#900000",
+          "#bd0000",
+          "#e73629",
+          "#ff6654",
+          "#ff927d",
+          "#ffbca7"
+        ],
+        "note": "Also JS constants AMB/GRN/RED; LIFT/SHADE tables are keyed by this hex."
+      },
+      "tk": {
+        "role": "primary",
+        "displayName": "TK Line Yellow-Green",
+        "canonical": "#80c241",
+        "tonalRamp": [
+          "#001300",
+          "#003200",
+          "#145200",
+          "#367300",
+          "#579600",
+          "#79bb39",
+          "#9ce061",
+          "#c1ff87"
+        ]
+      },
+      "ys": {
+        "role": "primary",
+        "displayName": "YS Line Sky Blue",
+        "canonical": "#00a7e3",
+        "tonalRamp": [
+          "#00053c",
+          "#00285d",
+          "#004980",
+          "#006ba4",
+          "#008ec9",
+          "#23b3ef",
+          "#57d8ff",
+          "#81feff"
+        ]
+      },
+      "hf": {
+        "role": "primary",
+        "displayName": "HF Line Orange",
+        "canonical": "#f15a22",
+        "tonalRamp": [
+          "#3a0000",
+          "#640000",
+          "#8d0000",
+          "#b51900",
+          "#de4800",
+          "#ff6e3a",
+          "#ff9665",
+          "#ffc091"
+        ]
+      },
+      "iz": {
+        "role": "primary",
+        "displayName": "IZ Line Teal",
+        "canonical": "#00a29a",
+        "tonalRamp": [
+          "#001614",
+          "#003330",
+          "#00534e",
+          "#00746e",
+          "#00978f",
+          "#38bbb3",
+          "#65e1d7",
+          "#8dfffd"
+        ]
+      },
+      "go": {
+        "role": "tertiary",
+        "displayName": "Status Go Ink",
+        "canonical": "#17703d",
+        "tonalRamp": [
+          "#001500",
+          "#003302",
+          "#005221",
+          "#1c7340",
+          "#449660",
+          "#68ba82",
+          "#8ddfa5",
+          "#b2ffca"
+        ],
+        "dark": "#5fd38a"
+      },
+      "warn": {
+        "role": "tertiary",
+        "displayName": "Status Warn Ink",
+        "canonical": "#8f5600",
+        "tonalRamp": [
+          "#260000",
+          "#461200",
+          "#683200",
+          "#8b5200",
+          "#af742e",
+          "#d49653",
+          "#fbbb77",
+          "#ffe09c"
+        ],
+        "dark": "#f2b552"
+      },
+      "stop": {
+        "role": "tertiary",
+        "displayName": "Status Stop Ink",
+        "canonical": "#b3261e",
+        "tonalRamp": [
+          "#3a0000",
+          "#610000",
+          "#880000",
+          "#b0221b",
+          "#d84c3f",
+          "#ff7161",
+          "#ff9784",
+          "#ffbda8"
+        ],
+        "dark": "#ff8a7e"
+      },
+      "go-lamp": {
+        "role": "tertiary",
+        "displayName": "Go Lamp",
+        "canonical": "#2fbf5a",
+        "tonalRamp": [
+          "#001800",
+          "#003800",
+          "#005800",
+          "#007b10",
+          "#009e3a",
+          "#35c35e",
+          "#63e982",
+          "#8fffa9"
+        ]
+      },
+      "warn-lamp": {
+        "role": "tertiary",
+        "displayName": "Warn Lamp",
+        "canonical": "#f2a516",
+        "tonalRamp": [
+          "#2b0000",
+          "#4e0400",
+          "#702b00",
+          "#944d00",
+          "#b97000",
+          "#df9300",
+          "#ffb837",
+          "#ffdd65"
+        ]
+      },
+      "stop-lamp": {
+        "role": "tertiary",
+        "displayName": "Stop Lamp",
+        "canonical": "#e53a2c",
+        "tonalRamp": [
+          "#3b0000",
+          "#650000",
+          "#900000",
+          "#bb0000",
+          "#e53a2c",
+          "#ff6754",
+          "#ff927d",
+          "#ffbca6"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus Blue",
+        "canonical": "#0a62d0",
+        "tonalRamp": [
+          "#050055",
+          "#00077c",
+          "#0036a1",
+          "#005ac8",
+          "#2f7eef",
+          "#54a3ff",
+          "#78c9ff",
+          "#a0f0ff"
+        ],
+        "dark": "#7fb4ff"
+      }
+    },
+    "typographyMeta": {
+      "station-name": {
+        "displayName": "Station Name",
+        "purpose": "Kanji on a 駅名標; kana 12px .2em above, romaji below."
+      },
+      "line-head": {
+        "displayName": "Line Head",
+        "purpose": "Region name over its 6px line-colour rule."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Page title in the top bar, with a Hind romaji subtitle."
+      },
+      "poster-head": {
+        "displayName": "Poster Head",
+        "purpose": "White heading in a navy 案内 head; Japanese sign term 11px .12em beside it."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Page default; panel text 13.5–14px."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Camera place name on its sign strip (13.5px below 700px)."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Hints, sources, secondary lines in plate-2."
+      },
+      "romaji": {
+        "displayName": "Romaji",
+        "purpose": "Hind romaji under station names."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Temperatures and readings, tabular Hind (20px on the sign, 15px road readings)."
+      },
+      "badge": {
+        "displayName": "Badge",
+        "purpose": "Station-number letters 9px and number 13px (l 11/19, s 8/11)."
+      },
+      "led": {
+        "displayName": "LED (bitmap)",
+        "purpose": "GNU Unifont 8×16 / 16×16 bitmaps from the LEDG table, drawn on canvas; rebuild with tools/led-glyphs.py. Not a CSS font."
+      }
+    },
+    "shadows": [
+      {
+        "name": "lamp-rim",
+        "value": "inset 0 0 0 1.5px rgba(0,0,0,.25)",
+        "purpose": "Rim of a Fuji status lamp; the only box-shadow in the system."
+      },
+      {
+        "name": "bracket",
+        "value": "::before 4×14px post + ::after 38×4px bar in housing-2 above each monitor (14px top padding)",
+        "purpose": "Hangs each ITV monitor; depth by mounting, not shadow."
+      }
+    ],
+    "motion": [
+      {
+        "name": "led-pitch",
+        "value": "--led-pitch 1.3 CSS px per dot (2 at ≥1100px); dp = round(pitch × devicePixelRatio)",
+        "purpose": "Dot size per screen density."
+      },
+      {
+        "name": "led-dot-rules",
+        "value": "dp ≥ 3: lit dot dp − max(1, floor(dp/4)) with gap; dp 2: shade cell + one bright pixel; dp 1: solid; unlit #24221f square of dp − 1 under every cell",
+        "purpose": "Keep the dot grid visible and the LED bright at every density."
+      },
+      {
+        "name": "led-scroll",
+        "value": "one rAF clock, 1 dot-column per 42ms (24/s), whole-dot steps, 40-column loop gap; paused on hover/touch, off-screen and hidden tab",
+        "purpose": "Long route steps and the weather ticker."
+      },
+      {
+        "name": "board-wipe",
+        "value": "7 columns per 16ms from the left, each row delayed 24ms × row index",
+        "purpose": "Day change redraws the board column by column."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "no scrolling (rows wrap with CJK line-break rules), no wipe, weather defaults to the table, smooth scroll off",
+        "purpose": "prefers-reduced-motion: reduce."
+      },
+      {
+        "name": "signs-static",
+        "value": "no CSS transitions or animations anywhere",
+        "purpose": "Signs, panels and monitors never animate."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "max-width: 699px"
+      },
+      {
+        "name": "tablet",
+        "value": "min-width: 700px"
+      },
+      {
+        "name": "picks-three",
+        "value": "560px–1099px"
+      },
+      {
+        "name": "notes-two",
+        "value": "min-width: 900px"
+      },
+      {
+        "name": "desktop",
+        "value": "min-width: 1100px"
+      },
+      {
+        "name": "selector-inset",
+        "value": "min-width: 1432px"
+      }
+    ],
+    "darkMode": {
+      "selectors": [
+        "@media (prefers-color-scheme: dark) :root:not([data-theme=\"light\"])",
+        ":root[data-theme=\"dark\"]"
+      ],
+      "persist": "localStorage tk_theme",
+      "unchanged": [
+        "exit",
+        "exit-ink",
+        "housing",
+        "housing-2",
+        "housing-ink",
+        "amber",
+        "green",
+        "red",
+        "tk",
+        "ys",
+        "hf",
+        "iz",
+        "sign-ink",
+        "sign-2",
+        "lamps"
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Exit Sign",
+      "kind": "nav",
+      "refersTo": "exit-sign",
+      "description": "Yellow 出口 plate leading home to the hub; reversed key, arrow pictogram, destination. Hover underlines the destination.",
+      "html": "<div class=\"ds-stage\"><a class=\"ds-exit\" href=\"#\"><span class=\"ds-k\">出口<small>EXIT</small></span><span class=\"ds-t\"><svg class=\"ds-pg\" viewBox=\"0 0 24 24\"><path d=\"M10.5 4.5 3 12l7.5 7.5v-4.8H21V9.3H10.5Z\"/></svg>我的小工具</span></a></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-exit{display:inline-flex;align-items:stretch;min-height:40px;text-decoration:none;background:var(--exit);color:var(--exit-ink);border-radius:3px;overflow:hidden;font-weight:700}.ds-k{display:flex;flex-direction:column;justify-content:center;padding:0 10px;background:var(--exit-ink);color:var(--exit);font-size:13px;line-height:1.05;text-align:center}.ds-k small{font:700 11px/1 var(--en);letter-spacing:.06em;margin-top:2px}.ds-t{display:flex;align-items:center;gap:6px;padding:0 12px 0 9px;font-size:14px}.ds-t .ds-pg{font-size:18px}.ds-exit:hover .ds-t,.ds-exit:focus-visible .ds-t{text-decoration:underline;text-underline-offset:3px}"
+    },
+    {
+      "name": "LED Departure Board",
+      "kind": "custom",
+      "refersTo": "departure-board",
+      "description": "Static approximation of the 発車標: charcoal head, time / step rows on black housing. The real rows are canvas dot matrix from Unifont bitmaps with unlit dots; here a flat unlit-dot fill and a monospace face stand in for them.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-head\"><b>今天的行程</b><span class=\"ds-jp\">本日の行程</span><span class=\"ds-day\">D2 · 11/08（日）</span><span class=\"ds-cd\">旅行中・第 2 天</span></div><ol class=\"ds-rows\"><li class=\"ds-full\"><span class=\"ds-g\">箱根山道與蘆之湖操駕</span></li><li><span class=\"ds-g\">10:30</span><span class=\"ds-a\">関内店 取車</span></li><li><span></span><span class=\"ds-a\">小田原午餐</span></li><li><span class=\"ds-r\">20:00</span><span class=\"ds-a\">紅葉迴廊夜楓</span></li><li class=\"ds-full\"><span class=\"ds-r\">※ Skyline 通行費 ¥1,000 僅收現金</span></li></ol></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-board{background:var(--housing);color:var(--housing-ink);border:1px solid #000;border-radius:4px;overflow:hidden;padding-bottom:10px;max-width:420px}.ds-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:9px 12px 8px;background:var(--housing-2);border-bottom:1px solid var(--housing-rule)}.ds-head b{font-size:16px;font-weight:700;letter-spacing:.04em}.ds-jp{font-size:11px;letter-spacing:.12em;color:var(--housing-2ink)}.ds-day{font:600 14px/1.2 var(--en)}.ds-cd{font-size:12.5px;color:var(--red);font-weight:700}.ds-rows{list-style:none;margin:0;padding:2px 12px 0}.ds-rows li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;padding:3px 0;border-bottom:1px solid #16181a}.ds-rows li.ds-full{grid-template-columns:minmax(0,1fr)}.ds-rows li:last-child{border-bottom:0}.ds-rows span{font:400 15px/20px ui-monospace,monospace;background:#24221f;padding:0 2px}.ds-g{color:var(--green)}.ds-a{color:var(--amber)}.ds-r{color:var(--red)}"
+    },
+    {
+      "name": "Track Plates",
+      "kind": "chip",
+      "refersTo": "track-plate",
+      "description": "D1–D8 day selector; pressed day turns navy, today carries a red 今天 tab, hover darkens the border.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-tracks\"><button><b><small>D</small>1</b><span>11/07</span></button><button class=\"ds-today\" aria-pressed=\"true\"><b><small>D</small>2</b><span>11/08</span></button><button><b><small>D</small>3</b><span>11/09</span></button><button><b><small>D</small>4</b><span>11/10</span></button></div></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-tracks{display:grid;grid-template-columns:repeat(4,64px);gap:5px;padding-top:8px}.ds-tracks button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50px;padding:4px 0 3px;border-radius:3px;border:1.5px solid var(--navy);background:var(--sign);color:var(--sign-ink);cursor:pointer;line-height:1;font-family:var(--tc)}.ds-tracks b{font:700 20px/1 var(--en)}.ds-tracks b small{font-size:11px;margin-right:1px}.ds-tracks span{font:500 10.5px/1 var(--en);margin-top:4px}.ds-tracks button[aria-pressed=true]{background:var(--navy);color:var(--navy-ink)}.ds-tracks button:hover{border-color:var(--sign-ink)}.ds-today::after{content:'今天';position:absolute;top:-8px;right:-3px;padding:1px 4px 2px;font-size:10px;line-height:1.2;background:#e53a2c;color:#fff;border-radius:2px}"
+    },
+    {
+      "name": "案内 Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Enamel status panel under a navy poster head with the Japanese sign term beside the heading; rows separated by 1px rules, with tool buttons.",
+      "html": "<div class=\"ds-stage\"><section class=\"ds-panel\"><div class=\"ds-ph\"><h2>現在的各地</h2><span class=\"ds-jp\">運行情報</span></div><div class=\"ds-pb\"><ul class=\"ds-lamps\"><li><i class=\"ds-lamp ds-go\"></i><span>河口湖<small>雲量 12%</small></span></li><li><i class=\"ds-lamp ds-warn\"></i><span>箱根<small>雲量 48%</small></span></li><li><i class=\"ds-lamp ds-stop\"></i><span>御殿場<small>雲量 91%</small></span></li></ul><div class=\"ds-tools\"><button class=\"ds-tool\" aria-expanded=\"false\">展開比較</button><button class=\"ds-tool\" aria-expanded=\"true\">富士山看得到嗎</button></div></div></section></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-panel{background:var(--plate);color:var(--plate-ink);border-radius:4px;overflow:hidden;max-width:420px}.ds-ph{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--navy);color:var(--navy-ink)}.ds-ph h2{margin:0;font-size:14px;font-weight:700;letter-spacing:.06em}.ds-jp{font-size:11px;letter-spacing:.12em;opacity:.8}.ds-pb{padding:10px 12px 12px}.ds-lamps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.ds-lamps li{display:flex;align-items:center;gap:7px;padding:7px 4px 7px 0;font-size:13.5px;line-height:1.25}.ds-lamps small{display:block;font-size:11.5px;color:var(--plate-2)}.ds-lamp{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.25)}.ds-go{background:#2fbf5a}.ds-warn{background:#f2a516}.ds-stop{background:#e53a2c}.ds-tools{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.ds-tool{display:inline-flex;align-items:center;min-height:38px;padding:0 11px;border-radius:3px;border:1.5px solid var(--plate-ink);background:transparent;color:var(--plate-ink);font:13px var(--tc);cursor:pointer}.ds-tool:hover{background:var(--plate-soft)}.ds-tool[aria-expanded=true]{background:var(--plate-ink);color:var(--plate)}"
+    },
+    {
+      "name": "駅名標 Station Sign",
+      "kind": "custom",
+      "refersTo": "station-sign",
+      "description": "White station sign: ringed badge, kana / kanji / romaji, now-temperature, 9px line band, prev / next stations.",
+      "html": "<div class=\"ds-stage\"><header class=\"ds-eki\"><div class=\"ds-m\"><span class=\"ds-no ds-l\"><span>TK</span><b>01</b></span><div class=\"ds-name\"><span class=\"ds-kana\">しんじゅく</span><h3>新宿</h3><span class=\"ds-en\">Shinjuku</span></div><div class=\"ds-now\"><b>13°</b>晴時多雲 <span class=\"ds-nt\">夜間</span></div></div><div class=\"ds-band\"></div><nav class=\"ds-nb\"><a href=\"#\"><svg class=\"ds-pg\" viewBox=\"0 0 24 24\"><path d=\"M10.5 4.5 3 12l7.5 7.5v-4.8H21V9.3H10.5Z\"/></svg><span>東京鐵塔<small>Tokyo Tower</small></span></a><a class=\"ds-nx\" href=\"#\"><span>原宿<small>Harajuku</small></span><svg class=\"ds-pg\" viewBox=\"0 0 24 24\"><path d=\"M13.5 4.5 21 12l-7.5 7.5v-4.8H3V9.3h10.5Z\"/></svg></a></nav></header></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-no{--line:var(--tk);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;flex:none;width:30px;height:30px;border:3px solid var(--line);border-radius:6px;background:#fff;color:#111;font:700 9px/1 var(--en);letter-spacing:.02em}.ds-no b{font:700 13px/1 var(--en);margin-top:1px}.ds-no.ds-l{width:44px;height:44px;border-width:4px;border-radius:8px;font-size:11px}.ds-no.ds-l b{font-size:19px}.ds-no.ds-s{width:26px;height:26px;border-width:2.5px;border-radius:5px;font-size:8px}.ds-no.ds-s b{font-size:11px}.ds-eki{--line:var(--tk);background:var(--sign);color:var(--sign-ink);border:1px solid var(--sign-rule);border-radius:3px;overflow:hidden;max-width:460px}.ds-m{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:center;padding:10px 12px 8px}.ds-name{text-align:center}.ds-kana{display:block;font-size:12px;letter-spacing:.2em;line-height:1.2}.ds-name h3{margin:1px 0 0;font-size:30px;font-weight:900;line-height:1.15;letter-spacing:.12em}.ds-en{display:block;font:600 14px/1.2 var(--en);letter-spacing:.04em}.ds-now{justify-self:end;text-align:right;font-size:12.5px;line-height:1.35}.ds-now b{display:block;font:600 20px/1.05 var(--en)}.ds-nt{padding:0 4px;border-radius:2px;background:var(--housing);color:var(--amber);font-size:11px}.ds-band{height:9px;background:var(--line)}.ds-nb{display:flex;justify-content:space-between;gap:10px;padding:6px 10px 7px;font-size:13px;line-height:1.25}.ds-nb a{display:inline-flex;align-items:center;gap:5px;min-height:32px;text-decoration:none;color:inherit}.ds-nb small{display:block;font:500 10.5px/1.1 var(--en)}.ds-nx{text-align:right}.ds-nb a:hover span,.ds-nb a:focus-visible span{text-decoration:underline;text-underline-offset:3px}"
+    },
+    {
+      "name": "Station Badge",
+      "kind": "chip",
+      "refersTo": "station-badge",
+      "description": "Colour-ringed square station number in three sizes and four line colours.",
+      "html": "<div class=\"ds-stage\" style=\"display:flex;gap:10px;align-items:center\"><span class=\"ds-no ds-l\"><span>TK</span><b>01</b></span><span class=\"ds-no\" style=\"--line:var(--ys)\"><span>YS</span><b>02</b></span><span class=\"ds-no\" style=\"--line:var(--hf)\"><span>HF</span><b>03</b></span><span class=\"ds-no ds-s\" style=\"--line:var(--iz)\"><span>IZ</span><b>01</b></span></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-no{--line:var(--tk);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;flex:none;width:30px;height:30px;border:3px solid var(--line);border-radius:6px;background:#fff;color:#111;font:700 9px/1 var(--en);letter-spacing:.02em}.ds-no b{font:700 13px/1 var(--en);margin-top:1px}.ds-no.ds-l{width:44px;height:44px;border-width:4px;border-radius:8px;font-size:11px}.ds-no.ds-l b{font-size:19px}.ds-no.ds-s{width:26px;height:26px;border-width:2.5px;border-radius:5px;font-size:8px}.ds-no.ds-s b{font-size:11px}"
+    },
+    {
+      "name": "Platform ITV Monitor",
+      "kind": "custom",
+      "refersTo": "monitor-hood",
+      "description": "Camera hung from a bracket: hood with number plate and star / pin rubber keys, 16:9 screen with LED status label, separate caption sign strip. Hover underlines the name and shows the YouTube tag.",
+      "html": "<div class=\"ds-stage\"><article class=\"ds-cam\"><div class=\"ds-hood\"><span class=\"ds-pn\">TK01-1</span><span class=\"ds-keys\"><button class=\"ds-key\" aria-pressed=\"false\"><svg class=\"ds-pg\" viewBox=\"0 0 24 24\"><path fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linejoin=\"round\" d=\"m12 3.4 2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.7l-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8Z\"/></svg></button><a class=\"ds-key\" href=\"#\"><svg class=\"ds-pg\" viewBox=\"0 0 24 24\"><path d=\"M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7Zm0 4.1a2.9 2.9 0 1 1 0 5.8 2.9 2.9 0 0 1 0-5.8Z\"/></svg></a></span></div><a class=\"ds-link\" href=\"#\"><span class=\"ds-mon\"><span class=\"ds-lbl\">LIVE</span><span class=\"ds-yt\">YouTube</span></span><span class=\"ds-cap\"><span class=\"ds-zh\"><span class=\"ds-pl\">新宿&nbsp;</span>新宿駅東口・3D 巨貓看板視角</span><span class=\"ds-why\">從 3D 巨貓看板俯瞰東口廣場。</span><span class=\"ds-jpl\">新宿駅東口 クロス新宿ビジョン</span></span></a></article></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-cam{position:relative;display:flex;flex-direction:column;width:260px;padding-top:14px}.ds-cam::before{content:'';position:absolute;top:0;left:50%;width:4px;height:14px;margin-left:-2px;background:var(--housing-2)}.ds-cam::after{content:'';position:absolute;top:0;left:50%;width:38px;height:4px;margin-left:-19px;background:var(--housing-2);border-radius:1px}.ds-hood{display:flex;align-items:center;gap:6px;padding:4px 4px 0 6px;background:var(--housing-2);border-radius:4px 4px 0 0}.ds-pn{font:700 11px/1 var(--en);letter-spacing:.04em;padding:3px 5px 2px;border-radius:2px;background:#fff;color:#111}.ds-keys{margin-left:auto;display:flex;gap:4px}.ds-key{display:inline-flex;align-items:center;justify-content:center;width:38px;height:32px;border:0;border-radius:3px;background:#2c2f34;color:#e9e9e6;cursor:pointer;font-size:17px}.ds-key:hover{background:#3d4148}.ds-key[aria-pressed=true]{color:var(--amber)}.ds-link{display:flex;flex-direction:column;text-decoration:none;color:inherit}.ds-mon{position:relative;display:block;aspect-ratio:16/9;background:#050607;border:5px solid var(--housing-2);border-top-width:4px;border-radius:0 0 4px 4px}.ds-lbl{position:absolute;left:5px;top:5px;padding:2px 5px 1px;border-radius:2px;background:#000;font:700 11px/1.2 var(--en);letter-spacing:.08em;color:var(--green)}.ds-yt{position:absolute;right:5px;bottom:5px;padding:2px 6px;border-radius:2px;background:#000;color:#fff;font-size:11px;opacity:0}.ds-link:hover .ds-yt,.ds-link:focus-visible .ds-yt{opacity:1}.ds-cap{display:block;margin-top:5px;background:var(--plate);color:var(--plate-ink);padding:7px 10px 9px;border-radius:3px;border:1px solid var(--plate-rule)}.ds-zh{display:block;font-weight:700;font-size:14px;line-height:1.4}.ds-pl{font-weight:400}.ds-why{display:block;font-size:12.5px;line-height:1.5;margin-top:3px}.ds-jpl{display:block;font-size:11px;line-height:1.45;margin-top:5px;color:var(--plate-2)}.ds-link:hover .ds-zh{text-decoration:underline;text-underline-offset:3px}"
+    },
+    {
+      "name": "Line Selector",
+      "kind": "nav",
+      "refersTo": "line-selector",
+      "description": "Sticky charcoal filter bar; one button per line with its small badge, pressed = white plate, hover whitens the border.",
+      "html": "<nav class=\"ds-filters\"><button class=\"ds-plain\" aria-pressed=\"true\">全部</button><button aria-pressed=\"false\"><span class=\"ds-no ds-s\"><b>TK</b></span>東京都心</button><button aria-pressed=\"false\"><span class=\"ds-no ds-s\" style=\"--line:var(--ys)\"><b>YS</b></span>橫濱・湘南</button><span class=\"ds-sep\"></span><button class=\"ds-plain\" aria-pressed=\"false\">自駕・路面</button></nav>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-no{--line:var(--tk);display:inline-flex;flex-direction:column;align-items:center;justify-content:center;flex:none;width:30px;height:30px;border:3px solid var(--line);border-radius:6px;background:#fff;color:#111;font:700 9px/1 var(--en);letter-spacing:.02em}.ds-no b{font:700 13px/1 var(--en);margin-top:1px}.ds-no.ds-l{width:44px;height:44px;border-width:4px;border-radius:8px;font-size:11px}.ds-no.ds-l b{font-size:19px}.ds-no.ds-s{width:26px;height:26px;border-width:2.5px;border-radius:5px;font-size:8px}.ds-no.ds-s b{font-size:11px}.ds-no.ds-s{width:auto;min-width:26px;padding:0 3px}.ds-filters{display:flex;gap:6px;align-items:center;padding:8px 16px;background:var(--housing-2);color:var(--housing-ink);overflow-x:auto}.ds-filters button{display:inline-flex;align-items:center;gap:6px;flex:none;min-height:40px;padding:0 11px 0 7px;border-radius:3px;border:1.5px solid #4a4e55;background:transparent;color:inherit;font:13.5px var(--tc);cursor:pointer;white-space:nowrap}.ds-filters .ds-plain{padding:0 12px}.ds-filters button:hover{border-color:#fff}.ds-filters button[aria-pressed=true]{background:#fff;color:#111;border-color:#fff}.ds-sep{width:1px;align-self:stretch;background:#3a3e44;margin:4px 2px}"
+    },
+    {
+      "name": "Speed-Limit Strip",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Enamel strip with the drawn 30 km/h regulatory sign and the law note; links to driving mode.",
+      "html": "<div class=\"ds-stage\"><a class=\"ds-law\" href=\"#\"><svg class=\"ds-sp\" viewBox=\"0 0 48 48\"><circle cx=\"24\" cy=\"24\" r=\"21.5\" fill=\"#fff\" stroke=\"#d3241b\" stroke-width=\"5\"/><text x=\"24\" y=\"32.2\" text-anchor=\"middle\" font-family=\"Hind,Arial,sans-serif\" font-weight=\"700\" font-size=\"23\" letter-spacing=\"-1\" fill=\"#1d3f94\">30</text></svg><span class=\"ds-b\"><span class=\"ds-t\">沒有中央線的路，法定速限 30 km/h</span><span class=\"ds-k\">日本 2026/9/1 起的新制</span></span><span class=\"ds-go\">自駕注意事項</span></a></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-law{display:flex;align-items:center;gap:12px;padding:10px 12px;text-decoration:none;background:var(--plate);color:var(--plate-ink);border-radius:4px;max-width:460px}.ds-sp{width:46px;height:46px;flex:none}.ds-b{display:flex;flex-direction:column}.ds-t{font-weight:700;font-size:14.5px;line-height:1.4}.ds-k{font-size:12px;color:var(--plate-2)}.ds-go{margin-left:auto;font-size:12.5px;white-space:nowrap;text-decoration:underline;text-underline-offset:3px}.ds-law:hover .ds-t{text-decoration:underline;text-underline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Station Concourse",
+    "overview": "**Creative North Star: \"The Station Concourse\"**\n\nThe page is a Japanese railway station. You walk in through a yellow 出口 sign and reach a black LED departure board (発車標) that shows the day's itinerary in dot-matrix light. Beside it are the station's 運行情報 displays: navy-headed enamel panels that carry the weather, the Fuji lamps, the speed-limit notice and the current picks. Further down the concourse every camera area gets a white 駅名標 standing on its own line. Each sign has a line-colour band, a ringed station-number badge, the name in kana, kanji and romaji, and the previous and next stations. The area's cameras hang below the sign from brackets, like platform ITV monitors.\n\nEverything is signage. Surfaces are flat enamel, painted housing or lit LED. Depth comes from objects hanging and standing (a bracket, a housing, a sign edge), never from soft shadows. Only the LED board moves, and it moves in LED grammar: whole-dot steps, column-by-column wipes, hard on and off. The signs never animate.\n\nConfirmed rejection, from the direction contract: the category default of a dark CCTV wall made of same-size thumbnail cards under a hero. In this world the monitors belong to the station signs; they never form a free-standing grid of cards.",
+    "keyCharacteristics": [
+      "A station's three kinds of signage: an LED board for time-bound plans, navy-headed enamel panels for status, white 駅名標 for places.",
+      "LED text is real dot matrix: GNU Unifont 16-dot bitmaps drawn dot by dot on canvas, with the unlit dots visible.",
+      "Four line colours (TK / YS / HF / IZ) are the page's own grouping and the only chromatic accents on the signs.",
+      "Filled JIS-style pictograms from one inline SVG sprite; no outline icon sets, no emoji.",
+      "Night platform in dark mode: the concourse and panels go dark, the 駅名標 and exit sign stay lit."
+    ],
+    "rules": [
+      {
+        "name": "The Signs Stay Lit Rule",
+        "body": "Dark mode is a station at night. `ground`, `plate` and the status inks change, and `navy` lifts to `#2a3a5c`. The 駅名標 (`sign`, which dims only to `#ecebe6`), the exit sign, the badges, the number plates and the LED housing keep their colours. A dark-mode screen still shows white station signs.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three LEDs Rule",
+        "body": "An LED shows amber, green or red and nothing else. Green names (titles, times, cities), amber informs (steps, readings), red warns (notes, deadlines, a wet rain chance). The JS constants `AMB / GRN / RED` and the `LIFT` / `SHADE` tables are keyed by these exact hex values, so a new LED colour needs all three tables updated, not just the CSS token.",
+        "section": "colors"
+      },
+      {
+        "name": "The Line Is the Accent Rule",
+        "body": "Line colours appear only as signage geometry: bands, rules, rings and the route track. They never fill a panel or set body text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Bilingual Sign Rule",
+        "body": "Place names are written the way a station writes them: kana over kanji over romaji on the 駅名標, a romaji line under the next- and previous-station names, and the Japanese sign term set after a poster head. The second language always sits **beside or below** its name in the same object. It never floats above a heading as a label of its own.",
+        "section": "typography"
+      },
+      {
+        "name": "The Lit Text Is Bitmap Rule",
+        "body": "Anything shown on the LED board, the board clocks or the weather ticker is drawn from Unifont bitmaps on canvas, with a screen-reader copy in a `.sr` span next to it. After changing any text the board can show, run `tools/led-glyphs.py`. A character missing from the table is rasterised from the browser font at 16px as a fallback, so it still renders, only less crisply.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hung, Not Lifted Rule",
+        "body": "If an object needs to read as separate from the concourse, mount it: a bracket, a housing edge or a sign rule. Don't use blur shadows, glow or hover lifts. Hover changes are underline, border colour or a flat background swap.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do put time-bound plans on the LED board, status on navy-headed 案内 panels, and places on white 駅名標. Each kind of information has its own kind of signage.",
+      "Do draw every lit character from the Unifont table on canvas with its unlit dots, keep a `.sr` text copy beside it, and re-run `tools/led-glyphs.py` after changing board text.",
+      "Do keep LED colours to amber, green and red with their meanings (green names, amber informs, red warns), and update `AMB/GRN/RED`, `LIFT` and `SHADE` together.",
+      "Do move LEDs only in whole-dot steps or column wipes, pause scrolling on hover, touch and off-screen, and wrap instead of scrolling under reduced motion.",
+      "Do carry a region's line colour through `--line` on its bands, rules, rings and route track, and give every new area a badge code on its line (TK05, YS03…).",
+      "Do hang every camera from its bracket with a hood number plate (`LINE` + number + `-` + index) and a separate caption sign strip.",
+      "Do keep the 駅名標, exit sign, badges and housings lit in dark mode; only the concourse, panels and status inks change.",
+      "Do use the filled pictogram sprite for every icon, at 1em in `currentColor`."
+    ],
+    "donts": [
+      "Don't lay the cameras out as a free-standing wall of same-size thumbnail cards under a hero; monitors always hang under their station sign.",
+      "Don't animate signs, panels or monitors: no fades, slides, hover lifts or easing. Motion belongs to the LED board alone.",
+      "Don't add blur shadows, glow or gradients; separation is a bracket, a housing edge or a 1px rule.",
+      "Don't set LED text in a CSS web font or invent a fourth LED colour.",
+      "Don't fill panels or set body text in line colours, or present TK / YS / HF / IZ as real railway lines.",
+      "Don't float the second-language term above a heading as a label; it sits beside or below its name.",
+      "Don't use emoji or outline icon sets."
+    ]
+  }
+}
