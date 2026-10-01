@@ -392,7 +392,7 @@ button{font:inherit; color:inherit}
 .cap{display:block; margin-top:5px; background:var(--plate); color:var(--plate-ink); padding:7px 10px 9px; flex:1;
   border-radius:3px; border:1px solid var(--plate-rule)}
 .cap .zh{display:block; font-weight:700; font-size:14px; line-height:1.4}
-.cap .pl{font-weight:400; margin-right:.4em}
+.cap .pl{font-weight:400; white-space:nowrap}
 .cap .why{display:block; font-size:12.5px; line-height:1.5; margin-top:3px}
 .cap .jp{display:block; font-size:11px; line-height:1.45; margin-top:5px; color:var(--plate-2)}
 .cam-link:hover .zh{text-decoration:underline; text-underline-offset:3px}
@@ -504,7 +504,7 @@ try{ var _t=localStorage.getItem('tk_theme');
                 <div><dt>鞋</dt><dd>D5～D7 每天走兩萬步起跳，<b>好走的鞋比好看重要</b>。江之島、鎌倉有石階與坡道。</dd></div>
                 <div><dt>自駕日</dt><dd>箱根、熱海峠<b>清晨與夜間會起霧</b>；河口湖朝晚接近冰點，橋面與陰面可能結霜。</dd></div>
               </dl>
-              <p class="small">穿衣指數以 Weathernews 關東版為準 →
+              <p class="small">穿衣指數以 Weathernews 關東版為準：
                 <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース 服装予報（関東）<svg class="pg"><use href="#p-ext"/></svg></a></p>
             </div>
           </div>
@@ -940,13 +940,16 @@ const LED=(()=>{
     return {bits,col,st,chs,n:bits.length};
   }
   const OFF='#24221f';
+  const LIFT={'#ffa526':'#ffc66b','#4fe070':'#8cf7a3','#ff4d3d':'#ff8577'};
+  const SHADE={'#ffa526':'#b06c12','#4fe070':'#2f9445','#ff4d3d':'#b0302a'};
   function metrics(){
     const dpr=window.devicePixelRatio||1;
     const t=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--led-pitch'))||1.3;
-    /* One dot = dp device pixels. From 3 up a lit dot leaves a gap; at 1–2 (low-density screens)
-       a gap would halve the brightness, so lit dots fill the cell and only unlit ones show the grid. */
+    /* One dot = dp device pixels; from 3 up a lit dot leaves a gap. At dp 2 (low-density screens) a
+       1-pixel dot would be too dim, so paint() fills the cell in a dark shade of the LED colour and
+       lights one bright pixel in it: full brightness, and the dot grid still shows. */
     const dp=Math.max(1,Math.round(t*dpr));
-    return {dpr,dp,dot:dp<=2?dp:dp-Math.max(1,Math.floor(dp/4)),off:Math.max(1,dp-1),pitch:dp/dpr};
+    return {dpr,dp,dot:dp<=2?1:dp-Math.max(1,Math.floor(dp/4)),off:Math.max(1,dp-1),pitch:dp/dpr};
   }
   let M=metrics();
   const tcol=()=>document.documentElement.style.setProperty('--tcol',(40*M.pitch)+'px');
@@ -1014,6 +1017,12 @@ const LED=(()=>{
           if(this.moving){ i=(X+this.off)%period; if(i>=c.n) continue; }
           else { i=X-start; if(i<0||i>=len) continue; i+=ln[0]; }
           const v=c.bits[i]; if(!v) continue;
+          if(dp===2){
+            const sh=SHADE[c.col[i]]||c.col[i], li=LIFT[c.col[i]]||c.col[i];
+            x.fillStyle=sh; for(let y=0;y<16;y++) if(v&(1<<y)) x.fillRect(X*2,y0+y*2,2,2);
+            x.fillStyle=li; for(let y=0;y<16;y++) if(v&(1<<y)) x.fillRect(X*2,y0+y*2,1,1);
+            continue;
+          }
           if(c.col[i]!==last){ last=c.col[i]; x.fillStyle=last; }
           for(let y=0;y<16;y++) if(v&(1<<y)) x.fillRect(X*dp,y0+y*dp,dot,dot);
         }
@@ -1092,7 +1101,7 @@ document.getElementById('board').innerHTML = REGIONS.map(r=>{
             <span class="msg nite">這裡太陽已經下山，畫面暗是正常的</span>
             <span class="yt">YouTube${pg('p-ext')}</span>
           </span>
-          <span class="cap"><span class="zh">${pl?`<span class="pl">${pl}</span>`:''}${nm}</span><span class="why">${why}</span><span class="jp">${jp}</span></span>
+          <span class="cap"><span class="zh">${pl?`<span class="pl">${pl}&nbsp;</span>`:''}${nm}</span><span class="why">${why}</span><span class="jp">${jp}</span></span>
         </a>
       </article>`;}).join('');
     const sub0 = a.name.indexOf('　')>0 ? a.name.slice(a.name.indexOf('　')+1) : a.name;
