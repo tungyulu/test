@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`, with the strategy trainer `blackjack.html` planned to follow it), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
@@ -37,7 +37,7 @@
 - Nothing is saved, by request: a refresh restarts at 1,000 chips with empty stats and default switches.
 - Static single self-contained HTML file (no CDN), Traditional Chinese.
 
-**Planned.** `blackjack.html` (the trainer) is to adopt the same look afterwards, so the visual system must also carry a drill page, not only a live table.
+**The trainer (`blackjack.html`, 21點機率決策挑戰).** The same device, as a drill page: a 10 / 20 / 50 / 100-question challenge of random hands (including insurance questions) graded against the same strategy tables, with score, streak and accuracy, a four-part explanation after each answer, next-card bust odds, a per-situation Monte Carlo EV comparison (1,000 / 4,000 / 10,000 runs), the strategy chart and rules leaflet, and an end-of-round summary. Nothing is saved.
 
 **Evidence on hand.** The rule texts, paytables and strategy tables already in the two pages. Chips are virtual; nothing may suggest real-money play, a real casino brand or invented odds.
 
