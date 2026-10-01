@@ -1,6 +1,6 @@
 ---
 name: 21點實戰牌桌 · Pocket LCD
-description: The blackjack table as a 1980s pocket LCD game, with a tomato-red shell, a charcoal faceplate, a grey-green glass with ghost segments, and rubber keys.
+description: The blackjack table and the strategy trainer as one 1980s pocket LCD game, with a tomato-red shell, a charcoal faceplate, a grey-green glass with ghost segments, and rubber keys.
 colors:
   shell: "#c4331f"
   shell-deep: "#a12815"
@@ -148,11 +148,22 @@ components:
     textColor: "{colors.paper-ink}"
     typography: "{typography.manual}"
     rounded: "{rounded.leaflet}"
+  select:
+    backgroundColor: "{colors.face}"
+    textColor: "{colors.print}"
+    rounded: "{rounded.pill}"
+    padding: "6px 32px 6px 13px"
+    height: "38px"
+  summary-readout:
+    backgroundColor: "{colors.lcd}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.lcd}"
+    padding: "10px 18px 8px"
 ---
 
 # Design System: 21點實戰牌桌 · Pocket LCD
 
-> Scope: `blackjack-game.html`. `blackjack.html` (the trainer) is to adopt this world later; its rules, strategy tables and logic are already shared with this page. This world is separate from root `DESIGN.md` (trip booklet) and `DESIGN-hub.md` (site hub).
+> Scope: `blackjack-game.html` (the table) and `blackjack.html` (the strategy trainer). Both pages share the rules, the strategy tables and this world. This world is separate from root `DESIGN.md` (trip booklet) and `DESIGN-hub.md` (site hub).
 
 ## Overview
 
@@ -209,7 +220,7 @@ A toy's palette: one saturated plastic red, charcoal print surfaces, a dull grey
 
 **Character:** segment digits that read as hardware, a wide technical Latin silkscreen, and a soft round Chinese face that keeps a dense device friendly.
 
-Everything is weight 400; `b/strong` are reset to 400 and get emphasis from size (1.08em on glass) or yellow (on the faceplate). Huninn is subset to the page's text: run `python3 tools/trip-font.py --page blackjack-game.html` after any text change.
+Everything is weight 400; `b/strong` are reset to 400 and get emphasis from size (1.08em on glass) or yellow (on the faceplate). Huninn is subset to each page's text: run `python3 tools/trip-font.py --page blackjack-game.html` (or `blackjack.html`) after any text change.
 
 ### Hierarchy
 - **Logo** (Michroma 21px, 24px ≥1080, .16em): `BLACKJACK` on the shell, beside the `21` brandmark (a small LCD with ghost `88`).
@@ -239,6 +250,7 @@ The shell is the page. `.app` is capped at 1340px with padding `max(14px, safe-a
 - **Card slots** scale with breakpoints (`--cw/--ch/--cg`): 38×54/5 base, 52×74/8 ≥600, 58×83/9 ≥1080, 36×51/5 ≤370. Split hands and computer seats use smaller sets. Each slot set redraws the ghost tile at its own size.
 - **Action keys:** six-column grid on phones (HIT/STAND/DOUBLE two-up, SPLIT/SURRENDER three-up), five equal keys ≥600, gap 9px.
 - **Panels** are separated by a 1px silkscreen top rule with 12px padding and a 14px stack gap. They are not cards.
+- **Trainer:** at ≥1280px the side is a single 400px column (`.layout.lab`). On phones its shell band is a 4-column grid, and the restart key spans columns 2–4 beside the 練習題數 select.
 
 ## Elevation & Depth
 
@@ -266,23 +278,31 @@ Toy-moulded rounds. The faceplate has 28px corners. The bezel is 16px with a lar
 - **Secondary keys** (撤回 / 清除 / 上局 / 下注 ×2 / 調整下注): charcoal, min 44px tall, 14px text.
 - **Hint state:** 策略提示 marks the recommended key with a 3px yellow outline (offset 3px) and a yellow 建議 pill tab on its top edge.
 - **Focus:** a global 3px yellow outline, offset 3px. Bet rings use a 2px dashed `ink` outline on the glass.
+- **Trainer round keys:** 下一題 / 看成績 on the coach plate and 再挑戰 in the summary leaflet are the round yellow key of their stage.
 
 ### Chip keys
 52px circles (58 ≥600, 44 ≤370), moulded in the chip colour, with a white inset ring, a dashed edge ring and a white Michroma value. The selected chip is pressed down and ringed in `face` plus 3px yellow.
 
 ### Mode keys
-Charcoal pills on the shell (38px, 34 ≤599). Toggles carry a 9px lamp swatch: dark red when off, yellow when `aria-pressed="true"`.
+Charcoal pills on the shell (38px, 34 ≤599). Toggles carry a 9px lamp swatch: dark red when off, yellow when `aria-pressed="true"`. `.brand small` uses balanced wrapping (`text-wrap: balance`).
+
+### Selects
+A charcoal `face` pill (min 38px) with a white chevron, used for the trainer's 練習題數 on the shell and the Monte Carlo sample count on the faceplate. The trainer's restart key (開始 N 題挑戰) is a charcoal mode key beside it.
 
 ### LCD glass
 The unit's screen holds the status readouts, a 2px `ink` rule, the dealer slots, a dashed divider that carries the toast, computer seats, player hands and bet rings, then the message line with the OK / NG lamp.
 - **Cards:** a lit slot (`lcd` with an `ink` border), with the rank in `LCD14` and a small and a large SVG suit. Red suits use `red-ink`. The hole card is a 7px diagonal hatch.
 - **Active hand:** a 2px `ink` border. Idle split hands use a `ghost` border.
+- **Message line:** `.msg` wraps. A long prompt keeps whole words, and the OK / NG lamp drops below it, right-aligned.
+- **Trainer status row:** four readouts (題數 / 策略分數 / 連續答對 / 答對率), two-up on phones and four-up at ≥600, where each label is right-aligned over its value.
 
 ### Data windows
-Each panel has a white Huninn title, an optional `sm` key and a round collapse key. The body is an `lcdw` window. Bars are segmented with masks (5px on, 2px off) over ghost ticks, the dealer distribution uses stacked 4/2px segments, and paytable values use the LCD face. The rules panel prints straight on the faceplate, with yellow terms.
+Each panel has a white Huninn title, an optional `sm` key and a round collapse key. The body is an `lcdw` window. Bars are segmented with masks (5px on, 2px off) over ghost ticks, the dealer distribution uses stacked 4/2px segments, and paytable values use the LCD face. The rules panel prints straight on the faceplate, with yellow terms. The faceplate legend repeats the chart code; its 降 swatch keeps its red rule.
+- **Monte Carlo (trainer):** a select plus a charcoal pill key (開始模擬), with results in an LCD window: a table with a 2px `ink` header rule, dashed row rules and LCD-face values. The best row is reverse video (`lcd` on `ink`), never a colour. Each row carries a segmented `.evbar` (4px on, 2px off), reversed inside the best row.
 
 ### Coach
-After each decision, the OK / NG lamp lights on the glass (reversed `ink`; NG blinks three times). Below the keys, the reason prints on the recessed `face-deep` coach plate: an LCD `okw` badge, the verdict (yellow when wrong), a Michroma strategy coordinate, and the body with yellow emphasis.
+After each decision, the OK / NG lamp lights on the glass (reversed `ink`). NG blinks three times with `lamp-blink`, returning to its ghost colour between blinks rather than vanishing. Below the keys, the reason prints on the recessed `face-deep` coach plate: an LCD `okw` badge, the verdict (yellow when wrong), a Michroma strategy coordinate, and the body with yellow emphasis.
+- **Trainer explanation:** four parts (`.explain-grid`, two columns ≥600). Each `.explain-box` sits under a silkscreen rule with a white heading over `print-dim` text and no numbering. The EV formula prints in a small LCD window (`lcd` glass, 6px, LCD face). The stage ends in the round yellow 下一題 key.
 
 ### Manual (modals)
 A white two-colour leaflet in `paper-ink` and red, with a 4px `shell` rule under its header. Strategy cells:
@@ -292,19 +312,21 @@ A white two-colour leaflet in `paper-ink` and red, with a 4px `shell` rule under
 - 分: solid red.
 - 降: white with a red rule and red text.
 
-The current cell gets a 3px charcoal outline. Rule cards are separated by 3px charcoal top rules.
+The graded cell (`.cur`) gets a 3px charcoal outline. Row labels and the corner header are sticky, and opening the chart scrolls the graded cell beside its labels (`showCell()`). Rule cards are separated by 3px charcoal top rules.
+- **Summary leaflet (trainer):** the score is a ghost-8 `.ro` (`#summaryScore`, `data-g="888%"`, min four cells) on a 56px LCD inset ringed in `bezel`. 再挑戰 is the round yellow key.
 
 ### Motion (the LCD grammar)
 All glass motion uses `steps(1,end)`:
 - `lcd-blink` (.42s): a dealt or flipped card and a dropped bet tick blink twice, then hold.
-- `lcd-blink3` (1s): result words, a positive prompt and the NG lamp blink three times.
+- `lcd-blink3` (1s): result words and a positive prompt blink three times.
+- `lamp-blink` (1s): the NG lamp blinks three times back to its ghost.
 - `lcd-on` (.12–.16s): split slides, the toast and the coach plate switch on.
 - `lcd-peek` (.6s, infinite): the hole card flickers its hatch while the dealer peeks.
 
 `prefers-reduced-motion` removes every animation and transition. Async card pacing (`wait`) shortens to ≤60 ms.
 
-### Porting the trainer (`blackjack.html`)
-Reuse the shell, faceplate, glass, keys and leaflet as they are. A drill scenario is the same LCD (dealer slot, player slots, message line with OK / NG) over the same action keys. The tally and the explanations belong in data windows and the coach plate. Use the same strategy-cell code in the chart.
+### The trainer in the world (`blackjack.html`)
+The trainer is the same device in drill mode. The same shell, faceplate, glass, keys and leaflet carry it. One scenario is a dealer slot and player slots over the same action keys, with the tally on the glass, explanations on the coach plate and Monte Carlo in a data window. Its chart uses the same strategy-cell code.
 
 ## Do's and Don'ts
 
@@ -313,9 +335,10 @@ Reuse the shell, faceplate, glass, keys and leaflet as they are. A drill scenari
 - **Do** give every segment readout a `data-g` ghost of 8s and print it through `lcdNum` / `lcdSigned`.
 - **Do** animate the glass only with `steps(1,end)` blinks and switches: two blinks for a dealt card, three for a result.
 - **Do** keep exactly one round yellow primary key per stage, and keep the five action swatches in the manual's two-ink code.
-- **Do** set digits in the segment faces, Latin silkscreen in Michroma and Chinese in Huninn, then run `python3 tools/trip-font.py --page blackjack-game.html`.
+- **Do** set digits in the segment faces, Latin silkscreen in Michroma and Chinese in Huninn, then run `python3 tools/trip-font.py --page <page>` for the page you edited.
 - **Do** keep the file single and self-contained (inlined fonts, inline SVG, no CDN), with nothing saved.
-- **Do** change `blackjack.html`'s tables and rules together with this page's.
+- **Do** change the tables and rules on both pages together, and make any change to shared components on both pages.
+- **Do** mark a best or chosen row by reverse video, not colour.
 
 ### Don't:
 - **Don't** fade, slide or ease anything on the glass; only key travel is eased.
