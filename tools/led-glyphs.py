@@ -8,7 +8,8 @@ dot on <canvas> from 16-dot bitmaps.  The bitmaps come from GNU Unifont (SIL OFL
     apt-get install fonts-unifont      # /usr/share/fonts/opentype/unifont/unifont.otf
 
 The page keeps only the glyphs it uses: every character inside its <script>
-blocks plus printable ASCII.  Run this after editing any text the LED draws
+blocks, the ticket subjects (.stub-what, drawn by trip.html's 次の約定 strip) and
+printable ASCII.  Run this after editing any text the LED draws
 (TRIP, area names, weather words, board messages); a character missing from the
 table is still drawn, but from the browser's own font at 16px, which looks rougher.
 
@@ -32,6 +33,10 @@ BLOCK_RE = re.compile(r'/\*LED-GLYPHS-BEGIN\*/.*?/\*LED-GLYPHS-END\*/', re.S)
 def page_chars(src):
     body = BLOCK_RE.sub('', src)
     text = ''.join(re.findall(r'<script>(.*?)</script>', body, re.S))
+    # trip.html's 次の約定 strip draws each ticket's subject on the LED, so those count too
+    for m in re.finditer(r'<span class="stub-what">', body):
+        end = body.find('<span class="stub-detail"', m.end())
+        text += ' ' + re.sub(r'<[^>]+>', '', body[m.end():end if end > 0 else m.end() + 400])
     chars = set(chr(c) for c in range(0x21, 0x7f))
     chars |= {c for c in text if ord(c) > 0x7f and ord(c) <= 0xffff and not c.isspace()}
     return sorted(chars)
