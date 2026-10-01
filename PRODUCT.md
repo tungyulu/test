@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
@@ -40,6 +40,16 @@
 **The trainer (`blackjack.html`, 21點機率決策挑戰).** The same device, as a drill page: a 10 / 20 / 50 / 100-question challenge of random hands (including insurance questions) graded against the same strategy tables, with score, streak and accuracy, a four-part explanation after each answer, next-card bust odds, a per-situation Monte Carlo EV comparison (1,000 / 4,000 / 10,000 runs), the strategy chart and rules leaflet, and an end-of-round summary. Nothing is saved.
 
 **Evidence on hand.** The rule texts, paytables and strategy tables already in the two pages. Chips are virtual; nothing may suggest real-money play, a real casino brand or invented odds.
+
+## Live cameras · 東京近郊即時影像 (`livecam.html`)
+
+**Users.** The two travellers of the trip, on phone and desktop about equally, and equally before the trip (at home, looking at the places) and during it (on the road in Kanto). Linked from the hub and from `trip.html`.
+
+**Purpose.** Show what the trip's places look like right now and whether now is the time to go. Opening the page answers today's plan and the weather there first (before the trip: day 1), cameras second. Success: in a few seconds either traveller knows what is booked today, what to wear where they are going, whether Fuji is out, and can open a live camera of any stop.
+
+**Capabilities that must survive any redesign.** About a hundred verified YouTube live cameras grouped by region and area with Chinese names, live frame thumbnails refreshed every minute (only while on screen), LIVE / 夜間 / 無畫面 states from frame loading and the sun position, favourites, region and mode filters (收藏, 自駕・路面, 富士山); TW and JP clocks; Open-Meteo weather per area with clothing advice, a ticker and a comparison table, a pack list, Fuji visibility from cloud / code / visibility, a road reading (not official road status) and the 2026-09-01 30 km/h residential-road law note with official links; three automatic picks with their reason; the 8-day trip panel that mirrors `trip.html` (route, note, that day's weather or forecast, that day's cameras); light / dark / system theme; the credits and legal notes (no images stored or rebroadcast; weather CC BY 4.0).
+
+**Evidence on hand.** The camera list, routes and notes already in the page and `trip.html`. Readings (rec, Fuji, road) are derived estimates and must say so; nothing may suggest official status.
 
 ---
 
