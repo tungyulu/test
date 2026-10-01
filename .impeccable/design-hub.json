@@ -1,0 +1,477 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-01T03:53:28+00:00",
+  "title": "Design System: 我的小工具 · 任意門空地",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Navy Ink",
+        "canonical": "#1f3166",
+        "tonalRamp": [
+          "#020132",
+          "#101f53",
+          "#2b3e75",
+          "#485f98",
+          "#6880bc",
+          "#8aa3e2",
+          "#adc8ff",
+          "#d1edff"
+        ]
+      },
+      "sky": {
+        "role": "neutral",
+        "displayName": "Sky",
+        "canonical": "#6cc7f2",
+        "tonalRamp": [
+          "#000c2e",
+          "#002a4e",
+          "#004a6f",
+          "#006b92",
+          "#2d8db6",
+          "#55b1db",
+          "#7bd6ff",
+          "#a1fcff"
+        ]
+      },
+      "cloud": {
+        "role": "neutral",
+        "displayName": "Cloud",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "cloud-shade": {
+        "role": "neutral",
+        "displayName": "Cloud Shade",
+        "canonical": "#d6effb",
+        "tonalRamp": [
+          "#000d15",
+          "#142831",
+          "#31454f",
+          "#4f656f",
+          "#708691",
+          "#92a9b5",
+          "#b5ced9",
+          "#daf3ff"
+        ]
+      },
+      "horizon-light": {
+        "role": "neutral",
+        "displayName": "Horizon Light",
+        "canonical": "#9bd877",
+        "tonalRamp": [
+          "#001300",
+          "#023000",
+          "#224f00",
+          "#417021",
+          "#629244",
+          "#84b667",
+          "#a7db8a",
+          "#ccffaf"
+        ]
+      },
+      "grass": {
+        "role": "neutral",
+        "displayName": "Grass",
+        "canonical": "#8fd16a",
+        "tonalRamp": [
+          "#001300",
+          "#003000",
+          "#214f00",
+          "#407022",
+          "#619245",
+          "#83b668",
+          "#a6db8b",
+          "#cbffaf"
+        ]
+      },
+      "grass-tuft": {
+        "role": "neutral",
+        "displayName": "Tuft Green",
+        "canonical": "#73b856",
+        "tonalRamp": [
+          "#001300",
+          "#003000",
+          "#1c4f00",
+          "#3d7026",
+          "#5e9348",
+          "#80b76a",
+          "#a3dc8e",
+          "#c8ffb2"
+        ]
+      },
+      "grass-deep": {
+        "role": "neutral",
+        "displayName": "Deep Grass",
+        "canonical": "#5e9c40",
+        "tonalRamp": [
+          "#001300",
+          "#003000",
+          "#1e4f00",
+          "#3e7024",
+          "#5f9347",
+          "#81b66a",
+          "#a4db8d",
+          "#c9ffb1"
+        ]
+      },
+      "dirt": {
+        "role": "neutral",
+        "displayName": "Dirt",
+        "canonical": "#e3c38e",
+        "tonalRamp": [
+          "#1b0400",
+          "#381f00",
+          "#573c01",
+          "#785c28",
+          "#9b7d4a",
+          "#bfa06c",
+          "#e4c48f",
+          "#ffeab3"
+        ]
+      },
+      "earth-shadow": {
+        "role": "neutral",
+        "displayName": "Earth Shadow",
+        "canonical": "#8a6a3e",
+        "tonalRamp": [
+          "#1c0300",
+          "#391e00",
+          "#593b0b",
+          "#7a5b2f",
+          "#9d7c50",
+          "#c19f71",
+          "#e6c394",
+          "#ffe8b8"
+        ]
+      },
+      "pink": {
+        "role": "primary",
+        "displayName": "Door Pink",
+        "canonical": "#f394c0",
+        "tonalRamp": [
+          "#280011",
+          "#4b002c",
+          "#6e1f49",
+          "#924069",
+          "#b7628b",
+          "#de84ae",
+          "#ffa8d2",
+          "#ffcdf8"
+        ]
+      },
+      "pink-deep": {
+        "role": "primary",
+        "displayName": "Frame Pink",
+        "canonical": "#e2679f",
+        "tonalRamp": [
+          "#29000f",
+          "#4c0029",
+          "#6f1e46",
+          "#934066",
+          "#b96287",
+          "#df84aa",
+          "#ffa8cf",
+          "#ffcdf4"
+        ]
+      },
+      "plate": {
+        "role": "neutral",
+        "displayName": "Nameplate White",
+        "canonical": "#fffdf6",
+        "tonalRamp": [
+          "#0c0b07",
+          "#262520",
+          "#44423c",
+          "#63615b",
+          "#84827c",
+          "#a7a59e",
+          "#cbc9c2",
+          "#f0eee7"
+        ]
+      },
+      "knob": {
+        "role": "secondary",
+        "displayName": "Knob Gold",
+        "canonical": "#f7d046",
+        "tonalRamp": [
+          "#1c0300",
+          "#391f00",
+          "#583e00",
+          "#795e00",
+          "#9b7f11",
+          "#bfa341",
+          "#e4c768",
+          "#ffed8d"
+        ]
+      },
+      "knob-shade": {
+        "role": "secondary",
+        "displayName": "Knob Shade",
+        "canonical": "#d9a91f",
+        "tonalRamp": [
+          "#1f0100",
+          "#3d1c00",
+          "#5d3b00",
+          "#7e5b00",
+          "#a17c10",
+          "#c5a041",
+          "#ebc467",
+          "#ffea8d"
+        ]
+      },
+      "light": {
+        "role": "secondary",
+        "displayName": "Doorway Light",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ]
+      },
+      "wood": {
+        "role": "neutral",
+        "displayName": "Wood",
+        "canonical": "#c98a4b",
+        "tonalRamp": [
+          "#260000",
+          "#471100",
+          "#693100",
+          "#8c5102",
+          "#b07332",
+          "#d59657",
+          "#fcba7a",
+          "#ffdf9f"
+        ]
+      },
+      "wood-edge": {
+        "role": "neutral",
+        "displayName": "Wood Edge",
+        "canonical": "#8a5a33",
+        "tonalRamp": [
+          "#210000",
+          "#411700",
+          "#62350a",
+          "#84552e",
+          "#a8764e",
+          "#cd9870",
+          "#f3bc93",
+          "#ffe2b7"
+        ]
+      },
+      "wood-ink": {
+        "role": "neutral",
+        "displayName": "Wood Ink",
+        "canonical": "#3a2414",
+        "tonalRamp": [
+          "#180600",
+          "#351f0f",
+          "#543c2c",
+          "#755b4a",
+          "#977c6a",
+          "#bb9f8c",
+          "#e0c3af",
+          "#ffe8d4"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "「我的小工具」 in the sky, once."
+      },
+      "sign": {
+        "displayName": "Sign",
+        "purpose": "Lot names on the stake signs (26px ≥760px), lettered in wood-ink."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "The one sentence under the title (18px ≥760px)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Page default."
+      },
+      "nameplate": {
+        "displayName": "Nameplate",
+        "purpose": "Tool name under the icon; 15px ≥760px, 13.5px ≤400px, 12.5px ≤340px."
+      },
+      "ground-line": {
+        "displayName": "Ground Line",
+        "purpose": "Description under each door; 12.5px ≤400px, 12px ≤340px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "contact-shadow",
+        "value": "flat ellipse #8a6a3e, opacity .35, 16px tall, left/right -10%, bottom -8px, z-index -1 inside isolation: isolate",
+        "purpose": "Grounds each door on the dirt. Not a box-shadow."
+      },
+      {
+        "name": "knob-shade",
+        "value": "inset -2px -2px 0 #d9a91f",
+        "purpose": "The single hard cel shade on the knob."
+      },
+      {
+        "name": "pipe-ground",
+        "value": "flat ellipse #5e9c40, opacity .55 (SVG)",
+        "purpose": "Grounds the pipe stack."
+      }
+    ],
+    "motion": [
+      {
+        "name": "door-crack",
+        "value": "transform .45s cubic-bezier(.2,.75,.25,1), filter .45s ease; rotateY(-26deg), brightness .95",
+        "purpose": "Hover (fine pointer) and keyboard focus open the panel a crack."
+      },
+      {
+        "name": "door-swing",
+        "value": "same transition; rotateY(-84deg), brightness .82",
+        "purpose": "Tap/plain click: the panel swings open on its left hinge."
+      },
+      {
+        "name": "light-fill",
+        "value": "clip-path circle(0 → 150vmax at doorway centre) .36s cubic-bezier(.2,.8,.2,1), starts at 300ms",
+        "purpose": "White light from the doorway fills the screen."
+      },
+      {
+        "name": "navigate",
+        "value": "720ms after click",
+        "purpose": "Arrival in the tool."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all transitions/animations off; doors navigate immediately (also on modified or non-left clicks)",
+        "purpose": "prefers-reduced-motion: reduce."
+      },
+      {
+        "name": "bfcache-reset",
+        "value": "pageshow removes .is-opening and #flash.on",
+        "purpose": "Back button shows the doors closed."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tiny",
+        "value": "max-width: 340px"
+      },
+      {
+        "name": "narrow",
+        "value": "max-width: 400px"
+      },
+      {
+        "name": "wide",
+        "value": "min-width: 760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Anywhere Door",
+      "kind": "custom",
+      "refersTo": "door-frame",
+      "description": "One per tool: frame, flat-white doorway, hinged pink panel with mouldings, knob and nameplate, flat contact shadow, ground line below. Hover/focus cracks it open; :active previews the swing.",
+      "html": "<div class=\"ds-stage\"><a class=\"ds-door\" href=\"#\"><span class=\"ds-body\"><span class=\"ds-frame\"><span class=\"ds-way\"></span><span class=\"ds-panel\"><span class=\"ds-mold ds-mt\"></span><span class=\"ds-mold ds-mb\"></span><span class=\"ds-knob\"></span><span class=\"ds-plate\"><svg class=\"ds-ic\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 21v-5M12 16 6.5 18l.8-3.2L3 12.5l3.2-.9L5 7.5l3.4.9L9.6 4 12 7l2.4-3 1.2 4.4L19 7.5l-1.2 4.1 3.2.9-4.3 2.3.8 3.2Z\"/></svg><span class=\"ds-name\"><span class=\"ds-seg\">關東秋季</span><span class=\"ds-seg\">紅葉巡航</span></span></span></span></span><span class=\"ds-shadow\"></span></span><span class=\"ds-desc\"><span class=\"ds-seg\">東京／</span><span class=\"ds-seg\">河口湖／</span><span class=\"ds-seg\">湘南&nbsp;·</span> <span class=\"ds-seg\">8天7夜自駕行程</span></span></a></div>",
+      "css": ":host{--sky:#6cc7f2;--grass:#8fd16a;--grass-deep:#5e9c40;--ink:#1f3166;--pink:#f394c0;--pink-deep:#e2679f;--plate:#fffdf6;--knob:#f7d046;--knob-shade:#d9a91f;--light:#fff;--wood:#c98a4b;--wood-ink:#3a2414;--heavy:'Zen Maru Heavy','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;font:400 15px/1.75 var(--font);color:var(--ink)}.ds-stage{background:#e3c38e;padding:28px 30px 18px;display:inline-block}.ds-door{display:flex;flex-direction:column;align-items:center;gap:16px;width:188px;color:var(--ink);text-decoration:none}.ds-body{position:relative;isolation:isolate;width:158px;aspect-ratio:158/262}.ds-frame{position:absolute;inset:0;background:var(--pink-deep);border-radius:9px 9px 3px 3px;perspective:820px}.ds-way,.ds-panel{position:absolute;inset:8px 8px 0;border-radius:3px 3px 0 0}.ds-way{background:var(--light)}.ds-panel{background:var(--pink);transform-origin:left center;transition:transform .45s cubic-bezier(.2,.75,.25,1),filter .45s ease;backface-visibility:hidden}.ds-mold{position:absolute;left:13%;right:13%;border:3px solid var(--pink-deep);border-radius:4px}.ds-mt{top:7%;height:38%}.ds-mb{top:52%;bottom:6%}.ds-knob{position:absolute;right:7%;top:49%;width:15px;height:15px;border-radius:50%;background:var(--knob);box-shadow:inset -2px -2px 0 var(--knob-shade)}.ds-plate{position:absolute;left:16%;right:16%;top:11%;display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 5px 10px;background:var(--plate);border:2px solid var(--pink-deep);border-radius:5px;font-size:14px;line-height:1.35;text-align:center}.ds-ic{width:22px;height:22px}.ds-seg{display:inline-block;max-width:100%}.ds-shadow{position:absolute;left:-10%;right:-10%;bottom:-8px;height:16px;z-index:-1;border-radius:50%;background:#8a6a3e;opacity:.35}.ds-desc{max-width:17em;font-size:13.5px;line-height:1.6;text-align:center}.ds-door:hover .ds-panel,.ds-door:focus-visible .ds-panel{transform:rotateY(-26deg);filter:brightness(.95)}.ds-door:hover .ds-name{text-decoration:underline;text-underline-offset:3px}.ds-door:focus-visible{outline:none}.ds-door:focus-visible .ds-frame{outline:3px solid var(--ink);outline-offset:5px}.ds-door:active .ds-panel{transform:rotateY(-84deg);filter:brightness(.82)}"
+    },
+    {
+      "name": "Lot Sign",
+      "kind": "custom",
+      "refersTo": "lot-sign",
+      "description": "Inline-SVG wooden stake sign carrying the lot heading in the heavy face.",
+      "html": "<div class=\"ds-sign\"><svg viewBox=\"0 0 180 96\" aria-hidden=\"true\"><rect x=\"84\" y=\"40\" width=\"12\" height=\"56\" rx=\"2\" fill=\"#8a5a33\"/><rect x=\"6\" y=\"6\" width=\"168\" height=\"52\" rx=\"6\" fill=\"#c98a4b\"/><rect x=\"6\" y=\"6\" width=\"168\" height=\"52\" rx=\"6\" fill=\"none\" stroke=\"#8a5a33\" stroke-width=\"4\"/><path d=\"M18 18h36M118 53h42\" stroke=\"#b37438\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg><h2 class=\"ds-sign-text\">旅行</h2></div>",
+      "css": ":host{--sky:#6cc7f2;--grass:#8fd16a;--grass-deep:#5e9c40;--ink:#1f3166;--pink:#f394c0;--pink-deep:#e2679f;--plate:#fffdf6;--knob:#f7d046;--knob-shade:#d9a91f;--light:#fff;--wood:#c98a4b;--wood-ink:#3a2414;--heavy:'Zen Maru Heavy','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;font:400 15px/1.75 var(--font);color:var(--ink)}.ds-sign{position:relative;width:196px;height:105px;background:#8fd16a}.ds-sign svg{position:absolute;inset:0;width:100%;height:100%}.ds-sign-text{position:absolute;left:3.3%;top:6%;width:93.4%;height:54%;display:grid;place-items:center;margin:0;font-family:var(--heavy);font-weight:900;font-size:26px;line-height:1;letter-spacing:.08em;color:var(--wood-ink)}"
+    },
+    {
+      "name": "Sky Header",
+      "kind": "nav",
+      "refersTo": "display",
+      "description": "Flat sky, a cloud kept above the title, title, lede, two-band horizon.",
+      "html": "<header class=\"ds-sky\"><svg class=\"ds-cloud\" viewBox=\"0 -14 220 110\" aria-hidden=\"true\"><path d=\"M30 86h160a26 26 0 0 0 0-52 30 30 0 0 0-26-24 38 38 0 0 0-70 6 26 26 0 0 0-38 22A24 24 0 0 0 30 86Z\" fill=\"#fff\"/><path d=\"M38 86h150a26 26 0 0 0 24-16H24a22 22 0 0 0 14 16Z\" fill=\"#d6effb\"/></svg><h1 class=\"ds-title\">我的小工具</h1><p class=\"ds-lede\"><span class=\"ds-seg\">空地上立著 12 扇任意門。</span><span class=\"ds-seg\">打開一扇，</span><span class=\"ds-seg\">就到那個小工具。</span></p><svg class=\"ds-horizon\" viewBox=\"0 0 1200 60\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><path d=\"M0 34C120 20 230 16 360 26s250 18 380 6 300-24 460 0V60H0Z\" fill=\"#9bd877\"/><path d=\"M0 44c160-10 320-12 470-4s300 10 450 0 220-6 280-2V60H0Z\" fill=\"#8fd16a\"/></svg></header>",
+      "css": ":host{--sky:#6cc7f2;--grass:#8fd16a;--grass-deep:#5e9c40;--ink:#1f3166;--pink:#f394c0;--pink-deep:#e2679f;--plate:#fffdf6;--knob:#f7d046;--knob-shade:#d9a91f;--light:#fff;--wood:#c98a4b;--wood-ink:#3a2414;--heavy:'Zen Maru Heavy','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;font:400 15px/1.75 var(--font);color:var(--ink)}.ds-sky{position:relative;overflow:hidden;padding:110px 32px 92px;background:var(--sky)}.ds-cloud{position:absolute;top:18px;right:8%;width:150px}.ds-title{margin:0;font-family:var(--heavy);font-weight:900;font-size:72px;line-height:1;letter-spacing:.02em}.ds-lede{margin:16px 0 0;max-width:22em;font-size:16px;line-height:1.7}.ds-seg{display:inline-block;max-width:100%}.ds-horizon{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:60px}"
+    },
+    {
+      "name": "Light Flash",
+      "kind": "custom",
+      "refersTo": "flash",
+      "description": "Flat white clip-path circle that grows from the doorway centre (hover to preview).",
+      "html": "<div class=\"ds-box\"><div class=\"ds-flash\"></div></div>",
+      "css": ":host{--sky:#6cc7f2;--grass:#8fd16a;--grass-deep:#5e9c40;--ink:#1f3166;--pink:#f394c0;--pink-deep:#e2679f;--plate:#fffdf6;--knob:#f7d046;--knob-shade:#d9a91f;--light:#fff;--wood:#c98a4b;--wood-ink:#3a2414;--heavy:'Zen Maru Heavy','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--font:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;font:400 15px/1.75 var(--font);color:var(--ink)}.ds-box{position:relative;width:260px;height:160px;background:var(--grass);overflow:hidden}.ds-flash{position:absolute;inset:0;background:var(--light);clip-path:circle(0 at 50% 60%);transition:clip-path .36s cubic-bezier(.2,.8,.2,1)}.ds-box:hover .ds-flash{clip-path:circle(150% at 50% 60%)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lot of Anywhere Doors",
+    "overview": "The hub is an empty lot (空地) on a cartoon afternoon. Flat blue sky with drawn clouds, a soft hill line, then flat grass with tufts and bare-dirt patches. Pink doors stand on the dirt, one per tool, each with a white nameplate, a gold knob and a contact shadow. Wooden stake signs (立て札) name the four lots, and a stack of concrete pipes sits in the first one. Open a door and you are somewhere else: the panel swings on its hinge, white light pours out of the doorway and fills the screen, and the tool loads.\n\nThe look is cel animation. Every field is a single flat colour, and every object is an authored inline SVG or CSS shape with one flat shade at most. The page reads top to bottom like a walk across the lot. The sky holds the title. Each lot is a sign, then a dirt patch with a two-up (phone) or auto-fit (desktop) row of doors, with alternate doors set back. The line printed on the ground under each door says what the tool does.\n\nConfirmed rejections: the dark grid of same-size icon cards with eyebrow labels that this hub replaced; gradients as fills, glass, glow; card containers; characters or logos from any franchise (the doors are our own drawing).",
+    "keyCharacteristics": [
+      "Cel-flat: one flat colour per field, one hard shade per object at most, no gradients, no glow.",
+      "Navy ink prints every word on the field; only the painted lot signs carry their own brown lettering.",
+      "Doors are the only interactive objects, and their motion is the hinge.",
+      "Two inlined OFL faces: heavy rounded for the title and signs, soft round Huninn for everything else.",
+      "Every picture is inline SVG; no rasters, no CDN, no state."
+    ],
+    "rules": [
+      {
+        "name": "The Cel-Flat Rule",
+        "body": "Every field is one flat colour. An object gets at most one hard-edged shade: the cloud's underside band, the knob's inset, the darker hill band. No gradients, no glow, no blur. The doorway light is flat white, and the contact shadow is a flat ellipse.",
+        "section": "colors"
+      },
+      {
+        "name": "The Navy Ink Rule",
+        "body": "Navy `ink` prints every word on sky, grass, dirt and nameplate, at ≥6.5:1. There is no grey or faded secondary text; hierarchy is size. The one exception is part of the world: the stake signs are painted boards lettered in `wood-ink`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Pink Is a Door Rule",
+        "body": "`pink` / `pink-deep` belong to doors. Don't use them for headings, links or decoration elsewhere on the lot.",
+        "section": "colors"
+      },
+      {
+        "name": "The Phrase Wrap Rule",
+        "body": "CJK lines break only between phrases. Every phrase is a `span.seg` (inline-block, max-width 100%). The ` · ` separator is glued to the end of its phrase with a no-break space (`湘南&nbsp;·`), followed by a normal space. Ground lines also split after 、，・／, and at hand-chosen phrase breaks (e.g. 隨機牌局 | 練基本策略). A Latin–CJK space goes between segs, outside the spans. Nameplates get a space only where Latin meets another phrase (`NBA` `拍賣選秀板`, `Usage` `Dashboard`); CJK-only nameplates have none.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two Faces Rule",
+        "body": "The heavy face sets only the title and lot signs; its subset cannot set anything else. Everything else is Huninn at weight 400.",
+        "section": "typography"
+      },
+      {
+        "name": "The Drawn Depth Rule",
+        "body": "If something needs to sit on the ground, draw it a flat contact ellipse. Never use `box-shadow` blur, `filter: drop-shadow` or a glow. Tonal change on interaction is `filter: brightness()` on the panel only.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do fill every field with one flat token colour and give an object at most one hard shade.",
+      "Do print every word in navy `ink` (≥6.5:1 on sky, grass, dirt), with hierarchy by size alone; sign lettering stays `wood-ink` on wood.",
+      "Do wrap every CJK phrase in `span.seg`, glue ` · ` to its phrase with a no-break space, and put Latin–CJK spaces between segs.",
+      "Do keep clouds in the band above the title on ≥760px.",
+      "Do ground new objects with a flat contact ellipse, and keep the door shadow inside `isolation: isolate`.",
+      "Do keep the open sequence intact: −26° crack on hover/focus, −84° swing, flash at 300 ms, navigate at 720 ms, immediate for reduced motion and modified clicks, `pageshow` reset.",
+      "Do draw every picture as authored inline SVG, and re-subset the font after text changes."
+    ],
+    "donts": [
+      "Don't add gradients, glow shadows, blur, glass or card containers; the doorway light stays flat white.",
+      "Don't tint or fade secondary text grey.",
+      "Don't use door pink outside doors.",
+      "Don't set anything but the title and lot signs in Zen Maru Heavy.",
+      "Don't add franchise characters, logos, raster images, CDN assets, localStorage or any other state.",
+      "Don't restyle the tools behind the doors."
+    ]
+  }
+}
