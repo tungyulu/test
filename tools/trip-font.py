@@ -11,6 +11,7 @@ character falls back to the system font.
     python3 tools/trip-font.py --check    # only report characters missing from the subset
     python3 tools/trip-font.py --page index.html   # same, for the hub (any page with the 'Huninn Shiori' face)
     python3 tools/trip-font.py --page blackjack-game.html   # the blackjack table (counts every character in its script)
+    python3 tools/trip-font.py --page blackjack.html        # the strategy trainer (same)
 
 The full font (SIL OFL 1.1) is fetched from Google Fonts on first run and cached in
 ~/.cache/trip-font/. Nothing else in the page is touched.
@@ -35,10 +36,10 @@ def page_chars(src: str) -> set:
     text = html.unescape(re.sub(r'<[^>]+>', ' ', body))
     attrs = ' '.join(re.findall(r'(?:aria-label|title|data-ink)="([^"]*)"', src))
     # trip.html's script writes visible text (cover stamp, buttons); the hub's script writes none;
-    # the blackjack table's script writes nearly all of its text, so every character in it counts
+    # the blackjack table's and trainer's scripts write nearly all of their text, so every character in them counts
     writes_text = PAGE.name == 'trip.html'
     strings = ' '.join(a or b for a, b in re.findall(r"'([^'\n]*)'|`([^`\n]*)`", script)) if writes_text else ''
-    if PAGE.name == 'blackjack-game.html':
+    if PAGE.name in ('blackjack-game.html', 'blackjack.html'):
         strings = script
     return {c for c in text + attrs + strings + (RUNTIME if writes_text else '') if not c.isspace()}
 
