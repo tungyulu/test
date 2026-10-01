@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers two surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`, section directly below) and the **Japan autumn road-trip itinerary** (`trip.html`, every section after the hub section). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, blackjack pages, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`, with the strategy trainer `blackjack.html` planned to follow it), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
@@ -19,6 +19,27 @@
 **Constraints.** Static single HTML file at the Pages root, no build step. The name 「我的小工具」 is kept. The hub never restyles the tools themselves; each keeps its own look. Every tool must stay reachable; adding a tool later must be a small, obvious edit. No tracking, accounts or invented usage numbers: the hub does not know how often a tool is used.
 
 **Evidence on hand.** The tool names, file names and one-line descriptions from the existing hub and CLAUDE.md. No screenshots, logos or usage data exist; none may be invented.
+
+## Blackjack table · 21點實戰牌桌 (`blackjack-game.html`)
+
+**Users.** The owner, on phone and desktop about equally (one-handed phone sessions matter as much as a desk session with the data panels open). Linked from the hub, so friends open it too.
+
+**Purpose.** A playable blackjack table with virtual chips that doubles as a basic-strategy gym. Playing feel and learning matter equally: the table is the lead, and the coaching and odds stay one glance away, never buried. Success: a round deals, plays and settles with real table feel, and after any decision the player can see whether the chart agrees and why.
+
+**Capabilities that must survive any redesign.**
+- The rule set, shared with `blackjack.html`: 6 decks, S17, DAS, late surrender, dealer peek, blackjack 3:2, split to 4 hands, split aces one card, insurance / even money 2:1. Every two-card hand must give the same chart answer on both pages.
+- Casino-style betting: pick a chip (10 / 50 / 100 / 500), tap a bet circle. Main bet 10–2,000 (required); side bets 完美對子 Perfect Pairs and 21+3, each ≤ 500. Undo, clear, last bet, double the bet, deal; deal-same-bet after a round; a 1,000 refill when broke.
+- A real shuffled 6-deck shoe with a 72–78 % cut card; 0–4 computer players seated before the user who play perfect basic strategy.
+- Actions hit / stand / double / split / surrender, with insurance and even money when the dealer shows an A.
+- The strategy coach grading every decision, an optional 策略提示 that marks the recommended action, the full 繁體中文 strategy chart and the rules-and-probability explainer.
+- Live odds (next-card bust, dealer final distribution, stand outcome, dealer up-card strength, dealer blackjack chance during insurance), the side-bet paytable with exact odds and house edge, shoe penetration and the Hi-Lo running / true count (hidden until shown), stats and recent-round history.
+- An always-visible 本次輸贏 (session net); the data panels can be hidden as a whole and collapsed one by one; keyboard shortcuts (1–4, Backspace, C, Space/Enter, H S D P R, Y/N, B, Esc).
+- Nothing is saved, by request: a refresh restarts at 1,000 chips with empty stats and default switches.
+- Static single self-contained HTML file (no CDN), Traditional Chinese.
+
+**Planned.** `blackjack.html` (the trainer) is to adopt the same look afterwards, so the visual system must also carry a drill page, not only a live table.
+
+**Evidence on hand.** The rule texts, paytables and strategy tables already in the two pages. Chips are virtual; nothing may suggest real-money play, a real casino brand or invented odds.
 
 ---
 
