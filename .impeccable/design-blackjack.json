@@ -1,0 +1,550 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-01T04:48:27+00:00",
+  "title": "Design System: 21點實戰牌桌 · Pocket LCD",
+  "extensions": {
+    "colorMeta": {
+      "shell": {
+        "role": "primary",
+        "displayName": "Tomato Shell",
+        "canonical": "#c4331f",
+        "tonalRamp": [
+          "#42110a",
+          "#741e12",
+          "#a72b1a",
+          "#d93822",
+          "#e46452",
+          "#ec9184",
+          "#f4beb7",
+          "#fcebe9"
+        ]
+      },
+      "shell-deep": {
+        "role": "primary",
+        "displayName": "Shell Deep",
+        "canonical": "#a12815",
+        "tonalRamp": [
+          "#441109",
+          "#771e10",
+          "#ab2a16",
+          "#de371d",
+          "#e8634e",
+          "#ef9081",
+          "#f5beb5",
+          "#fcebe8"
+        ]
+      },
+      "shell-ink": {
+        "role": "primary",
+        "displayName": "Shell Ink",
+        "canonical": "#a3291a",
+        "tonalRamp": [
+          "#42110b",
+          "#741d13",
+          "#a72a1b",
+          "#d93723",
+          "#e36252",
+          "#eb9084",
+          "#f3bdb7",
+          "#fbebe9"
+        ]
+      },
+      "face": {
+        "role": "neutral",
+        "displayName": "Faceplate Charcoal",
+        "canonical": "#24221f",
+        "tonalRamp": [
+          "#292723",
+          "#48443e",
+          "#686259",
+          "#878074",
+          "#a29c93",
+          "#bdb9b3",
+          "#d8d6d2",
+          "#f3f2f1"
+        ]
+      },
+      "face-deep": {
+        "role": "neutral",
+        "displayName": "Recess",
+        "canonical": "#171614",
+        "tonalRamp": [
+          "#292724",
+          "#48453f",
+          "#67635a",
+          "#868175",
+          "#a29d94",
+          "#bdbab3",
+          "#d8d6d2",
+          "#f3f3f1"
+        ]
+      },
+      "bezel": {
+        "role": "neutral",
+        "displayName": "Bezel Black",
+        "canonical": "#121110",
+        "tonalRamp": [
+          "#282624",
+          "#47433f",
+          "#66615b",
+          "#857e76",
+          "#a19b95",
+          "#bcb8b4",
+          "#d8d5d3",
+          "#f3f2f2"
+        ]
+      },
+      "print": {
+        "role": "neutral",
+        "displayName": "Silkscreen White",
+        "canonical": "#f5f3ee",
+        "tonalRamp": [
+          "#302a1c",
+          "#554b32",
+          "#7a6b48",
+          "#9e8c5d",
+          "#b5a681",
+          "#cac0a6",
+          "#e0daca",
+          "#f6f4ef"
+        ]
+      },
+      "print-dim": {
+        "role": "neutral",
+        "displayName": "Dim Print",
+        "canonical": "rgba(245,243,238,.72)",
+        "tonalRamp": [
+          "#302a1c",
+          "#554b32",
+          "#7a6b48",
+          "#9e8c5d",
+          "#b5a681",
+          "#cac0a6",
+          "#e0daca",
+          "#f6f4ef"
+        ]
+      },
+      "print-yellow": {
+        "role": "secondary",
+        "displayName": "Signal Yellow",
+        "canonical": "#f2c230",
+        "tonalRamp": [
+          "#483705",
+          "#7f6108",
+          "#b68c0b",
+          "#edb60f",
+          "#f3c742",
+          "#f7d879",
+          "#fae8b0",
+          "#fdf8e7"
+        ]
+      },
+      "key": {
+        "role": "neutral",
+        "displayName": "Rubber Key",
+        "canonical": "#3a3732",
+        "tonalRamp": [
+          "#292723",
+          "#48453e",
+          "#686259",
+          "#878074",
+          "#a29d93",
+          "#bdb9b3",
+          "#d8d6d2",
+          "#f3f2f1"
+        ]
+      },
+      "lcd": {
+        "role": "neutral",
+        "displayName": "LCD Glass",
+        "canonical": "#aab59c",
+        "tonalRamp": [
+          "#272c21",
+          "#454d3a",
+          "#626e53",
+          "#80906c",
+          "#9da98c",
+          "#b9c2ae",
+          "#d6dbcf",
+          "#f2f4f0"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Segment Ink",
+        "canonical": "#1d231c",
+        "tonalRamp": [
+          "#232a22",
+          "#3e4b3c",
+          "#596b56",
+          "#748c70",
+          "#93a690",
+          "#b2c0b0",
+          "#d2dad0",
+          "#f1f4f1"
+        ]
+      },
+      "ghost": {
+        "role": "neutral",
+        "displayName": "Ghost Segment",
+        "canonical": "rgba(29,35,28,.085)",
+        "tonalRamp": [
+          "#232a22",
+          "#3e4b3c",
+          "#596b56",
+          "#748c70",
+          "#93a690",
+          "#b2c0b0",
+          "#d2dad0",
+          "#f1f4f1"
+        ]
+      },
+      "red-ink": {
+        "role": "neutral",
+        "displayName": "Red Filter",
+        "canonical": "#8a2414",
+        "tonalRamp": [
+          "#43110a",
+          "#761f11",
+          "#a92c18",
+          "#dc3920",
+          "#e66450",
+          "#ed9183",
+          "#f4beb6",
+          "#fcebe9"
+        ]
+      },
+      "chip10": {
+        "role": "tertiary",
+        "displayName": "Chip Blue 10",
+        "canonical": "#1f5fbf",
+        "tonalRamp": [
+          "#0b2142",
+          "#133a74",
+          "#1b53a6",
+          "#236cd8",
+          "#538ce3",
+          "#85aeeb",
+          "#b7cff3",
+          "#e9f0fb"
+        ]
+      },
+      "chip50": {
+        "role": "tertiary",
+        "displayName": "Chip Orange 50",
+        "canonical": "#d9621a",
+        "tonalRamp": [
+          "#441f08",
+          "#78360e",
+          "#ac4e15",
+          "#e0651b",
+          "#ea874c",
+          "#f0aa80",
+          "#f6cdb4",
+          "#fcf0e8"
+        ]
+      },
+      "chip100": {
+        "role": "tertiary",
+        "displayName": "Chip Black 100",
+        "canonical": "#141311",
+        "tonalRamp": [
+          "#292723",
+          "#49453e",
+          "#686359",
+          "#888173",
+          "#a39e93",
+          "#bebab2",
+          "#d9d6d2",
+          "#f3f3f1"
+        ]
+      },
+      "chip500": {
+        "role": "tertiary",
+        "displayName": "Chip Purple 500",
+        "canonical": "#6d2fa0",
+        "tonalRamp": [
+          "#28113b",
+          "#471f68",
+          "#662c95",
+          "#8439c2",
+          "#a064d2",
+          "#bc91df",
+          "#d7beec",
+          "#f3ebf9"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Leaflet Paper",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#434343",
+          "#616161",
+          "#7e7e7e",
+          "#9b9b9b",
+          "#b8b8b8",
+          "#d5d5d5",
+          "#f2f2f2"
+        ]
+      },
+      "paper-ink": {
+        "role": "neutral",
+        "displayName": "Leaflet Charcoal",
+        "canonical": "#24221f",
+        "tonalRamp": [
+          "#292723",
+          "#48443e",
+          "#686259",
+          "#878074",
+          "#a29c93",
+          "#bdb9b3",
+          "#d8d6d2",
+          "#f3f2f1"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "logo": {
+        "displayName": "Logo",
+        "purpose": "BLACKJACK on the shell; 24px ≥1080."
+      },
+      "silkscreen": {
+        "displayName": "Silkscreen",
+        "purpose": "Key sublegends, chip values, coordinates, CREDIT/DEALER/PLAYER; bezel line at 9px/.16em."
+      },
+      "readout-lg": {
+        "displayName": "Readout Lg",
+        "purpose": "籌碼 CREDIT and 本次輸贏 (25px ≤599, 23px ≤370)."
+      },
+      "readout": {
+        "displayName": "Readout",
+        "purpose": "Other status readouts (18px ≤599)."
+      },
+      "seg14": {
+        "displayName": "Seg14",
+        "purpose": "Card ranks, OK/NG lamp, coach badge."
+      },
+      "prompt": {
+        "displayName": "Prompt",
+        "purpose": "Message line on the glass (18px ≥600)."
+      },
+      "key-legend": {
+        "displayName": "Key Legend",
+        "purpose": "Chinese legend on action keys."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Faceplate default text."
+      },
+      "manual": {
+        "displayName": "Manual",
+        "purpose": "Leaflet (modal) text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "faceplate",
+        "value": "inset 0 1px 0 rgba(255,255,255,.07), 0 12px 26px rgba(90,14,4,.38)",
+        "purpose": "The one charcoal plate on the shell."
+      },
+      {
+        "name": "key-depth",
+        "value": "inset 0 1px 0 rgba(255,255,255,.16), inset 0 -3px 0 rgba(0,0,0,.32), 0 3px 5px rgba(0,0,0,.42)",
+        "purpose": "Every rubber key at rest."
+      },
+      {
+        "name": "key-down",
+        "value": "inset 0 1px 0 rgba(255,255,255,.1), inset 0 -1px 0 rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.42)",
+        "purpose": "Pressed key (:active) and selected chip, with translateY(2px)."
+      },
+      {
+        "name": "glass-recess",
+        "value": "inset 0 3px 8px rgba(0,0,0,.4), inset 0 -1px 0 rgba(255,255,255,.22)",
+        "purpose": "Main LCD; data windows use inset 0 2px 6px rgba(0,0,0,.38)."
+      },
+      {
+        "name": "leaflet",
+        "value": "0 22px 48px rgba(0,0,0,.45) over scrim rgba(36,10,4,.66)",
+        "purpose": "The manual modal lying on the device."
+      }
+    ],
+    "motion": [
+      {
+        "name": "lcd-blink",
+        "value": ".42s steps(1,end): 0 off, 25% on, 50% off, 75% on",
+        "purpose": "Dealt/flipped card and dropped bet tick blink twice, then hold."
+      },
+      {
+        "name": "lcd-blink3",
+        "value": "1s steps(1,end): on/off three times",
+        "purpose": "Result words, positive prompt, NG lamp."
+      },
+      {
+        "name": "lcd-on",
+        "value": ".12–.16s steps(1,end) from opacity 0",
+        "purpose": "Split slide, toast, coach plate switch on."
+      },
+      {
+        "name": "lcd-peek",
+        "value": ".6s steps(1,end) infinite; hatch off, border dashed at 50%",
+        "purpose": "Hole card while the dealer peeks."
+      },
+      {
+        "name": "key-travel",
+        "value": "transform/box-shadow .06s ease-out; translateY(2px)",
+        "purpose": "The only eased motion: a key depressing."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all animation/transition none; card pacing wait ≤60ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tiny",
+        "value": "max-width: 370px"
+      },
+      {
+        "name": "phone",
+        "value": "max-width: 599px"
+      },
+      {
+        "name": "tablet",
+        "value": "min-width: 600px"
+      },
+      {
+        "name": "desktop",
+        "value": "min-width: 1080px"
+      },
+      {
+        "name": "desktop-sticky",
+        "value": "min-width: 1080px and min-height: 760px"
+      },
+      {
+        "name": "wide",
+        "value": "min-width: 1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Action Key",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Charcoal rubber key: white Huninn legend, yellow Michroma sublegend, two-ink swatch; depresses on press. Hint state adds a yellow ring and 建議 tag.",
+      "html": "<div class=\"ds-face\"><button class=\"ds-key ds-act ds-hit\">要牌<small>HIT · H</small></button><button class=\"ds-key ds-act ds-stand\">停牌<small>STAND · S</small></button><button class=\"ds-key ds-act ds-double\">加倍<small>DOUBLE · D</small></button><button class=\"ds-key ds-act ds-split ds-suggest\">分牌<small>SPLIT · P</small></button><button class=\"ds-key ds-act ds-sur\">投降<small>SURRENDER · R</small></button></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-key{appearance:none;border:0;border-radius:12px;background:var(--key);color:var(--print);box-shadow:var(--key-depth);transition:transform .06s ease-out,box-shadow .06s ease-out;cursor:pointer}.ds-key:active{transform:translateY(2px);box-shadow:var(--key-down)}.ds-key:focus-visible{outline:3px solid var(--print-yellow);outline-offset:3px}.ds-act{position:relative;width:118px;min-height:68px;padding:8px 4px 6px;font:400 17px/1.2 var(--text)}.ds-act small{display:block;margin-top:3px;font:400 11px/1.3 var(--label);letter-spacing:.04em;color:var(--print-yellow)}.ds-act::before{content:'';position:absolute;left:9px;top:9px;width:11px;height:11px;border-radius:2px}.ds-hit::before{background:#fff}.ds-stand::before{background:var(--paper-ink);box-shadow:0 0 0 1.5px #fff}.ds-double::before{background:repeating-linear-gradient(135deg,#fff 0 1.5px,var(--paper-ink) 1.5px 3.5px);box-shadow:0 0 0 1.5px #fff}.ds-split::before{background:var(--shell)}.ds-sur::before{background:var(--paper-ink);box-shadow:0 0 0 2px var(--shell)}.ds-suggest{outline:3px solid var(--print-yellow);outline-offset:3px}.ds-suggest::after{content:'建議';position:absolute;top:-11px;right:8px;padding:0 7px;border-radius:999px;background:var(--print-yellow);color:var(--ink);font:400 11px/1.6 var(--text)}"
+    },
+    {
+      "name": "Primary Key + Chip Keys",
+      "kind": "button",
+      "refersTo": "key-primary",
+      "description": "The one round yellow key per stage beside the four moulded chip keys; the selected chip is pressed and ringed yellow.",
+      "html": "<div class=\"ds-face\"><button class=\"ds-key ds-chip\" style=\"--c:#1f5fbf\" aria-pressed=\"true\"><span>10</span></button><button class=\"ds-key ds-chip\" style=\"--c:#d9621a\"><span>50</span></button><button class=\"ds-key ds-chip\" style=\"--c:#141311\"><span>100</span></button><button class=\"ds-key ds-chip\" style=\"--c:#6d2fa0\"><span>500</span></button><button class=\"ds-key ds-gold\">發牌<small>DEAL</small></button></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-key{appearance:none;border:0;border-radius:12px;background:var(--key);color:var(--print);box-shadow:var(--key-depth);transition:transform .06s ease-out,box-shadow .06s ease-out;cursor:pointer}.ds-key:active{transform:translateY(2px);box-shadow:var(--key-down)}.ds-key:focus-visible{outline:3px solid var(--print-yellow);outline-offset:3px}.ds-chip{position:relative;width:58px;height:58px;border-radius:50%;padding:0;display:grid;place-items:center;background:var(--c);box-shadow:inset 0 0 0 4px var(--c),inset 0 0 0 7px rgba(255,255,255,.88),var(--key-depth)}.ds-chip::before{content:'';position:absolute;inset:4px;border-radius:50%;border:3px dashed var(--c)}.ds-chip span{position:relative;font:400 11.5px/1 var(--label);color:#fff}.ds-chip[aria-pressed=true]{transform:translateY(2px);box-shadow:inset 0 0 0 4px var(--c),inset 0 0 0 7px rgba(255,255,255,.88),var(--key-down),0 0 0 3px var(--face),0 0 0 6px var(--print-yellow)}.ds-gold{margin-left:12px;width:88px;height:88px;border-radius:50%;padding:0;background:var(--print-yellow);color:var(--ink);font:400 17px/1.15 var(--text);display:inline-flex;flex-direction:column;align-items:center;justify-content:center}.ds-gold small{font:400 11px/1.3 var(--label);letter-spacing:.04em;margin-top:3px}"
+    },
+    {
+      "name": "Mode Keys",
+      "kind": "nav",
+      "refersTo": "mode-key",
+      "description": "Charcoal pill keys printed on the red shell; toggles carry a lamp swatch.",
+      "html": "<div class=\"ds-shell\"><a class=\"ds-key ds-mode\" href=\"#\">首頁</a><button class=\"ds-key ds-mode\" aria-pressed=\"false\">策略提示 <span class=\"ds-sw\"></span></button><button class=\"ds-key ds-mode\" aria-pressed=\"true\">數據面板 <span class=\"ds-sw\"></span></button></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-key{appearance:none;border:0;border-radius:12px;background:var(--key);color:var(--print);box-shadow:var(--key-depth);transition:transform .06s ease-out,box-shadow .06s ease-out;cursor:pointer}.ds-key:active{transform:translateY(2px);box-shadow:var(--key-down)}.ds-key:focus-visible{outline:3px solid var(--print-yellow);outline-offset:3px}.ds-shell{background:var(--shell);padding:16px;display:flex;gap:8px}.ds-mode{border-radius:999px;background:var(--face);min-height:38px;padding:7px 13px;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:7px}.ds-sw{width:9px;height:9px;border-radius:50%;background:#55190f;box-shadow:inset 0 1px 1px rgba(0,0,0,.5)}[aria-pressed=true]>.ds-sw{background:var(--print-yellow);box-shadow:0 0 0 2px rgba(242,194,48,.28)}"
+    },
+    {
+      "name": "LCD Glass",
+      "kind": "card",
+      "refersTo": "lcd-glass",
+      "description": "Bezel-framed grey-green glass: ghost-8 readouts, ghost card slots, lit cards (red suits through red-ink), message line with OK/NG lamp. Hover the glass to replay the deal blink.",
+      "html": "<div class=\"ds-bezel\"><div class=\"ds-bp\"><span>6 DECK · S17 · DAS</span><span>BJ 3:2</span></div><div class=\"ds-lcd\"><div class=\"ds-k\">籌碼 <span class=\"ds-l\">CREDIT</span></div><div class=\"ds-ro\" data-g=\"88888\">850</div><div class=\"ds-cards\"><div class=\"ds-card ds-red\"><b>6</b><svg viewBox=\"0 0 24 24\"><path d=\"M12 21.2s-8.6-5.5-8.6-11.5c0-3 2.2-5.1 4.8-5.1 1.6 0 3 .8 3.8 2.1.8-1.3 2.2-2.1 3.8-2.1 2.6 0 4.8 2.1 4.8 5.1 0 6-8.6 11.5-8.6 11.5Z\"/></svg></div><div class=\"ds-card ds-back\"></div></div><div class=\"ds-msg\"><span>輪到你</span><span class=\"ds-okng\"><span class=\"ds-on\">OK</span><span>NG</span></span></div></div></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-bezel{width:340px;background:var(--bezel);border-radius:16px 16px 16px 34px;padding:8px 12px 12px}.ds-bp{display:flex;justify-content:space-between;padding:0 4px 7px;font:400 9px/1.3 var(--label);letter-spacing:.16em;color:var(--print-dim)}.ds-bp span:last-child{color:var(--print-yellow)}.ds-lcd{background:var(--lcd);color:var(--ink);border-radius:8px;padding:10px 12px 8px;font-family:var(--lcd-font);box-shadow:inset 0 3px 8px rgba(0,0,0,.4),inset 0 -1px 0 rgba(255,255,255,.22)}.ds-k{font-size:11.5px}.ds-l{font-family:var(--label);font-size:11px;letter-spacing:.06em}.ds-ro{position:relative;isolation:isolate;text-align:right;font-size:27px;line-height:1.15;padding-bottom:9px;border-bottom:2px solid var(--ink)}.ds-ro::before{content:attr(data-g);position:absolute;right:0;top:0;color:var(--ghost);z-index:-1}.ds-cards{display:flex;gap:8px;margin:10px 0;min-height:74px;background:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='82'%3E%3Crect x='1' y='1' width='50' height='72' rx='4' fill='none' stroke='%231d231c' stroke-opacity='.09' stroke-width='2'/%3E%3C/svg%3E\") 0 0/60px 82px repeat-x}.ds-card{position:relative;width:52px;height:74px;border:2px solid var(--ink);border-radius:5px;background:var(--lcd)}.ds-card b{position:absolute;left:3px;top:3px;font:400 18px/1 var(--seg14)}.ds-card svg{position:absolute;right:3px;bottom:3px;width:27px;height:27px;fill:currentColor}.ds-red{color:var(--red-ink)}.ds-back{background:var(--lcd) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7'%3E%3Cpath d='M-1 1 1 -1M0 7 7 0M6 8 8 6' stroke='%231d231c' stroke-width='1.6'/%3E%3C/svg%3E\") 0 0/7px 7px}.ds-lcd:hover .ds-card{animation:ds-blink .42s steps(1,end)}@keyframes ds-blink{0%{opacity:0}25%{opacity:1}50%{opacity:0}75%{opacity:1}}.ds-msg{display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:2px solid var(--ink);font-size:16px}.ds-okng{display:flex;gap:4px;font:400 17px/1 var(--seg14)}.ds-okng span{padding:3px 4px;border-radius:3px;color:var(--ghost)}.ds-okng .ds-on{color:var(--lcd);background:var(--ink)}"
+    },
+    {
+      "name": "Data Window",
+      "kind": "card",
+      "refersTo": "lcd-window",
+      "description": "A faceplate panel under a silkscreen rule: white title, round collapse key, recessed LCD window with masked segment bars.",
+      "html": "<div class=\"ds-face\" style=\"display:block;width:320px\"><section class=\"ds-panel\"><div class=\"ds-pt\"><span>即時機率</span></div><div class=\"ds-w\"><div class=\"ds-row\"><span>下一張立即爆牌機率</span><b>62%</b></div><div class=\"ds-track\"><i style=\"width:62%\"></i></div></div></section></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-panel{border-top:1px solid rgba(245,243,238,.2);padding-top:12px}.ds-pt{margin-bottom:10px;font-size:15.5px;color:#fff}.ds-w{background:var(--lcd);color:var(--ink);border-radius:7px;padding:9px 11px;font-family:var(--lcd-font);box-shadow:inset 0 2px 6px rgba(0,0,0,.38)}.ds-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px}.ds-row b{font-weight:400;font-size:15px}.ds-track{height:9px;margin-top:4px;display:flex;background:var(--ghost);-webkit-mask:repeating-linear-gradient(90deg,#000 0 5px,transparent 5px 7px);mask:repeating-linear-gradient(90deg,#000 0 5px,transparent 5px 7px)}.ds-track i{background:var(--ink)}"
+    },
+    {
+      "name": "Coach Plate",
+      "kind": "custom",
+      "refersTo": "coach-plate",
+      "description": "Recessed plate under the keys: LCD OK/NG badge, verdict, Michroma strategy coordinate, reason with yellow emphasis.",
+      "html": "<div class=\"ds-face\" style=\"display:block;width:360px\"><div class=\"ds-fb\"><div class=\"ds-fh\"><span class=\"ds-badge\"><span class=\"ds-okw\">NG</span><span class=\"ds-bad\">建議：分牌</span></span><span class=\"ds-coord\">PAIR 8,8 vs 6</span></div><p class=\"ds-fbody\">8,8 一律<b>分牌</b>：16 是最差的總點數。</p></div></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-fb{padding:12px 14px;border-radius:14px;background:var(--face-deep)}.ds-fh{display:flex;justify-content:space-between;align-items:center;gap:8px}.ds-badge{display:flex;align-items:center;gap:10px}.ds-okw{padding:4px 7px 3px;border-radius:4px;background:var(--lcd);color:var(--ink);font:400 16px/1 var(--seg14);box-shadow:inset 0 2px 3px rgba(0,0,0,.35)}.ds-bad{color:var(--print-yellow)}.ds-coord{font:400 11px/1.4 var(--label);letter-spacing:.04em;color:var(--print-dim)}.ds-fbody{margin:8px 0 0;font-size:14px;line-height:1.75}.ds-fbody b{font-weight:400;color:var(--print-yellow)}"
+    },
+    {
+      "name": "Manual Strategy Cells",
+      "kind": "chip",
+      "refersTo": "leaflet",
+      "description": "The two-colour leaflet's chart code: 要 white+ink rule, 停 solid charcoal, 倍 hatched, 分 solid red, 降 white+red rule.",
+      "html": "<div class=\"ds-leaf\"><h3>硬牌 Hard</h3><div class=\"ds-cells\"><span class=\"ds-c ds-H\">要</span><span class=\"ds-c ds-S\">停</span><span class=\"ds-c ds-D\"><span>倍</span></span><span class=\"ds-c ds-P\">分</span><span class=\"ds-c ds-R\">降</span></div></div>",
+      "css": ":host{--shell:#c4331f;--face:#24221f;--face-deep:#171614;--bezel:#121110;--print:#f5f3ee;--print-dim:rgba(245,243,238,.72);--print-yellow:#f2c230;--key:#3a3732;--lcd:#aab59c;--ink:#1d231c;--ghost:rgba(29,35,28,.085);--red-ink:#8a2414;--paper:#fff;--paper-ink:#24221f;--lcd-font:'LCD','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--seg14:'LCD14','LCD',sans-serif;--label:'Michroma','Huninn Shiori','PingFang TC','Noto Sans TC',sans-serif;--text:'Huninn Shiori','PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif;--key-depth:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -3px 0 rgba(0,0,0,.32),0 3px 5px rgba(0,0,0,.42);--key-down:inset 0 1px 0 rgba(255,255,255,.1),inset 0 -1px 0 rgba(0,0,0,.3),0 1px 2px rgba(0,0,0,.42);font:400 15px/1.6 var(--text);color:var(--print)}.ds-face{background:var(--face);padding:16px;border-radius:20px;display:inline-flex;gap:9px;flex-wrap:wrap;align-items:center}.ds-leaf{width:300px;background:var(--paper);color:var(--paper-ink);border-radius:6px;border-top:4px solid var(--shell);padding:12px 16px;font:400 14.5px/1.75 var(--text)}.ds-leaf h3{margin:0 0 6px;font-weight:400;font-size:16px;color:#a3291a}.ds-cells{display:flex;gap:2px}.ds-c{width:44px;text-align:center;padding:6px 2px;border-radius:3px;font-size:13px;cursor:pointer}.ds-c:hover{outline:3px solid var(--paper-ink);outline-offset:1px}.ds-H{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--paper-ink)}.ds-S{background:var(--paper-ink);color:#fff}.ds-D{background:repeating-linear-gradient(135deg,var(--paper-ink) 0 1.6px,var(--paper) 1.6px 4.6px);box-shadow:inset 0 0 0 1.5px var(--paper-ink)}.ds-D span{background:var(--paper);padding:0 3px;border-radius:2px}.ds-P{background:var(--shell);color:#fff}.ds-R{background:var(--paper);color:#a3291a;box-shadow:inset 0 0 0 2px var(--shell)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Pocket LCD Casino",
+    "overview": "The page is a 1980s handheld blackjack game. A drenched tomato-red moulded shell fills the whole viewport, with the logo and six mode keys printed on it. One charcoal faceplate holds everything else: a bezel-framed grey-green LCD with fixed card slots, bet rings and segment readouts; rubber keys under the glass; a recessed coach plate; and a data unit of small LCD windows behind a silkscreen rule. The rules and the strategy chart are a printed two-colour leaflet that comes in the box.\n\nEvery number is a segment readout with its unlit ghost 8s showing. Cards are fixed LCD positions that light up, and the ghost outlines of the empty slots are always visible. Nothing slides or fades. Segments switch on and off in whole steps, and keys physically depress. Data is dense, as on a real device, but every window sits on the same faceplate rather than in floating cards.\n\nConfirmed rejections: the green-felt casino skin and the dark \"table plus card panels\" dashboard this world replaced; real-money or casino-brand cues.",
+    "keyCharacteristics": [
+      "Three materials only: red plastic shell, charcoal printed faceplate, grey-green reflective LCD. A white leaflet stands in for the printed manual.",
+      "Ghost segments always show: 8s behind readouts, empty card slots on the glass.",
+      "All motion is `steps(1,end)`: blink, hold, switch. No easing on the glass.",
+      "Rubber keys with a press travel. Yellow is spent on the one round primary key.",
+      "Self-contained: inlined font subsets, inline SVG, no CDN, nothing saved."
+    ],
+    "rules": [
+      {
+        "name": "The Three Materials Rule",
+        "body": "Every surface is shell, faceplate or glass (plus the leaflet). A new element goes on one of them. It never floats in its own card, gradient or tint.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Yellow Key Rule",
+        "body": "Exactly one key per stage is yellow and round: 發牌 DEAL, 同注再發, or 補充籌碼. Every other key is charcoal rubber. Yellow elsewhere is print (sublegends, terms, rings), not another primary.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Inks on Glass Rule",
+        "body": "The LCD prints in `ink` and its ghost only. Red suits and the cut card print through `red-ink`. Win, lose and push are told by reversal, solid border and dashed border, never by green or red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Plain Digits Rule",
+        "body": "Readouts print plain digits through `lcdNum` / `lcdSigned` (no thousands separators, `±0` for zero), right-aligned, so each digit lands on its ghost 8. Each `.ro` carries `data-g` with one 8 per position.",
+        "section": "typography"
+      },
+      {
+        "name": "The Three Voices Rule",
+        "body": "Segment faces set digits, Michroma sets Latin silkscreen, Huninn sets Chinese. Don't use a segment face for words or Michroma for Chinese.",
+        "section": "typography"
+      },
+      {
+        "name": "The Key Travel Rule",
+        "body": "A key's press is `translateY(2px)` plus the down shadow over .06s ease-out. This is the only eased motion in the world. Disabled keys drop to .38 opacity with no depth.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do put every new element on the shell, the faceplate, the glass or the leaflet, and separate faceplate panels with silkscreen rules.",
+      "Do give every segment readout a `data-g` ghost of 8s and print it through `lcdNum` / `lcdSigned`.",
+      "Do animate the glass only with `steps(1,end)` blinks and switches: two blinks for a dealt card, three for a result.",
+      "Do keep exactly one round yellow primary key per stage, and keep the five action swatches in the manual's two-ink code.",
+      "Do set digits in the segment faces, Latin silkscreen in Michroma and Chinese in Huninn, then run `python3 tools/trip-font.py --page blackjack-game.html`.",
+      "Do keep the file single and self-contained (inlined fonts, inline SVG, no CDN), with nothing saved.",
+      "Do change `blackjack.html`'s tables and rules together with this page's."
+    ],
+    "donts": [
+      "Don't fade, slide or ease anything on the glass; only key travel is eased.",
+      "Don't add green felt, gold, glow, gradients as fills, or floating cards.",
+      "Don't colour win/lose in green/red on the glass; use reversal and borders. Red on the glass is for suits and the cut card only.",
+      "Don't add a second yellow key, or use chip colours outside the chip keys.",
+      "Don't add thousands separators or extra characters to readouts; the digits would fall off their ghosts.",
+      "Don't suggest real money or a real casino brand."
+    ]
+  }
+}
