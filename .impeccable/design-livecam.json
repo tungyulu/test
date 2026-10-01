@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-01T08:20:06+00:00",
+  "generatedAt": "2026-10-01T09:33:03+00:00",
   "title": "Design System: 東京近郊即時影像 · 車站告示系統",
   "extensions": {
     "colorMeta": {
@@ -546,6 +546,190 @@
           "#a0f0ff"
         ],
         "dark": "#7fb4ff"
+      },
+      "fac": {
+        "role": "neutral",
+        "displayName": "Facility Charcoal",
+        "canonical": "#26292e",
+        "tonalRamp": [
+          "#090b10",
+          "#22252a",
+          "#3f4248",
+          "#5e6167",
+          "#7f8289",
+          "#a1a5ac",
+          "#c5c9d0",
+          "#ebeff5"
+        ],
+        "dark": "#2c3036",
+        "note": "trip.html only."
+      },
+      "fac-ink": {
+        "role": "neutral",
+        "displayName": "Facility Ink",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ],
+        "note": "trip.html only."
+      },
+      "ticket": {
+        "role": "secondary",
+        "displayName": "マルス Ticket Green",
+        "canonical": "#e3efe8",
+        "tonalRamp": [
+          "#060d09",
+          "#1f2822",
+          "#3b453f",
+          "#5a645e",
+          "#7b857f",
+          "#9da8a2",
+          "#c1ccc6",
+          "#e6f2eb"
+        ],
+        "dark": "#1f2b25",
+        "note": "trip.html only. Ground of a ticket; carries a 12px diagonal hairline 地紋 hatch (#78a58a at .18)."
+      },
+      "ticket-rule": {
+        "role": "secondary",
+        "displayName": "Ticket Edge",
+        "canonical": "#9cc0aa",
+        "tonalRamp": [
+          "#001104",
+          "#0b2c1c",
+          "#2a4a38",
+          "#496a57",
+          "#698c77",
+          "#8baf99",
+          "#afd4bd",
+          "#d4f9e2"
+        ],
+        "dark": "#3d5a49",
+        "note": "trip.html only. Ticket border and the 2px dashed perforation after the time column."
+      },
+      "ticket-ink": {
+        "role": "secondary",
+        "displayName": "Ticket Ink",
+        "canonical": "#13261b",
+        "tonalRamp": [
+          "#010f06",
+          "#172a1f",
+          "#33473b",
+          "#52675a",
+          "#73897b",
+          "#95ac9d",
+          "#b8d0c1",
+          "#ddf6e6"
+        ],
+        "dark": "#dcebe2",
+        "note": "trip.html only."
+      },
+      "slab": {
+        "role": "neutral",
+        "displayName": "Platform Slab",
+        "canonical": "#cdccc5",
+        "tonalRamp": [
+          "#0c0b07",
+          "#262520",
+          "#43423c",
+          "#62615b",
+          "#83837c",
+          "#a6a59e",
+          "#cac9c2",
+          "#f0efe7"
+        ],
+        "dark": "#2a2c30",
+        "note": "trip.html only. Island platform surface on the 構內圖."
+      },
+      "tactile": {
+        "role": "secondary",
+        "displayName": "点字ブロック Yellow",
+        "canonical": "#f2c200",
+        "tonalRamp": [
+          "#230000",
+          "#431600",
+          "#643700",
+          "#865800",
+          "#a97b00",
+          "#cd9e00",
+          "#f3c305",
+          "#ffe94f"
+        ],
+        "note": "trip.html only. Tactile edge strip; the 9×8 SVG tile also carries a #c79a00 dot. Unchanged in dark mode."
+      },
+      "rail": {
+        "role": "neutral",
+        "displayName": "Rail Steel",
+        "canonical": "#6b6f75",
+        "tonalRamp": [
+          "#080b10",
+          "#22252a",
+          "#3f4248",
+          "#5e6167",
+          "#7e8389",
+          "#a1a5ac",
+          "#c5c9d0",
+          "#eaeff6"
+        ],
+        "dark": "#8a8f96",
+        "note": "trip.html only. Rails and sleepers between island platforms, drawn at .7 opacity."
+      },
+      "caution": {
+        "role": "secondary",
+        "displayName": "Caution Yellow",
+        "canonical": "#ffe680",
+        "tonalRamp": [
+          "#1b0400",
+          "#382000",
+          "#563f00",
+          "#775f00",
+          "#998100",
+          "#bda43b",
+          "#e1c963",
+          "#ffee88"
+        ],
+        "dark": "#4a3f0a",
+        "note": "trip.html only."
+      },
+      "caution-ink": {
+        "role": "secondary",
+        "displayName": "Caution Ink",
+        "canonical": "#1d1a00",
+        "tonalRamp": [
+          "#0f0b00",
+          "#292609",
+          "#464326",
+          "#656345",
+          "#878465",
+          "#a9a786",
+          "#cecbaa",
+          "#f3f1ce"
+        ],
+        "dark": "#fff1b3",
+        "note": "trip.html only."
+      },
+      "stop-solid": {
+        "role": "tertiary",
+        "displayName": "Promise Red (fill)",
+        "canonical": "#c3261b",
+        "tonalRamp": [
+          "#3e0000",
+          "#660000",
+          "#8d0000",
+          "#b6120a",
+          "#de4435",
+          "#ff6b58",
+          "#ff917c",
+          "#ffb7a0"
+        ],
+        "note": "trip.html only. Solid red for fills and outlines: today outline and tabs, must-board border and head, the today key. White text on it at 5.8:1. Unchanged in dark mode."
       }
     },
     "typographyMeta": {
@@ -591,7 +775,23 @@
       },
       "led": {
         "displayName": "LED (bitmap)",
-        "purpose": "GNU Unifont 8×16 / 16×16 bitmaps from the LEDG table, drawn on canvas; rebuild with tools/led-glyphs.py. Not a CSS font."
+        "purpose": "GNU Unifont 8×16 / 16×16 bitmaps from the LEDG table, drawn on canvas; rebuild with tools/led-glyphs.py. Not a CSS font. On trip.html: tools/led-glyphs.py --page trip.html; the countdown digit is drawn at scale 2 (every dot doubled)."
+      },
+      "eki-day": {
+        "displayName": "Platform Station Name",
+        "purpose": "trip.html: the kanji on a day's 駅名標 (32px, .14em), kana .22em above, Hind romaji below."
+      },
+      "facility-head": {
+        "displayName": "Facility Head",
+        "purpose": "trip.html: chapter and map headings on a charcoal facility sign, Hind English term beside it."
+      },
+      "ticket-time": {
+        "displayName": "Ticket Time",
+        "purpose": "trip.html: the time column of a ticket, red for booked / due / opens; a word time is 16px Eki TC."
+      },
+      "trip-faces": {
+        "displayName": "trip.html inlined faces",
+        "purpose": "Offline subsets: 'Eki TC' = Noto Sans TC 400/700 (all characters) + 900 (heading and station-name characters only), 'Eki JP' = Noto Sans JP 400/700 for Japanese-only kanji forms, 'Eki Latin' = Hind 600/700. Rebuild with python3 tools/trip-font.py after any text edit."
       }
     },
     "shadows": [
@@ -636,6 +836,21 @@
         "name": "signs-static",
         "value": "no CSS transitions or animations anywhere",
         "purpose": "Signs, panels and monitors never animate."
+      },
+      {
+        "name": "stamp-press",
+        "value": ".2s cubic-bezier(.2,.9,.3,1.3) from rotate(+6deg) scale(1.18); off under reduced motion",
+        "purpose": "trip.html 駅スタンプ: the one non-LED motion in the system."
+      },
+      {
+        "name": "hero-board-wipe",
+        "value": "same 7-columns-per-16ms wipe, rows started 40ms apart",
+        "purpose": "trip.html hero board on load."
+      },
+      {
+        "name": "plan-board-static",
+        "value": "eight day rows wrap and never scroll; only the hero route row scrolls",
+        "purpose": "trip.html 發車時刻表: eight moving rows read as noise."
       }
     ],
     "breakpoints": [
@@ -662,6 +877,26 @@
       {
         "name": "selector-inset",
         "value": "min-width: 1432px"
+      },
+      {
+        "name": "trip-tight",
+        "value": "max-width: 360px (exit sign compacts)"
+      },
+      {
+        "name": "trip-fac-count",
+        "value": "max-width: 419px (facility count drops into the tile flow)"
+      },
+      {
+        "name": "trip-islands-two",
+        "value": "min-width: 760px (island platforms in two columns)"
+      },
+      {
+        "name": "trip-tickets-two",
+        "value": "min-width: 900px (tickets and dishes in two columns)"
+      },
+      {
+        "name": "trip-desktop",
+        "value": "min-width: 1100px (board left, sticky map right; day body two columns; stay / transport boards two columns)"
       }
     ],
     "darkMode": {
@@ -685,9 +920,17 @@
         "iz",
         "sign-ink",
         "sign-2",
-        "lamps"
-      ]
-    }
+        "lamps",
+        "fac-ink",
+        "tactile",
+        "stop-solid"
+      ],
+      "note": "trip.html shares tk_theme with livecam.html; fac, ticket*, slab, rail and caution* take dark values; the stamp ink turns #ff6a5c without multiply."
+    },
+    "surfaces": [
+      "livecam.html",
+      "trip.html"
+    ]
   },
   "components": [
     {
@@ -761,17 +1004,50 @@
       "description": "Enamel strip with the drawn 30 km/h regulatory sign and the law note; links to driving mode.",
       "html": "<div class=\"ds-stage\"><a class=\"ds-law\" href=\"#\"><svg class=\"ds-sp\" viewBox=\"0 0 48 48\"><circle cx=\"24\" cy=\"24\" r=\"21.5\" fill=\"#fff\" stroke=\"#d3241b\" stroke-width=\"5\"/><text x=\"24\" y=\"32.2\" text-anchor=\"middle\" font-family=\"Hind,Arial,sans-serif\" font-weight=\"700\" font-size=\"23\" letter-spacing=\"-1\" fill=\"#1d3f94\">30</text></svg><span class=\"ds-b\"><span class=\"ds-t\">沒有中央線的路，法定速限 30 km/h</span><span class=\"ds-k\">日本 2026/9/1 起的新制</span></span><span class=\"ds-go\">自駕注意事項</span></a></div>",
       "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--iz:#00a29a;--stop:#b3261e;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}.ds-pg{width:1em;height:1em;fill:currentColor;vertical-align:-.14em}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-law{display:flex;align-items:center;gap:12px;padding:10px 12px;text-decoration:none;background:var(--plate);color:var(--plate-ink);border-radius:4px;max-width:460px}.ds-sp{width:46px;height:46px;flex:none}.ds-b{display:flex;flex-direction:column}.ds-t{font-weight:700;font-size:14.5px;line-height:1.4}.ds-k{font-size:12px;color:var(--plate-2)}.ds-go{margin-left:auto;font-size:12.5px;white-space:nowrap;text-decoration:underline;text-underline-offset:3px}.ds-law:hover .ds-t{text-decoration:underline;text-underline-offset:3px}"
+    },
+    {
+      "name": "マルス Ticket",
+      "kind": "card",
+      "refersTo": "ticket",
+      "description": "trip.html commitment ticket: hatched pale green ground, time column behind a dashed perforation (red when booked / due / opens), what + detail, round red station-stamp seal; dashed ink seal for 還沒訂.",
+      "html": "<div class=\"ds-stage\"><ul class=\"ds-stubs\"><li class=\"ds-stub ds-booked\"><span class=\"ds-t\">16:50</span><span class=\"ds-b\"><b>成田落地</b><span>CX450 · 台北 12:50 起飛</span></span><span class=\"ds-hanko\">予約済</span></li><li class=\"ds-stub ds-booked\"><span class=\"ds-t\">22:00</span><span class=\"ds-b\"><b>前入住 Hotel BUSTEL</b><span>入住 14:00–22:00</span></span><span class=\"ds-hanko\">締切</span></li><li class=\"ds-stub\"><span class=\"ds-t\">10:00</span><span class=\"ds-b\"><b>退房</b><span>隔壁便利商店</span></span><span class=\"ds-hanko ds-todo\">還沒訂</span></li></ul></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--fac:#26292e;--fac-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--go:#17703d;--stop:#b3261e;--stop-solid:#c3261b;--ticket:#e3efe8;--ticket-rule:#9cc0aa;--ticket-ink:#13261b;--slab:#cdccc5;--tactile:#f2c200;--rail:#6b6f75;--caution:#ffe680;--caution-ink:#1d1a00;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-stubs{list-style:none;margin:0;padding:0;display:grid;gap:10px;max-width:460px}.ds-stub{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:0 12px;align-items:center;min-height:76px;padding:10px 12px 10px 0;border:1px solid var(--ticket-rule);border-radius:4px;color:var(--ticket-ink);background:var(--ticket) url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12'%3E%3Cpath d='M0 12 12 0' stroke='%2378a58a' stroke-opacity='.18' stroke-width='1'/%3E%3C/svg%3E\")}.ds-t{display:flex;align-items:center;justify-content:center;align-self:stretch;min-width:84px;padding:0 10px;margin:-10px 0;border-right:2px dashed var(--ticket-rule);font:700 24px/1 var(--en)}.ds-booked .ds-t{color:var(--stop)}.ds-b{display:flex;flex-direction:column;gap:3px;min-width:0}.ds-b b{font-size:16px;line-height:1.4}.ds-b span{font-size:13px;line-height:1.55}.ds-hanko{display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:50%;border:2.5px solid var(--stop);color:var(--stop);font-size:12px;font-weight:700;line-height:1.1;transform:rotate(-10deg)}.ds-todo{border-style:dashed;border-color:var(--ticket-ink);color:var(--ticket-ink)}"
+    },
+    {
+      "name": "構內圖 Island Platform",
+      "kind": "nav",
+      "refersTo": "platform-row",
+      "description": "trip.html concourse map: rails, tactile edge, slab with two platform rows (ringed 番線 badge in line colour, title, date + lodging); today outlined red with a 今天 tab, past dimmed with 已出發. Hover underlines the title.",
+      "html": "<div class=\"ds-stage\"><div class=\"ds-island\"><div class=\"ds-rails\"></div><div class=\"ds-slab\"><a class=\"ds-trk ds-up ds-today\" href=\"#\" style=\"--line:var(--ys)\"><span class=\"ds-no\"><b>1</b><small>番線</small></span><span class=\"ds-tt\">成田降落，直奔橫濱</span><span class=\"ds-m\"><b>11/07（六）</b>Hotel BUSTEL</span></a><span class=\"ds-plno\">1・2番線</span><a class=\"ds-trk ds-dn\" href=\"#\" style=\"--line:var(--hf)\"><span class=\"ds-no\"><b>2</b><small>番線</small></span><span class=\"ds-tt\">箱根山道與蘆之湖操駕</span><span class=\"ds-m\"><b>11/08（日）</b>スーパーホテル富士河口湖</span></a></div><div class=\"ds-rails\"></div></div></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--fac:#26292e;--fac-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--go:#17703d;--stop:#b3261e;--stop-solid:#c3261b;--ticket:#e3efe8;--ticket-rule:#9cc0aa;--ticket-ink:#13261b;--slab:#cdccc5;--tactile:#f2c200;--rail:#6b6f75;--caution:#ffe680;--caution-ink:#1d1a00;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-island{display:grid;max-width:420px}.ds-rails{height:12px;position:relative;opacity:.7;background:repeating-linear-gradient(90deg,transparent 0 7px,var(--rail) 7px 9px) 0 3px/100% 6px no-repeat}.ds-rails::before,.ds-rails::after{content:'';position:absolute;left:0;right:0;height:2px;background:var(--rail)}.ds-rails::before{top:2px}.ds-rails::after{bottom:2px}.ds-slab{background:var(--slab);border-radius:2px;padding:5px 0}.ds-plno{display:block;text-align:center;font:600 11px/1 var(--en);letter-spacing:.1em;color:var(--plate-2);padding:3px 0}.ds-trk{--tile:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='8'%3E%3Crect width='9' height='8' fill='%23f2c200'/%3E%3Ccircle cx='4.5' cy='4' r='2.1' fill='%23c79a00'/%3E%3C/svg%3E\");position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:center;margin:0 6px;padding:8px 8px 8px 6px;background:var(--sign);color:var(--sign-ink);border-radius:2px;text-decoration:none}.ds-up{border-top:8px solid transparent}.ds-dn{border-bottom:8px solid transparent}.ds-trk::before{content:'';position:absolute;left:0;right:0;height:8px;background:var(--tile) repeat-x}.ds-up::before{top:-8px}.ds-dn::before{bottom:-8px}.ds-no{grid-row:1/3;display:flex;flex-direction:column;align-items:center;justify-content:center;width:44px;height:44px;border:3px solid var(--line);border-radius:7px;background:#fff;color:#111;line-height:1}.ds-no b{font:700 21px/1 var(--en)}.ds-no small{font-size:11px;margin-top:1px}.ds-tt{font-weight:700;font-size:14.5px;line-height:1.35}.ds-m{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:12.5px;color:var(--sign-2)}.ds-m b{font:600 12.5px var(--en);color:var(--sign-ink)}.ds-trk:hover .ds-tt{text-decoration:underline;text-underline-offset:3px}.ds-today{outline:3px solid var(--stop-solid);outline-offset:-3px}.ds-today::after{content:'今天';position:absolute;right:6px;top:6px;padding:1px 5px 2px;font-size:11px;line-height:1.2;background:var(--stop-solid);color:#fff;border-radius:2px}"
+    },
+    {
+      "name": "Facility Board",
+      "kind": "card",
+      "refersTo": "facility-sign",
+      "description": "trip.html chapter: charcoal facility sign head, then a navy-headed group whose inner 案内 boards drop their own frame and become bold sub-heads over a 2px navy rule (red rule for a must board). One container level.",
+      "html": "<div class=\"ds-stage\"><section class=\"ds-ch\"><header class=\"ds-zone\"><span class=\"ds-ico\">券</span><h2>みどりの窓口</h2><span class=\"ds-en\">交通 · TRAVEL CENTER</span></header><div class=\"ds-body\"><section class=\"ds-group\"><h3 class=\"ds-gh\"><span class=\"ds-chip\">D2–D4</span>租車資訊 · 橫濱租、橫濱還</h3><div class=\"ds-box\"><h4>取車</h4><p>D2（11/08 日）10:30 · 関内店。</p></div><div class=\"ds-box ds-must\"><h4>注意 還車 20:00 前</h4><p>20:00 正好是門市打烊時間，抓 19:00–19:30 到店。</p></div></section></div></section></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--fac:#26292e;--fac-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--go:#17703d;--stop:#b3261e;--stop-solid:#c3261b;--ticket:#e3efe8;--ticket-rule:#9cc0aa;--ticket-ink:#13261b;--slab:#cdccc5;--tactile:#f2c200;--rail:#6b6f75;--caution:#ffe680;--caution-ink:#1d1a00;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-ch{max-width:460px}.ds-zone{display:flex;align-items:center;gap:4px 10px;flex-wrap:wrap;padding:9px 12px;background:var(--fac);color:var(--fac-ink);border-radius:4px 4px 0 0}.ds-ico{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:3px;background:#fff;color:#111;font-weight:900}.ds-zone h2{margin:0;font-size:18px;font-weight:900;letter-spacing:.06em}.ds-en{font:600 12px/1.2 var(--en);letter-spacing:.06em;color:#c9ccd1}.ds-body{background:var(--plate);color:var(--plate-ink);padding:14px;border-radius:0 0 4px 4px}.ds-group{border:1px solid var(--plate-rule);border-radius:4px;overflow:hidden;padding-bottom:14px}.ds-gh{display:flex;align-items:center;gap:8px 10px;margin:0 0 10px;padding:9px 14px;background:var(--navy);color:var(--navy-ink);font-size:16px;font-weight:900}.ds-chip{display:inline-flex;padding:2px 8px;border:2.5px solid var(--plate-ink);border-radius:4px;background:#fff;color:#111;font:600 12.5px/1.3 var(--en)}.ds-box{margin:0 14px;font-size:14.5px}.ds-box+.ds-box{margin-top:12px}.ds-box h4{margin:0 0 4px;padding:6px 0 5px;border-bottom:2px solid var(--navy);font-size:14.5px}.ds-box p{margin:0}.ds-must h4{border-bottom-color:var(--stop-solid);color:var(--stop)}"
+    },
+    {
+      "name": "駅スタンプ Pad",
+      "kind": "button",
+      "refersTo": "stamp-pad",
+      "description": "trip.html arrival stamp: dashed square pad labelled 駅スタンプ, an empty 到著章 circle; pressed, a red ink stamp lands in 0.2s (no motion under reduced motion).",
+      "html": "<div class=\"ds-stage\"><button class=\"ds-stamp\" aria-pressed=\"false\" onclick=\"this.classList.toggle('on')\"><span class=\"ds-empty\">到著章</span><svg class=\"ds-ink\" viewBox=\"0 0 120 120\"><circle cx=\"60\" cy=\"60\" r=\"54\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"5\"/><circle cx=\"60\" cy=\"60\" r=\"45\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><text x=\"60\" y=\"44\" font-size=\"15\" text-anchor=\"middle\" fill=\"currentColor\">1日目</text><text x=\"60\" y=\"72\" font-size=\"26\" text-anchor=\"middle\" fill=\"currentColor\">橫濱</text><text x=\"60\" y=\"92\" font-size=\"13\" text-anchor=\"middle\" fill=\"currentColor\">2026.11.07</text></svg></button></div>",
+      "css": ":host{--ground:#e2e1db;--ground-ink:#17191c;--sign:#fbfbf8;--sign-ink:#15171a;--sign-2:#41464e;--sign-rule:#d3d2cc;--plate:#fbfbf8;--plate-ink:#15171a;--plate-2:#41464e;--plate-rule:#d3d2cc;--plate-soft:#efeee9;--navy:#1c2943;--navy-ink:#fff;--fac:#26292e;--fac-ink:#fff;--exit:#ffd100;--exit-ink:#111;--housing:#0b0c0d;--housing-2:#191b1e;--housing-rule:#2c2f33;--housing-ink:#e9e9e6;--housing-2ink:#a9adb3;--amber:#ffa526;--green:#4fe070;--red:#ff4d3d;--tk:#80c241;--ys:#00a7e3;--hf:#f15a22;--go:#17703d;--stop:#b3261e;--stop-solid:#c3261b;--ticket:#e3efe8;--ticket-rule:#9cc0aa;--ticket-ink:#13261b;--slab:#cdccc5;--tactile:#f2c200;--rail:#6b6f75;--caution:#ffe680;--caution-ink:#1d1a00;--focus:#0a62d0;--tc:'Noto Sans TC','PingFang TC','Hiragino Sans','Microsoft JhengHei',sans-serif;--en:Hind,'Noto Sans TC','PingFang TC',sans-serif;font:400 15px/1.65 var(--tc);color:var(--ground-ink)}.ds-stage{background:var(--ground);padding:16px;display:block}:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.ds-stamp{display:flex;align-items:center;justify-content:center;position:relative;width:128px;height:128px;margin-top:10px;border:2px dashed var(--plate-2);border-radius:6px;background:var(--plate-soft);cursor:pointer;padding:0}.ds-stamp::before{content:'駅スタンプ';position:absolute;top:-10px;left:8px;padding:0 6px;background:var(--ground);font-size:11px;letter-spacing:.1em;color:var(--plate-2)}.ds-empty{font-size:15px;letter-spacing:.2em;color:var(--plate-2);border:2px solid var(--plate-rule);border-radius:50%;width:88px;height:88px;display:flex;align-items:center;justify-content:center}.ds-ink{position:absolute;inset:8px;color:#c3261b;opacity:0;transform:rotate(-6deg);mix-blend-mode:multiply}.ds-ink text{font-weight:700}.ds-stamp.on .ds-ink{opacity:.92;animation:ds-press .2s cubic-bezier(.2,.9,.3,1.3)}.ds-stamp.on .ds-empty{opacity:0}@keyframes ds-press{from{transform:rotate(0deg) scale(1.18)}}@media (prefers-reduced-motion:reduce){.ds-stamp.on .ds-ink{animation:none}}"
     }
   ],
   "narrative": {
     "northStar": "The Station Concourse",
-    "overview": "**Creative North Star: \"The Station Concourse\"**\n\nThe page is a Japanese railway station. You walk in through a yellow 出口 sign and reach a black LED departure board (発車標) that shows the day's itinerary in dot-matrix light. Beside it are the station's 運行情報 displays: navy-headed enamel panels that carry the weather, the Fuji lamps, the speed-limit notice and the current picks. Further down the concourse every camera area gets a white 駅名標 standing on its own line. Each sign has a line-colour band, a ringed station-number badge, the name in kana, kanji and romaji, and the previous and next stations. The area's cameras hang below the sign from brackets, like platform ITV monitors.\n\nEverything is signage. Surfaces are flat enamel, painted housing or lit LED. Depth comes from objects hanging and standing (a bracket, a housing, a sign edge), never from soft shadows. Only the LED board moves, and it moves in LED grammar: whole-dot steps, column-by-column wipes, hard on and off. The signs never animate.\n\nConfirmed rejection, from the direction contract: the category default of a dark CCTV wall made of same-size thumbnail cards under a hero. In this world the monitors belong to the station signs; they never form a free-standing grid of cards.",
+    "overview": "**Creative North Star: \"The Station Concourse\"**\n\nThe page is a Japanese railway station. You walk in through a yellow 出口 sign and reach a black LED departure board (発車標) that shows the day's itinerary in dot-matrix light. Beside it are the station's 運行情報 displays: navy-headed enamel panels that carry the weather, the Fuji lamps, the speed-limit notice and the current picks. Further down the concourse every camera area gets a white 駅名標 standing on its own line. Each sign has a line-colour band, a ringed station-number badge, the name in kana, kanji and romaji, and the previous and next stations. The area's cameras hang below the sign from brackets, like platform ITV monitors.\n\nEverything is signage. Surfaces are flat enamel, painted housing or lit LED. Depth comes from objects hanging and standing (a bracket, a housing, a sign edge), never from soft shadows. Only the LED board moves, and it moves in LED grammar: whole-dot steps, column-by-column wipes, hard on and off. The signs never animate.\n\nConfirmed rejection, from the direction contract: the category default of a dark CCTV wall made of same-size thumbnail cards under a hero. In this world the monitors belong to the station signs; they never form a free-standing grid of cards.\n\nThe trip itinerary (`trip.html`, station edition) is the same station read from its concourse map (構內圖). Eight days are 1–8番線 on four island platforms with rails, yellow 点字ブロック edges and a grey slab; lodging, transport, food and the checklist are facilities (飯店口, みどりの窓口, 美食街, 改札口) under charcoal facility signs. Each day is a platform under its own 駅名標. Hard commitments are pale green マルス tickets with round red station-stamp seals, and the rest of the plan sits on navy 案内 boards. The LED board carries the trip, the dates and the countdown; pressing the 駅スタンプ is the one non-LED motion.",
     "keyCharacteristics": [
       "A station's three kinds of signage: an LED board for time-bound plans, navy-headed enamel panels for status, white 駅名標 for places.",
       "LED text is real dot matrix: GNU Unifont 16-dot bitmaps drawn dot by dot on canvas, with the unlit dots visible.",
       "Four line colours (TK / YS / HF / IZ) are the page's own grouping and the only chromatic accents on the signs.",
       "Filled JIS-style pictograms from one inline SVG sprite; no outline icon sets, no emoji.",
-      "Night platform in dark mode: the concourse and panels go dark, the 駅名標 and exit sign stay lit."
+      "Night platform in dark mode: the concourse and panels go dark, the 駅名標 and exit sign stay lit.",
+      "On trip.html the station adds charcoal facility signs, pale green マルス tickets, island platforms with yellow tactile edges, and red ink that only marks a promise."
     ],
     "rules": [
       {
@@ -786,7 +1062,12 @@
       },
       {
         "name": "The Line Is the Accent Rule",
-        "body": "Line colours appear only as signage geometry: bands, rules, rings and the route track. They never fill a panel or set body text.",
+        "body": "Line colours appear only as signage geometry: bands, rules, rings and the route track. They never fill a panel or set body text. On trip.html the same holds: the 駅名標 band, the ringed 番線 badges on map, tabs and day headers, the chip ring and the 8px band on a hotel entry. Rails and slabs are neutral steel and concrete.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Is a Promise Rule",
+        "body": "On trip.html red (`stop` text, `stop-solid` fills, LED red) marks a hard commitment only: a booked / due / opens ticket time, a round station-stamp seal, a must board (red border, red head, 注意), today (outline, 今天 tab, today key, today board row) and the stamped 到著章. Everything else prints in ink, navy or charcoal.",
         "section": "colors"
       },
       {
@@ -796,13 +1077,23 @@
       },
       {
         "name": "The Lit Text Is Bitmap Rule",
-        "body": "Anything shown on the LED board, the board clocks or the weather ticker is drawn from Unifont bitmaps on canvas, with a screen-reader copy in a `.sr` span next to it. After changing any text the board can show, run `tools/led-glyphs.py`. A character missing from the table is rasterised from the browser font at 16px as a fallback, so it still renders, only less crisply.",
+        "body": "Anything shown on the LED board, the board clocks or the weather ticker is drawn from Unifont bitmaps on canvas, with a screen-reader copy in a `.sr` span next to it. After changing any text the board can show, run `tools/led-glyphs.py`. A character missing from the table is rasterised from the browser font at 16px as a fallback, so it still renders, only less crisply. trip.html carries its own table: run `python3 tools/led-glyphs.py --page trip.html`.",
+        "section": "typography"
+      },
+      {
+        "name": "The LED Is for Boards Rule",
+        "body": "Lit dot matrix appears only on departure boards, the board clocks and the countdown digit (drawn at scale 2). Headings, tickets, tabs and chapter text are never LED. Small status tags printed on black (the facility count, the 今天 tab under the sign) are CSS text like the monitors' LIVE label, not lit dots.",
         "section": "typography"
       },
       {
         "name": "The Hung, Not Lifted Rule",
-        "body": "If an object needs to read as separate from the concourse, mount it: a bracket, a housing edge or a sign rule. Don't use blur shadows, glow or hover lifts. Hover changes are underline, border colour or a flat background swap.",
+        "body": "If an object needs to read as separate from the concourse, mount it: a bracket, a housing edge or a sign rule. Don't use blur shadows, glow or hover lifts. Hover changes are underline, border colour or a flat background swap. On trip.html objects stand instead: platform rows sit on a slab between rails, tickets lie flat with a perforation, chapters stand under a facility sign.",
         "section": "elevation"
+      },
+      {
+        "name": "The One Container Level Rule",
+        "body": "Inside a facility board (a navy-headed `group` in みどりの窓口 or 美食街) nothing draws a second box. An inner 案内 board drops its border and head fill and becomes a bold 14.5px sub-head over a 2px navy rule (red rule and `stop` text for a must board). Hotel entries are the single container of 飯店口, each banded 8px in its line colour.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -813,16 +1104,24 @@
       "Do carry a region's line colour through `--line` on its bands, rules, rings and route track, and give every new area a badge code on its line (TK05, YS03…).",
       "Do hang every camera from its bracket with a hood number plate (`LINE` + number + `-` + index) and a separate caption sign strip.",
       "Do keep the 駅名標, exit sign, badges and housings lit in dark mode; only the concourse, panels and status inks change.",
-      "Do use the filled pictogram sprite for every icon, at 1em in `currentColor`."
+      "Do use the filled pictogram sprite for every icon, at 1em in `currentColor`.",
+      "Do put every hard commitment on trip.html on a マルス ticket (time behind the perforation, seal at the right) and update the ticket and the prose that mention it together.",
+      "Do head trip.html's chapters with a charcoal facility sign (white pictogram tile, 900 heading, Hind term beside) and keep one container level inside.",
+      "Do keep red for promises: booked / due / opens times, seals, must boards and today.",
+      "Do rebuild trip.html's inlined faces with `python3 tools/trip-font.py` and its LED table with `python3 tools/led-glyphs.py --page trip.html` after any text edit.",
+      "Do draw tactile edges, rails and sleepers as hard-stop patterns (SVG tile, repeating stripes); they are drawn objects, not shading."
     ],
     "donts": [
       "Don't lay the cameras out as a free-standing wall of same-size thumbnail cards under a hero; monitors always hang under their station sign.",
-      "Don't animate signs, panels or monitors: no fades, slides, hover lifts or easing. Motion belongs to the LED board alone.",
-      "Don't add blur shadows, glow or gradients; separation is a bracket, a housing edge or a 1px rule.",
+      "Don't animate signs, panels or monitors: no fades, slides, hover lifts or easing. Motion belongs to the LED board alone (trip.html's 駅スタンプ press, 0.2s, is the single exception).",
+      "Don't add blur shadows, glow or gradients; separation is a bracket, a housing edge or a 1px rule (hard-stop pattern tiles that draw rails, sleepers and ruled memo lines are drawings, not gradients).",
       "Don't set LED text in a CSS web font or invent a fourth LED colour.",
       "Don't fill panels or set body text in line colours, or present TK / YS / HF / IZ as real railway lines.",
       "Don't float the second-language term above a heading as a label; it sits beside or below its name.",
-      "Don't use emoji or outline icon sets."
+      "Don't use emoji or outline icon sets.",
+      "Don't nest a bordered box inside a facility board, or a card inside a ticket.",
+      "Don't use red or `stop-solid` for emphasis, hover or decoration on trip.html; it means a commitment.",
+      "Don't fill a trip.html platform, ticket or board with a line colour; line colours ring badges and band signs."
     ]
   }
 }
