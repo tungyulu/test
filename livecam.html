@@ -4,451 +4,412 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="東京近郊即時影像一次看：新宿、澀谷、原宿、銀座、橫濱、江之島鎌倉、箱根、河口湖富士山、熱海、成田機場的 YouTube 直播攝影機，地名全中文標示，畫面每分鐘更新。附各地天氣、穿搭建議、富士山能見度與自駕路面判讀。">
+<meta name="theme-color" content="#e2e1db">
 <title>東京近郊即時影像｜新宿・橫濱・箱根・河口湖・熱海 YouTube 直播攝影機・天氣・穿搭・自駕路況</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23B8542A%22%2F%3E%3Cpath%20d%3D%22M6%2023%20L16%208%20L26%2023%20Z%22%20fill%3D%22%23fff%22%2F%3E%3Cpath%20d%3D%22M12%2014%20L16%2011%20L20%2014%20L18%2012%20L16%2013%20L14%2012%20Z%22%20fill%3D%22%23B8542A%22%2F%3E%3C%2Fsvg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b0c0d'/%3E%3Cg fill='%23ffa526'%3E%3Crect x='6' y='9' width='3' height='3'/%3E%3Crect x='11' y='9' width='3' height='3'/%3E%3Crect x='16' y='9' width='3' height='3'/%3E%3Crect x='21' y='9' width='3' height='3'/%3E%3C/g%3E%3Cg fill='%234fe070'%3E%3Crect x='6' y='16' width='3' height='3'/%3E%3Crect x='11' y='16' width='3' height='3'/%3E%3C/g%3E%3Crect x='4' y='24' width='24' height='3' fill='%2380c241'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i.ytimg.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;500&family=Chivo+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <style>
 :root{
-  --ground:#EEEAE3; --pane:#FFFFFF; --pane-2:#F6F2EC;
-  --ink:#1D1A17; --ink-2:#4F4741; --ink-3:#8A7F76;
-  --line:#D9D1C7; --line-2:#E8E1D8;
-  --sea:#2A5D8F; --ember:#B8542A;
-  --go:#2E7D52; --warn:#B8862A; --stop:#B23A3A; --teal:#127D6E;
-  --shadow:0 1px 1px rgba(29,26,23,.04), 0 10px 24px -18px rgba(29,26,23,.5);
-  --tc:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
-  --jp:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI",sans-serif;
-  --mono:"Chivo Mono",ui-monospace,Consolas,monospace;
+  --ground:#e2e1db; --ground-ink:#17191c;
+  --sign:#fbfbf8; --sign-ink:#15171a; --sign-2:#41464e; --sign-rule:#d3d2cc;
+  --plate:#fbfbf8; --plate-ink:#15171a; --plate-2:#41464e; --plate-rule:#d3d2cc; --plate-soft:#efeee9;
+  --navy:#1c2943; --navy-ink:#ffffff;
+  --exit:#ffd100; --exit-ink:#111111;
+  --housing:#0b0c0d; --housing-2:#191b1e; --housing-rule:#2c2f33; --housing-ink:#e9e9e6; --housing-2ink:#a9adb3;
+  --amber:#ffa526; --green:#4fe070; --red:#ff4d3d;
+  --tk:#80c241; --ys:#00a7e3; --hf:#f15a22; --iz:#00a29a;
+  --go:#17703d; --warn:#8f5600; --stop:#b3261e;
+  --go-lamp:#2fbf5a; --warn-lamp:#f2a516; --stop-lamp:#e53a2c;
+  --focus:#0a62d0;
+  --tc:"Noto Sans TC","PingFang TC","Hiragino Sans","Microsoft JhengHei",sans-serif;
+  --en:"Hind","Noto Sans TC","PingFang TC",sans-serif;
+  --led-pitch:1.3;
+  color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --ground:#14110F; --pane:#1E1A17; --pane-2:#26211D;
-    --ink:#EDE6DE; --ink-2:#B9AEA3; --ink-3:#7E736A;
-    --line:#3A332D; --line-2:#2C2622;
-    --sea:#7FB2E0; --ember:#E08A5C;
-    --go:#5FBE8B; --warn:#D8AC5A; --stop:#E07B7B; --teal:#5CC9B4;
-    --shadow:0 1px 1px rgba(0,0,0,.5), 0 10px 24px -18px rgba(0,0,0,.9);
+    --ground:#121315; --ground-ink:#e8e8e4;
+    --sign:#ecebe6; --sign-rule:#c9c8c2;
+    --plate:#1c1e22; --plate-ink:#ecebe6; --plate-2:#b4b8be; --plate-rule:#34373c; --plate-soft:#25282d;
+    --navy:#2a3a5c;
+    --go:#5fd38a; --warn:#f2b552; --stop:#ff8a7e;
+    --focus:#7fb4ff;
+    color-scheme:dark;
   }
 }
-/* Dark palette is duplicated on purpose: one copy for "system is dark", one for the
-   manual toggle. CSS cannot share a rule across a media-query boundary. Edit both. */
 :root[data-theme="dark"]{
-  --ground:#14110F; --pane:#1E1A17; --pane-2:#26211D;
-  --ink:#EDE6DE; --ink-2:#B9AEA3; --ink-3:#7E736A;
-  --line:#3A332D; --line-2:#2C2622;
-  --sea:#7FB2E0; --ember:#E08A5C;
-  --go:#5FBE8B; --warn:#D8AC5A; --stop:#E07B7B; --teal:#5CC9B4;
-  --shadow:0 1px 1px rgba(0,0,0,.5), 0 10px 24px -18px rgba(0,0,0,.9);
+  --ground:#121315; --ground-ink:#e8e8e4;
+  --sign:#ecebe6; --sign-rule:#c9c8c2;
+  --plate:#1c1e22; --plate-ink:#ecebe6; --plate-2:#b4b8be; --plate-rule:#34373c; --plate-soft:#25282d;
+  --navy:#2a3a5c;
+  --go:#5fd38a; --warn:#f2b552; --stop:#ff8a7e;
+  --focus:#7fb4ff;
+  color-scheme:dark;
 }
-*,*::before,*::after{box-sizing:border-box;}
-body{margin:0; background:var(--ground); color:var(--ink);
-  font-family:var(--tc); font-size:16px; line-height:1.6; -webkit-text-size-adjust:100%;}
-.wrap{max-width:1240px; margin:0 auto; padding:20px 18px 60px;}
+@media (min-width:1100px){ :root{ --led-pitch:2; } }
 
-.topbar{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px;}
-.home{font-size:12px; color:var(--ink-3); text-decoration:none;}
-.home:hover{color:var(--sea); text-decoration:underline;}
-.theme-btn{font:inherit; font-family:var(--tc); font-size:11.5px; cursor:pointer;
-  color:var(--ink-3); background:var(--pane); border:1px solid var(--line);
-  border-radius:99px; padding:4px 13px; white-space:nowrap;}
-.theme-btn:hover{border-color:var(--sea); color:var(--sea);}
-.theme-btn:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-padding-top:64px}
+body{margin:0; background:var(--ground); color:var(--ground-ink); font:400 15px/1.65 var(--tc);
+  font-feature-settings:"palt" 0; -webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit; color:inherit}
+::selection{background:var(--exit); color:var(--exit-ink)}
+:focus-visible{outline:3px solid var(--focus); outline-offset:2px}
+[hidden]{display:none !important}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.pg{width:1em; height:1em; fill:currentColor; flex:none; vertical-align:-.14em}
+.num{font-family:var(--en); font-variant-numeric:tabular-nums}
 
-/* Layer 1: clocks and day/night */
-.now{background:var(--pane); border:1px solid var(--line); border-radius:3px;
-  padding:13px 15px; box-shadow:var(--shadow);
-  display:flex; flex-wrap:wrap; gap:10px 24px; align-items:flex-end;
-  justify-content:space-between;}
-.stamp{display:flex; flex-direction:column; gap:2px;}
-.stamp .d1{font-size:19px; font-weight:500; letter-spacing:.03em; line-height:1.2;}
-.stamp .d1 em{font-style:normal; font-size:12px; color:var(--ink-3);
-  font-family:var(--mono); margin-left:8px;}
-.stamp .d2{font-size:15px; color:var(--ink-2); letter-spacing:.06em;}
-.stamp .d3{display:flex; align-items:baseline; gap:5px 16px; flex-wrap:wrap; margin-top:4px;}
-.stamp .d3 span{font-size:12px; color:var(--ink-3); letter-spacing:.04em;}
-.stamp .d3 b{font-family:var(--mono); font-size:23px; font-weight:600; line-height:1;
-  font-variant-numeric:tabular-nums; margin-left:2px;}
-.stamp .d3 .t-tw{color:var(--teal);}
-.stamp .d3 .t-jp{color:var(--ember);}
-.now .sun{margin:0; text-align:right; font-size:12.5px; color:var(--ink-2); line-height:1.45;}
-.now .sun b{display:block; font-size:14px; color:var(--ink); font-weight:500;}
-.now .sun #dnNote{color:var(--ember); font-weight:500;}
-.law{flex:1 1 320px; min-width:0; display:flex; flex-wrap:wrap; align-items:baseline;
-  gap:3px 10px; text-decoration:none; color:inherit;
-  border:1px solid var(--line-2); border-left:3px solid var(--ember);
-  border-radius:3px; background:var(--pane-2); padding:7px 11px;}
-.law:hover{border-color:var(--sea); border-left-color:var(--ember);}
-.law:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
-.law-k{font-family:var(--mono); font-size:9.5px; letter-spacing:.12em;
-  color:var(--ember); white-space:nowrap;}
-.law-t{font-size:12.5px; color:var(--ink-2); line-height:1.45;}
-.law-go{margin-left:auto; font-size:11px; color:var(--stop); font-weight:500;
-  white-space:nowrap;}
+.wrap{max-width:1400px; margin:0 auto; padding:0 16px 40px}
 
-/* Layer 2: today's brief (weather ticker + recommendations) */
-.brief{margin-top:12px; background:var(--pane); border:1px solid var(--line);
-  border-radius:3px; box-shadow:var(--shadow); padding:12px 14px 13px;}
-.brief-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:9px;}
-.brief-t{font-family:var(--mono); font-size:10px; letter-spacing:.18em;
-  text-transform:uppercase; color:var(--ink-3);}
-.brief-note{font-size:12.5px; color:var(--ember); font-weight:500;}
-.wx{display:flex; flex-direction:column; gap:4px;}
-.wx[hidden]{display:none;}
-.wx-top{display:flex; align-items:baseline; gap:6px 10px; flex-wrap:wrap;}
-.wx-label{font-family:var(--mono); font-size:9.5px; letter-spacing:.15em;
-  text-transform:uppercase; color:var(--ink-3); white-space:nowrap;}
-.wx-src{font-family:var(--mono); font-size:9.5px; color:var(--ink-3);
-  text-decoration:none; white-space:nowrap;}
-.wx-src:hover{color:var(--sea); text-decoration:underline;}
-.wx-more{margin-left:auto; font-size:11px; color:var(--stop); font-weight:500;
-  text-decoration:none; white-space:nowrap;}
-.wx-more:hover{text-decoration:underline;}
-.wx-btn{margin-left:0; font:inherit; font-size:11px; font-weight:500;
-  font-family:var(--tc); color:var(--stop); background:none; border:0;
-  padding:0; cursor:pointer; white-space:nowrap;}
-.wx-btn:hover{text-decoration:underline;}
-.wx-btn:focus-visible{outline:2px solid var(--ember); outline-offset:2px; border-radius:2px;}
-
-.wx-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(178px,1fr));
-  gap:8px; margin-top:2px;}
-.wx-grid[hidden]{display:none;}
-.wg-cell{background:var(--pane-2); border:1px solid var(--line-2);
-  border-radius:3px; padding:9px 11px 10px;}
-.wg-city{font-size:14px; font-weight:500; margin-bottom:5px;}
-.wg-t{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
-.wg-p{font-size:12px; color:var(--ink-2); margin-top:5px;
-  font-variant-numeric:tabular-nums;}
-.wg-p.wet{color:var(--sea); font-weight:500;}
-.wg-w{font-size:11.5px; color:var(--ink-3); line-height:1.55; margin-top:2px;}
-@media (max-width:560px){
-  .wx-grid{grid-template-columns:repeat(2,1fr); gap:7px;}
-  .wg-cell{padding:8px 9px 9px;}
-  .wg-t{gap:6px;}
+/* ── Top bar: exit sign + page title ─────────────────────────── */
+.topbar{display:flex; align-items:center; gap:10px; padding:12px 0 10px; flex-wrap:wrap}
+.exit{display:inline-flex; align-items:stretch; min-height:40px; text-decoration:none;
+  background:var(--exit); color:var(--exit-ink); border-radius:3px; overflow:hidden; font-weight:700}
+.exit-k{display:flex; flex-direction:column; justify-content:center; padding:0 10px; background:var(--exit-ink);
+  color:var(--exit); font-size:13px; line-height:1.05; text-align:center}
+.exit-k small{font:700 11px/1 var(--en); letter-spacing:.06em; margin-top:2px}
+.exit-t{display:flex; align-items:center; gap:6px; padding:0 12px 0 9px; font-size:14px}
+.exit-t .pg{font-size:18px}
+.exit:hover .exit-t{text-decoration:underline; text-underline-offset:3px}
+.title{margin:0; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; font-size:19px; line-height:1.25;
+  font-weight:900; letter-spacing:.02em; color:var(--ground-ink); flex:1 1 auto; min-width:0}
+.title small{font:600 12px/1 var(--en); letter-spacing:.08em; color:inherit; opacity:.78}
+.theme-btn{display:inline-flex; align-items:center; gap:6px; min-height:40px; padding:0 12px; border-radius:3px;
+  border:1.5px solid currentColor; background:transparent; color:var(--ground-ink); font-size:13px; cursor:pointer}
+.theme-btn:hover{background:var(--ground-ink); color:var(--ground)}
+@media (max-width:699px){
+  .title{order:3; flex-basis:100%; font-size:20px; margin-top:2px}
+  .theme-btn{margin-left:auto}
 }
 
-/* Fuji visibility panel */
-.fuji{margin-top:11px; padding-top:11px; border-top:1px dotted var(--line);}
-.fuji[hidden]{display:none;}
-.fuji h5{margin:0 0 4px; font-size:14px; font-weight:700; color:var(--sea);}
-.fuji-cap{margin:0 0 10px; font-size:11.5px; color:var(--ink-3); line-height:1.7;}
-.fuji-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:8px;}
-.fuji-i{background:var(--pane-2); border:1px solid var(--line-2); border-radius:3px; padding:9px 11px;}
-.fuji-i .fh{display:flex; align-items:baseline; gap:8px;}
-.fuji-i .fh b{font-size:14px; font-weight:700;}
-.fuji-i .fh .fv{margin-left:auto; font-size:12.5px; font-weight:600; white-space:nowrap;}
-.fuji-i .fs{font-size:11.5px; color:var(--ink-2); margin-top:4px; line-height:1.55;}
-.fuji-i .fs em{font-style:normal; font-family:var(--mono); color:var(--ink-3);}
-.fv-go{color:var(--go);} .fv-warn{color:var(--warn);} .fv-stop{color:var(--stop);}
-.fuji-src{margin:10px 0 0; font-size:11px; color:var(--ink-3); line-height:1.75;}
-.fuji-src a{color:var(--sea); text-decoration:none;}
-.fuji-src a:hover{text-decoration:underline;}
-
-/* Umbrella / packing explainer */
-.pack{margin-top:11px; padding-top:11px; border-top:1px dotted var(--line);}
-.pack[hidden]{display:none;}
-.pack h5{margin:0 0 7px; font-size:14px; font-weight:700; color:var(--ember);}
-.pack-lead{margin:0 0 10px; font-size:12.5px; color:var(--ink-2); line-height:1.7;}
-.pack-l{margin:0 0 10px;}
-.pack-l>div{display:flex; gap:11px; align-items:baseline; padding:6px 0;
-  border-bottom:1px dotted var(--line-2);}
-.pack-l>div:last-child{border-bottom:0;}
-.pack-l dt{flex:0 0 96px; font-size:13px; font-weight:700; color:var(--sea);}
-.pack-l dd{margin:0; font-size:12.5px; color:var(--ink-2); line-height:1.7;}
-.pack-l dd b{color:var(--ink); font-weight:500;}
-.pack-src{margin:0; font-size:11.5px; color:var(--ink-3); line-height:1.7;}
-.pack-src a{color:var(--sea); text-decoration:none;}
-.pack-src a:hover{text-decoration:underline;}
-@media (max-width:560px){
-  .pack-l>div{flex-direction:column; gap:2px;}
-  .pack-l dt{flex:none;}
+/* ── Top grid ────────────────────────────────────────────────── */
+.top{display:grid; gap:14px}
+@media (min-width:1100px){
+  .top{grid-template-columns:minmax(0,1.32fr) minmax(0,1fr); align-items:start; gap:18px}
+  .top.no-trip{grid-template-columns:minmax(0,1fr)}
 }
 
-.wx-track{overflow:hidden; border:1px solid var(--line-2); border-radius:3px;
-  background:var(--pane-2); padding:6px 0;}
-.wx-run{display:inline-flex; white-space:nowrap; will-change:transform;}
-.wx-item{display:inline-flex; align-items:center; gap:9px; padding:0 18px;
-  border-right:1px dotted var(--line);}
-.wx-city{font-size:13px; font-weight:500;}
-.wx-slot{display:inline-flex; align-items:center; gap:3px;}
-.wx-tag{font-size:9.5px; letter-spacing:.06em; color:var(--ink-3); white-space:nowrap;}
-.wx-fig{display:block; flex:0 0 auto;}
-.wx-slot:first-of-type{color:var(--ember);}
-.wx-slot:last-of-type{color:var(--sea);}
-.wx-t{font-family:var(--mono); font-size:13px; font-variant-numeric:tabular-nums;}
-.wx-hi{color:var(--ember); font-weight:600;}
-.wx-lo{color:var(--sea); font-weight:600;}
-.wx-p{font-size:12px; color:var(--ink-2); font-variant-numeric:tabular-nums;}
-.wx-p.wet{color:var(--sea); font-weight:500;}
-.wx-w{font-size:12px; color:var(--ink-3);}
+/* ── LED departure board ─────────────────────────────────────── */
+.board{background:var(--housing); color:var(--housing-ink); border-radius:4px; padding:0 0 10px;
+  border:1px solid #000; overflow:hidden}
+.board-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  padding:9px 12px 8px; background:var(--housing-2); border-bottom:1px solid var(--housing-rule)}
+.bh-l{display:flex; align-items:baseline; gap:4px 10px; flex-wrap:wrap; min-width:0}
+.bh-l b{font-size:16px; font-weight:700; letter-spacing:.04em}
+.bh-l .jp{font-size:11px; color:var(--housing-2ink); letter-spacing:.12em}
+.bh-day{font:600 14px/1.2 var(--en); color:var(--housing-ink)}
+.bh-cd{font-size:12.5px; color:var(--amber)}
+.bh-cd.today{color:var(--red); font-weight:700}
+.bh-clock{display:flex; gap:12px; align-items:center}
+.clk{display:flex; align-items:center; gap:6px}
+.clk i{font-style:normal; font-size:11px; color:var(--housing-2ink); writing-mode:horizontal-tb}
+.board-cols{display:grid; grid-template-columns:var(--tcol,60px) minmax(0,1fr); gap:10px; padding:6px 12px 4px;
+  font-size:11px; color:var(--housing-2ink); letter-spacing:.12em; border-bottom:1px solid var(--housing-rule)}
+.board-cols span:last-child{display:flex; gap:8px; align-items:center}
+.board-cols .mode{display:inline-flex; gap:4px; align-items:center; letter-spacing:.04em; color:var(--housing-ink)}
+.board-cols .mode .pg{font-size:14px}
+.board-rows{list-style:none; margin:0; padding:2px 12px 0}
+.board-rows li{display:grid; grid-template-columns:var(--tcol,60px) minmax(0,1fr); gap:10px; align-items:center;
+  padding:3px 0; border-bottom:1px solid #16181a}
+.board-rows li:last-child{border-bottom:0}
+.board-rows li.ttl, .board-rows li.note{grid-template-columns:minmax(0,1fr)}
+.led{display:block; min-width:0; line-height:0}
+.led canvas{display:block}
+.board-foot{display:flex; justify-content:space-between; gap:8px; padding:8px 12px 0; font-size:11.5px;
+  color:var(--housing-2ink)}
+.board-foot a{color:var(--housing-ink); text-underline-offset:3px}
 
-/* Recommendations */
-.rec{margin-top:12px; padding-top:11px; border-top:1px dotted var(--line);}
-.rec[hidden]{display:none;}
-.rec-h{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; margin-bottom:8px;}
-.rec-h b{font-size:14.5px; font-weight:700;}
-.rec-h span{font-size:11px; color:var(--ink-3);}
-.rec-list{display:grid; grid-template-columns:repeat(3,1fr); gap:9px;}
-.rec-card{display:flex; gap:10px; align-items:flex-start; text-decoration:none;
-  color:inherit; background:var(--pane-2); border:1px solid var(--line-2);
-  border-radius:3px; padding:9px 11px; transition:border-color .14s;}
-.rec-card:hover{border-color:var(--sea);}
-.rec-card[hidden]{display:none;}
-.rec-card:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
-.rec-rank{flex:0 0 auto; font-family:var(--mono); font-size:15px; font-weight:600;
-  color:var(--ember); line-height:1.3;}
-.rec-b{min-width:0;}
-.rec-n{display:block; font-size:14px; font-weight:500; line-height:1.35;}
-.rec-w{display:block; font-size:11.5px; color:var(--ink-2); margin-top:3px; line-height:1.45;}
-.rec-x{display:block; font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:3px;}
+/* Day plates (track number style) */
+.tracks{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:5px; margin-top:8px}
+.tracks button{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  min-height:50px; padding:4px 0 3px; border-radius:3px; border:1.5px solid var(--navy); background:var(--sign);
+  color:var(--sign-ink); cursor:pointer; line-height:1}
+.tracks b{font:700 20px/1 var(--en)}
+.tracks b small{font-size:11px; margin-right:1px}
+.tracks span{font:500 10.5px/1 var(--en); margin-top:4px; letter-spacing:.02em}
+.tracks button[aria-pressed="true"]{background:var(--navy); color:var(--navy-ink)}
+.tracks button.today::after{content:"今天"; position:absolute; top:-8px; right:-3px; padding:1px 4px 2px;
+  font-size:10px; line-height:1.2; background:var(--stop-lamp); color:#fff; border-radius:2px}
+.tracks button:hover{border-color:var(--sign-ink)}
 
-header{padding:20px 0 15px; border-bottom:2px solid var(--ink);}
-.kicker{font-family:var(--mono); font-size:10.5px; letter-spacing:.24em;
-  text-transform:uppercase; color:var(--ember); margin-bottom:8px;}
-h1{font-size:clamp(26px,6.4vw,38px); line-height:1.1; margin:0 0 7px; font-weight:700;}
-.tagline{margin:0 0 10px; color:var(--sea); font-weight:500; letter-spacing:.02em;
-  font-size:clamp(15px,3.5vw,18px); line-height:1.5;}
-.sub{margin:0; color:var(--ink-2); max-width:64ch; font-size:14.5px;}
+/* The day panel (white guide sign) */
+.day{margin-top:10px; background:var(--plate); color:var(--plate-ink); border-radius:4px; overflow:hidden}
+.day-h{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px;
+  background:var(--navy); color:var(--navy-ink); font-size:14px; font-weight:700; letter-spacing:.04em}
+.day-h a{font-weight:400; font-size:13px; color:inherit; text-underline-offset:3px; white-space:nowrap}
+.day-b{display:grid; gap:0}
+@media (min-width:700px){ .day-b{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
+.day-sec{padding:10px 12px 12px}
+.day-sec + .day-sec{border-top:1px solid var(--plate-rule)}
+@media (min-width:700px){ .day-sec + .day-sec{border-top:0; border-left:1px solid var(--plate-rule)} }
+.day-sec h3{margin:0 0 6px; font-size:12.5px; font-weight:700; letter-spacing:.1em; color:var(--plate-2)}
+.wxrows{list-style:none; margin:0; padding:0}
+.wxrows li{display:grid; grid-template-columns:4.6em 30px minmax(0,1fr) auto; gap:8px; align-items:center;
+  padding:6px 0; border-top:1px solid var(--plate-rule)}
+.wxrows li:first-child{border-top:0}
+.wxrows .ar{font-weight:700}
+.wxrows .fig{width:28px; height:28px}
+.wxrows .tt{font:600 17px/1.1 var(--en); font-variant-numeric:tabular-nums}
+.wxrows .tt small{font:400 12px/1.2 var(--tc); margin-left:6px}
+.wxrows .pp{font:600 13px/1 var(--en); white-space:nowrap}
+.wxrows .pp.wet{color:var(--stop)}
+.wxrows .wr{grid-column:3 / 5; font-size:12.5px; color:var(--plate-2); margin-top:-4px}
+.hint{margin:6px 0 0; font-size:12px; color:var(--plate-2)}
+.xfer{list-style:none; margin:0; padding:0}
+.xfer li{border-top:1px solid var(--plate-rule)}
+.xfer li:first-child{border-top:0}
+.xfer a{display:flex; align-items:center; gap:8px; padding:7px 0; text-decoration:none; font-size:14px; line-height:1.35}
+.xfer a:hover span:last-child{text-decoration:underline; text-underline-offset:3px}
+.trip-off{margin-left:auto; border:0; background:none; padding:6px 0; font-size:12px; text-decoration:underline;
+  text-underline-offset:3px; cursor:pointer; color:inherit}
 
-.howto{margin-top:13px;}
-.howto-btn{font:inherit; font-family:var(--tc); font-size:13px; font-weight:500;
-  cursor:pointer; color:var(--sea); background:none; border:0; padding:0;}
-.howto-btn:hover{text-decoration:underline;}
-.howto-btn:focus-visible{outline:2px solid var(--ember); outline-offset:2px; border-radius:2px;}
-.howto-box{margin-top:11px; background:var(--pane); border:1px solid var(--line);
-  border-radius:3px; padding:15px 17px; max-width:68ch;}
-.howto-box[hidden]{display:none;}
-.howto-box ol{margin:0; padding:0; list-style:none; counter-reset:h;}
-.howto-box li{position:relative; padding-left:31px; margin-bottom:10px;
-  font-size:13px; color:var(--ink-2); line-height:1.7;}
-.howto-box li:last-child{margin-bottom:0;}
-.howto-box li::before{counter-increment:h; content:counter(h);
-  position:absolute; left:0; top:3px; width:20px; height:20px; border-radius:50%;
-  background:var(--sea); color:#fff; font-family:var(--mono); font-size:11px;
-  display:flex; align-items:center; justify-content:center;}
-.howto-box b{color:var(--ink); font-weight:500;}
+/* Station numbering badge */
+.no{--line:var(--tk); display:inline-flex; flex-direction:column; align-items:center; justify-content:center; flex:none;
+  width:30px; height:30px; border:3px solid var(--line); border-radius:6px; background:#fff; color:#111;
+  font:700 9px/1 var(--en); letter-spacing:.02em}
+.no b{font:700 13px/1 var(--en); margin-top:1px}
+.no.l{width:44px; height:44px; border-width:4px; border-radius:8px; font-size:11px}
+.no.l b{font-size:19px}
+.no.s{width:26px; height:26px; border-width:2.5px; border-radius:5px; font-size:8px}
+.no.s b{font-size:11px}
+.no.line{width:auto; min-width:30px; padding:0 5px}
+.no.line b{margin:0; font-size:14px}
+.no.l.line{min-width:44px; padding:0 7px}
+.no.l.line b{font-size:19px}
+.no.s.line{min-width:26px; padding:0 3px}
+.no.s.line b{font-size:11px}
+.wx-fig{flex:none}
+.l-tk{--line:var(--tk)} .l-ys{--line:var(--ys)} .l-hf{--line:var(--hf)} .l-iz{--line:var(--iz)}
 
-.filters{position:sticky; top:0; z-index:5; background:var(--ground);
-  padding:12px 0 10px; display:flex; gap:7px; align-items:center;
-  overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none;}
-.filters::-webkit-scrollbar{display:none;}
-.filters button{flex:0 0 auto; font:inherit; font-size:14px; cursor:pointer;
-  background:var(--pane); color:var(--ink-2); border:1px solid var(--line);
-  border-radius:2px; padding:7px 15px;}
-.filters button:hover{border-color:var(--sea); color:var(--sea);}
-.filters button[aria-pressed="true"]{background:var(--sea); border-color:var(--sea); color:#fff;}
-.filters .sep{flex:0 0 auto; width:1px; height:22px; background:var(--line); margin:0 3px;}
-.filters .mode[aria-pressed="true"]{background:var(--ember); border-color:var(--ember);}
-.filters .age{flex:0 0 auto; margin-left:auto; font-family:var(--mono);
-  font-size:11px; color:var(--ink-3); white-space:nowrap;}
+/* ── 運行情報 (status column) ───────────────────────────────── */
+.unko{display:grid; gap:10px; align-content:start}
+.panel{background:var(--plate); color:var(--plate-ink); border-radius:4px; overflow:hidden}
+.panel-h{display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:8px 12px; background:var(--navy);
+  color:var(--navy-ink)}
+.panel-h h2, .panel-h h3{margin:0; font-size:14px; font-weight:700; letter-spacing:.06em}
+.panel-h .jp{font-size:11px; letter-spacing:.12em; opacity:.8}
+.panel-h .r{margin-left:auto; font-size:12.5px}
+.panel-b{padding:10px 12px 12px}
+.now-line{display:flex; flex-wrap:wrap; gap:2px 12px; align-items:baseline; font-size:14px}
+.now-line b{font-size:17px}
+.now-line em{font-style:normal; font-size:12.5px; color:var(--plate-2)}
+.now-line .sun{display:inline-flex; gap:5px; align-items:center}
+.brief-note{margin:8px 0 0; font-size:13.5px; line-height:1.55}
+.brief-note:empty{display:none}
 
-/* Road conditions (driving mode) */
-.road{margin-top:14px; background:var(--pane); border:1px solid var(--line);
-  border-radius:3px; padding:13px 15px; box-shadow:var(--shadow);}
-.road[hidden]{display:none;}
-.road h4{margin:0 0 3px; font-size:14.5px; font-weight:700;}
-.road-cap{margin:0 0 10px; font-size:11.5px; color:var(--ink-3);}
-.road-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px;}
-.road-i{display:flex; align-items:baseline; gap:8px; padding:7px 10px;
-  background:var(--pane-2); border:1px solid var(--line-2); border-radius:3px;}
-.road-i .rd-n{font-size:13.5px; font-weight:500; white-space:nowrap;}
-.road-i .rd-t{font-family:var(--mono); font-size:12px; color:var(--ink-3);
-  font-variant-numeric:tabular-nums;}
-.road-i .rd-s{margin-left:auto; font-size:12px; font-weight:500; white-space:nowrap;}
-.rd-go{color:var(--go);} .rd-warn{color:var(--warn);} .rd-stop{color:var(--stop);}
-.road-src{margin:10px 0 0; font-size:11.5px; color:var(--ink-3);}
-.road-src a{color:var(--sea); text-decoration:none;}
-.road-src a:hover{text-decoration:underline;}
-.law-full{margin-top:13px; padding-top:12px; border-top:1px dotted var(--line);}
-.law-full h5{margin:0 0 8px; font-size:14px; font-weight:700; color:var(--ember);}
-.law-full ul{margin:0 0 10px; padding:0; list-style:none;}
-.law-full li{position:relative; padding-left:1.1em; margin-bottom:4px;
-  font-size:13px; color:var(--ink-2); line-height:1.65;}
-.law-full li::before{content:"·"; position:absolute; left:.25em; color:var(--ink-3);}
-.law-full b{color:var(--ink); font-weight:500;}
-.law-hit{margin:0 0 10px; font-size:13.5px; color:var(--ink); line-height:1.7;}
-.law-sig{margin:0 0 10px; font-size:15px; font-weight:500;
-  color:var(--sea); letter-spacing:.04em;}
-.law-src{margin:0; font-size:11.5px; color:var(--ink-3); line-height:1.7;}
-.law-src a{color:var(--sea); text-decoration:none;}
-.law-src a:hover{text-decoration:underline;}
+/* Fuji lamps */
+.fuji-now{margin-top:10px}
+.wx-led{margin-top:10px}
+.panel-h .tool{margin-left:auto; min-height:32px; border-color:currentColor; color:inherit}
+.panel-h .tool:hover{background:rgba(255,255,255,.12)}
+.panel-h .tool[aria-expanded="true"]{background:#fff; color:var(--navy)}
+.lamps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0}
+.lamps li{display:flex; align-items:center; gap:7px; padding:7px 4px 7px 0; border-top:1px solid var(--plate-rule);
+  font-size:13.5px; line-height:1.25; min-width:0}
+.lamps li:nth-child(-n+3){border-top:0}
+.lamp{width:12px; height:12px; border-radius:50%; flex:none; background:var(--plate-rule); box-shadow:inset 0 0 0 1.5px rgba(0,0,0,.25)}
+.lamp.go{background:var(--go-lamp)} .lamp.warn{background:var(--warn-lamp)} .lamp.stop{background:var(--stop-lamp)}
+.lamps .s{display:block; font-size:11.5px; color:var(--plate-2)}
+.st-go{color:var(--go)} .st-warn{color:var(--warn)} .st-stop{color:var(--stop)}
 
-/* My trip (public, mirrors trip.html) */
-.trip{margin-top:14px; background:var(--pane); border:1px solid var(--sea);
-  border-radius:3px; padding:13px 15px; box-shadow:var(--shadow);}
-.trip[hidden]{display:none;}
-.trip-h{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
-.trip-h h4{margin:0; font-size:15px; font-weight:700;}
-.trip-h .cd{font-family:var(--mono); font-size:11.5px; color:var(--ember);}
-.trip-h .off{margin-left:auto; font-size:11px; color:var(--ink-3);
-  background:none; border:0; cursor:pointer; font-family:var(--tc); padding:0;}
-.trip-h .off:hover{color:var(--sea); text-decoration:underline;}
-/* Restore entry for the trip section — without it, 關閉這一區 is a one-way door
-   that only clearing site data can undo. */
-.trip-back{margin-top:10px; font:inherit; font-family:var(--tc); font-size:11.5px;
-  cursor:pointer; color:var(--ink-3); background:var(--pane); border:1px solid var(--line);
-  border-radius:99px; padding:4px 13px;}
-.trip-back[hidden]{display:none;}
-.trip-back:hover{border-color:var(--sea); color:var(--sea);}
-.trip-back:focus-visible{outline:2px solid var(--ember); outline-offset:2px;}
-.trip-days{display:flex; gap:5px; overflow-x:auto; margin:11px 0 0; padding-bottom:4px;
-  scrollbar-width:none;}
-.trip-days::-webkit-scrollbar{display:none;}
-.trip-days button{flex:0 0 auto; font:inherit; font-family:var(--mono); font-size:11.5px;
-  cursor:pointer; background:var(--pane-2); color:var(--ink-2);
-  border:1px solid var(--line); border-radius:2px; padding:5px 9px; line-height:1.3;}
-.trip-days button b{display:block; font-family:var(--tc); font-size:10px; font-weight:400;}
-.trip-days button[aria-pressed="true"]{background:var(--sea); border-color:var(--sea); color:#fff;}
-.trip-days button.today{border-color:var(--ember);}
-.trip-body{margin-top:11px; padding-top:10px; border-top:1px dotted var(--line);}
-.trip-title{font-size:15px; font-weight:500;}
-.trip-route{font-size:13px; color:var(--ink-2); margin-top:4px; line-height:1.65;}
-.trip-car{display:inline-block; font-family:var(--mono); font-size:10.5px;
-  border:1px solid var(--line); border-radius:2px; padding:1px 6px; margin-left:7px;
-  color:var(--ink-3); vertical-align:1px;}
-.trip-car.on{color:var(--ember); border-color:var(--ember);}
-.trip-sec{margin-top:11px;}
-.trip-sec h5{margin:0 0 6px; font-family:var(--mono); font-size:10px; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--ink-3); font-weight:400;}
-.trip-cams{display:flex; flex-wrap:wrap; gap:6px;}
-.trip-cams a{font-size:12.5px; text-decoration:none; color:var(--ink-2);
-  background:var(--pane-2); border:1px solid var(--line-2); border-radius:2px;
-  padding:4px 9px;}
-.trip-cams a:hover{border-color:var(--sea); color:var(--sea);}
-.trip-wx{display:flex; flex-wrap:wrap; gap:6px;}
-.trip-wx span{font-size:12px; color:var(--ink-2); background:var(--pane-2);
-  border:1px solid var(--line-2); border-radius:2px; padding:4px 9px;}
-.trip-wx b{font-family:var(--mono); font-weight:600; color:var(--sea);}
-.trip-link{display:inline-block; margin-top:10px; font-size:12.5px; color:var(--sea);
-  text-decoration:none; font-weight:500;}
-.trip-link:hover{text-decoration:underline;}
-.mc-hint{margin:6px 0 0; font-size:11px; color:var(--ink-3); line-height:1.7;}
+/* Weather ticker / tools */
+.wx-led{background:var(--housing); padding:7px 10px; border-radius:3px; cursor:default}
+.tools{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.tool{display:inline-flex; align-items:center; gap:5px; min-height:38px; padding:0 11px; border-radius:3px;
+  border:1.5px solid var(--plate-ink); background:transparent; color:var(--plate-ink); font-size:13px; cursor:pointer;
+  text-decoration:none}
+.tool[aria-expanded="true"]{background:var(--plate-ink); color:var(--plate)}
+.tool .pg{font-size:15px}
+.tool:hover{background:var(--plate-soft)}
+.tool[aria-expanded="true"]:hover{background:var(--plate-ink)}
+.src{font-size:11.5px; color:var(--plate-2); margin-left:auto; align-self:center}
+.src a{text-underline-offset:2px}
+.wxgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(142px,1fr)); gap:0; margin-top:10px;
+  border-top:1px solid var(--plate-rule)}
+.wg{padding:8px 8px 9px 0; border-bottom:1px solid var(--plate-rule)}
+.wg-c{font-weight:700; font-size:14px}
+.wg-t{display:flex; gap:10px; margin:4px 0 2px}
+.slot{display:flex; align-items:center; gap:3px}
+.slot i{font-style:normal; font-size:10.5px; color:var(--plate-2); writing-mode:vertical-rl; letter-spacing:.05em}
+.slot .fig{width:24px; height:24px}
+.slot b{font:600 16px/1 var(--en)}
+.wg-p{font:600 12.5px/1.4 var(--en)}
+.wg-p.wet{color:var(--stop)}
+.wg-w{font-size:12px; color:var(--plate-2); line-height:1.45}
+.drop{margin-top:10px; padding-top:10px; border-top:1px solid var(--plate-rule)}
+.drop h3{margin:0 0 6px; font-size:15px}
+.drop p{margin:6px 0; font-size:13.5px}
+.fuji-t{width:100%; border-collapse:collapse; font-size:13.5px}
+.fuji-t td{padding:6px 6px 6px 0; border-top:1px solid var(--plate-rule); vertical-align:top}
+.fuji-t td:first-child{font-weight:700; white-space:nowrap}
+.fuji-t .num{white-space:nowrap}
+.pack-l{margin:8px 0 0; display:grid; gap:0}
+.pack-l div{display:grid; grid-template-columns:6.2em minmax(0,1fr); gap:8px; padding:7px 0; border-top:1px solid var(--plate-rule)}
+.pack-l dt{font-weight:700; font-size:13.5px}
+.pack-l dd{margin:0; font-size:13.5px}
+.small{font-size:12px; color:var(--plate-2)}
+.small a{text-underline-offset:2px}
 
-.region{margin-top:30px;}
-.region[hidden]{display:none;}
-.region-head{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
-  padding-bottom:8px; border-bottom:2px solid var(--ink);}
-.region-head h2{margin:0; font-size:24px; font-weight:700; letter-spacing:.03em;}
-.region-head p{margin:0; font-size:13px; color:var(--ink-3);}
-.region-head .n{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-3);}
-.area{margin-top:20px;}
-.area[hidden]{display:none;}
-.area h3{margin:0 0 11px; font-size:14.5px; font-weight:500; color:var(--sea);
-  letter-spacing:.06em; display:flex; align-items:center; gap:9px;}
-.area h3::after{content:""; flex:1; height:1px; background:var(--line);}
+/* Law strip: the speed sign */
+.law{display:flex; align-items:center; gap:12px; padding:10px 12px; text-decoration:none; background:var(--plate);
+  color:var(--plate-ink); border-radius:4px}
+.law .sp{width:46px; height:46px; flex:none}
+.law-b{display:flex; flex-direction:column; min-width:0}
+.law-k{font-size:11.5px; letter-spacing:.06em; color:var(--plate-2)}
+.law-t{font-weight:700; font-size:14.5px; line-height:1.4}
+.law-go{margin-left:auto; font-size:12.5px; white-space:nowrap; text-decoration:underline; text-underline-offset:3px}
 
-.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:12px;}
-.cam{position:relative; background:var(--pane);
-  border:1px solid var(--line); border-radius:4px; overflow:hidden;
-  box-shadow:var(--shadow); transition:border-color .14s, transform .14s;}
-.cam[hidden]{display:none;}
-.cam:hover{border-color:var(--sea); transform:translateY(-2px);}
-.cam:focus-within{border-color:var(--sea);}
-.cam-link{display:block; text-decoration:none; color:inherit;}
-.cam-link:focus-visible{outline:2px solid var(--ember); outline-offset:-2px;}
-.shot,.meta,.zh,.jp,.why{display:block;}
-.shot{position:relative; aspect-ratio:16/9; background:#0B131A; overflow:hidden;}
-.shot img{width:100%; height:100%; object-fit:cover; display:block;
-  opacity:0; transition:opacity .35s;}
-.shot img.on{opacity:1;}
-.shot .dot{position:absolute; top:8px; left:8px; z-index:2;
-  font-family:var(--mono); font-size:9.5px; font-weight:600; letter-spacing:.13em;
-  color:#fff; background:rgba(184,84,42,.92); padding:2px 7px; border-radius:2px;
-  display:flex; align-items:center; gap:5px;}
-.shot .dot i{width:5px; height:5px; border-radius:50%; background:#fff;
-  animation:pulse 2.4s ease-in-out infinite;}
-.shot .dot em{font-style:normal;}
-.shot.night .dot{background:rgba(42,93,143,.94); letter-spacing:.08em;}
-.shot.night .dot i{animation:none; opacity:.55;}
-.shot.err .dot{background:rgba(90,105,116,.94); letter-spacing:.08em;}
-.shot.err .dot i{animation:none; opacity:.45;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.shot .yt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  opacity:0; transition:opacity .16s; background:rgba(11,19,26,.45);}
-.cam:hover .shot .yt{opacity:1;}
-.shot .yt span{background:#fff; color:#0F1A22; font-size:13px; font-weight:500;
-  padding:7px 15px; border-radius:99px;}
-.shot .fail{position:absolute; inset:0; display:none; align-items:center; justify-content:center;
-  color:#7C8E9A; font-size:12.5px; text-align:center; padding:0 12px;}
-.shot.err .fail{display:flex;}
-.shot .nite{position:absolute; left:0; right:0; bottom:0; z-index:2; display:none;
-  font-size:11.5px; color:#C6D4DD; background:linear-gradient(transparent,rgba(11,19,26,.86));
-  padding:16px 10px 7px;}
-.shot.night:not(.err) .nite{display:block;}
-.cam-act{position:absolute; top:6px; right:6px; z-index:3; display:flex; gap:5px;}
-.cam-act button,.cam-act a{font:inherit; font-size:12px; line-height:1; cursor:pointer;
-  color:#E3EBF0; background:rgba(11,19,26,.62); border:1px solid rgba(227,235,240,.28);
-  border-radius:2px; padding:5px 7px; text-decoration:none;
-  -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px);}
-.cam-act button:hover,.cam-act a:hover{background:rgba(42,93,143,.9); border-color:#fff;}
-.cam-act button[aria-pressed="true"]{color:#FFD79A; border-color:#FFD79A;}
-.cam-act a{font-family:var(--mono); font-size:10px; letter-spacing:.06em;}
-.meta{padding:11px 12px 12px;}
-.zh{font-size:15.5px; font-weight:500; line-height:1.35;}
-.jp{font-family:var(--jp); font-size:11.5px; color:var(--ink-3); line-height:1.45; margin-top:2px;}
-.why{font-size:12.5px; color:var(--ink-2); margin-top:7px;
-  padding-top:7px; border-top:1px dotted var(--line-2);}
-.empty{padding:26px 4px; color:var(--ink-3); font-size:14px;}
-.empty[hidden]{display:none;}
+/* Recommendations: three monitors */
+.rec-list{display:grid; gap:10px; grid-template-columns:minmax(0,1fr)}
+@media (min-width:560px) and (max-width:1099px){ .rec-list{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.rec-card{display:grid; grid-template-columns:118px minmax(0,1fr); gap:10px; align-items:start; text-decoration:none}
+@media (min-width:560px) and (max-width:1099px){ .rec-card{grid-template-columns:minmax(0,1fr)} }
+.rec-card .mon{border-width:4px}
+.rec-n{display:block; font-weight:700; font-size:14px; line-height:1.4}
+.rec-w{display:block; font-size:13px; line-height:1.45; margin-top:2px}
+.rec-x{display:flex; align-items:center; gap:6px; margin-top:4px; font-size:12px; color:var(--plate-2)}
+.rec-card:hover .rec-n{text-decoration:underline; text-underline-offset:3px}
+.tag-photo{display:inline-block; font-size:11px; padding:0 5px; border:1.5px solid var(--stop); color:var(--stop);
+  border-radius:2px; margin-left:4px; vertical-align:1px; font-weight:700}
 
-.note{background:var(--pane-2); border:1px solid var(--line);
-  border-radius:3px; padding:15px; margin-top:14px;}
-.note h4{margin:0 0 6px; font-size:14.5px; font-weight:700;}
-.note p{margin:0 0 8px; font-size:13.5px; color:var(--ink-2);}
-.note p:last-child{margin-bottom:0;}
-.note a{color:var(--sea);}
-footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line);
-  text-align:center; line-height:1.8; color:var(--ink-3);}
-footer .sig-title{font-family:var(--tc); font-size:16px;
-  color:var(--ink); font-weight:500; letter-spacing:.06em;}
-footer .sig-by{margin-top:3px; font-family:var(--tc);
-  font-size:14px; color:var(--ink-2); letter-spacing:.03em;}
-footer .sig-by a{color:var(--sea); text-decoration:none;}
-footer .sig-by a:hover{text-decoration:underline;}
-.sig-ver{margin-top:14px;}
-.sig-ver span{display:inline-block; font-family:var(--mono); font-size:11.5px;
-  letter-spacing:.08em; color:var(--ink-2);
-  border:1px solid var(--line); border-radius:99px; padding:3px 12px;}
-.legal{max-width:64ch; margin:22px auto 0; padding-top:16px;
-  border-top:1px dotted var(--line); text-align:left;}
-.legal h4{margin:0 0 7px; font-family:var(--tc); font-size:12.5px; font-weight:700;
-  letter-spacing:.06em; color:var(--ink-2); text-align:center;}
-.legal-lead{margin:0 0 8px; font-family:var(--tc); font-size:12px;
-  color:var(--ink-2); text-align:center; line-height:1.7;}
-.legal ul{margin:0; padding:0; list-style:none;}
-.legal li{position:relative; padding-left:1.1em; margin-bottom:5px;
-  font-family:var(--tc); font-size:11.5px; line-height:1.75; color:var(--ink-3);}
-.legal li::before{content:"·"; position:absolute; left:.2em; color:var(--ink-3);}
-.legal b{color:var(--ink-2); font-weight:500;}
-.legal a{color:var(--sea); text-decoration:none;}
-.legal a:hover{text-decoration:underline;}
-footer .meta-note{margin:16px 0 0;
-  font-family:var(--mono); font-size:11px; line-height:1.9;}
+/* ── Guide (intro + how-to) ──────────────────────────────────── */
+.guide{margin-top:22px; display:grid; gap:10px}
+@media (min-width:1100px){ .guide{grid-template-columns:minmax(0,1.32fr) minmax(0,1fr); gap:18px; align-items:start} }
+.guide p{margin:0 0 6px; font-size:14px}
+.guide .lead{font-size:16px; font-weight:700; line-height:1.55}
+.howto ol{margin:8px 0 0; padding-left:1.4em; font-size:13.5px}
+.howto li{margin:5px 0}
 
-@media (prefers-reduced-motion:reduce){
-  .shot .dot i{animation:none} .cam{transition:none} .shot img{transition:none}
+/* ── Line selector (sticky) ──────────────────────────────────── */
+.filters{position:sticky; top:0; z-index:20; margin:22px -16px 0; padding:8px 16px; background:var(--housing-2);
+  color:var(--housing-ink); display:flex; gap:6px; align-items:center; overflow-x:auto; scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters button{display:inline-flex; align-items:center; gap:6px; flex:none; min-height:40px; padding:0 11px 0 7px;
+  border-radius:3px; border:1.5px solid #4a4e55; background:transparent; color:inherit; font-size:13.5px; cursor:pointer;
+  white-space:nowrap}
+.filters button.plain{padding:0 12px}
+.filters button[aria-pressed="true"]{background:#fff; color:#111; border-color:#fff}
+.filters button:hover{border-color:#fff}
+.filters .pg{font-size:16px}
+.filters .sep{width:1px; align-self:stretch; background:#3a3e44; margin:4px 2px; flex:none}
+.filters .age{margin-left:auto; padding-left:10px; font-size:11.5px; color:var(--housing-2ink); white-space:nowrap; flex:none}
+@media (min-width:1432px){ .filters{margin:22px 0 0; border-radius:4px} }
+
+/* ── Road reading (driving mode) ─────────────────────────────── */
+.road{margin-top:16px}
+.road-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:0 18px; margin-top:6px}
+.road-i{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 10px; align-items:center; padding:7px 0;
+  border-top:1px solid var(--plate-rule); font-size:13.5px}
+.road-i .n{font-weight:700}
+.road-i .t{font:600 15px/1 var(--en)}
+.road-i .s{grid-column:1 / 3; display:flex; gap:6px; align-items:center; font-size:13px}
+.law-full{display:grid; gap:14px; margin-top:14px; padding-top:14px; border-top:1.5px solid var(--plate-ink)}
+@media (min-width:700px){ .law-full{grid-template-columns:120px minmax(0,1fr)} }
+.law-full .sp{width:110px; height:110px}
+.law-full h3{margin:0 0 6px; font-size:16px}
+.law-full ul{margin:0; padding-left:1.2em; font-size:14px}
+.law-hit{margin:10px 0 4px; font-size:15px; font-weight:700; line-height:1.55}
+.law-sig{margin:0 0 8px; font-weight:700; color:var(--stop)}
+.links{display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:12px; font-size:13px}
+.links a{text-underline-offset:3px}
+
+/* ── The line: regions, station signs, monitors ─────────────── */
+.board-main{margin-top:6px}
+.region{margin-top:28px}
+.line-h{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:0 0 8px; border-bottom:6px solid var(--line)}
+.line-h h2{margin:0; font-size:22px; font-weight:900; letter-spacing:.04em; color:var(--ground-ink)}
+.line-h p{margin:0; font-size:13px; color:var(--ground-ink); opacity:.85}
+.line-h .n{margin-left:auto; font:600 13px/1 var(--en); color:var(--ground-ink)}
+.route{display:flex; overflow-x:auto; padding:2px 0 4px; margin:10px 0 0; list-style:none; scrollbar-width:thin}
+.route li{flex:1 0 76px; position:relative; text-align:center; min-width:76px}
+.route li::before{content:""; position:absolute; left:0; right:0; top:11px; height:5px; background:var(--line)}
+.route li:first-child::before{left:50%} .route li:last-child::before{right:50%}
+.route a{position:relative; display:flex; flex-direction:column; align-items:center; gap:5px; padding:3px 2px;
+  text-decoration:none; color:var(--ground-ink); font-size:12.5px; line-height:1.25}
+.route a i{width:20px; height:20px; border-radius:50%; background:#fff; border:4px solid var(--line); flex:none}
+.route a:hover span{text-decoration:underline; text-underline-offset:3px}
+.route a small{font:600 10px/1 var(--en); opacity:.8}
+
+.area{margin-top:18px; scroll-margin-top:64px}
+.eki{background:var(--sign); color:var(--sign-ink); border-radius:3px; overflow:hidden; border:1px solid var(--sign-rule)}
+.eki-m{display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center; padding:10px 12px 8px}
+.eki-name{text-align:center; min-width:0}
+.eki-kana{display:block; font-size:12px; letter-spacing:.2em; line-height:1.2}
+.eki-name h3{margin:1px 0 0; font-size:30px; font-weight:900; line-height:1.15; letter-spacing:.12em}
+.eki-en{display:block; font:600 14px/1.2 var(--en); letter-spacing:.04em}
+.eki-m > .no{justify-self:start}
+.eki-now{justify-self:end; text-align:right; font-size:12.5px; line-height:1.35; min-width:64px}
+.eki-now b{display:block; font:600 20px/1.05 var(--en)}
+.eki-now .nt{display:inline-block; padding:0 4px; border-radius:2px; background:var(--housing); color:var(--amber); font-size:11px}
+.eki-band{height:9px; background:var(--line)}
+.eki-nb{display:flex; justify-content:space-between; gap:10px; padding:6px 10px 7px; font-size:13px; line-height:1.25}
+.eki-nb a{display:inline-flex; align-items:center; gap:5px; text-decoration:none; min-height:32px; min-width:0}
+.eki-nb a:hover span{text-decoration:underline; text-underline-offset:3px}
+.eki-nb a small{display:block; font:500 10.5px/1.1 var(--en)}
+.eki-nb .nx{margin-left:auto; text-align:right}
+.eki-nb .pg{font-size:14px}
+.eki-sub{padding:0 12px 8px; margin:-2px 0 0; text-align:center; font-size:12px; color:var(--sign-2)}
+
+.grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 10px; margin-top:10px}
+@media (min-width:700px){ .grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px 14px} }
+.cam{position:relative; display:flex; flex-direction:column; min-width:0}
+.cam-link{display:flex; flex-direction:column; text-decoration:none; color:inherit; flex:1}
+.mon{position:relative; display:block; aspect-ratio:16/9; background:#050607; border:5px solid var(--housing-2);
+  border-radius:4px; overflow:hidden}
+.mon img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0}
+.mon img.on{opacity:1}
+.mon .msg{position:absolute; inset:0; display:none; align-items:center; justify-content:center; padding:10px;
+  text-align:center; font-size:12px; line-height:1.5; color:#c9ccd1}
+.mon.err .fail{display:flex}
+.mon.night:not(.err) .nite{display:block; inset:auto 0 0 0; padding:3px 7px 4px; background:rgba(0,0,0,.78); color:#e7e7e3;
+  text-align:left; font-size:11px}
+.mon .lbl{position:absolute; left:5px; top:5px; z-index:1; padding:2px 5px 1px; border-radius:2px; background:#000;
+  font:700 10px/1.2 var(--en); letter-spacing:.08em; color:var(--green)}
+.mon.night .lbl{color:var(--amber)} .mon.err .lbl{color:var(--red)}
+.mon .yt{position:absolute; right:5px; bottom:5px; z-index:1; padding:2px 6px; border-radius:2px; background:#000;
+  color:#fff; font-size:11px; opacity:0}
+.cam-link:hover .yt, .cam-link:focus-visible .yt{opacity:1}
+.cap{display:block; background:var(--plate); color:var(--plate-ink); padding:8px 10px 10px; flex:1}
+.cap .pl{display:block; font-size:11.5px; font-weight:700; letter-spacing:.06em; color:var(--plate-2)}
+.cap .zh{display:block; font-weight:700; font-size:14px; line-height:1.4}
+.cap .why{display:block; font-size:12.5px; line-height:1.5; margin-top:4px}
+.cap .jp{display:block; font-size:11px; line-height:1.45; margin-top:5px; color:var(--plate-2)}
+.cam-link:hover .zh{text-decoration:underline; text-underline-offset:3px}
+@media (max-width:699px){ .cap .jp{display:none} .cap{padding:7px 8px 9px} .cap .zh{font-size:13.5px} }
+.cam-act{display:flex; gap:0; background:var(--plate); border-top:1px solid var(--plate-rule); border-radius:0 0 3px 3px;
 }
-@media (max-width:860px){
-  .rec-list{grid-template-columns:1fr;}
-}
-@media (max-width:560px){
-  .wrap{padding:15px 12px 44px;}
-  .grid{grid-template-columns:1fr;}
-  .now{gap:9px;}
-  .stamp .d1{font-size:17px;}
-  .stamp .d3 b{font-size:21px;}
-  .now .sun{order:2;}
-  .filters .age{display:none;}
-}
-@media (max-width:380px){
-  .filters{gap:6px;}
-  .filters button{padding:7px 11px; font-size:13.5px;}
-  .now .sun{text-align:left; width:100%;
-    padding-top:9px; border-top:1px dotted var(--line-2);}
-  .shot .yt{opacity:1; background:none;}
-  .shot .yt span{position:absolute; right:8px; bottom:8px; font-size:11.5px; padding:5px 11px;}
-}
+.cam-act > *{flex:1; display:inline-flex; align-items:center; justify-content:center; gap:5px; min-height:38px;
+  font-size:12.5px; border:0; background:none; color:var(--plate-ink); cursor:pointer; text-decoration:none}
+.cam-act > * + *{border-left:1px solid var(--plate-rule)}
+.cam-act .pg{font-size:15px}
+.cam-act .fav[aria-pressed="true"]{color:var(--stop); font-weight:700}
+.cam-act > *:hover{background:var(--plate-soft)}
+.empty{margin:24px 0; padding:18px; text-align:center; background:var(--plate); color:var(--plate-ink); border-radius:4px}
+
+/* ── Notes and footer ────────────────────────────────────────── */
+.notes{display:grid; gap:12px; margin-top:34px}
+@media (min-width:900px){ .notes{grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px} }
+.notes p{margin:0 0 8px; font-size:13.5px}
+footer{margin-top:30px; padding-top:18px; border-top:6px solid var(--ground-ink); color:var(--ground-ink)}
+.sig{display:flex; flex-wrap:wrap; gap:6px 16px; align-items:baseline}
+.sig b{font-size:18px; font-weight:900; letter-spacing:.04em}
+.sig span{font-size:13px}
+.sig a{text-underline-offset:3px}
+.ver{margin-top:6px; font:500 12px/1.4 var(--en)}
+.trip-back{margin-top:12px}
+.legal{margin-top:16px}
+.legal h2{margin:0 0 6px; font-size:16px; font-weight:700}
+.legal ul{margin:6px 0 0; padding-left:1.2em; font-size:12.5px}
+.legal li{margin:5px 0}
+.legal .lead{margin:0; font-size:13.5px}
+.meta-note{margin:14px 0 0; font-size:12px; opacity:.85}
+
+@media (prefers-reduced-motion:reduce){ *{scroll-behavior:auto !important} }
 </style>
 <script>
 /* Apply the saved theme before first paint so dark-mode users do not see a white flash. */
@@ -457,166 +418,192 @@ try{ var _t=localStorage.getItem('tk_theme');
 </script>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="p-left" viewBox="0 0 24 24"><path d="M10.5 4.5 3 12l7.5 7.5v-4.8H21V9.3H10.5Z"/></symbol>
+  <symbol id="p-right" viewBox="0 0 24 24"><path d="M13.5 4.5 21 12l-7.5 7.5v-4.8H3V9.3h10.5Z"/></symbol>
+  <symbol id="p-car" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M4.6 10.6 6.4 6.3A2.3 2.3 0 0 1 8.5 5h7a2.3 2.3 0 0 1 2.1 1.3l1.8 4.3A2 2 0 0 1 21 12.5V17h-1.7a2.6 2.6 0 0 1-5.1 0H9.8a2.6 2.6 0 0 1-5.1 0H3v-4.5a2 2 0 0 1 1.6-1.9Zm2.6-.2h9.6l-1.3-3.2a.9.9 0 0 0-.8-.5H9.3a.9.9 0 0 0-.8.5ZM7.2 15.8a1.2 1.2 0 1 0 0 .1Zm9.6 0a1.2 1.2 0 1 0 0 .1Z"/></symbol>
+  <symbol id="p-train" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M7.5 2.5h9A3.5 3.5 0 0 1 20 6v9a3.4 3.4 0 0 1-2.3 3.2l1.9 3.3h-2.4l-1.6-2.8H8.4l-1.6 2.8H4.4l1.9-3.3A3.4 3.4 0 0 1 4 15V6a3.5 3.5 0 0 1 3.5-3.5Zm-1 4v4.8h11V6.5Zm1.8 7.3a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Zm7.4 0a1.4 1.4 0 1 0 0 2.8 1.4 1.4 0 0 0 0-2.8Z"/></symbol>
+  <symbol id="p-star" viewBox="0 0 24 24"><path d="m12 2.6 2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.2l-5.8 3.2 1.2-6.5-4.8-4.5 6.5-.8Z"/></symbol>
+  <symbol id="p-star-o" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" d="m12 3.4 2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.7l-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8Z"/></symbol>
+  <symbol id="p-pin" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7Zm0 4.1a2.9 2.9 0 1 1 0 5.8 2.9 2.9 0 0 1 0-5.8Z"/></symbol>
+  <symbol id="p-fuji" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M1.5 20.5 9.2 7.6h5.6l7.7 12.9Zm8.6-10.9-1.5 2.6 1.6-.7 1 1.1 1-1.2 1.1 1.2 1-1.1 1.5.7-1.4-2.6Z"/></symbol>
+  <symbol id="p-road" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8.4 3h7.2L21.5 21h-19ZM11.3 6v2.6h1.4V6Zm-.2 4.6v3.2h1.8v-3.2Zm-.3 5.4V19h2.4v-3Z"/></symbol>
+  <symbol id="p-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6"/><path d="M11 1.5h2v3.6h-2Zm0 17.4h2v3.6h-2ZM1.5 11h3.6v2H1.5Zm17.4 0h3.6v2h-3.6ZM4.2 5.6l1.4-1.4 2.6 2.6-1.4 1.4Zm11.6 11.6 1.4-1.4 2.6 2.6-1.4 1.4ZM4.2 18.4l2.6-2.6 1.4 1.4-2.6 2.6Zm11.6-11.6 2.6-2.6 1.4 1.4-2.6 2.6Z"/></symbol>
+  <symbol id="p-moon" viewBox="0 0 24 24"><path d="M14.6 2.6A9.6 9.6 0 1 0 21.4 16 7.8 7.8 0 0 1 14.6 2.6Z"/></symbol>
+  <symbol id="p-auto" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2.5a9.5 9.5 0 1 1 0 19 9.5 9.5 0 0 1 0-19Zm0 2.2v14.6a7.3 7.3 0 0 0 0-14.6Z"/></symbol>
+  <symbol id="p-info" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm-1.3 8.2v8h2.6v-8Zm1.3-4.6a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2Z"/></symbol>
+  <symbol id="p-grid" viewBox="0 0 24 24"><path d="M3 3h8v8H3Zm10 0h8v8h-8ZM3 13h8v8H3Zm10 0h8v8h-8Z"/></symbol>
+  <symbol id="p-bag" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8.5 6V4.6A2.1 2.1 0 0 1 10.6 2.5h2.8a2.1 2.1 0 0 1 2.1 2.1V6H20a1.5 1.5 0 0 1 1.5 1.5v11A1.5 1.5 0 0 1 20 20H4a1.5 1.5 0 0 1-1.5-1.5v-11A1.5 1.5 0 0 1 4 6Zm2-1.4V6h3V4.6Z"/></symbol>
+  <symbol id="sp30" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21.5" fill="#fff" stroke="#d3241b" stroke-width="5"/><text x="24" y="32.2" text-anchor="middle" font-family="Hind,Arial,sans-serif" font-weight="700" font-size="23" letter-spacing="-1" fill="#1d3f94">30</text></symbol>
+</svg>
 <div class="wrap">
 
   <div class="topbar">
-    <a class="home" href="index.html">← 我的小工具</a>
-    <button class="theme-btn" type="button" id="themeBtn"
-      title="切換明暗：跟隨系統 → 淺色 → 深色">◐ 跟隨系統</button>
+    <a class="exit" href="index.html"><span class="exit-k">出口<small>EXIT</small></span><span class="exit-t"><svg class="pg"><use href="#p-left"/></svg>我的小工具</span></a>
+    <h1 class="title">東京近郊即時影像<small>KANTO LIVE CAMERAS</small></h1>
+    <button class="theme-btn" type="button" id="themeBtn" title="切換明暗：跟隨系統 → 淺色 → 深色"><svg class="pg"><use href="#p-auto"/></svg><span>跟隨系統</span></button>
   </div>
 
-  <!-- Layer 1: clocks and day/night -->
-  <div class="now">
-    <div class="stamp">
-      <div class="d1" id="today">—</div>
-      <div class="d2" id="weekday">—</div>
-      <div class="d3">
-        <span class="t-tw">台灣時間<b id="twt">--:--</b></span>
-        <span class="t-jp">日本時間<b id="jst">--:--</b></span>
+  <div class="top" id="top">
+    <section class="trip" id="trip" aria-labelledby="bdLabel">
+      <div class="board">
+        <div class="board-head">
+          <div class="bh-l"><b id="bdLabel">第一天的行程</b><span class="jp" id="bdJp"></span><span class="bh-day" id="bdDay"></span><span class="bh-cd" id="bdCd"></span></div>
+          <div class="bh-clock">
+            <span class="clk"><i>日本</i><span class="led" id="ledJst"></span><span class="sr" id="jst">--:--</span></span>
+            <span class="clk"><i>台灣</i><span class="led" id="ledTwt"></span><span class="sr" id="twt">--:--</span></span>
+          </div>
+        </div>
+        <div class="board-cols" aria-hidden="true"><span>時刻</span><span>行程<span class="mode" id="bdMode"></span></span></div>
+        <ol class="board-rows" id="bdRows"></ol>
+        <div class="board-foot"><span id="bdFoot"></span><button class="trip-off" type="button" id="tripOff">關閉這一區</button></div>
       </div>
+      <div class="tracks" id="tripDays" role="group" aria-label="選擇第幾天"></div>
+      <div class="day" id="tripBody"></div>
+    </section>
+
+    <div class="unko">
+      <section class="panel" aria-labelledby="nowH">
+        <div class="panel-h"><h2 id="nowH">現在的各地</h2><span class="jp">運行情報</span></div>
+        <div class="panel-b">
+          <div class="now-line"><b id="today">—</b><em id="weekday"></em>
+            <span class="sun"><svg class="pg" id="dnIcon"><use href="#p-sun"/></svg><span id="dn">—</span><em id="dnNote"></em></span></div>
+          <p class="brief-note" id="briefNote"></p>
+
+          <div class="wx" id="wx" hidden>
+            <div class="fuji-now">
+              <h3 class="sr">富士山看得到嗎</h3>
+              <ul class="lamps" id="fujiLamps"></ul>
+            </div>
+            <div class="wx-led" id="wxTrack"><span class="led" id="wxRun"></span><span class="sr" id="wxText"></span></div>
+            <div class="wxgrid" id="wxGrid" hidden></div>
+            <div class="tools">
+              <button class="tool" type="button" id="gridBtn" aria-expanded="false" aria-controls="wxGrid"><svg class="pg"><use href="#p-grid"/></svg><span>展開比較</span></button>
+              <button class="tool" type="button" id="fujiBtn" aria-expanded="false" aria-controls="fujiBox"><svg class="pg"><use href="#p-fuji"/></svg><span>富士山看得到嗎</span></button>
+              <button class="tool" type="button" id="packBtn" aria-expanded="false" aria-controls="packBox"><svg class="pg"><use href="#p-bag"/></svg><span>帶什麼</span></button>
+              <span class="src">天氣 <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">穿衣指數 ↗</a></span>
+            </div>
+            <div class="drop" id="fujiBox" hidden></div>
+            <div class="drop" id="packBox" hidden>
+              <h3>十一月的關東・箱根・富士五湖，帶什麼</h3>
+              <p>同一天裡，<b>東京市區、熱海海邊、河口湖湖畔</b>可以差 8～10 度。
+                河口湖海拔約 830 公尺，清晨常在 0～3 度，看逆富士要當冬天穿。</p>
+              <dl class="pack-l">
+                <div><dt>洋蔥式穿法</dt><dd><b>白天市區 15～18 度、朝晚 8～10 度。</b>薄長袖＋可收納的中層＋防風外套最好用，進店脫、出門穿。</dd></div>
+                <div><dt>河口湖・箱根</dt><dd><b>比東京低 5～8 度。</b>D2 夜楓點燈與 D3 清晨都在戶外，帶一件真正保暖的外套與圍巾。</dd></div>
+                <div><dt>雨具</dt><dd><b>降水機率 50% 以上就帶折傘。</b>湘南、熱海沿海風大，傘容易翻，防水外套更實用。</dd></div>
+                <div><dt>鞋</dt><dd>D5～D7 每天走兩萬步起跳，<b>好走的鞋比好看重要</b>。江之島、鎌倉有石階與坡道。</dd></div>
+                <div><dt>自駕日</dt><dd>箱根、熱海峠<b>清晨與夜間會起霧</b>；河口湖朝晚接近冰點，橋面與陰面可能結霜。</dd></div>
+              </dl>
+              <p class="small">穿衣指數以 Weathernews 關東版為準 →
+                <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース 服装予報（関東）↗</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <a class="law" href="#road" id="lawBar">
+        <svg class="sp" viewBox="0 0 48 48" role="img" aria-label="速度限制 30"><use href="#sp30"/></svg>
+        <span class="law-b"><span class="law-k">日本 2026/9/1 新制</span><span class="law-t">沒有中央線的路，法定速限 30 km/h</span></span>
+        <span class="law-go">自駕注意事項</span>
+      </a>
+
+      <section class="panel rec" id="rec" hidden aria-labelledby="recH">
+        <div class="panel-h"><h2 id="recH">現在值得看哪裡</h2><span class="r">依各地日夜與天氣自動挑</span></div>
+        <div class="panel-b"><div class="rec-list" id="recList"></div></div>
+      </section>
     </div>
-
-    <a class="law" href="#road" id="lawBar">
-      <span class="law-k">日本 2026/9/1 新制</span>
-      <span class="law-t">沒有中央線的路，法定速限 30 km/h</span>
-      <span class="law-go">自駕注意事項 ↓</span>
-    </a>
-
-    <p class="sun"><b id="dn">—</b><span id="dnNote"></span></p>
   </div>
 
-  <!-- Layer 2: today's brief -->
-  <section class="brief">
-    <div class="brief-h">
-      <span class="brief-t">今日提醒</span>
-      <span class="brief-note" id="briefNote"></span>
-    </div>
-
-    <div class="wx" id="wx" hidden>
-      <div class="wx-top">
-        <span class="wx-label">今日氣溫 · 降水機率 · 穿著</span><a class="wx-src" href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
-        <a class="wx-more" href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">穿衣指數 ↗</a>
-        <button class="wx-btn" type="button" id="packBtn"
-          aria-expanded="false" aria-controls="packBox">帶什麼 ▾</button>
-        <button class="wx-btn" type="button" id="gridBtn"
-          aria-expanded="false" aria-controls="wxGrid">展開比較 ▾</button>
-        <button class="wx-btn" type="button" id="fujiBtn"
-          aria-expanded="false" aria-controls="fujiBox">富士山看得到嗎 ▾</button>
+  <div class="guide">
+    <section class="panel">
+      <div class="panel-h"><h2>這一頁</h2><span class="jp">ご案内</span></div>
+      <div class="panel-b">
+        <p class="lead">看得到東京、橫濱、箱根、河口湖、熱海現在的樣子，也知道現在該不該去。</p>
+        <p>沿著 11 月自駕行程的路線挑選 YouTube 直播攝影機，中文標示地點。
+          畫面是<strong>當下的畫面</strong>，每分鐘自動更新；點下去手機會開 YouTube 看即時影像。</p>
       </div>
-      <div class="wx-track" id="wxTrack"><div class="wx-run" id="wxRun"></div></div>
-      <div class="wx-grid" id="wxGrid" hidden></div>
-      <div class="fuji" id="fujiBox" hidden></div>
-
-      <div class="pack" id="packBox" hidden>
-        <h5>十一月的關東・箱根・富士五湖，帶什麼</h5>
-        <p class="pack-lead">同一天裡，<b>東京市區、熱海海邊、河口湖湖畔</b>可以差 8～10 度。
-          河口湖海拔約 830 公尺，清晨常在 0～3 度，看逆富士要當冬天穿。</p>
-        <dl class="pack-l">
-          <div><dt>洋蔥式穿法</dt><dd><b>白天市區 15～18 度、朝晚 8～10 度。</b>薄長袖＋可收納的中層＋防風外套最好用，進店脫、出門穿。</dd></div>
-          <div><dt>河口湖・箱根</dt><dd><b>比東京低 5～8 度。</b>D2 夜楓點燈與 D3 清晨都在戶外，帶一件真正保暖的外套與圍巾。</dd></div>
-          <div><dt>雨具</dt><dd><b>降水機率 50% 以上就帶折傘。</b>湘南、熱海沿海風大，傘容易翻，防水外套更實用。</dd></div>
-          <div><dt>鞋</dt><dd>D5～D7 每天走兩萬步起跳，<b>好走的鞋比好看重要</b>。江之島、鎌倉有石階與坡道。</dd></div>
-          <div><dt>自駕日</dt><dd>箱根、熱海峠<b>清晨與夜間會起霧</b>；河口湖朝晚接近冰點，橋面與陰面可能結霜。</dd></div>
-        </dl>
-        <p class="pack-src">穿衣指數以 Weathernews 關東版為準 →
-          <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース 服装予報（関東）↗</a></p>
-      </div>
-    </div>
-
-    <div class="rec" id="rec" hidden>
-      <div class="rec-h">
-        <b>現在值得看哪裡</b>
-        <span>依各支攝影機所在地的日夜與天氣自動挑，理由寫在下面</span>
-      </div>
-      <div class="rec-list" id="recList"></div>
-    </div>
-  </section>
-
-  <section class="trip" id="trip" hidden></section>
-
-  <header>
-    <div class="kicker">Tokyo · Yokohama · Hakone · Fuji · Atami · Live Cameras</div>
-    <h1>東京近郊即時影像</h1>
-    <p class="tagline">看得到東京、橫濱、箱根、河口湖、熱海現在的樣子，也知道現在該不該去。</p>
-    <p class="sub">
-      沿著 11 月自駕行程的路線挑選 YouTube 直播攝影機，中文標示地點。<br>
-      縮圖是<strong>當下的畫面</strong>，每分鐘自動更新；點下去手機會開 YouTube 看即時影像。
-    </p>
-
-    <div class="howto">
-      <button class="howto-btn" type="button" id="howBtn"
-        aria-expanded="false" aria-controls="howBox">怎麼用 ▾</button>
-      <div class="howto-box" id="howBox" hidden>
+    </section>
+    <section class="panel howto">
+      <div class="panel-h"><h2>怎麼用</h2><button class="tool" type="button" id="howBtn" aria-expanded="false" aria-controls="howBox"><span>展開</span></button></div>
+      <div class="panel-b" id="howBox" hidden>
         <ol>
-          <li><b>往下滑就是了。</b>卡片上那張圖就是那個地方現在的樣子，每分鐘自己更新。</li>
-          <li><b>點卡片</b>用 YouTube 看即時影像，手機會直接跳進 App。</li>
-          <li><b>看卡片左上角的標示。</b>LIVE ＝有畫面；<b>夜間</b>＝那邊天黑了，畫面暗是正常的，不是故障；無畫面＝畫格伺服器沒回應，點進去通常還看得到。</li>
-          <li><b>卡片右上角</b>有兩個鈕：☆ 收藏常看的，之後用上面的「收藏」就能只看那幾支；「地圖」開 Google 地圖看那個地點在哪。</li>
-          <li><b>上面的「展開比較」</b>把跑馬燈換成表格，各地氣溫、該穿什麼一次看完。<b>「富士山看得到嗎」</b>用河口湖、山中湖、御殿場、箱根的雲量判斷今天能不能看到富士山。</li>
+          <li><b>最上面是行程看板。</b>今天（出發前是第一天）要去哪、幾點有約，下面是那幾個地方的天氣與該穿什麼。點 D1～D8 換一天。</li>
+          <li><b>往下滑是各地的站牌。</b>每個地方一面站牌，下面掛著那裡的攝影機。螢幕上的圖就是現在的樣子，每分鐘自己更新；點下去用 YouTube 看即時影像，手機會直接跳進 App。</li>
+          <li><b>看螢幕左上角的標示。</b>LIVE ＝有畫面；<b>夜間</b>＝那邊天黑了，畫面暗是正常的，不是故障；無畫面＝畫格伺服器沒回應，點進去通常還看得到。</li>
+          <li><b>螢幕下面</b>有兩個鈕：「收藏」把常看的收起來，之後用篩選列的「收藏」就能只看那幾支；「地圖」開 Google 地圖看那個地點在哪。</li>
+          <li><b>站牌兩端的箭頭</b>走到前一站、下一站；每條線上方的路線圖也可以直接點站名。</li>
+          <li><b>「展開比較」</b>把天氣跑馬燈換成表格，各地氣溫、該穿什麼一次看完。<b>「富士山看得到嗎」</b>用河口湖、山中湖、御殿場、箱根的雲量判斷今天能不能看到富士山。</li>
           <li><b>要開車就點「自駕・路面」。</b>只留拍路面的攝影機，另外給各區的路面判讀，以及日本 9/1 起「沒有中央線的路速限 30」的新制說明。<b>「富士山」</b>則只留拍得到富士山的機位。</li>
-          <li><b>「我的行程」</b>那一區依 trip.html 的 8 天行程，每天列出用得到的攝影機與當地天氣。</li>
         </ol>
       </div>
-    </div>
-  </header>
+    </section>
+  </div>
 
   <nav class="filters" id="filters" aria-label="區域與模式篩選"></nav>
 
-  <section class="road" id="road" hidden>
-    <h4>路面判讀</h4>
-    <p class="road-cap" id="roadCap">依 Open-Meteo 的當地氣溫、降水與能見度換算，<strong>不是官方路況</strong>。實際通行狀況請看下面的官方連結。</p>
-    <div class="road-list" id="roadList"></div>
-
-    <div class="law-full">
-      <h5>9/1 起，日本「生活道路」的法定速限降到 30 km/h</h5>
-      <ul>
-        <li>怎麼認：路面<b>沒有中央分隔線</b>的，就是</li>
-        <li>沒有速限標誌也一樣，法定就是 30</li>
-        <li>有標誌的<b>以標誌為準</b></li>
-        <li>這趟特別容易踩到：河口湖湖畔小路、熱海溫泉街、鎌倉江之島巷道、住宅區</li>
-      </ul>
-      <p class="law-hit">原本這些路是 60。<br>同一條路，同樣的開法，現在可能就是超速一倍。</p>
-      <p class="law-sig">平安是回家唯一的路。</p>
-      <p class="law-src">依<a href="https://www.keishicho.metro.tokyo.lg.jp/kotsu/doro/Residential_roads.html" target="_blank" rel="noopener">警視庁公告</a>整理（令和8年9月1日施行）。
-        有中央線、有車道線、有分隔島的一般道路與高速公路、汽車專用道<b>不變</b>。</p>
+  <section class="panel road" id="road" hidden aria-labelledby="roadH">
+    <div class="panel-h"><svg class="pg"><use href="#p-road"/></svg><h2 id="roadH">路面判讀</h2></div>
+    <div class="panel-b">
+      <p class="small" id="roadCap">依 Open-Meteo 的當地氣溫、降水與能見度換算，<strong>不是官方路況</strong>。實際通行狀況請看下面的官方連結。</p>
+      <div class="road-list" id="roadList"></div>
+      <div class="law-full">
+        <svg class="sp" viewBox="0 0 48 48" role="img" aria-label="速度限制 30"><use href="#sp30"/></svg>
+        <div>
+          <h3>9/1 起，日本「生活道路」的法定速限降到 30 km/h</h3>
+          <ul>
+            <li>怎麼認：路面<b>沒有中央分隔線</b>的，就是</li>
+            <li>沒有速限標誌也一樣，法定就是 30</li>
+            <li>有標誌的<b>以標誌為準</b></li>
+            <li>這趟特別容易踩到：河口湖湖畔小路、熱海溫泉街、鎌倉江之島巷道、住宅區</li>
+          </ul>
+          <p class="law-hit">原本這些路是 60。<br>同一條路，同樣的開法，現在可能就是超速一倍。</p>
+          <p class="law-sig">平安是回家唯一的路。</p>
+          <p class="small">依<a href="https://www.keishicho.metro.tokyo.lg.jp/kotsu/doro/Residential_roads.html" target="_blank" rel="noopener">警視庁公告</a>整理（令和8年9月1日施行）。
+            有中央線、有車道線、有分隔島的一般道路與高速公路、汽車專用道<b>不變</b>。</p>
+        </div>
+      </div>
+      <p class="links">官方：
+        <a href="https://www.jartic.or.jp/" target="_blank" rel="noopener">日本道路交通情報中心 ↗</a>
+        <a href="https://www.c-nexco.co.jp/" target="_blank" rel="noopener">NEXCO 中日本（東名・小田原厚木）↗</a>
+        <a href="https://www.shutoko.jp/" target="_blank" rel="noopener">首都高速 ↗</a>
+        <a href="https://www.ktr.mlit.go.jp/yokohama/" target="_blank" rel="noopener">國道 134・135・138 號（關東地方整備局）↗</a></p>
     </div>
-
-    <p class="road-src">
-      官方：<a href="https://www.jartic.or.jp/" target="_blank" rel="noopener">日本道路交通情報中心 ↗</a>
-      <a href="https://www.c-nexco.co.jp/" target="_blank" rel="noopener">NEXCO 中日本（東名・小田原厚木）↗</a>
-      <a href="https://www.shutoko.jp/" target="_blank" rel="noopener">首都高速 ↗</a>
-      <a href="https://www.ktr.mlit.go.jp/yokohama/" target="_blank" rel="noopener">國道 134・135・138 號（關東地方整備局）↗</a>
-    </p>
   </section>
 
-  <main id="board"></main>
+  <main class="board-main" id="board"></main>
   <p class="empty" id="empty" hidden>這個條件下沒有攝影機。</p>
 
-  <div class="note">
-    <h4>找不到直播的地方</h4>
-    <p><strong>蘆之湖 Skyline、三國峠、十國峠</strong>沒有穩定的 YouTube 直播；能見度請用鄰近的箱根、山中湖、御殿場機位判斷，
-      再對照下方「富士山看得到嗎」。<strong>鎌倉高校前平交道</strong>沒有官方直播，附近的七里ヶ浜與江之島海岸機位可以看天色與海況。</p>
-    <p><strong>富士急樂園</strong>沒有園區直播，出發前一天請上<a href="https://www.fujiq.jp/" target="_blank" rel="noopener">官網</a>確認營運日與檢修休園。</p>
-  </div>
-
-  <div class="note">
-    <h4>畫面說明</h4>
-    <p>卡片左上角的標示有三種：<strong>LIVE</strong>＝有畫面；<strong>夜間</strong>＝那個地方太陽已經下山，
-      畫面暗是正常的，不是壞掉；<strong>無畫面</strong>＝畫格伺服器沒回應。</p>
-    <p>畫面來自 YouTube 的直播畫格，有 CDN 快取，可能落後幾分鐘。要看真正的即時影片就點進去。
-      頻道主停播或換新網址也很正常——點進去若顯示無法播放，往上點頻道名稱，通常會看到他們開了新的直播。</p>
+  <div class="notes">
+    <section class="panel">
+      <div class="panel-h"><h2>找不到直播的地方</h2></div>
+      <div class="panel-b">
+        <p><strong>蘆之湖 Skyline、三國峠、十國峠</strong>沒有穩定的 YouTube 直播；能見度請用鄰近的箱根、山中湖、御殿場機位判斷，
+          再對照上方「富士山看得到嗎」。<strong>鎌倉高校前平交道</strong>沒有官方直播，附近的七里ヶ浜與江之島海岸機位可以看天色與海況。</p>
+        <p><strong>富士急樂園</strong>沒有園區直播，出發前一天請上<a href="https://www.fujiq.jp/" target="_blank" rel="noopener">官網</a>確認營運日與檢修休園。</p>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-h"><h2>畫面說明</h2></div>
+      <div class="panel-b">
+        <p>螢幕左上角的標示有三種：<strong>LIVE</strong>＝有畫面；<strong>夜間</strong>＝那個地方太陽已經下山，
+          畫面暗是正常的，不是壞掉；<strong>無畫面</strong>＝畫格伺服器沒回應。</p>
+        <p>畫面來自 YouTube 的直播畫格，有 CDN 快取，可能落後幾分鐘。要看真正的即時影片就點進去。
+          頻道主停播或換新網址也很正常——點進去若顯示無法播放，往上點頻道名稱，通常會看到他們開了新的直播。</p>
+      </div>
+    </section>
   </div>
 
   <footer>
-    <div class="sig-title">東京近郊即時影像</div>
-    <div class="sig-by">做法參考 <a href="https://hokkaido-livecam-hubaco.netlify.app/" target="_blank" rel="noopener">北海道各地即時影像（虎拔）</a>，攝影機清單依 <a href="trip.html">Autumn Road Trip</a> 行程重新蒐集</div>
-    <button class="trip-back" type="button" id="tripBack" hidden>↩ 重新顯示「我的行程」</button>
+    <div class="sig"><b>東京近郊即時影像</b>
+      <span>做法參考 <a href="https://hokkaido-livecam-hubaco.netlify.app/" target="_blank" rel="noopener">北海道各地即時影像（虎拔）</a>，攝影機清單依 <a href="trip.html">關東秋季紅葉巡航</a> 行程重新蒐集</span></div>
+    <button class="tool trip-back" type="button" id="tripBack" hidden><svg class="pg"><use href="#p-train"/></svg><span>重新顯示行程看板</span></button>
     <!-- Bump this line on every revision: date = edit date, +0.1 minor / +1.0 major -->
-    <div class="sig-ver"><span>2026-09-14　Ver 1.1</span></div>
+    <div class="ver">2026-10-01　Ver 2.0</div>
 
     <section class="legal">
-      <h4>版權與資料來源</h4>
-      <p class="legal-lead">本頁為個人非營利彙整，<strong>不儲存、不轉錄、不轉播</strong>任何影像。</p>
+      <h2>版權與資料來源</h2>
+      <p class="lead">本頁為個人非營利彙整，<strong>不儲存、不轉錄、不轉播</strong>任何影像。</p>
       <ul>
         <li><b>即時畫面</b>　全部為各 YouTube 頻道的公開直播，著作權屬各原始頻道所有。
             本頁僅提供連結與 YouTube 產生的預覽畫格，點擊一律導向 YouTube 原始頁面觀看。</li>
@@ -631,6 +618,8 @@ try{ var _t=localStorage.getItem('tk_theme');
             道路資訊為<a href="https://www.jartic.or.jp/" target="_blank" rel="noopener">日本道路交通情報中心</a>、
             <a href="https://www.c-nexco.co.jp/" target="_blank" rel="noopener">NEXCO 中日本</a>與
             <a href="https://www.shutoko.jp/" target="_blank" rel="noopener">首都高速</a>。</li>
+        <li><b>站牌與看板</b>　站名標、路線色與 TK／YS／HF／IZ 編號是本頁自己的分區，不是任何鐵道公司的路線。
+            看板的點陣字取自 <a href="https://unifoundry.com/unifont/" target="_blank" rel="noopener">GNU Unifont</a>（SIL OFL 1.1）。</li>
         <li>各直播的內容、可用性與正確性由原頻道負責，本頁不做任何擔保。行前請以官方資訊再確認。</li>
       </ul>
     </section>
@@ -639,6 +628,7 @@ try{ var _t=localStorage.getItem('tk_theme');
   </footer>
 </div>
 <script>
+/*LED-GLYPHS-BEGIN*/const LEDG={h:"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¥°·×é–—“”…※→↗⇄─",f:"、。〇《》「」【】〜あいうえおかがきぎくぐけげこごさざしじただちっつてとどなにねのはばぱふぶまみめゃやゅょよらりるれろわをんアィイウェエォオカガキクグケコゴサザシジスズセゾタチッツテトドナネノハバパビフブプベホボマミムメモャヤュョヨラリルレロワンヶ・ー一丁七三上下不且世並中丸主之乘乙也了二五交京亮人今付仙以件伊伎会位低住佐何佛佳來依保信俯倉個候值停側傍傘備僅元先光入內全兩八公六共典内再冬冰凍出分切列初判利到刻前剛加勞勢化北区區十升午半協南危即卸厚原去参參取口古另只可台号吃各合吉同名向否周和咖哥哩唐唯商啡單嗎四回国圈國圍圏園圖土在地址坂型城堀堂報場塔塞壁壞士壯夕外多夜夢大天太央奈奔套奧女好如子季宅守完官定宝客宮家宿寄富實寫寬寶寿封對小少尖就局居屋展層山岡岩岸峠峰島崎川巡巨差已巴巾市帆帚帶常帽幅幕幡平幹幾広底店府度座庫庵廊廣建式強彎形彩影往很後得從御德心必忍忙快思急情意愛憶成或戶房手才打扛技抓折拉拍拱掃掉掌排探接換握搭搶摩播操攝支收改放数整數新斷方旁旅族日早明星是時晚晝晨景晴暗暫曜曲更曽最會月有望朝期木未本李材村束東松板柄校株根格框案梅條梨梭棄棧楓楚業極楽概様樂樓標模横樹橋機橫檔權次歌止正步武段殿比毛氛氣水氷汐江池決汽沒河油治沼沿況泉法波注洋津洲流浅浜浦浪海淞深淺清渋測港湖湘湧湯湾準溫滑滞滿漁漫潮澀濃濕濛濱瀨瀬灌灘灣火灰点為烊烏無然焼煞照熱燈燒燭爬片牌牛特状狀猫率班現球產産用田由町界畔留畫當疊発發白的皆盆益盡盤目直相看県真眺眼眾着瞰知短石確碼磚社神禮秋秒程穩空穿窗立站端競竹第算箱築篩籃系約紅索終結絡絨統絶經綠線總繁繞纜置美群羽翌老考而聖聞聲肉背能腰腳臉自與舍舞航般船艇色芒芙芦苑若茅草華落葉著葛蓉蓋薄藍藏藝蘆處號虹螢蠟行街衝衣表衫袋袖被裡裾複襯西要見覓視観覽觀角訂訊訶試認語調談請議護讀變谷豆貓貝費貼資質走起越足跑距跟路踏車軌較載輪輸轉近返迴迷退送逆透逐這通逛速連進逼遊運過道達遙遠遮選遺避還邊那郡部郵都配酒里重野量金鉄銀錄鍵鎌鏡鐘鐵長門閉開間関關阪防降院陣除陰陽隅隔隘際隨險隻雑雙離雨雪雲零雷電需霄霓霜霧霰露青靖静靜靠面音頂順預頭頻風飄飛食飯餐館首駅駐駕駿驛體高鬧鮮鴨鵠鶴麥黑點＆（）＋，／４：；？＠｜～",b:"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EEAQQBBAEEA+QCJgQlBCSKREFEQIQAhAEEAgQEBAgEACAAIAB/AIIDhABIADQAyAcfgCCAwQMiABQAGADgBwAAIAAQD//giACIAQ+BEIMUhSKJUQERAQoBBAEKARGBYGCCD//gggP/gkSD/4AAB//kICh/QIEDQgAkABgA4AcAABAAEAAQABAAEA//4BAAEAAoACgARABEAIIBAQIAjABgAAP/gBAAEAAQABAP/+AQACgAKABEAEQAggEBAgCMAGAQABAAEAAQABAP/+AQABAAKAAoAEQARACiARECEIwAYBAAEAAQAf8BEQERAREBEQERD//gKAAoAEQAggMBjABgIAAgB//ARACCAwGM/mAAAAAH/8AQAREBEIIQRFBAIAAgACAH/8BEAJIDEYz+YBAAkgCCB//AggCCAQIBAgICABAAEAf/wCgARAD/A0GMfmBAAH4AQA//4EAAgQH/gACAIABAA/+CBoL6glSC/oI0glKCgIAQB//AKADGAwGMAGAgACAAIAAgAEAP/+BCAIIAggEEAYQAaAAYAGYBgQYAgQABD8EAQQCPwQJCAkICX+JCBIICggECAoIEQghKAAQBAAEAAQABB8/kQiRCJEIkRCRCREFEQIRBREInxCRIAAAAB/+AAQACAAQAGAAQD//gEAAQABAAEAAQABAAUAAgAAcB+AAQABAH/8BUAJIDEYz+YAQACA//4BAAEABQACAAIAAQB//kACgAQAIAPwPgACAAP8/gACBAIEAgQB/AAAAgABAH/+QAKARABAAED//gBAAEAQQAhACEAAQAFAAIACAAEAf/5AAoAEH/AAAAAAf/wEQARABEAIRAhEEERgPAIAAQB//kACgAQf8BAQEBAf8BAAEAAf+BAIEAgf+BAIAgABAH/+QAKABAAAP/gBAAEAEQAR+BEAEQApAEf+gAACAAEAf/5AAoAEAAB//AEAAQABAD/4AQABIAEQ//4AAAIAAQB//kACiAQP8BAgLEADgBxw4A4f8BAQEBAf8BAQAgABAH/+QAKABB/wEBAQEB/wAgAEAD/4IAggCD/4IAgCAAEAf/5AAoAEf/wCAA0IcZACoAzAcaAGmBiG4oABAAIAAQB//kACiAQP/BBAMIBT+JIIEggT+BIIEggT+BIIAgABAH/+QgKCBD/4BIAIQP/+ABAfkBCQEJAfkABQACACAAEA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"};/*LED-GLYPHS-END*/
 /* Camera list.
    Each area carries at:[lat,lon] (town position, not the exact camera spot; good enough for
    day/night and weather), wx: display name used by the ticker and trip panel, and fuji:true when
@@ -816,12 +806,49 @@ const TRIP={name:'Autumn Road Trip 2026',start:'2026-11-07',days:[
   c:['成田機場'],wx:['成田']}
 ]};
 
+/* Station signs, one per area: [name on the sign, kana reading, romaji].
+   The line codes TK / YS / HF / IZ and their colours are this page's own grouping, not real railway lines. */
+const LINE={tokyo:'TK',yokohama:'YS',hakone:'HF',atami:'IZ'};
+const STA={
+  '新宿':['新宿','しんじゅく','Shinjuku'],
+  '原宿・表參道・青山':['原宿','はらじゅく','Harajuku'],
+  '澀谷':['澀谷','しぶや','Shibuya'],
+  '銀座・有樂町・新橋':['銀座','ぎんざ','Ginza'],
+  '東京鐵塔・汐留・築地':['東京鐵塔','とうきょうタワー','Tokyo Tower'],
+  '晴空塔・淺草・隅田川':['晴空塔','スカイツリー','Skytree'],
+  '台場・彩虹橋':['台場','おだいば','Odaiba'],
+  '東京駅・丸之內':['東京駅','とうきょう','Tokyo Station'],
+  '成田機場':['成田機場','なりたくうこう','Narita Airport'],
+  '橫濱　港未來・橫濱港':['橫濱','よこはま','Yokohama'],
+  '東名・首都高　橫濱周邊道路':['東名・首都高','とうめい・しゅとこう','Tomei / Shutoko'],
+  '江之島・湘南海岸':['江之島','えのしま','Enoshima'],
+  '鎌倉・七里濱':['鎌倉','かまくら','Kamakura'],
+  '小田原':['小田原','おだわら','Odawara'],
+  '箱根　蘆之湖・湯本・乙女峠':['箱根','はこね','Hakone'],
+  '河口湖':['河口湖','かわぐちこ','Kawaguchiko'],
+  '富士急樂園・富士吉田・忍野':['富士吉田','ふじよしだ','Fujiyoshida'],
+  '山中湖':['山中湖','やまなかこ','Yamanakako'],
+  '御殿場':['御殿場','ごてんば','Gotemba'],
+  '十國峠・三島':['十國峠','じっこくとうげ','Jikkoku Pass'],
+  '熱海':['熱海','あたみ','Atami'],
+  '國道 135 號　熱海→小田原':['國道 135 號','こくどう 135 ごう','Route 135'],
+  '伊東・東伊豆':['伊東','いとう','Ito']
+};
+
 /* Flatten areas into one table; day/night, weather and recommendations work per area. */
 const AREAS=[];
-REGIONS.forEach(r=>r.areas.forEach(a=>{
-  AREAS.push({key:AREAS.length, name:a.name, wx:a.wx, at:a.at, region:r.name, fuji:!!a.fuji,
-              cams:a.cams.map(c=>({id:c[0],zh:c[1],why:c[3],tags:c[4]||'',ch:c[6]||''}))});
-}));
+REGIONS.forEach(r=>{
+  let n=0;
+  r.areas.forEach(a=>{
+    n++;
+    const s=STA[a.name]||[a.name,'',''];
+    AREAS.push({key:AREAS.length, name:a.name, wx:a.wx, at:a.at, region:r.name, rid:r.id,
+      line:LINE[r.id]||'', no:String(n).padStart(2,'0'), sign:s[0], kana:s[1], en:s[2], fuji:!!a.fuji,
+      cams:a.cams.map(c=>({id:c[0],zh:c[1],why:c[3],tags:c[4]||'',ch:c[6]||''}))});
+  });
+});
+const badge=(a,size)=>`<span class="no ${size||''} l-${a.line.toLowerCase()}" aria-hidden="true">${a.line}<b>${a.no}</b></span>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* Only these place names go into the ticker; every area still gets weather. */
 const TICKER=['新宿','橫濱','江之島','小田原','箱根','河口湖','山中湖','御殿場','熱海','成田'];
@@ -863,73 +890,255 @@ const SNOWY=new Set([71,73,75,77,85,86]);
    at least shows itself: the thumbnail fails and the card is marked 無畫面.
    The channelId in column 7 is kept only for finding a replacement stream by hand. */
 const YT=(id,ch)=> 'https://www.youtube.com/watch?v='+id;
+
+const RM=matchMedia('(prefers-reduced-motion: reduce)');
+
+/* ── Dot-matrix LED ─────────────────────────────────────────────────────────
+   Text is drawn dot by dot on <canvas> from the 16-dot GNU Unifont bitmaps in LEDG
+   (rebuild with tools/led-glyphs.py after changing any text the board shows).
+   A character missing from the table is rasterised from the browser's own font. */
+const LED=(()=>{
+  const GL=new Map();
+  const raw=atob(LEDG.b); let o=0;
+  for(const ch of LEDG.h){ const r=new Uint16Array(16); for(let i=0;i<16;i++) r[i]=raw.charCodeAt(o++)<<8; GL.set(ch,{w:8,r}); }
+  for(const ch of LEDG.f){ const r=new Uint16Array(16); for(let i=0;i<16;i++){ r[i]=(raw.charCodeAt(o)<<8)|raw.charCodeAt(o+1); o+=2; } GL.set(ch,{w:16,r}); }
+  GL.set(' ',{w:6,r:new Uint16Array(16)}); GL.set('　',{w:16,r:new Uint16Array(16)});
+  let rc=null;
+  function glyph(ch){
+    let g=GL.get(ch); if(g) return g;
+    if(!rc){ rc=document.createElement('canvas'); rc.width=16; rc.height=16; }
+    const x=rc.getContext('2d',{willReadFrequently:true});
+    x.clearRect(0,0,16,16); x.fillStyle='#000'; x.textBaseline='alphabetic';
+    x.font='15px "Noto Sans TC","PingFang TC",sans-serif';
+    const w=x.measureText(ch).width>10?16:8;
+    x.fillText(ch,0,14);
+    const d=x.getImageData(0,0,16,16).data, r=new Uint16Array(16);
+    for(let y=0;y<16;y++) for(let c=0;c<w;c++) if(d[(y*16+c)*4+3]>110) r[y]|=1<<(15-c);
+    g={w,r}; GL.set(ch,g); return g;
+  }
+  /* segments [[text, colour], …] → columns: bits (row 0 = top) and colour per column */
+  function compose(segs){
+    const bits=[], col=[], st=[], chs=[];
+    segs.forEach(([t,c])=>{ for(const ch of String(t)){
+      const g=glyph(ch);
+      for(let k=0;k<g.w;k++){
+        st.push(k===0?1:0); chs.push(k===0?ch:'');
+        let v=0; const m=1<<(15-k);
+        for(let y=0;y<16;y++) if(g.r[y]&m) v|=1<<y;
+        bits.push(v); col.push(c);
+      }
+    }});
+    return {bits,col,st,chs,n:bits.length};
+  }
+  const OFF='#24221f';
+  function metrics(){
+    const dpr=window.devicePixelRatio||1;
+    const t=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--led-pitch'))||1.3;
+    let dp=Math.round(t*dpr); if(dp<3) dp=3;
+    return {dpr,dp,dot:dp-Math.max(1,Math.floor(dp/4)),pitch:dp/dpr};
+  }
+  let M=metrics();
+  const tcol=()=>document.documentElement.style.setProperty('--tcol',(40*M.pitch)+'px');
+  tcol();
+  const rows=new Set();
+  class Row{
+    constructor(host,opt){
+      this.host=host; this.opt=opt||{}; this.cv=document.createElement('canvas');
+      this.cv.setAttribute('aria-hidden','true'); host.appendChild(this.cv);
+      this.off=0; this.acc=0; this.front=Infinity; this.paused=false; this.seen=true; this.c={bits:[],col:[],n:0};
+      rows.add(this);
+      if(this.opt.scroll){
+        const p=()=>this.paused=true, q=()=>this.paused=false;
+        host.addEventListener('mouseenter',p); host.addEventListener('mouseleave',q);
+        host.addEventListener('touchstart',p,{passive:true}); host.addEventListener('touchend',q,{passive:true});
+        vis.observe(host);
+      }
+    }
+    set(segs){ this.c=compose(segs); this.off=0; this.layout(); }
+    dispose(){ rows.delete(this); if(this.opt.scroll) vis.unobserve(this.host); }
+    layout(){
+      const {dp,pitch}=M, c=this.c;
+      let cols = this.opt.fit ? c.n : Math.max(8,Math.floor((this.host.clientWidth||0)/pitch));
+      this.cols=cols;
+      this.moving = !!this.opt.scroll && c.n>cols && !RM.matches;
+      /* No scrolling (reduced motion, or not a scrolling row): wrap onto extra lines. */
+      this.lines=[[0,c.n]];
+      if(!this.moving && c.n>cols){
+        this.lines=[]; let s=0;
+        while(s<c.n){ let e=Math.min(c.n,s+cols);
+          if(e<c.n){
+            /* break between glyphs, never inside a run of Latin letters or digits */
+            const al=ch=>/[A-Za-z0-9'.,:%¥]/.test(ch), prev=k=>{ let j=k-1; while(j>0 && !c.st[j]) j--; return c.chs[j]; };
+            let k=e; while(k>s && (!c.st[k] || (al(c.chs[k]) && al(prev(k))))) k--;
+            if(k<=s){ k=e; while(k>s && !c.st[k]) k--; }
+            if(k>s) e=k;
+          }
+          this.lines.push([s,e]); s=e;
+          if(c.chs[s]===' ') s+=6; }
+      }
+      const h=this.lines.length*16+(this.lines.length-1)*3;
+      this.cv.width=cols*dp; this.cv.height=h*dp;
+      this.cv.style.width=(cols*pitch)+'px'; this.cv.style.height=(h*pitch)+'px';
+      this.paint();
+    }
+    paint(){
+      const {dp,dot}=M, x=this.cv.getContext('2d'), c=this.c, cols=this.cols;
+      x.clearRect(0,0,this.cv.width,this.cv.height);
+      x.fillStyle=pattern(x);
+      this.lines.forEach((ln,li)=>{
+        const y0=li*19*dp;
+        x.fillRect(0,y0,cols*dp,16*dp);
+      });
+      const period=c.n+40;
+      this.lines.forEach((ln,li)=>{
+        const y0=li*19*dp, len=ln[1]-ln[0];
+        const start = this.moving ? 0 : (this.opt.align==='right' ? cols-len : 0);
+        let last=null;
+        for(let X=0;X<cols && X<this.front;X++){
+          let i;
+          if(this.moving){ i=(X+this.off)%period; if(i>=c.n) continue; }
+          else { i=X-start; if(i<0||i>=len) continue; i+=ln[0]; }
+          const v=c.bits[i]; if(!v) continue;
+          if(c.col[i]!==last){ last=c.col[i]; x.fillStyle=last; }
+          for(let y=0;y<16;y++) if(v&(1<<y)) x.fillRect(X*dp,y0+y*dp,dot,dot);
+        }
+      });
+    }
+    /* Board refresh: the dots come on column by column from the left. */
+    wipe(delay){
+      if(RM.matches){ this.front=Infinity; this.paint(); return; }
+      this.front=0; this.paint();
+      const step=()=>{ this.front+=7; this.paint(); if(this.front<this.cols) setTimeout(step,16); else this.front=Infinity; };
+      setTimeout(step,delay||0);
+    }
+  }
+  const pats=new WeakMap();
+  function pattern(x){
+    const key=M.dp+':'+M.dot; let p=pats.get(x);
+    if(p && p.key===key) return p.pat;
+    const pc=document.createElement('canvas'); pc.width=pc.height=M.dp;
+    const px=pc.getContext('2d'); px.fillStyle=OFF; px.fillRect(0,0,M.dot,M.dot);
+    const pat=x.createPattern(pc,'repeat'); pats.set(x,{key,pat}); return pat;
+  }
+  const vis=new IntersectionObserver(es=>es.forEach(e=>rows.forEach(r=>{ if(r.host===e.target) r.seen=e.isIntersecting; })));
+  /* One clock drives every scrolling row: 24 dot-columns a second, whole-dot steps. */
+  let last=0;
+  function loop(ts){
+    const dt=Math.min(ts-last,100); last=ts;
+    if(!document.hidden) rows.forEach(r=>{
+      if(!r.moving||r.paused||!r.seen) return;
+      r.acc+=dt; let moved=false;
+      while(r.acc>=42){ r.acc-=42; r.off=(r.off+1)%(r.c.n+40); moved=true; }
+      if(moved) r.paint();
+    });
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+  let rz=0;
+  addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ M=metrics(); tcol(); rows.forEach(r=>r.layout()); },120); });
+  RM.addEventListener && RM.addEventListener('change',()=>rows.forEach(r=>r.layout()));
+  return {Row, refresh(){ M=metrics(); tcol(); rows.forEach(r=>r.layout()); }};
+})();
+const AMB='#ffa526', GRN='#4fe070', RED='#ff4d3d';
+
+/* ── Station line: regions, signs, monitors ─────────────────────────────── */
 const MAPQ=id=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(id);
 const FAVKEY='tk_fav';
 let FAV=[];
 try{ FAV=JSON.parse(localStorage.getItem(FAVKEY)||'[]'); }catch(e){ FAV=[]; }
 const isFav=id=>FAV.indexOf(id)>=0;
+const pg=(id,cls)=>`<svg class="pg${cls?' '+cls:''}" aria-hidden="true"><use href="#${id}"/></svg>`;
+function favInner(on){ return pg(on?'p-star':'p-star-o')+`<span>${on?'已收藏':'收藏'}</span>`; }
 
 let total=0, ai=-1;
 document.getElementById('board').innerHTML = REGIONS.map(r=>{
   let rn=0;
-  const areas=r.areas.map(a=>{
-    rn+=a.cams.length; ai++;
-    const cards=a.cams.map(([id,zh,jp,why,tags,q,ch])=>`
-      <div class="cam" data-id="${id}" data-a="${ai}" data-tags="${tags||''}">
-        <a class="cam-link" href="${YT(id,ch)}" target="_blank" rel="noopener">
-          <span class="shot" data-id="${id}">
-            <span class="dot"><i></i><em class="lbl">LIVE</em></span>
-            <img alt="${zh} 即時畫面" loading="lazy" decoding="async">
-            <span class="fail">畫面暫時取不到<br>點進去看直播</span>
-            <span class="nite">這裡太陽已經下山，畫面暗是正常的</span>
-            <span class="yt"><span>用 YouTube 開啟 ↗</span></span>
+  const own=AREAS.filter(a=>a.rid===r.id), L=(LINE[r.id]||'').toLowerCase();
+  const route=own.map(a=>`<li><a href="#a-${a.key}"><i></i><span>${a.sign}</span><small>${a.line}${a.no}</small></a></li>`).join('');
+  const areas=r.areas.map((ar,k)=>{
+    rn+=ar.cams.length; ai++;
+    const a=AREAS[ai];
+    const cards=ar.cams.map(([id,zh,jp,why,tags,q,ch])=>{
+      const cut=zh.indexOf('　'), pl=cut>0?zh.slice(0,cut):'', nm=cut>0?zh.slice(cut+1):zh;
+      return `
+      <article class="cam" data-id="${id}" data-a="${ai}" data-tags="${tags||''}">
+        <a class="cam-link" href="${YT(id,ch)}" target="_blank" rel="noopener" aria-label="${esc(zh)}，用 YouTube 看直播">
+          <span class="mon shot" data-id="${id}">
+            <span class="lbl">LIVE</span>
+            <img alt="" loading="lazy" decoding="async">
+            <span class="msg fail">畫面暫時取不到<br>點進去看直播</span>
+            <span class="msg nite">這裡太陽已經下山，畫面暗是正常的</span>
+            <span class="yt">YouTube ↗</span>
           </span>
-          <span class="meta">
-            <span class="zh">${zh}</span>
-            <span class="jp">${jp}</span>
-            <span class="why">${why}</span>
-          </span>
+          <span class="cap">${pl?`<span class="pl">${pl}</span>`:''}<span class="zh">${nm}</span><span class="why">${why}</span><span class="jp">${jp}</span></span>
         </a>
         <span class="cam-act">
-          <button class="fav" type="button" aria-pressed="${isFav(id)}"
-            aria-label="收藏 ${zh}" title="收藏">${isFav(id)?'★':'☆'}</button>
-          <a href="${MAPQ(q||zh)}" target="_blank" rel="noopener" title="在 Google 地圖看這個地點">地圖</a>
+          <button class="fav" type="button" aria-pressed="${isFav(id)}" aria-label="收藏 ${esc(zh)}">${favInner(isFav(id))}</button>
+          <a href="${MAPQ(q||zh)}" target="_blank" rel="noopener" aria-label="在 Google 地圖看 ${esc(zh)}">${pg('p-pin')}<span>地圖</span></a>
         </span>
-      </div>`).join('');
-    return `<div class="area"><h3>${a.name}</h3><div class="grid">${cards}</div></div>`;
+      </article>`;}).join('');
+    const sub0 = a.name.indexOf('　')>0 ? a.name.slice(a.name.indexOf('　')+1) : a.name;
+    const sub = sub0!==a.sign ? `<span class="eki-sub">${sub0}</span>` : '';
+    return `<section class="area" id="a-${a.key}" data-a="${a.key}" aria-labelledby="ah-${a.key}">
+      <header class="eki">
+        <div class="eki-m">
+          ${badge(a,'l')}
+          <div class="eki-name"><span class="eki-kana">${a.kana}</span><h3 id="ah-${a.key}">${a.sign}</h3><span class="eki-en">${a.en}</span>${sub}</div>
+          <div class="eki-now" id="now-${a.key}"><b class="num">—</b><span></span></div>
+        </div>
+        <div class="eki-band"></div>
+        <nav class="eki-nb" aria-label="${a.sign} 的前後站"><a class="pv" href="#"></a><a class="nx" href="#"></a></nav>
+      </header>
+      <div class="grid">${cards}</div></section>`;
   }).join('');
   total+=rn;
-  return `<section class="region" data-r="${r.id}">
-    <div class="region-head"><h2>${r.name}</h2><p>${r.desc}</p><span class="n">${rn} 支</span></div>
+  return `<section class="region l-${L}" data-r="${r.id}" id="r-${r.id}" aria-labelledby="rh-${r.id}">
+    <div class="line-h"><span class="no l l-${L} line" aria-hidden="true"><b>${LINE[r.id]}</b></span><h2 id="rh-${r.id}">${r.name}</h2><p>${r.desc}</p><span class="n">${rn} 支</span></div>
+    <ol class="route" aria-label="${r.name} 路線圖">${route}</ol>
     ${areas}</section>`;
 }).join('');
 
-/* Frame loading: only visible cards, stop when scrolled away (saves mobile data). */
-const shots=[...document.querySelectorAll('.shot')];
+/* Prev / next station on each sign: the nearest area on the same line that is still shown. */
+function paintNeighbours(){
+  AREAS.forEach(a=>{
+    const el=document.getElementById('a-'+a.key); if(!el) return;
+    const same=AREAS.filter(b=>b.rid===a.rid && !document.getElementById('a-'+b.key).hidden);
+    const i=same.indexOf(a), pv=same[i-1], nx=same[i+1];
+    const P=el.querySelector('.pv'), N=el.querySelector('.nx');
+    P.hidden=!pv; N.hidden=!nx;
+    if(pv){ P.href='#a-'+pv.key; P.innerHTML=pg('p-left')+`<span>${pv.sign}<small>${pv.en}</small></span>`; P.setAttribute('aria-label','前一站 '+pv.sign); }
+    if(nx){ N.href='#a-'+nx.key; N.innerHTML=`<span>${nx.sign}<small>${nx.en}</small></span>`+pg('p-right'); N.setAttribute('aria-label','下一站 '+nx.sign); }
+  });
+}
+
+/* Frame loading: only visible monitors, stop when scrolled away (saves mobile data). */
 const visible=new Set();
 function load(sh){
   const img=sh.querySelector('img');
   const url=`https://i.ytimg.com/vi/${sh.dataset.id}/hqdefault_live.jpg?t=${Date.now()}`;
-  const probe=new Image();
-  probe.onload=()=>{ img.src=url; img.classList.add('on'); sh.classList.remove('err'); paintBadges(); };
-  probe.onerror=()=>{ if(!img.classList.contains('on')){ sh.classList.add('err'); paintBadges(); } };
+  const probe=new Image(), id=sh.dataset.id;
+  probe.onload=()=>{ if(sh.dataset.id!==id) return; img.src=url; img.classList.add('on'); sh.classList.remove('err'); paintBadges(); };
+  probe.onerror=()=>{ if(sh.dataset.id!==id) return; if(!img.classList.contains('on')){ sh.classList.add('err'); paintBadges(); } };
   probe.src=url;
 }
 const io=new IntersectionObserver(es=>es.forEach(e=>{
   if(e.isIntersecting){ if(!visible.has(e.target)){ visible.add(e.target); load(e.target); } }
   else visible.delete(e.target);
 }),{rootMargin:'320px'});
-shots.forEach(s=>io.observe(s));
+document.querySelectorAll('.shot').forEach(s=>io.observe(s));
 
 let lastRefresh=Date.now();
-setInterval(()=>{ visible.forEach(load); lastRefresh=Date.now(); }, 60000);
+setInterval(()=>{
+  visible.forEach(load);
+  document.querySelectorAll('.rec-shot').forEach(s=>{ if(s.dataset.id) load(s); });
+  lastRefresh=Date.now();
+}, 60000);
 setInterval(()=>{
   const el=document.getElementById('age');
-  if(!el) return;
-  el.textContent = `畫面 ${Math.round((Date.now()-lastRefresh)/1000)} 秒前更新`;
+  if(el) el.textContent = `畫面 ${Math.round((Date.now()-lastRefresh)/1000)} 秒前更新`;
 }, 1000);
 
-/* Camera status badge: LIVE / night / no frame */
+/* Monitor status: LIVE / night / no frame */
 const NIGHT_OK=['夜景','街','路','空','鐵'];   // these still show something after dark
 let nightBy={};
 function paintBadges(){
@@ -938,9 +1147,8 @@ function paintBadges(){
     const tags=(c.dataset.tags||'').split(' ');
     const dark = nightBy[c.dataset.a] && !tags.some(t=>NIGHT_OK.indexOf(t)>=0);
     sh.classList.toggle('night', !!dark);
-    if(sh.classList.contains('err')) lbl.textContent='無畫面';
-    else if(dark) lbl.textContent='夜間';
-    else lbl.textContent='LIVE';
+    const t = sh.classList.contains('err') ? '無畫面' : dark ? '夜間' : 'LIVE';
+    if(lbl.textContent!==t) lbl.textContent=t;
   });
 }
 
@@ -953,34 +1161,35 @@ document.getElementById('board').addEventListener('click',e=>{
   if(i>=0) FAV.splice(i,1); else FAV.push(id);
   try{ localStorage.setItem(FAVKEY,JSON.stringify(FAV)); }catch(err){}
   b.setAttribute('aria-pressed',String(i<0));
-  b.textContent = i<0 ? '★' : '☆';
-  const c=document.getElementById('fcount'); if(c) c.textContent=FAV.length?`收藏 ${FAV.length}`:'收藏';
+  b.innerHTML=favInner(i<0);
+  const c=document.getElementById('fcount'); if(c) c.lastChild.textContent=FAV.length?`收藏 ${FAV.length}`:'收藏';
   if(curMode==='fav') applyFilter();
 });
 
-/* Filters: region + mode (favourites / driving / Fuji) */
+/* Line selector: region + mode (favourites / driving / Fuji) */
 let curR='all', curMode='';
 const nav=document.getElementById('filters');
 nav.innerHTML =
-  [{id:'all',name:'全部'}].concat(REGIONS.map(r=>({id:r.id,name:r.name})))
-    .map((c,i)=>`<button data-r="${c.id}" aria-pressed="${i===0}">${c.name}</button>`).join('')
+  '<button class="plain" data-r="all" aria-pressed="true">全部</button>'
+  + REGIONS.map(r=>`<button data-r="${r.id}" aria-pressed="false"><span class="no s l-${LINE[r.id].toLowerCase()} line" aria-hidden="true"><b>${LINE[r.id]}</b></span>${r.name}</button>`).join('')
   + '<span class="sep"></span>'
-  + `<button class="mode" data-m="fav" aria-pressed="false" id="fcount">${FAV.length?'收藏 '+FAV.length:'收藏'}</button>`
-  + '<button class="mode" data-m="road" aria-pressed="false">自駕・路面</button>'
-  + '<button class="mode" data-m="fuji" aria-pressed="false">富士山</button>'
+  + `<button data-m="fav" aria-pressed="false" id="fcount">${pg('p-star')}<span>${FAV.length?'收藏 '+FAV.length:'收藏'}</span></button>`
+  + `<button data-m="road" aria-pressed="false">${pg('p-road')}<span>自駕・路面</span></button>`
+  + `<button data-m="fuji" aria-pressed="false">${pg('p-fuji')}<span>富士山</span></button>`
   + '<span class="age" id="age">畫面 0 秒前更新</span>';
 
 nav.addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b) return;
   if(b.dataset.r){ curR=b.dataset.r; }
   else if(b.dataset.m){ curMode = curMode===b.dataset.m ? '' : b.dataset.m; }
-  nav.querySelectorAll('button[data-r]').forEach(x=>
-    x.setAttribute('aria-pressed',String(x.dataset.r===curR)));
-  nav.querySelectorAll('button[data-m]').forEach(x=>
-    x.setAttribute('aria-pressed',String(x.dataset.m===curMode)));
+  syncNav();
   applyFilter();
   // The bar is sticky, so the viewport is left where it is; jumping to the top was disorienting.
 });
+function syncNav(){
+  nav.querySelectorAll('button[data-r]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.r===curR)));
+  nav.querySelectorAll('button[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.m===curMode)));
+}
 
 function applyFilter(){
   let shown=0;
@@ -994,16 +1203,15 @@ function applyFilter(){
     c.hidden = !(inR&&inM);
     if(!c.hidden) shown++;
   });
-  document.querySelectorAll('.area').forEach(a=>{
-    a.hidden = !a.querySelector('.cam:not([hidden])');
-  });
+  document.querySelectorAll('.area').forEach(a=>{ a.hidden = !a.querySelector('.cam:not([hidden])'); });
   document.querySelectorAll('section.region').forEach(s=>{
     s.hidden = !s.querySelector('.cam:not([hidden])');
+    s.querySelectorAll('.route a').forEach(l=>{ const t=document.querySelector(l.getAttribute('href')); l.parentNode.hidden=!!(t&&t.hidden); });
   });
-  document.getElementById('empty').hidden = shown>0;
-  document.getElementById('empty').textContent =
-    curMode==='fav' ? '還沒有收藏。在卡片右上角點 ☆ 就會收進來。'
-                    : '這個條件下沒有攝影機。';
+  paintNeighbours();
+  const em=document.getElementById('empty');
+  em.hidden = shown>0;
+  em.textContent = curMode==='fav' ? '還沒有收藏。在螢幕下面點「收藏」就會收進來。' : '這個條件下沒有攝影機。';
   document.getElementById('road').hidden = curMode!=='road';
   if(curMode==='road') paintRoad();
 }
@@ -1014,74 +1222,66 @@ document.getElementById('howBtn').addEventListener('click',e=>{
   const open=box.hidden;
   box.hidden=!open;
   b.setAttribute('aria-expanded',String(open));
-  b.textContent = open ? '怎麼用 ▴' : '怎麼用 ▾';
+  b.querySelector('span').textContent = open ? '收合' : '展開';
 });
 
 /* Theme toggle: system → light → dark → system. First paint is handled in <head>. */
 const THEMEKEY='tk_theme';
-const THEMES=[['','◐ 跟隨系統'],['light','☀ 淺色'],['dark','🌙 深色']];
+const THEMES=[['','跟隨系統','p-auto'],['light','淺色','p-sun'],['dark','深色','p-moon']];
 let themeVal=''; try{ themeVal=localStorage.getItem(THEMEKEY)||''; }catch(e){}
 const themeBtn=document.getElementById('themeBtn');
 function paintTheme(){
   if(themeVal) document.documentElement.setAttribute('data-theme',themeVal);
   else document.documentElement.removeAttribute('data-theme');
-  themeBtn.textContent=(THEMES.find(x=>x[0]===themeVal)||THEMES[0])[1];
+  const t=THEMES.find(x=>x[0]===themeVal)||THEMES[0];
+  themeBtn.innerHTML=pg(t[2])+`<span>${t[1]}</span>`;
 }
 paintTheme();
 themeBtn.addEventListener('click',()=>{
   const i=THEMES.findIndex(x=>x[0]===themeVal);
   themeVal=THEMES[(i+1)%THEMES.length][0];
-  try{ themeVal ? localStorage.setItem(THEMEKEY,themeVal)
-                : localStorage.removeItem(THEMEKEY); }catch(e){}
+  try{ themeVal ? localStorage.setItem(THEMEKEY,themeVal) : localStorage.removeItem(THEMEKEY); }catch(e){}
   paintTheme();
 });
 
-/* Ticker ⇄ grid, remembered in localStorage */
+/* Ticker ⇄ grid, remembered in localStorage. With reduced motion the grid is the default. */
 const GRIDKEY='tk_wxgrid';
-let gridOn=false; try{ gridOn=localStorage.getItem(GRIDKEY)==='1'; }catch(e){}
+let gridOn=RM.matches; try{ const g=localStorage.getItem(GRIDKEY); if(g!==null) gridOn=g==='1'; }catch(e){}
 const gridBtn=document.getElementById('gridBtn');
 function paintGrid(){
   document.getElementById('wxTrack').hidden=gridOn;
   document.getElementById('wxGrid').hidden=!gridOn;
   gridBtn.setAttribute('aria-expanded',String(gridOn));
-  gridBtn.textContent = gridOn ? '收合跑馬燈 ▴' : '展開比較 ▾';
+  gridBtn.querySelector('span').textContent = gridOn ? '收合表格' : '展開比較';
+  if(!gridOn && wxRow) wxRow.layout();
 }
-paintGrid();
 gridBtn.addEventListener('click',()=>{
   gridOn=!gridOn;
-  try{ gridOn ? localStorage.setItem(GRIDKEY,'1')
-              : localStorage.removeItem(GRIDKEY); }catch(e){}
+  try{ localStorage.setItem(GRIDKEY,gridOn?'1':'0'); }catch(e){}
   paintGrid();
 });
 
 /* Generic in-place toggles */
-function toggler(btnId,boxId,label){
+function toggler(btnId,boxId){
   document.getElementById(btnId).addEventListener('click',e=>{
     const box=document.getElementById(boxId), b=e.currentTarget;
     const open=box.hidden;
     box.hidden=!open;
     b.setAttribute('aria-expanded',String(open));
-    b.textContent = open ? label+' ▴' : label+' ▾';
   });
 }
-toggler('packBtn','packBox','帶什麼');
-toggler('fujiBtn','fujiBox','富士山看得到嗎');
+toggler('packBtn','packBox');
+toggler('fujiBtn','fujiBox');
 
-/* Top law bar: switch to driving mode, then scroll to the full explanation. */
+/* Law strip: switch to driving mode, then scroll to the full explanation. */
 document.getElementById('lawBar').addEventListener('click',e=>{
   e.preventDefault();
-  if(curMode!=='road'){
-    curMode='road';
-    nav.querySelectorAll('button[data-m]').forEach(x=>
-      x.setAttribute('aria-pressed',String(x.dataset.m===curMode)));
-    applyFilter();
-  }
-  document.getElementById('road').scrollIntoView({behavior:'smooth',block:'start'});
+  if(curMode!=='road'){ curMode='road'; syncNav(); applyFilter(); }
+  document.getElementById('road').scrollIntoView({behavior:RM.matches?'auto':'smooth',block:'start'});
 });
 
 /* Weather (Open-Meteo, no key, CORS enabled, one request for every area). */
 const WXBY={};
-
 /* Clothing icons drawn inline; thresholds in °C. */
 const WEAR=[
   [25,'短袖',
@@ -1112,6 +1312,7 @@ function wearSVG(t,size){
        + `stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round">${w[2]}</g></svg>`;
 }
 
+const wxRow=new LED.Row(document.getElementById('wxRun'),{scroll:true});
 async function loadWeather(){
   const url='https://api.open-meteo.com/v1/forecast'
     + '?latitude='  + AREAS.map(a=>a.at[0]).join(',')
@@ -1119,7 +1320,7 @@ async function loadWeather(){
     + '&current=temperature_2m,precipitation,weather_code,cloud_cover,wind_speed_10m'
     + '&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code'
     + '&hourly=visibility,cloud_cover'
-    // 16 days is the maximum; the trip panel uses it when the trip is close enough.
+    // 16 days is the maximum; the trip board uses it when the trip is close enough.
     + '&timezone=Asia%2FTokyo&forecast_days=16';
   const res=await fetch(url);
   if(!res.ok) throw new Error(res.status);
@@ -1148,38 +1349,32 @@ async function loadWeather(){
   const list=AREAS.filter(a=>TICKER.indexOf(a.wx)>=0)
     .sort((a,b)=>TICKER.indexOf(a.wx)-TICKER.indexOf(b.wx));
 
-  const items=list.map(a=>{
-      const w=WXBY[a.key];
-      return '<span class="wx-item">'
-        + `<span class="wx-city">${a.wx}</span>`
-        + '<span class="wx-slot" title="晝間"><span class="wx-tag">晝</span>'
-        +   wearSVG(w.hi,26) + `<span class="wx-t wx-hi">${w.hi}°</span></span>`
-        + '<span class="wx-slot" title="朝晚"><span class="wx-tag">朝晚</span>'
-        +   wearSVG(w.lo,26) + `<span class="wx-t wx-lo">${w.lo}°</span></span>`
-        + `<span class="wx-p${w.wet?' wet':''}">降雨 ${w.pp}%</span>`
-        + `<span class="wx-w">${WMO[w.code]||''}・${wear(w.hi)[1]}・${rainGear(w)}</span>`
-        + '</span>';
-    }).join('');
-  document.getElementById('wxRun').innerHTML = items + items;   // two copies for a seamless loop
+  /* LED ticker: city in green, the reading in amber, a wet day's rain chance in red. */
+  const segs=[], plain=[];
+  list.forEach((a,k)=>{
+    const w=WXBY[a.key];
+    if(k) segs.push(['　　',AMB]);
+    segs.push([a.wx+' ',GRN],[`${WMO[w.code]||''} ${w.hi}°/${w.lo}° `,AMB],[`降雨${w.pp}% `,w.wet?RED:AMB],[`${wear(w.hi)[1]}・${rainGear(w)}`,AMB]);
+    plain.push(`${a.wx} ${WMO[w.code]||''} 晝 ${w.hi} 度 朝晚 ${w.lo} 度 降雨 ${w.pp}% ${wear(w.hi)[1]}・${rainGear(w)}`);
+  });
+  wxRow.set(segs);
+  document.getElementById('wxText').textContent='各地天氣：'+plain.join('；');
 
   document.getElementById('wxGrid').innerHTML = list.map(a=>{
     const w=WXBY[a.key];
-    return '<div class="wg-cell">'
-      + `<div class="wg-city">${a.wx}</div>`
+    return '<div class="wg">'
+      + `<div class="wg-c">${a.wx}</div>`
       + '<div class="wg-t">'
-      +   '<span class="wx-slot" title="晝間"><span class="wx-tag">晝</span>'
-      +     wearSVG(w.hi,24) + `<span class="wx-t wx-hi">${w.hi}°</span></span>`
-      +   '<span class="wx-slot" title="朝晚"><span class="wx-tag">朝晚</span>'
-      +     wearSVG(w.lo,24) + `<span class="wx-t wx-lo">${w.lo}°</span></span>`
+      +   `<span class="slot" title="晝間"><i>晝</i>${wearSVG(w.hi,24)}<b>${w.hi}°</b></span>`
+      +   `<span class="slot" title="朝晚"><i>朝晚</i>${wearSVG(w.lo,24)}<b>${w.lo}°</b></span>`
       + '</div>'
       + `<div class="wg-p${w.wet?' wet':''}">降雨 ${w.pp}%</div>`
-      + `<div class="wg-w">${WMO[w.code]||''}</div>`
-      + `<div class="wg-w">${wear(w.hi)[1]}・${rainGear(w)}</div>`
+      + `<div class="wg-w">${WMO[w.code]||''}・${wear(w.hi)[1]}・${rainGear(w)}</div>`
       + '</div>';
   }).join('');
 
   document.getElementById('wx').hidden = false;
-  startTicker();
+  paintGrid();
   paintFuji();
   tick();
   if(curMode==='road') paintRoad();
@@ -1205,53 +1400,26 @@ function fujiState(w){
 function paintFuji(){
   const list=AREAS.filter(a=>FUJI_AREAS.indexOf(a.wx)>=0)
     .sort((a,b)=>FUJI_AREAS.indexOf(a.wx)-FUJI_AREAS.indexOf(b.wx));
+  document.getElementById('fujiLamps').innerHTML = list.map(a=>{
+    const st=fujiState(WXBY[a.key]); if(!st) return '';
+    return `<li><span class="lamp ${st.k}" aria-hidden="true"></span><span>${a.wx}<span class="s st-${st.k}">${st.s}</span></span></li>`;
+  }).join('');
   const rows=list.map(a=>{
     const w=WXBY[a.key], st=fujiState(w);
     if(!st) return '';
-    const mark={go:'🟢',warn:'🟡',stop:'🔴'}[st.k];
     const code=w.cur?w.cur.code:w.code;
-    return `<div class="fuji-i">
-      <div class="fh"><b>${a.wx}</b><span class="fv fv-${st.k}">${mark} ${st.s}</span></div>
-      <div class="fs">${WMO[code]||''}　雲量 <em>${w.cloud!=null?Math.round(w.cloud)+'%':'—'}</em>
-        　能見度 <em>${w.vis!=null?(w.vis>=10000?'10 km+':Math.round(w.vis/100)/10+' km'):'—'}</em></div>
-    </div>`;
+    return `<tr><td>${a.wx}</td><td class="st-${st.k}">${st.s}</td>
+      <td>${WMO[code]||''}　雲量 <span class="num">${w.cloud!=null?Math.round(w.cloud)+'%':'—'}</span>
+        　能見度 <span class="num">${w.vis!=null?(w.vis>=10000?'10 km+':Math.round(w.vis/100)/10+' km'):'—'}</span></td></tr>`;
   }).join('');
   document.getElementById('fujiBox').innerHTML =
-    `<h5>富士山現在看得到嗎</h5>
-     <p class="fuji-cap">依各觀景點的雲量、天氣與能見度換算，<strong>不是觀測值</strong>。
+    `<h3>富士山現在看得到嗎</h3>
+     <p>依各觀景點的雲量、天氣與能見度換算，<strong>不是觀測值</strong>。
        秋冬清晨最清楚，午後常起雲；蘆之湖 Skyline、三國峠、十國峠請以最接近的那一格判斷。</p>
-     <div class="fuji-list">${rows}</div>
-     <p class="fuji-src">要看實際畫面，點上面篩選列的「富士山」只留富士山機位。
+     <table class="fuji-t"><tbody>${rows}</tbody></table>
+     <p class="small">要看實際畫面，點篩選列的「富士山」只留富士山機位。
        官方：<a href="https://www.fujigoko.tv/" target="_blank" rel="noopener">富士五湖 TV ↗</a>
        <a href="https://www.fujisan-navi.jp/" target="_blank" rel="noopener">フジヤマ NAVI ↗</a></p>`;
-}
-
-/* Ticker: driven by rAF, not CSS animation (CSS animation is disabled by reduced-motion). */
-let tickerOn=false;
-function startTicker(){
-  const run=document.getElementById('wxRun');
-  const track=document.querySelector('.wx-track');
-  if(tickerOn) return;
-  tickerOn=true;
-  const SPEED=31;
-  let x=0, last=null, paused=false;
-  track.addEventListener('mouseenter',()=>paused=true);
-  track.addEventListener('mouseleave',()=>paused=false);
-  track.addEventListener('touchstart',()=>paused=true, {passive:true});
-  track.addEventListener('touchend',  ()=>paused=false,{passive:true});
-  function step(ts){
-    if(last===null) last=ts;
-    const dt=Math.min((ts-last)/1000,0.1);
-    last=ts;
-    const half=run.scrollWidth/2;
-    if(!paused && half>0){
-      x-=SPEED*dt;
-      if(-x>=half) x+=half;
-      run.style.transform='translateX('+x.toFixed(1)+'px)';
-    }
-    requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
 }
 loadWeather().catch(()=>{});
 setInterval(()=>loadWeather().catch(()=>{}), 30*60*1000);
@@ -1327,14 +1495,13 @@ function recommend(now){
   return top;
 }
 
-/* The three cards are built once; afterwards only text and href change, never innerHTML,
-   otherwise a tap on mobile lands on a freshly re-created element and misses. */
-const MEDAL=['①','②','③'];
+/* The three monitors are built once; afterwards only text, href and frame change, never
+   innerHTML, otherwise a tap on mobile lands on a freshly re-created element and misses. */
 let recBuilt=false;
 function buildRec(){
-  document.getElementById('recList').innerHTML = MEDAL.map(m=>
+  document.getElementById('recList').innerHTML = [0,1,2].map(i=>
     `<a class="rec-card" href="https://www.youtube.com/" target="_blank" rel="noopener" hidden>
-      <span class="rec-rank">${m}</span>
+      <span class="mon shot rec-shot" data-id=""><span class="lbl">${i+1}</span><img alt="" decoding="async"><span class="msg fail">畫面暫時取不到</span></span>
       <span class="rec-b">
         <span class="rec-n"></span>
         <span class="rec-w"></span>
@@ -1353,11 +1520,14 @@ function paintRec(now){
     if(!o){ a.hidden=true; return; }
     const href=YT(o.id,o.ch);
     if(a.getAttribute('href')!==href) a.setAttribute('href',href);
+    const ar=AREAS[o.area], sh=a.querySelector('.shot');
+    if(sh.dataset.id!==o.id){ sh.dataset.id=o.id; sh.querySelector('img').classList.remove('on'); sh.classList.remove('err'); load(sh); }
     const n=a.querySelector('.rec-n'), w=a.querySelector('.rec-w'), x=a.querySelector('.rec-x');
-    const nt=o.zh+(o.photo?'　📸':'');
-    if(n.textContent!==nt)     n.textContent=nt;
+    const nt=o.zh+(o.photo?'<span class="tag-photo">拍照好時機</span>':'');
+    if(n.innerHTML!==nt)       n.innerHTML=nt;
     if(w.textContent!==o.why)  w.textContent=o.why;
-    if(x.textContent!==o.wtxt) x.textContent=o.wtxt;
+    const xt=badge(ar,'s')+`<span>${o.wtxt}</span>`;
+    if(x.innerHTML!==xt)       x.innerHTML=xt;
     a.hidden=false;
   });
   box.hidden=false;
@@ -1381,13 +1551,11 @@ function roadState(w){
 function paintRoad(){
   const rows=AREAS.map(a=>{
     const w=WXBY[a.key], st=roadState(w);
-    if(!st) return `<div class="road-i"><span class="rd-n">${a.name}</span>
-      <span class="rd-s">—</span></div>`;
-    const mark={go:'🟢',warn:'🟡',stop:'🔴'}[st.k];
+    if(!st) return `<div class="road-i"><span class="n">${a.name}</span><span class="t">—</span></div>`;
     return `<div class="road-i">
-      <span class="rd-n">${a.name}</span>
-      <span class="rd-t">${Math.round(w.cur.t)}°</span>
-      <span class="rd-s rd-${st.k}">${mark} ${st.s}</span></div>`;
+      <span class="n">${a.name}</span>
+      <span class="t">${Math.round(w.cur.t)}°</span>
+      <span class="s"><span class="lamp ${st.k}" aria-hidden="true"></span><span class="st-${st.k}">${st.s}</span></span></div>`;
   }).join('');
   document.getElementById('roadList').innerHTML=rows;
   const any=AREAS.some(a=>{const s=roadState(WXBY[a.key]); return s&&s.k!=='go';});
@@ -1397,9 +1565,22 @@ function paintRoad(){
       + '箱根與熱海峠的霧常在清晨與入夜後才出現。';
 }
 
-/* My trip: mirrors trip.html. `c` lists camera name prefixes; `wx` lists weather areas. */
+/* ── The departure board: my trip, mirrors trip.html ───────────────────────
+   `c` lists camera name prefixes; `wx` lists weather areas. Each route step becomes one
+   board row; a time written as its own word (10:30 取車, 富士急樂園（09:00 開園前到）)
+   moves into the time column. */
+const WEEK=['日','一','二','三','四','五','六'];
+function steps(r){
+  return r.split('→').map(s=>s.trim()).filter(Boolean).map(s=>{
+    const m=s.match(/(^|[\s（(])(\d{1,2}:\d{2})(?=$|\s)/);
+    if(!m) return {t:'',x:s};
+    /* "関内店 20:00 前還車" is a deadline: the time stays in the sentence and lights red. */
+    if(/^\s*前/.test(s.slice(m.index+m[0].length))) return {t:m[2].padStart(5,'0'),x:s,due:true};
+    const x=(s.slice(0,m.index)+m[1]+s.slice(m.index+m[0].length)).replace(/（\s+/,'（').replace(/\s{2,}/g,' ').trim();
+    return {t:m[2].padStart(5,'0'),x};
+  });
+}
 function renderTrip(){
-  const el=document.getElementById('trip');
   const jnow=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));
   const j0=new Date(jnow.getFullYear(),jnow.getMonth(),jnow.getDate());
   const s=TRIP.start.split('-').map(Number);
@@ -1407,22 +1588,15 @@ function renderTrip(){
   const gap=Math.round((j0-st)/86400000);
   const todayIdx = (gap>=0 && gap<TRIP.days.length) ? gap : -1;
   let sel = todayIdx>=0 ? todayIdx : 0;
-  const cd = todayIdx>=0 ? `旅行中・第 ${todayIdx+1} 天`
-           : gap<0 ? `距離出發還有 ${-gap} 天` : '行程已結束';
 
-  el.innerHTML =
-    `<div class="trip-h"><h4>我的行程　${TRIP.name}</h4>
-       <span class="cd">${cd}</span>
-       <button class="off" type="button" id="tripOff">關閉這一區</button></div>
-     <div class="trip-days" id="tripDays"></div>
-     <div class="trip-body" id="tripBody"></div>`;
   let off=false;
   try{ off = localStorage.getItem('tk_tripoff')==='1'; }catch(e){ off=false; }
   setTripOff(off);
 
+  const dateOf=i=>new Date(s[0],s[1]-1,s[2]+i);
   document.getElementById('tripDays').innerHTML = TRIP.days.map((d,i)=>
-    `<button type="button" data-i="${i}" aria-pressed="${i===sel}"
-       class="${i===todayIdx?'today':''}">DAY ${d.d}<b>${d.md}</b></button>`).join('');
+    `<button type="button" data-i="${i}" aria-pressed="${i===sel}" class="${i===todayIdx?'today':''}"
+       aria-label="第 ${d.d} 天 ${d.md}${i===todayIdx?'（今天）':''}"><b><small>D</small>${d.d}</b><span>${d.md}</span></button>`).join('');
 
   const allCams=[]; AREAS.forEach(a=>a.cams.forEach(c=>allCams.push({...c,areaKey:a.key})));
   function camsFor(prefixes){
@@ -1436,58 +1610,108 @@ function renderTrip(){
     });
     return out;
   }
+  const dayDate=d=>`${TRIP.start.slice(0,4)}-${d.md.replace('/','-')}`;
   function wxFor(d){
-    const date=`${TRIP.start.slice(0,4)}-${d.md.replace('/','-').padStart(5,'0')}`;
+    const date=dayDate(d);
     return (d.wx||[]).map(name=>{
       const a=AREAS.find(x=>x.wx===name); if(!a) return '';
-      const w=WXBY[a.key]; if(!w) return `<span>${name}　—</span>`;
+      const w=WXBY[a.key];
+      if(!w) return `<li><span class="ar">${name}</span><span></span><span class="tt">—</span><span></span></li>`;
       const f=(w.days||[]).find(x=>x.date===date);
-      if(f) return `<span>${name}　<b>${f.lo}°～${f.hi}°</b>　${WMO[f.code]||''}　降雨 ${f.pp}%</span>`;
-      return `<span>${name}　現在 <b>${w.cur?Math.round(w.cur.t):w.hi}°</b>　${WMO[w.cur?w.cur.code:w.code]||''}</span>`;
+      if(f) return `<li><span class="ar">${name}</span>${wearSVG(f.hi,28)}<span class="tt">${f.lo}°～${f.hi}°</span>`
+        + `<span class="pp${f.pp>=50?' wet':''}">降雨 ${f.pp}%</span>`
+        + `<span class="wr">${WMO[f.code]||''}・${wear(f.hi)[1]}・朝晚${wear(f.lo)[1]}</span></li>`;
+      const t=w.cur?Math.round(w.cur.t):w.hi, code=w.cur?w.cur.code:w.code;
+      return `<li><span class="ar">${name}</span>${wearSVG(t,28)}<span class="tt">${t}°<small>現在</small></span>`
+        + `<span class="pp${w.wet?' wet':''}">降雨 ${w.pp}%</span>`
+        + `<span class="wr">${WMO[code]||''}・${wear(t)[1]}・${rainGear(w)}</span></li>`;
     }).join('');
+  }
+
+  /* Board rows are built once per day; the LED rows keep their canvases between redraws. */
+  const rowsEl=document.getElementById('bdRows');
+  let ledRows=[];
+  function paintBoard(wipe){
+    const d=TRIP.days[sel], i=sel, dt=dateOf(i);
+    const isToday=i===todayIdx;
+    document.getElementById('bdLabel').textContent = isToday ? '今天的行程' : `第 ${d.d} 天的行程`;
+    document.getElementById('bdJp').textContent = isToday ? '本日の行程' : '';
+    document.getElementById('bdDay').textContent = `D${d.d} · ${d.md}（${WEEK[dt.getDay()]}）`;
+    const cd=document.getElementById('bdCd');
+    cd.textContent = todayIdx>=0 ? `旅行中・第 ${todayIdx+1} 天` : gap<0 ? `距離出發還有 ${-gap} 天` : '行程已結束';
+    cd.classList.toggle('today',todayIdx>=0);
+    document.getElementById('bdMode').innerHTML = d.car ? pg('p-car')+'自駕日' : pg('p-train')+'大眾運輸';
+    document.getElementById('bdFoot').innerHTML = `<a href="trip.html#day-${d.d}">看 D${d.d} 的完整行程</a>`;
+
+    const st=steps(d.r);
+    const lines=[{k:'ttl',segs:[[d.t,GRN]],sr:d.t}]
+      .concat(st.map(x=>({k:'st',t:x.t,due:x.due,segs:[[x.x,AMB]],sr:x.due?x.x:(x.t?x.t+' ':'')+x.x})));
+    if(d.n) lines.push({k:'note',segs:[['※ '+d.n,RED]],sr:'注意：'+d.n});
+    rowsEl.innerHTML = lines.map(l=>
+      `<li class="${l.k}">${l.k==='st'?'<span class="led t"></span>':''}<span class="led x"></span><span class="sr">${esc(l.sr)}</span></li>`).join('');
+    ledRows.forEach(r=>r.dispose()); ledRows=[];
+    rowsEl.querySelectorAll('li').forEach((li,k)=>{
+      const l=lines[k];
+      if(l.k==='st' && l.t){
+        const t=new LED.Row(li.querySelector('.t'),{fit:true});
+        t.set([[l.t,l.due?RED:GRN]]); ledRows.push(t);
+      }
+      /* steps scroll when long; the day title and the note wrap so a deadline is never half off the board */
+      const x=new LED.Row(li.querySelector('.x'),{scroll:l.k==='st'});
+      x.set(l.segs); ledRows.push(x);
+    });
+    if(wipe) ledRows.forEach((r,k)=>r.wipe(k*24));
   }
   function paintDay(){
     const d=TRIP.days[sel];
-    const cams=camsFor(d.c).map(c=>
-      `<a href="${YT(c.id,c.ch)}" target="_blank" rel="noopener">${c.zh}</a>`).join('');
+    const cams=camsFor(d.c).map(c=>{
+      const a=AREAS[c.areaKey];
+      return `<li><a href="${YT(c.id,c.ch)}" target="_blank" rel="noopener">${badge(a,'s')}<span>${c.zh}</span></a></li>`;
+    }).join('');
     const wx=wxFor(d);
-    const date=`${TRIP.start.slice(0,4)}-${d.md.replace('/','-')}`;
+    const date=dayDate(d);
+    const loaded=AREAS.some(a=>WXBY[a.key]);
     const inRange=AREAS.some(a=>WXBY[a.key]&&(WXBY[a.key].days||[]).some(x=>x.date===date));
     document.getElementById('tripBody').innerHTML =
-      `<div class="trip-title">DAY ${d.d}　${d.md}　${d.t}
-         <span class="trip-car${d.car?' on':''}">${d.car?'🚗 自駕日':'🚃 大眾運輸'}</span></div>
-       <div class="trip-route">${d.r}</div>`
-      + (d.n?`<div class="trip-route" style="color:var(--ember)">※ ${d.n}</div>`:'')
-      + (cams?`<div class="trip-sec"><h5>這天用得到的攝影機</h5><div class="trip-cams">${cams}</div></div>`:'')
-      + (wx?`<div class="trip-sec"><h5>${inRange?'這天的預報':'各站現在的天氣'}</h5><div class="trip-wx">${wx}</div>
-             <p class="mc-hint">${inRange?'Open-Meteo 16 天預報，越接近越準。':'出發前 16 天內會換成當天預報。'}</p></div>`:'')
-      + `<a class="trip-link" href="trip.html#day-${d.d}">看完整行程 →</a>`;
+      `<div class="day-h"><span>D${d.d} 這天的天氣與攝影機</span><a href="trip.html#day-${d.d}">看完整行程 →</a></div>
+       <div class="day-b">`
+      + (wx?`<div class="day-sec"><h3>${inRange?'這天的預報':'各地現在的天氣'}</h3><ul class="wxrows">${wx}</ul>
+             <p class="hint">${!loaded?'天氣載入中；取不到時這裡會留空。':inRange?'Open-Meteo 16 天預報，越接近越準。':'出發前 16 天內會換成當天預報。'}</p></div>`:'')
+      + (cams?`<div class="day-sec"><h3>這天用得到的攝影機</h3><ul class="xfer">${cams}</ul></div>`:'')
+      + '</div>';
   }
   window.paintTripWx=paintDay;
-  paintDay();
+  paintBoard(false); paintDay();
 
   document.getElementById('tripDays').addEventListener('click',e=>{
     const b=e.target.closest('button'); if(!b) return;
+    if(+b.dataset.i===sel) return;
     sel=+b.dataset.i;
     document.querySelectorAll('#tripDays button').forEach(x=>
       x.setAttribute('aria-pressed',String(+x.dataset.i===sel)));
-    paintDay();
+    paintBoard(true); paintDay();
   });
   document.getElementById('tripOff').addEventListener('click',()=>setTripOff(true,true));
   document.getElementById('tripBack').addEventListener('click',()=>{
     setTripOff(false,true);
-    el.scrollIntoView({behavior:'smooth',block:'start'});
+    LED.refresh();
+    document.getElementById('trip').scrollIntoView({behavior:RM.matches?'auto':'smooth',block:'start'});
   });
 }
 
-/* Hiding the trip section is reversible: the footer button comes back whenever it is off. */
+/* Hiding the board is reversible: the footer button comes back whenever it is off. */
 function setTripOff(off,persist){
   const el=document.getElementById('trip'), back=document.getElementById('tripBack');
   el.hidden=off;
+  document.getElementById('top').classList.toggle('no-trip',off);
   if(back) back.hidden=!off;
   if(persist){ try{ localStorage.setItem('tk_tripoff',off?'1':'0'); }catch(e){} }
 }
-renderTrip();
+
+/* LED clocks */
+const clkJ=new LED.Row(document.getElementById('ledJst'),{fit:true});
+const clkT=new LED.Row(document.getElementById('ledTwt'),{fit:true});
+let clkText='';
 
 /* Clock, day/night and recommendations every 20 seconds */
 function tick(){
@@ -1499,17 +1723,29 @@ function tick(){
   const diff = jd.getDate()!==td.getDate()
     ? `<em>台灣為 ${td.getMonth()+1}月${td.getDate()}日</em>` : '';
   document.getElementById('today').innerHTML =
-    `${jd.getFullYear()}年${jd.getMonth()+1}月${jd.getDate()}日${diff}`;
+    `${jd.getMonth()+1}月${jd.getDate()}日${diff}`;
   document.getElementById('weekday').textContent =
-    `${twWeek[jd.getDay()]}　${jpWeek[jd.getDay()]}`;
-  document.getElementById('jst').textContent=hm(now,'Asia/Tokyo');
-  document.getElementById('twt').textContent=hm(now,'Asia/Taipei');
+    `${twWeek[jd.getDay()]}・${jpWeek[jd.getDay()]}`;
+  const J=hm(now,'Asia/Tokyo'), T=hm(now,'Asia/Taipei');
+  document.getElementById('jst').textContent=J;
+  document.getElementById('twt').textContent=T;
+  if(clkText!==J+T){ clkText=J+T; clkJ.set([[J,GRN]]); clkT.set([[T,AMB]]); }
 
   let dark=0;
   AREAS.forEach(a=>{
     const s=sun(now.getTime(),a.at[0],a.at[1]);
     const n = s ? (now<s.rise||now>s.set) : false;
     nightBy[a.key]=n; if(n) dark++;
+    const el=document.getElementById('now-'+a.key);
+    if(el){
+      const w=WXBY[a.key], code=w?(w.cur?w.cur.code:w.code):null;
+      const b=el.querySelector('b'), sp=el.querySelector('span');
+      const bt = w ? `${w.cur?Math.round(w.cur.t):w.hi}°` : '—';
+      const stt = (code!=null?(WMO[code]||'')+' ':'')
+        + (s ? (n?`<span class="nt">夜間</span> 日出 ${hm(s.rise,'Asia/Tokyo')}`:`日落 ${hm(s.set,'Asia/Tokyo')}`) : '');
+      if(b.textContent!==bt) b.textContent=bt;
+      if(sp.innerHTML!==stt) sp.innerHTML=stt;
+    }
   });
   paintBadges();
 
@@ -1518,8 +1754,8 @@ function tick(){
   if(s){
     const light=now>=s.rise&&now<=s.set;
     dn.textContent=light?'東京現在是白天':'東京現在是夜間';
-    nt.textContent=light?`東京日落 ${hm(s.set,'Asia/Tokyo')}`
-      :`東京日出 ${hm(s.rise,'Asia/Tokyo')}`;
+    nt.textContent=light?`日落 ${hm(s.set,'Asia/Tokyo')}`:`日出 ${hm(s.rise,'Asia/Tokyo')}`;
+    document.querySelector('#dnIcon use').setAttribute('href',light?'#p-sun':'#p-moon');
   }else{ dn.textContent='—'; }
 
   const bn=document.getElementById('briefNote');
@@ -1531,17 +1767,21 @@ function tick(){
     if(a.fuji && FUJI_AREAS.indexOf(a.wx)>=0){ fujiN++; const f=fujiState(w); if(f&&f.k==='go') fujiGo++; }
   });
   const nightTxt = dark>=AREAS.length*0.6
-    ? '🌙 多數戶外攝影機已進入夜間，山區、湖畔與海岸會是全黑——這是正常的，不是壞掉。'
-    : (dark>0 ? '🌙 部分地區已經天黑，卡片上標「夜間」的那幾支畫面會很暗。' : '');
-  if(rainN>=AREAS.length*0.5)      bn.textContent='☔ 關東多數地區正在下雨。'+(dark>0?'　'+nightTxt:'');
-  else if(rainN>0)                 bn.textContent=`☔ 部分地區正在下雨（${rainN} 區）。`+(dark>0?'　'+nightTxt:'');
-  else if(!dark && fujiN && fujiGo>=Math.ceil(fujiN/2)) bn.textContent='🗻 富士山周邊雲量少，現在是看富士山的好時機。';
-  else                             bn.textContent=nightTxt;
+    ? '多數戶外攝影機已進入夜間，山區、湖畔與海岸會是全黑——這是正常的，不是壞掉。'
+    : (dark>0 ? '部分地區已經天黑，螢幕上標「夜間」的那幾支畫面會很暗。' : '');
+  let bt;
+  if(rainN>=AREAS.length*0.5)      bt='關東多數地區正在下雨。'+(dark>0?nightTxt:'');
+  else if(rainN>0)                 bt=`部分地區正在下雨（${rainN} 區）。`+(dark>0?nightTxt:'');
+  else if(!dark && fujiN && fujiGo>=Math.ceil(fujiN/2)) bt='富士山周邊雲量少，現在是看富士山的好時機。';
+  else                             bt=nightTxt;
+  if(bn.textContent!==bt) bn.textContent=bt;
 
   paintRec(now);
 }
+renderTrip();
 tick(); setInterval(tick,20000);
 applyFilter();
+document.fonts && document.fonts.ready.then(()=>LED.refresh());
 
 document.getElementById('foot').innerHTML =
   `收錄 ${total} 支 YouTube 直播，建檔時逐支確認為直播中且畫面正常<br>` +
