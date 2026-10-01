@@ -507,7 +507,7 @@ The meal plate is a ruled box under a charcoal head with a 22px white fork tile 
 Optional material folds into `details` rows (48px summary, 700 14.5px, a chevron that flips with no transition) between 1px rules, under a 附錄 section rule. The 時間軸估算 slip is the faint variant (400, `plate-2`). Print opens all of them.
 
 ### 駅スタンプ Pad (trip.html)
-A 128px dashed square in `plate-soft` labelled 駅スタンプ on its top edge, with an empty 到著章 circle. Pressing it lands a red SVG ink stamp (N日目, place, date) at .92 opacity, multiply blend, rotated per day. The press takes 0.2s, from +6° and 1.18× scale; it is skipped under reduced motion and persists in `shiori-stamps-v1`.
+A 128px dashed square in `plate-soft` labelled 駅スタンプ on its top edge, with an empty 到著章 circle. Pressing it lands a red SVG ink stamp at .92 opacity, multiply blend, rotated per day. Every platform has its own stamp, like a real 駅スタンプ: a frame (double circle, rounded square or octagon), the station's landmark in single-ink line and fill (Yokohama the Cosmo Clock wheel, Kawaguchiko Fuji over its reflection, Enoshima the Sea Candle, Kamakura the Great Buddha, Shinjuku the Metropolitan Government towers and a golf flag, Ginza the Wako clock tower, Shibuya Hachikō by the crossing, Narita the flight home), `N番線 · date` on the top, romaji and the station name below. The press takes 0.2s, from +6° and 1.18× scale; it is skipped under reduced motion and persists in `shiori-stamps-v1`.
 
 ### Facility Chapters (trip.html)
 飯店口, みどりの窓口, 美食街 and 改札口 each stand under a facility sign (charcoal, 4px top radius, 30px white pictogram tile, Facility Head, Hind term, 13px meta line) above a plate body.
