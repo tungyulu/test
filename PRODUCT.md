@@ -2,7 +2,27 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers the **Japan autumn road-trip itinerary** (`trip.html` and its redesign). The other pages in this repository (betting tracker, yacht dice, usage dashboard, golf analyzer, blackjack trainer, investment notes, etc.) are unrelated personal tools and are not described here.
+> Scope: this record covers two surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`, section directly below) and the **Japan autumn road-trip itinerary** (`trip.html`, every section after the hub section). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, blackjack pages, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+
+## Site hub · 我的小工具 (`index.html`)
+
+**Users.** The owner (Traditional Chinese, Taiwan), on phone and desktop about equally, opening the hub to jump into one of their tools. The hub link is also shared with friends, who should understand what each tool is from its entry alone.
+
+**Purpose.** The front door to twelve single-file tools. Success: the owner finds and opens any tool in a couple of seconds, and a friend can tell what each one does and pick one that interests them.
+
+**Content (confirmed grouping, in this order).**
+- 旅行: 關東秋季紅葉巡航 (`trip.html`), 東京近郊即時影像 (`livecam.html`)
+- 遊戲: 快艇骰子 (`yacht.html`), 21點實戰牌桌 (`blackjack-game.html`), 21點機率決策挑戰 (`blackjack.html`), 羊蹄山戰鬼 收集清單 (`yotei.html`)
+- 運動: NBA 拍賣選秀板 (`nba-auction.html`), 高爾夫球軌跡追蹤 (`golf.html`), 運彩投注紀錄 (`betting.html`)
+- 理財與筆記: 投資作戰表 (`invest.html`), Dyson 選購比對 (`dyson.html`), Usage Dashboard (`usage.html`)
+
+**Constraints.** Static single HTML file at the Pages root, no build step. The name 「我的小工具」 is kept. The hub never restyles the tools themselves; each keeps its own look. Every tool must stay reachable; adding a tool later must be a small, obvious edit. No tracking, accounts or invented usage numbers: the hub does not know how often a tool is used.
+
+**Evidence on hand.** The tool names, file names and one-line descriptions from the existing hub and CLAUDE.md. No screenshots, logos or usage data exist; none may be invented.
+
+---
+
+# Trip itinerary (`trip.html`)
 
 ## Platform
 

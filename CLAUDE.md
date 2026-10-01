@@ -8,10 +8,10 @@ This is a static HTML project with no build system or package manager. All HTML 
 
 ## Files
 
-- **`index.html`** — Site hub / navigation page (我的小工具). Displays twelve destination cards linking to the sub-pages below. Served at the GitHub Pages root (`https://tungyulu.github.io/test/`).
+- **`index.html`** — Site hub (我的小工具), redesigned as an empty lot (空地) under a blue sky where twelve pink Anywhere Doors (任意門) stand on the grass, one per tool, in four lots: 旅行 / 遊戲 / 運動 / 理財與筆記. Tapping a door swings it open, white light fills the screen, and the tool opens. Self-contained (inline CSS/JS/SVG, inlined font subsets, no CDN). Served at the GitHub Pages root (`https://tungyulu.github.io/test/`).
 - **`trip.html`** — Japan road trip itinerary (關東秋季紅葉巡航: 東京 / 河口湖 / 湘南), redesigned as a 旅のしおり (hand-stapled trip booklet): cover, contents, 日程表, one page per day, lodging / transport / food chapters, 行前準備 checklist, back cover. Offline-first single file (no CSS, icon or font CDN). Its sticky index-tab strip ends in two out-links, 影像 → `livecam.html` and 舊版 → `trip-v1.html`.
 - **`trip-v1.html`** — The pre-redesign itinerary (tabbed app shell with Tailwind build inlined), kept as-is and reachable from `trip.html`. Content still matches the booklet as of the redesign; new content goes into `trip.html` only.
-- **`tools/trip-font.py`** — Re-subsets the inlined Huninn font in `trip.html` from the page's current text (`pip install fonttools brotli`; `--check` only reports missing glyphs). Run it after any content edit that may introduce new characters.
+- **`tools/trip-font.py`** — Re-subsets the inlined Huninn font in `trip.html` (or `--page index.html`) from the page's current text (`pip install fonttools brotli`; `--check` only reports missing glyphs). Run it after any content edit that may introduce new characters.
 - **`livecam.html`** — Live-camera dashboard (東京近郊即時影像) for the trip: YouTube live cams grouped by region (新宿/澀谷/原宿/銀座/橫濱/江之島鎌倉/箱根/河口湖/熱海/成田), with TW/JP clocks, per-area Open-Meteo weather + clothing advice, a Fuji visibility panel, drive-road readings, and a 「我的行程」 section whose `TRIP` constant mirrors the itinerary's 8 days (day title/route/cameras/weather areas — keep it in sync when the itinerary changes). Self-contained inline CSS/JS; external requests only to Google Fonts, YouTube thumbnails and Open-Meteo. Links back to `index.html` and `trip.html`.
 - **`betting.html`** — Sports betting tracker (世界盃運彩投注紀錄) for parlay/system bets, with combinatorics calculations, real-time profit/loss dashboard, and localStorage persistence.
 - **`yacht.html`** — Yacht dice game (快艇骰子), 5-dice 13-category game supporting 1P-vs-CPU and 2P modes with greedy CPU AI and GSAP animations.
@@ -28,8 +28,12 @@ This is a static HTML project with no build system or package manager. All HTML 
 
 ## Architecture
 
-### `index.html`
-Single-file static hub page. No state, no localStorage. Twelve `<a class="nav-card">` block links in a custom CSS grid (`.card-grid`, `repeat(2, 1fr)`, single column under 600px — twelve cards fill six rows of two). GSAP entrance animation (stagger) and hover lift, both guarded via `window.matchMedia` checks for `prefers-reduced-motion` and `(hover: hover) and (pointer: fine)`. Uses `gsap.set` + `gsap.to` (not `gsap.from` or `gsap.matchMedia` object form — the latter fires the callback once per matching condition and causes duplicate tweens).
+### `index.html` (任意門 hub)
+Product truth: the 「Site hub」 section of `PRODUCT.md`; dev-only direction contract: `.impeccable/surfaces/index-html.md`; design record: `DESIGN-hub.md` + `.impeccable/design-hub.json` (root `DESIGN.md` is the trip's system — the two pages are separate worlds). Single file, no dependencies, no state, no localStorage.
+
+Structure: `header.sky` (flat sky, authored SVG clouds kept in a band above the title on ≥760px, `h1.title` 「我的小工具」, `.lede`, SVG `.horizon`) → `main.field` (flat grass with two offset tuft-pattern layers) → one `section.lot.lot-{travel|games|sports|notes}` per group: `.sign` (SVG stake sign + `h2.sign-text`), the SVG concrete `.pipes` in the first lot only, and `ul.doors > li.spot > a.door` → `footer.foot` → fixed `#flash` overlay. **To add a tool:** copy one `li.spot` into the right lot, set `href`, the nameplate name (split into `span.seg` phrases so it wraps cleanly), the icon `<use href="#i-…">` (add a `<symbol>` to the sprite for a new icon: 24-unit grid, 1.8 stroke), the `.door-desc` line, update the door count in `.lede`/footer/meta, then run `python3 tools/trip-font.py --page index.html`. The title and lot names use `'Zen Maru Heavy'` (Zen Maru Gothic Black, a fixed `unicode-range` subset of 我的小工具旅行遊戲運動理財與筆記) — a new lot name needs a new subset.
+
+A door: `.door-body` > `.door-frame` (deep pink, `perspective`) > `.door-way` (the light behind the door, a radial falloff — no glow shadows) + `.door-panel` (pink, `transform-origin: left`, `.mold-top/.mold-bot` mouldings, `.knob`, white `.plate` with icon + name) + `.door-shadow`; `.door-desc` sits on the grass below. Hover/focus opens the panel a crack (`rotateY(-26deg)`). JS: a plain click (no modifier, left button) calls `preventDefault`, adds `.is-opening` (panel to `rotateY(-108deg)`), sets `#flash`'s `--x/--y` to the doorway centre, grows its `clip-path` circle at 300 ms and navigates at 720 ms; modified clicks and `prefers-reduced-motion` navigate immediately. A `pageshow` handler closes every door again because the Back button restores the page from bfcache mid-animation. All text is navy `--ink` (≥6.5:1 on sky and grass); no gradients as fills except the doorway light and contact shadows.
 
 ### `trip.html` (旅のしおり)
 Product truth lives in `PRODUCT.md` (scope: this itinerary only); the visual system in `DESIGN.md` + `.impeccable/design.json`; the dev-only direction contract in `.impeccable/surfaces/trip-html.md` (never copy it into the page). Generated once from `trip-v1.html`'s content, then maintained by hand — edit `trip.html` directly.
@@ -147,9 +151,9 @@ Content-only static page — the odd one out: **no JS at all and no CDN requests
 
 ## External Dependencies (CDN only)
 
-All pages except `dyson.html`, `invest.html`, `blackjack.html`, `blackjack-game.html` and `yotei.html` (which are fully self-contained) load from CDN — no local dependencies to install (`golf.html` loads only GSAP core + Google Fonts; `nba-auction.html` only Google Fonts):
+All pages except `index.html`, `dyson.html`, `invest.html`, `blackjack.html`, `blackjack-game.html` and `yotei.html` (which are fully self-contained) load from CDN — no local dependencies to install (`golf.html` loads only GSAP core + Google Fonts; `nba-auction.html` only Google Fonts):
 - Tailwind CSS (`cdn.tailwindcss.com`) — **not** on `trip.html` (hand-written CSS) or `trip-v1.html` (pre-compiled build inlined); both work offline
-- GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (trip-v1, betting), SplitText (yacht); index and golf load core only.
+- GSAP 3.12.5 (`cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/`) — core + ScrollTrigger (trip-v1, betting), SplitText (yacht); golf loads core only.
 - Lucide icons (`unpkg.com/lucide@latest`) — trip-v1, betting
 - Google Fonts — Noto Sans TC (all pages)
 
@@ -161,7 +165,6 @@ It was **not** installed with `npx impeccable install`: in Claude Code cloud ses
 
 ## GSAP Usage Notes
 
-- **`index.html`**: Use `window.matchMedia().matches` + `gsap.set`/`gsap.to`. Do NOT use `gsap.matchMedia().add(objectForm)` — it fires the callback once per matching condition, causing duplicate stagger tweens.
 - **`trip-v1.html`** / **`betting.html`** / **`yacht.html`** / **`golf.html`**: Use `gsap.matchMedia().add(objectForm, cb)` — these pages already do so correctly, reading `ctx.conditions` inside a single callback.
 
 <!-- SPECKIT START -->

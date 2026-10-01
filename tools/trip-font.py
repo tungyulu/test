@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Re-embed the Huninn (jf open 粉圓) subset in trip.html after its text changes.
+"""Re-embed the Huninn (jf open 粉圓) subset in trip.html (or index.html) after its text changes.
 
 trip.html ships offline-first: its display/body face is a subset of Huninn that
 contains only the glyphs the page uses, inlined as a WOFF2 data URI. Any edit that
@@ -9,6 +9,7 @@ character falls back to the system font.
     pip install fonttools brotli
     python3 tools/trip-font.py            # re-subset from trip.html's current text
     python3 tools/trip-font.py --check    # only report characters missing from the subset
+    python3 tools/trip-font.py --page index.html   # same, for the hub (any page with the 'Huninn Shiori' face)
 
 The full font (SIL OFL 1.1) is fetched from Google Fonts on first run and cached in
 ~/.cache/trip-font/. Nothing else in the page is touched.
@@ -16,7 +17,8 @@ The full font (SIL OFL 1.1) is fetched from Google Fonts on first run and cached
 import base64, html, io, re, sys, urllib.request
 from pathlib import Path
 
-PAGE = Path(__file__).resolve().parent.parent / 'trip.html'
+ROOT = Path(__file__).resolve().parent.parent
+PAGE = ROOT / (sys.argv[sys.argv.index('--page') + 1] if '--page' in sys.argv else 'trip.html')
 CACHE = Path.home() / '.cache' / 'trip-font' / 'Huninn-Regular.ttf'
 CSS_URL = 'https://fonts.googleapis.com/css2?family=Huninn&display=swap'
 FACE_RE = re.compile(r"(@font-face\{font-family:'Huninn Shiori';src:url\(data:font/woff2;base64,)([A-Za-z0-9+/=]+)(\))")
@@ -31,8 +33,10 @@ def page_chars(src: str) -> set:
     body = re.sub(r'<script>.*?</script>', ' ', body, flags=re.S)
     text = html.unescape(re.sub(r'<[^>]+>', ' ', body))
     attrs = ' '.join(re.findall(r'(?:aria-label|title|data-ink)="([^"]*)"', src))
-    strings = ' '.join(a or b for a, b in re.findall(r"'([^'\n]*)'|`([^`\n]*)`", script))
-    return {c for c in text + attrs + strings + RUNTIME if not c.isspace()}
+    # trip.html's script writes visible text (cover stamp, buttons); the hub's script writes none
+    writes_text = PAGE.name == 'trip.html'
+    strings = ' '.join(a or b for a, b in re.findall(r"'([^'\n]*)'|`([^`\n]*)`", script)) if writes_text else ''
+    return {c for c in text + attrs + strings + (RUNTIME if writes_text else '') if not c.isspace()}
 
 
 def font_path() -> Path:
@@ -52,7 +56,7 @@ def main() -> None:
     src = PAGE.read_text(encoding='utf-8')
     m = FACE_RE.search(src)
     if not m:
-        sys.exit("trip.html has no inlined 'Huninn Shiori' @font-face — nothing to update")
+        sys.exit(f"{PAGE.name} has no inlined 'Huninn Shiori' @font-face — nothing to update")
     want = page_chars(src)
     have = set(chr(u) for u in TTFont(io.BytesIO(base64.b64decode(m.group(2)))).getBestCmap())
     missing = sorted(c for c in want - have if ord(c) > 0x20)
@@ -76,7 +80,7 @@ def main() -> None:
     full.save(buf)
     b64 = base64.b64encode(buf.getvalue()).decode()
     PAGE.write_text(src[:m.start(2)] + b64 + src[m.end(2):], encoding='utf-8')
-    print(f'trip.html: font subset {len(buf.getvalue()) // 1024} KB, {len(want)} chars'
+    print(f'{PAGE.name}: font subset {len(buf.getvalue()) // 1024} KB, {len(want)} chars'
           f' ({len(missing)} newly added{", not in Huninn: " + "".join(unsupported) if unsupported else ""})')
 
 
