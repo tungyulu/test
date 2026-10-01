@@ -94,6 +94,7 @@ Must be preserved in any redesign:
 - Knows the date: countdown before departure; during the trip, opens on today's day and marks it.
 - Deep links to a day or section; Google Maps link per place; printable.
 - Static single HTML file on GitHub Pages, no build step, no runtime CSS framework (offline).
+- The earlier versions stay reachable from the current page: `trip-v2.html` (the 旅のしおり booklet) and `trip-v1.html` (the first tabbed page).
 - Optional material (timelines, alternates, shopping lists, sightseeing notes) stays available but out of the way.
 
 User-stated preferences that bind:
