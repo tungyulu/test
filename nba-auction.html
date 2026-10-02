@@ -400,7 +400,7 @@
   .dc { display: grid; justify-items: center; gap: 3px; padding: 7px 0 6px; border-radius: 8px; background: var(--panel-2); cursor: default; }
   .dc b { font: 700 11px/1 var(--num); letter-spacing: .03em; color: var(--ink-3); }
   .dc i { font: 800 17px/1 var(--num); font-style: normal; font-variant-numeric: tabular-nums; color: var(--ink-2); }
-  .dc s { text-decoration: none; white-space: nowrap; font: 600 12.5px/1 var(--num); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .dc s { text-decoration: none; white-space: nowrap; font: 600 13.5px/1 var(--num); color: var(--ink-2); font-variant-numeric: tabular-nums; }
   .dc.pos i { color: var(--up); } .dc.neg i { color: var(--down); }
   .dc.pos.big { background: var(--up-soft); } .dc.neg.big { background: var(--down-soft); }
   .dc:hover, .dc:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
@@ -408,7 +408,7 @@
   @container tres (max-width: 440px) { .dc s { font-size: 11px; letter-spacing: -.01em; } .dc s .ar { letter-spacing: -.1em; } }
   @container tres (max-width: 300px) { .dc s .ar { display: none; } .dcells { gap: 3px; } .dc i { font-size: 15px; letter-spacing: -.02em; } }
   /* 窄的結果欄：每週的「類」與「$」上下排，隊名有地方放 */
-  @container tres (max-width: 460px) { .bx .bm { display: block; margin: 4px 0 0; } .bx td .num { font-size: 15px; } }
+  @container tres (max-width: 360px) { .bx .bm { display: block; margin: 4px 0 0; } .bx td .num { font-size: 15px; } }
   .bx { width: 100%; border-collapse: collapse; font-size: 14px; }
   .bx th, .bx td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: baseline; white-space: nowrap; }
   .bx th:first-child { padding-left: 0; text-align: left; white-space: normal; font-weight: 700; }
