@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`) and the **Yacht dice game** (`yacht.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), the **Yacht dice game** (`yacht.html`) and the **NBA fantasy board** (`nba-auction.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, investment notes, Yōtei checklist, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
@@ -58,6 +58,26 @@
 **Purpose.** A quick game of Yacht that is fun to watch: the race between the two scores should be visible at a glance, not read off a table. Success: a turn is roll → keep → roll → pick a row with no explanation needed, and either player can tell who is ahead and by how much from across the table.
 
 **Capabilities that must survive any redesign.** Five dice, up to three rolls a turn, holding any dice between rolls; thirteen categories (一點–六點, 三同, 四同, 葫蘆 25, 小順 30, 大順 40, 快艇 50, 機會) with the upper bonus of 35 at 63; 1P vs CPU (the greedy CPU: best-scoring open row, holds for it, rerolls twice) and 2P on one device; a preview of every open row's score for the current roll; the final board with the winner or a tie; a way back to the hub. Nothing is saved (by design: a refresh starts a new game). No new rules or features without the owner asking.
+
+## NBA fantasy board · NBA 拍賣選秀板 (`nba-auction.html`)
+
+**Users.** The owner, manager of the team 創沒有未來 in a 14-team 2026-27 fantasy league on Yahoo, on phone and desktop about equally, all season long. Linked from the hub's 運動 lot.
+
+**Purpose.** Built as an auction board for the 2026-09-29 draft; since the draft it is the owner's season tool. Opening the page answers "where does my team stand and what is weak" first (rank, average categories won per week, the weekly money at the league's bet, weak categories), then the 14-team table, the trade calculator, suggested trades and free agents. Success: in a few seconds the owner knows their standing and what to fix, and can price any trade offer from a league-mate in a few taps.
+
+**Capabilities that must survive any redesign.**
+- The league's rules: traditional 9-cat (PTS, REB, AST, STL, BLK, 3PM, FG%, FT%, TO), head-to-head with every category its own win or loss, daily lineups, 14 teams of 14 (11 starters + 3 bench), 4 IL slots, $200 auction; the bet is $60 × (categories won − lost) per week over a 20-week regular season.
+- About 240 hand-made 2026-27 projections and the valuation built on them: per-game z-scores, suggested price, the 0–100 recommendation index with S/A/B/C/D grades, the tags (值得搶, 易溢價, 適合 punt, rookie classes), each player's nine-category heatmap, punt toggles that re-price everything.
+- League mode: the 聯盟戰力 table (14 teams by weekly W–L and $/week, nine category ranks, each roster with draft price against value, strengths and weaknesses); my team's rank, weekly record, $/week and season estimate, category ranks and weekly margin against every team; the 交易試算 calculator (any players with any team or the free-agent pool, before → after for both teams and the nine category win rates, apply and undo); 1-for-1 trade suggestions that do not hurt the partner and pass the draft-price check, and free-agent pickups; changing any player's owner; the two-step 還原成選秀名單.
+- The auction tracker (budget, max bid, inflation, tiers, $200 plans, tips) stays in the page for next season's draft and is hidden in league mode.
+- Search, sort, position / rookie-class / 值得搶 / free-agent filters; tooltips on heat cells and tiers.
+- Rosters, applied trades and settings persist per device (localStorage `nba-auction-2026-v1`); a new embedded draft list (`DRAFT_ID`) replaces local edits on every device.
+- The league numbers come from the analytic engine (no sampling noise); the 14 fantasy team names show exactly as the managers named them.
+- Static single HTML file on GitHub Pages, Traditional Chinese.
+
+**Binding preferences (2026-10-02).** Numbers stay easy to compare: league, roster and player data stay in aligned rows and columns, never split into separate cards. Nothing the owner checks often (standing, category ranks, trade results) hides behind extra taps or nested panels.
+
+**Evidence on hand.** The projections (estimates compiled 2026-09-28 from ESPN's rankings, team news and 2025-26 stats, with camp-news adjustments), the official 196 draft picks and the team names. The projections are estimates and the page says so. No NBA, team or Yahoo logos and no player photos are on hand; none may be added or imitated, and nothing may look like an official NBA or Yahoo product.
 
 ---
 
