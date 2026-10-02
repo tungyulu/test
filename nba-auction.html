@@ -4,946 +4,859 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NBA 拍賣選秀板</title>
-<meta name="description" content="2026-27 Fantasy 9-cat 聯盟的戰術板：我的戰力與弱項、14 隊每週輸贏、交易試算、推薦交易與自由球員，以及拍賣建議價。">
+<meta name="description" content="2026-27 Fantasy 9-cat 聯盟工具：我的戰力與弱項、14 隊每週輸贏、交易試算、推薦交易與自由球員，以及拍賣建議價。">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#C3C9CF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#3A4047" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161920" media="(prefers-color-scheme: dark)">
 <script>try { var t = localStorage.getItem('nba-auction-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Noto+Sans+TC:wght@400;500;700;900&family=Sofia+Sans+Condensed:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&family=Sofia+Sans+Condensed:wght@500;600;700;800&display=swap">
 <style>
-  /* ---------- 戰術白板：白天是白板，晚上是黑色玻璃戰術板 ---------- */
+  /* ---------- 標準的 fantasy 數據 app：淺色是灰底白面板，深色是近黑底炭灰面板 ---------- */
   :root {
-    --wall:      #34414E;   /* 板子後面的休息室牆面（寬螢幕才看得到） */
-    --board:     #F3F5F4;   /* 白板 */
-    --board-2:   #E8EDEE;
-    --ghost:     rgba(52, 64, 76, .13);   /* 沒擦乾淨的舊戰術 */
-    --print:     #8EA8C3;   /* 板子上印好的線：球場、格線 */
-    --print-2:   #C9D6E2;
-    --print-ink: #3D5C7C;   /* 印刷的小字 */
-    --ink:       #1C2024;   /* 黑色麥克筆／印刷黑字 */
-    --ink-2:     #44515E;
-    --m-blue:    #1D52BA;   /* 四支白板筆：黑、藍、紅、綠 */
-    --m-red:     #C42E28;
-    --m-green:   #0F7A42;
-    --m-red-soft:   rgba(196, 46, 40, .10);
-    --m-green-soft: rgba(15, 122, 66, .10);
-    --on-blue:   #FFFFFF;
-    --strip:      #FFFFFF;  /* 磁鐵名牌 */
-    --strip-edge: #CDD6DF;
-    --strip-shadow: 0 1px 1px rgba(28, 40, 52, .16), 0 2px 5px rgba(28, 40, 52, .07);
-    --strip-lift:   0 3px 4px rgba(28, 40, 52, .18), 0 10px 18px rgba(28, 40, 52, .15);
-    --tape:       #FFFFFF;  /* 標籤貼紙 */
-    --tape-mine:  #FFD84A;  /* 我的隊：黃色 */
-    --tape-mine-edge: #E9BE1F;
-    --mine-tint:  #FFF6CC;
-    --tape-ink:   #1C2024;
-    --tape-dark:  #22262A;  /* 黑色標籤：工具提示 */
-    --tape-dark-ink: #F3F5F4;
-    --paper:      #FFFFFF;  /* 貼在板子上的說明紙 */
-    --paper-ink:  #1C2024;
-    --tape-clear: rgba(176, 192, 210, .42);
-    --strip-side: #B8C3CE;  /* 磁鐵的厚度（下緣） */
-    --tape-mine-side: #C9A313;
-    --pen-body: #F4F6F7;    /* 筆槽裡的白板筆 */
-    --pen-cap:  #23272B;
-    --pen-cap-blue: #0E2C66;
-    --groove:   rgba(40, 50, 60, .14);
-    --alu:    #C3C9CF;      /* 鋁框與筆槽 */
-    --alu-hi: #E6E9EC;
-    --alu-lo: #8E969E;
-    --cap:    #2A2E33;
-    --rail-ink:   #1C2024;
-    --rail-green: #095A30;
-    --rail-red:   #9A1F1A;
-    /* 類別磁鐵：藍 = 強、紅 = 弱 */
-    --t3: #1D52BA; --t2: #7EA4E4; --t1: #C9D8F4; --t0: #E3E8EB; --t-1: #F4CDC9; --t-2: #E5867E; --t-3: #C42E28;
-    --ti3: #FFFFFF; --ti2: #10223F; --ti1: #10223F; --ti0: #1C2024; --ti-1: #3D1311; --ti-2: #2B0B09; --ti-3: #FFFFFF;
-    --focus:  #1D52BA;
-    --select: rgba(255, 216, 74, .6);
-    --tick-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.6l3 3.1L13.2 4' fill='none' stroke='%231D52BA' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --print-face:  "Sofia Sans Condensed", "Barlow Condensed", "Noto Sans TC", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
-    --marker-face: "Kalam", "Noto Sans TC", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --bg:      #F2F3F6;
+    --panel:   #FFFFFF;
+    --panel-2: #F6F7F9;   /* 表頭、滑過 */
+    --panel-3: #ECEEF2;   /* 膠囊底 */
+    --line:    #E3E6EB;
+    --line-2:  #CFD4DC;
+    --ink:     #101318;
+    --ink-2:   #465062;
+    --ink-3:   #626B7C;
+    --accent:       #6927DA;   /* 唯一的強調色：主要按鈕、選取、焦點、我的隊 */
+    --accent-hover: #5720BD;
+    --accent-ink:   #FFFFFF;
+    --accent-soft:  #F3EEFF;
+    --accent-line:  #D6C7FB;
+    --up:   #067647;   /* 贏錢、變好 */
+    --down: #C01F14;   /* 輸錢、變差 */
+    --up-soft:   #E6F5EC;
+    --down-soft: #FDECEA;
+    /* 九類熱度與名次：藍 = 強，紅 = 弱，格子裡一定印數字 */
+    --t3: #1F55C2; --t2: #6E98E6; --t1: #CBDBF7; --t0: #ECEEF2; --t-1: #F7D4D0; --t-2: #E8857C; --t-3: #C01F14;
+    --ti3: #FFFFFF; --ti2: #0D1F42; --ti1: #0D1F42; --ti0: #101318; --ti-1: #3D1311; --ti-2: #2B0B09; --ti-3: #FFFFFF;
+    --strong: #1F55C2;
+    --focus:  #6927DA;
+    --select: rgba(105, 39, 218, .18);
+    --shadow-1: 0 1px 2px rgba(16, 24, 40, .05), 0 1px 3px rgba(16, 24, 40, .06);
+    --shadow-2: 0 8px 24px rgba(16, 24, 40, .14), 0 2px 6px rgba(16, 24, 40, .08);
+    --tick-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.4l3 3L12.5 5' fill='none' stroke='%23FFFFFF' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --chev-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%23465062' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     --sans: "Noto Sans TC", system-ui, -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
-    --chev-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%233D5C7C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --gut: 14px;
-    --rail-w: 5px;
+    --num:  "Sofia Sans Condensed", "Barlow Condensed", "Noto Sans TC", system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --gut: 16px;
+    --bar-h: 61px;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --wall: #0B0E11; --board: #17191C; --board-2: #202328; --ghost: rgba(225, 232, 240, .09);
-      --print: #3F5D7D; --print-2: #2C3846; --print-ink: #8FB0D2; --ink: #EEF0EC; --ink-2: #B4BEC8;
-      --m-blue: #7DB4FF; --m-red: #FF8077; --m-green: #64DB9B;
-      --m-red-soft: rgba(255, 128, 119, .14); --m-green-soft: rgba(100, 219, 155, .12); --on-blue: #0B1A33;
-      --strip: #262A2F; --strip-edge: #363D45;
-      --strip-shadow: 0 1px 1px rgba(0, 0, 0, .5), 0 2px 6px rgba(0, 0, 0, .35);
-      --strip-lift: 0 4px 6px rgba(0, 0, 0, .55), 0 12px 22px rgba(0, 0, 0, .45);
-      --tape: #E6E9EB; --tape-mine: #E9C33A; --tape-mine-edge: #C9A21C; --mine-tint: #3A3421; --tape-ink: #1C2024;
-      --tape-dark: #E6E9EB; --tape-dark-ink: #17191C;
-      --paper: #24282C; --paper-ink: #EEF0EC; --tape-clear: rgba(255, 255, 255, .12); --strip-side: #0E1012; --tape-mine-side: #9C7F14; --pen-body: #3A4047; --pen-cap: #0B0D0F; --pen-cap-blue: #2F5FA6; --groove: rgba(0, 0, 0, .32);
-      --alu: #4A5158; --alu-hi: #646C74; --alu-lo: #31363C; --cap: #0F1113;
-      --rail-ink: #EEF0EC; --rail-green: #9AF0C0; --rail-red: #FFB0A8;
-      --t3: #7DB4FF; --t2: #2F5FA6; --t1: #22385A; --t0: #2A2E33; --t-1: #4B2724; --t-2: #A3433B; --t-3: #FF8077;
-      --ti3: #0B1A33; --ti2: #EEF0EC; --ti1: #EEF0EC; --ti0: #EEF0EC; --ti-1: #EEF0EC; --ti-2: #EEF0EC; --ti-3: #2A0B08;
-      --focus: #7DB4FF; --select: rgba(233, 195, 58, .45);
-      --tick-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.6l3 3.1L13.2 4' fill='none' stroke='%237DB4FF' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      --chev-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%238FB0D2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      --bg: #0D0F13; --panel: #161920; --panel-2: #1C2028; --panel-3: #232833; --line: #262B35; --line-2: #343B47;
+      --ink: #EDEFF3; --ink-2: #B0B7C3; --ink-3: #8F97A6;
+      --accent: #B9A2FF; --accent-hover: #CDBBFF; --accent-ink: #1A0E3D; --accent-soft: #241C3C; --accent-line: #4A3B7E;
+      --up: #4ADE8B; --down: #FF7B70; --up-soft: rgba(74, 222, 139, .12); --down-soft: rgba(255, 123, 112, .13);
+      --t3: #7DAEFF; --t2: #2F5FA6; --t1: #1F3657; --t0: #232833; --t-1: #48231F; --t-2: #A3433B; --t-3: #FF7B70;
+      --ti3: #0B1A33; --ti2: #EDEFF3; --ti1: #EDEFF3; --ti0: #EDEFF3; --ti-1: #EDEFF3; --ti-2: #FFFFFF; --ti-3: #2A0B08;
+      --strong: #8DB8FF; --focus: #B9A2FF; --select: rgba(185, 162, 255, .3);
+      --shadow-1: 0 1px 2px rgba(0, 0, 0, .45);
+      --shadow-2: 0 10px 28px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+      --tick-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.4l3 3L12.5 5' fill='none' stroke='%231A0E3D' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      --chev-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%23B0B7C3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --wall: #0B0E11; --board: #17191C; --board-2: #202328; --ghost: rgba(225, 232, 240, .09);
-    --print: #3F5D7D; --print-2: #2C3846; --print-ink: #8FB0D2; --ink: #EEF0EC; --ink-2: #B4BEC8;
-    --m-blue: #7DB4FF; --m-red: #FF8077; --m-green: #64DB9B;
-    --m-red-soft: rgba(255, 128, 119, .14); --m-green-soft: rgba(100, 219, 155, .12); --on-blue: #0B1A33;
-    --strip: #262A2F; --strip-edge: #363D45;
-    --strip-shadow: 0 1px 1px rgba(0, 0, 0, .5), 0 2px 6px rgba(0, 0, 0, .35);
-    --strip-lift: 0 4px 6px rgba(0, 0, 0, .55), 0 12px 22px rgba(0, 0, 0, .45);
-    --tape: #E6E9EB; --tape-mine: #E9C33A; --tape-mine-edge: #C9A21C; --mine-tint: #3A3421; --tape-ink: #1C2024;
-    --tape-dark: #E6E9EB; --tape-dark-ink: #17191C;
-    --paper: #24282C; --paper-ink: #EEF0EC; --tape-clear: rgba(255, 255, 255, .12); --strip-side: #0E1012; --tape-mine-side: #9C7F14; --pen-body: #3A4047; --pen-cap: #0B0D0F; --pen-cap-blue: #2F5FA6; --groove: rgba(0, 0, 0, .32);
-    --alu: #4A5158; --alu-hi: #646C74; --alu-lo: #31363C; --cap: #0F1113;
-    --rail-ink: #EEF0EC; --rail-green: #9AF0C0; --rail-red: #FFB0A8;
-    --t3: #7DB4FF; --t2: #2F5FA6; --t1: #22385A; --t0: #2A2E33; --t-1: #4B2724; --t-2: #A3433B; --t-3: #FF8077;
-    --ti3: #0B1A33; --ti2: #EEF0EC; --ti1: #EEF0EC; --ti0: #EEF0EC; --ti-1: #EEF0EC; --ti-2: #EEF0EC; --ti-3: #2A0B08;
-    --focus: #7DB4FF; --select: rgba(233, 195, 58, .45);
-    --tick-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.6l3 3.1L13.2 4' fill='none' stroke='%237DB4FF' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    --chev-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%238FB0D2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --bg: #0D0F13; --panel: #161920; --panel-2: #1C2028; --panel-3: #232833; --line: #262B35; --line-2: #343B47;
+    --ink: #EDEFF3; --ink-2: #B0B7C3; --ink-3: #8F97A6;
+    --accent: #B9A2FF; --accent-hover: #CDBBFF; --accent-ink: #1A0E3D; --accent-soft: #241C3C; --accent-line: #4A3B7E;
+    --up: #4ADE8B; --down: #FF7B70; --up-soft: rgba(74, 222, 139, .12); --down-soft: rgba(255, 123, 112, .13);
+    --t3: #7DAEFF; --t2: #2F5FA6; --t1: #1F3657; --t0: #232833; --t-1: #48231F; --t-2: #A3433B; --t-3: #FF7B70;
+    --ti3: #0B1A33; --ti2: #EDEFF3; --ti1: #EDEFF3; --ti0: #EDEFF3; --ti-1: #EDEFF3; --ti-2: #FFFFFF; --ti-3: #2A0B08;
+    --strong: #8DB8FF; --focus: #B9A2FF; --select: rgba(185, 162, 255, .3);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, .45);
+    --shadow-2: 0 10px 28px rgba(0, 0, 0, .55), 0 2px 6px rgba(0, 0, 0, .4);
+    --tick-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.4l3 3L12.5 5' fill='none' stroke='%231A0E3D' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    --chev-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%23B0B7C3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     color-scheme: dark;
   }
   :root[data-theme="light"] { color-scheme: light; }
 
   *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-padding-bottom: calc(var(--tray-h, 56px) + 12px); scrollbar-color: var(--alu-lo) var(--board); }
-  body { margin: 0; background: var(--board); color: var(--ink); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 12px; scroll-padding-bottom: calc(var(--bar-h) + 16px); scrollbar-color: var(--line-2) var(--bg); }
+  body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans); -webkit-font-smoothing: antialiased; padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px)); }
   ::selection { background: var(--select); color: var(--ink); }
-  input, select { caret-color: var(--m-blue); }
-  a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  input, select { caret-color: var(--accent); }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   button, input, select { font: inherit; color: inherit; }
   [hidden] { display: none !important; }
-  :focus-visible { outline: 2.5px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
-  .num { font-family: var(--print-face); font-variant-numeric: tabular-nums; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+  .num { font-family: var(--num); font-variant-numeric: tabular-nums; }
   .ic { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .up { color: var(--m-green); } .down { color: var(--m-red); }
-  .muted { color: var(--ink-2); font-size: 13px; }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .muted { margin: 0; color: var(--ink-2); font-size: 13px; }
+  .auc-line { margin: 12px 0 0; }
+  .nw { white-space: nowrap; }
 
-  /* ---------- 板子、鋁框、筆槽 ---------- */
-  .frame {
-    position: relative; max-width: 1480px; min-height: 100vh; margin: 0 auto; background: var(--board);
-    border-inline: var(--rail-w) solid var(--alu); box-shadow: inset 1px 0 0 var(--alu-lo), inset -1px 0 0 var(--alu-lo);
-  }
-  /* 黑色護角：頂框兩端；筆槽兩端的在 .tray */
-  .frame::before, .frame::after { content: ""; position: absolute; top: 0; z-index: 31; width: calc(var(--rail-w) + 9px); height: calc(var(--rail-w) + 15px); background: var(--cap); pointer-events: none; }
-  .frame::before { left: calc(-1 * var(--rail-w)); border-radius: 0 0 5px 0; }
-  .frame::after { right: calc(-1 * var(--rail-w)); border-radius: 0 0 0 5px; }
-  @media (min-width: 760px) { :root { --gut: 24px; --rail-w: 12px; } }
-  @media (min-width: 1100px) { :root { --gut: 28px; } }
-  @media (min-width: 1520px) {
-    body { background-color: var(--wall); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='64'%3E%3Cpath d='M0 .5H160M0 32.5H160M.5 0V32M80.5 32V64' stroke='%23000' stroke-opacity='.18'/%3E%3C/svg%3E"); }
-    .frame { margin-top: 20px; border-radius: 8px 8px 0 0; box-shadow: inset 1px 0 0 var(--alu-lo), inset -1px 0 0 var(--alu-lo), 0 2px 4px rgba(0, 0, 0, .25), 0 20px 46px rgba(0, 0, 0, .35); }
-    .frame::before, .frame::after { top: -2px; width: 24px; height: 26px; }
-    .frame::before { left: -14px; border-radius: 7px 2px 3px 2px; }
-    .frame::after { right: -14px; border-radius: 2px 7px 2px 3px; }
-  }
-
-  .rail {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px;
-    padding: 10px var(--gut); color: var(--rail-ink);
-    background: linear-gradient(180deg, var(--alu-hi), var(--alu) 58%, var(--alu-lo));
-    border-bottom: 1px solid var(--alu-lo);
-  }
-  @media (min-width: 1520px) { .rail { border-radius: 6px 6px 0 0; } }
-  .back { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding-right: 4px; font-size: 14px; font-weight: 500; text-decoration: none; }
-  .back:hover { text-decoration: underline; }
-  .tape {
-    display: inline-block; margin: 0; padding: 4px 11px 3px; border-radius: 2px;
-    background: var(--tape) linear-gradient(180deg, rgba(255, 255, 255, .5), rgba(255, 255, 255, 0) 45%);
-    color: var(--tape-ink); font: 700 17px/1.3 var(--sans); letter-spacing: .02em;
-    box-shadow: 0 1px 1px rgba(20, 30, 40, .24), 0 2px 6px rgba(20, 30, 40, .09);
-  }
-  .tape.mine { background-color: var(--tape-mine); }
-  h1.tape { font-size: 19px; font-weight: 900; }
-  @media (min-width: 760px) { h1.tape { font-size: 22px; } }
-  .season { margin: 0; font: 700 15px/1 var(--print-face); letter-spacing: .06em; }
+  /* ---------- 上方 app bar ---------- */
+  .appbar { background: var(--panel); border-bottom: 1px solid var(--line); }
+  .appbar .in { max-width: 1440px; margin: 0 auto; min-height: 56px; padding: 8px var(--gut); display: flex; align-items: center; gap: 6px 14px; }
+  .back { display: inline-flex; align-items: center; gap: 2px; min-width: 44px; min-height: 44px; padding-right: 4px; color: var(--ink-2); font-size: 14px; font-weight: 500; text-decoration: none; border-radius: 8px; }
+  .back:hover { color: var(--ink); }
+  @media (max-width: 340px) { .back span, #themeTxt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } #themeBtn { min-width: 44px; padding-inline: 0; } }
+  .title { margin: 0; font: 800 18px/1.25 var(--sans); letter-spacing: .01em; }
+  @media (min-width: 760px) { .title { font-size: 20px; } }
+  .season { margin: 0; padding: 3px 10px; border-radius: 999px; background: var(--panel-3); color: var(--ink-2); font: 700 13px/1.35 var(--num); letter-spacing: .02em; white-space: nowrap; }
   @media (max-width: 480px) { .season { display: none; } }
   .spacer { flex: 1 1 auto; }
 
-  .board { position: relative; }
-  .zone { position: relative; padding: 18px var(--gut) 24px; border-top: 1.5px solid var(--print-2); min-width: 0; }
-  .zone-head { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 14px; }
-  .zone-note { margin: 0; flex: 1 1 260px; max-width: 72ch; font-size: 13.5px; color: var(--ink-2); }
-  .ph { margin: 0 0 8px; padding-bottom: 5px; border-bottom: 1.5px solid var(--print); font: 700 13.5px/1.3 var(--sans); color: var(--print-ink); letter-spacing: .03em; }
-  .ph small { font-weight: 400; color: var(--ink-2); margin-left: 6px; letter-spacing: 0; }
-  #myBoard, #league, #trade, #players, #myRoster { scroll-margin-top: 8px; }
+  /* ---------- 版面：面板 ---------- */
+  .wrap { max-width: 1440px; margin: 0 auto; padding: 16px var(--gut) 28px; display: grid; gap: 16px; }
+  @media (min-width: 760px) { :root { --gut: 24px; } .wrap { gap: 20px; padding-top: 20px; } }
+  @media (min-width: 1100px) { :root { --gut: 32px; } }
+  .panel { position: relative; min-width: 0; padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-1); }
+  @media (min-width: 760px) { .panel { padding: 20px 22px; } }
+  .panel-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-bottom: 14px; }
+  .panel-head h2 { margin: 0; font: 800 18px/1.3 var(--sans); }
+  .panel-note { margin: 0; flex: 1 1 100%; max-width: 72ch; font-size: 13px; line-height: 1.55; color: var(--ink-2); }
+  .panel-note.inline { flex: 0 1 auto; }
+  .panel-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .sub-h { margin: 0 0 8px; font: 700 13px/1.3 var(--sans); color: var(--ink-2); }
+  .sub-h small { margin-left: 8px; font-size: 12.5px; font-weight: 400; color: var(--ink-3); }
+  #myBoard, #league, #vsZone, #myRoster, #trade, #players { scroll-margin-top: 12px; }
 
-  /* 手機：我的板 → 聯盟 → 碰到各隊 → 我的名單；桌面：左邊我的板＋名單，右邊聯盟＋碰到各隊 */
-  .top { display: grid; grid-template-areas: "sum" "league" "vs" "roster"; }
+  .top { display: grid; gap: 16px; grid-template-areas: "sum" "league" "vs" "roster"; }
   .colb { display: contents; }
-  #myBoard { grid-area: sum; border-top: 0; container: me / inline-size; isolation: isolate; }
+  #myBoard { grid-area: sum; container: me / inline-size; }
   #league { grid-area: league; container: lg / inline-size; }
   #vsZone { grid-area: vs; container: vs / inline-size; }
   #myRoster { grid-area: roster; container: roster / inline-size; }
+  @media (min-width: 760px) { .top { gap: 20px; } }
   @media (min-width: 1100px) {
-    .top { grid-template-columns: minmax(400px, 5fr) minmax(0, 7fr); grid-template-rows: auto 1fr; grid-template-areas: "sum colb" "roster colb"; }
-    .colb { display: block; grid-area: colb; min-width: 0; border-left: 1.5px solid var(--print-2); }
-    .colb > #league { border-top: 0; }
+    .top { grid-template-columns: minmax(400px, 5fr) minmax(0, 7fr); grid-template-rows: auto 1fr; grid-template-areas: "sum colb" "roster colb"; align-items: start; }
+    .colb { display: grid; gap: 20px; align-content: start; grid-area: colb; min-width: 0; }
+    .colb > #league, .colb > #vsZone { grid-area: auto; min-width: 0; }
     .top:has(> .colb[hidden]) { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; grid-template-areas: "sum" "roster"; }
   }
 
-  /* 沒擦乾淨的舊戰術（裝飾） */
-  .ghost { display: none; position: absolute; pointer-events: none; stroke: var(--ghost); z-index: 0; height: auto; }
-  .ghost.g-me { display: block; top: 6px; right: var(--gut); width: min(220px, 40%); z-index: -1; }
-  .sugg .ghost { right: 0; bottom: 0; width: min(400px, 36%); }
-
-  /* ---------- 磁鐵按鈕、開關、輸入 ---------- */
+  /* ---------- 按鈕、膠囊、輸入 ---------- */
   .btn {
     appearance: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-    min-height: 36px; padding: 5px 13px; border-radius: 6px; cursor: pointer; white-space: nowrap; text-decoration: none;
-    background: var(--strip); color: var(--ink); border: 1px solid var(--strip-edge); box-shadow: var(--strip-shadow);
-    font: 500 14px/1.2 var(--sans);
+    min-height: 40px; padding: 0 16px; border-radius: 10px; cursor: pointer; white-space: nowrap; text-decoration: none;
+    background: var(--panel); color: var(--ink); border: 1px solid var(--line-2); box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+    font: 600 14px/1.2 var(--sans);
   }
-  .btn:hover { box-shadow: var(--strip-lift); }
-  .btn:active { box-shadow: var(--strip-shadow); transform: translateY(1px); }
-  .btn.solid { background: var(--m-blue); border-color: var(--m-blue); color: var(--on-blue); font-weight: 700; }
-  .btn.warn { border-color: var(--m-red); color: var(--m-red); background: var(--m-red-soft); font-weight: 700; }
-  .btn.small { min-height: 32px; padding: 3px 11px; font-size: 13.5px; }
+  .btn:hover { background: var(--panel-2); }
+  .btn:active { background: var(--panel-3); }
+  .btn.solid { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn.solid:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn.warn { background: var(--down-soft); border-color: var(--down); color: var(--down); }
+  .btn.small { min-height: 34px; padding: 0 12px; font-size: 13.5px; border-radius: 8px; }
   .btn .ic { width: 17px; height: 17px; }
-  .rail .btn { background: var(--alu-hi); border-color: var(--alu-lo); color: var(--rail-ink); }
-  /* 磁鐵名牌：白色條、下緣是磁鐵的厚度 */
-  .mag {
-    display: inline-block; max-width: 100%; padding: 2px 9px 1px; border-radius: 4px;
-    background: var(--strip); color: var(--ink); border: 1px solid var(--strip-edge); border-bottom: 2.5px solid var(--strip-side);
-    box-shadow: var(--strip-shadow); font-weight: 700; line-height: 1.3; overflow-wrap: anywhere;
-  }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
-    appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 3px 12px;
-    border-radius: 999px; background: var(--strip); border: 1px solid var(--strip-edge); box-shadow: var(--strip-shadow);
-    font: 700 14px/1.2 var(--print-face); letter-spacing: .04em; cursor: pointer;
+    appearance: none; display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border-radius: 999px; cursor: pointer;
+    background: var(--panel); color: var(--ink-2); border: 1px solid var(--line-2); font: 700 13.5px/1 var(--num); letter-spacing: .03em;
   }
-  .chip:hover { box-shadow: var(--strip-lift); }
-  .chip[aria-pressed="true"] { background: var(--m-blue); border-color: var(--m-blue); color: var(--on-blue); }
-  .chip.punt::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--print-2); box-shadow: inset 0 -1px 1px rgba(0, 0, 0, .22); }
-  .chip.punt[aria-pressed="true"] { background: var(--m-red-soft); border-color: var(--m-red); color: var(--m-red); text-decoration: line-through 2px; }
-  .chip.punt[aria-pressed="true"]::before { background: var(--m-red); }
-  .search, select.sort, .editor input, .editor select {
-    min-height: 36px; padding: 5px 10px; border-radius: 6px; font-size: 14px;
-    background: var(--strip); color: var(--ink); border: 1px solid var(--strip-edge); box-shadow: inset 0 1px 2px rgba(20, 30, 40, .08);
+  .chip:hover { color: var(--ink); background: var(--panel-2); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .chip.punt[aria-pressed="true"] { background: var(--down-soft); border-color: var(--down); color: var(--down); text-decoration: line-through 1.5px; }
+  @media (pointer: coarse) { .btn, .btn.small { min-height: 44px; } .chip { min-height: 40px; } }
+  .search, .sel, .editor input, .editor select {
+    min-height: 40px; padding: 0 12px; border-radius: 10px; font-size: 14px;
+    background: var(--panel); color: var(--ink); border: 1px solid var(--line-2);
   }
-  select.sort, .editor select {
-    appearance: none; -webkit-appearance: none; padding-right: 32px; cursor: pointer;
-    background-image: var(--chev-img); background-repeat: no-repeat; background-position: right 9px center; background-size: 14px 14px;
-  }
-  .search::placeholder { color: var(--ink-2); opacity: 1; }
-  .tlist, .side { scrollbar-width: thin; scrollbar-color: var(--print) transparent; }
-  .tlist::-webkit-scrollbar, .side::-webkit-scrollbar { width: 8px; }
-  .tlist::-webkit-scrollbar-thumb, .side::-webkit-scrollbar-thumb { background: var(--print); border: 2px solid transparent; border-radius: 8px; background-clip: padding-box; }
-  .tlist::-webkit-scrollbar-track, .side::-webkit-scrollbar-track { background: transparent; }
-  .check { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; font-size: 14px; cursor: pointer; }
+  .sel, .editor select { appearance: none; -webkit-appearance: none; padding-right: 34px; cursor: pointer; background-image: var(--chev-img); background-repeat: no-repeat; background-position: right 10px center; background-size: 14px 14px; }
+  .search::placeholder { color: var(--ink-3); opacity: 1; }
+  .search:focus, .sel:focus, .editor input:focus, .editor select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--select); }
+  .check { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; font-size: 14px; cursor: pointer; }
   .check input, .tp input {
-    appearance: none; flex: none; width: 19px; height: 19px; margin: 0; cursor: pointer; border-radius: 3px;
-    background: var(--strip) center / 15px no-repeat; border: 1.5px solid var(--print);
+    appearance: none; flex: none; width: 20px; height: 20px; margin: 0; cursor: pointer; border-radius: 6px;
+    background: var(--panel) center / 14px no-repeat; border: 1.5px solid var(--line-2);
   }
-  .check input:checked, .tp input:checked { border-color: var(--m-blue); background-image: var(--tick-img); }
-  .plabel { font: 700 13.5px/1.2 var(--sans); color: var(--print-ink); }
+  .check input:checked, .tp input:checked { background-color: var(--accent); border-color: var(--accent); background-image: var(--tick-img); }
+  .plabel { font: 700 13.5px/1.2 var(--sans); color: var(--ink-2); }
+  .tlist, .side { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+  .tlist::-webkit-scrollbar, .side::-webkit-scrollbar { width: 8px; }
+  .tlist::-webkit-scrollbar-thumb, .side::-webkit-scrollbar-thumb { background: var(--line-2); border: 2px solid transparent; border-radius: 8px; background-clip: padding-box; }
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 999px; font: 700 12px/1.35 var(--sans); white-space: nowrap; }
+  .badge.mine { background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-line); }
 
-  /* ---------- 我的板：麥克筆寫的戰績、九類名次、教練的筆記 ---------- */
-  .tally { position: relative; }
-  .tally p { margin: 0; }
-  .t1 { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; }
-  .trk { position: relative; display: inline-block; padding: 0 .14em; font: 700 52px/1.12 var(--marker-face); color: var(--ink); white-space: nowrap; }
-  .trk .mk.ring { left: -.24em; top: -.2em; width: calc(100% + .48em); height: calc(100% + .36em); transform: rotate(-4deg); }
-  .trk .mk.ring path { stroke-width: 1.7; }
-  .trk.good .mk.ring path { stroke: var(--m-blue); }
-  .trk.mid .mk.ring path { stroke: var(--ink); }
-  .tof { margin-left: -8px; align-self: flex-end; padding-bottom: 12px; font: 700 22px/1 var(--print-face); color: var(--print-ink); white-space: nowrap; }
-  .trec { font: 700 66px/1.08 var(--marker-face); color: var(--ink); white-space: nowrap; }
-  .trec.blue { color: var(--m-blue); }
-  .t2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; margin-top: 4px !important; }
-  .tmoney { font: 700 32px/1.15 var(--marker-face); white-space: nowrap; }
-  .tmoney.up { color: var(--m-green); } .tmoney.down { color: var(--m-red); }
-  .tmoney small { margin-right: 6px; font: 700 14px/1 var(--sans); color: var(--print-ink); }
-  .tline { flex: 1 1 250px; max-width: 62ch; font: 500 13.5px/1.6 var(--sans); color: var(--ink-2); }
-  .tline b { font: 800 15.5px/1 var(--print-face); color: var(--ink); font-variant-numeric: tabular-nums; }
-  .tline b.up { color: var(--m-green); } .tline b.down { color: var(--m-red); }
-  @container me (max-width: 460px) {
-    .trk { font-size: 40px; } .tof { font-size: 18px; padding-bottom: 9px; } .trec { font-size: 50px; } .tmoney { font-size: 28px; }
-  }
-
-  .cats { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); margin-top: 16px; border: 1.5px solid var(--print); border-radius: 7px; }
-  .cat { position: relative; display: grid; justify-items: center; gap: 3px; padding: 7px 0 9px; border-left: 1px solid var(--print-2); cursor: default; }
+  /* ---------- 我的隊伍：戰績、九類名次、最難打的對手 ---------- */
+  .me .panel-head { margin-bottom: 12px; }
+  .me .panel-head h2 { font-size: 22px; }
+  .rank-pill { margin-left: auto; display: inline-flex; align-items: baseline; gap: 3px; padding: 4px 12px; border-radius: 999px; background: var(--panel-3); color: var(--ink-2); font: 600 13px/1.3 var(--sans); white-space: nowrap; }
+  .rank-pill b { font: 800 18px/1 var(--num); color: var(--ink); }
+  .rank-pill.top { background: var(--accent-soft); color: var(--accent); }
+  .rank-pill.top b { color: var(--accent); }
+  .rank-pill.low { background: var(--down-soft); color: var(--down); }
+  .rank-pill.low b { color: var(--down); }
+  .score { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 36px; }
+  .sc { display: grid; gap: 4px; }
+  .rec { font: 800 62px/.92 var(--num); letter-spacing: -.01em; }
+  .money { font: 800 36px/1 var(--num); }
+  .money small { margin-left: 2px; font-size: .56em; font-weight: 700; }
+  .sc-l { font-size: 12.5px; line-height: 1.45; color: var(--ink-2); }
+  .sc-l b { font-size: 14px; font-weight: 800; }
+  @container me (max-width: 460px) { .rec { font-size: 54px; } .money { font-size: 32px; } }
+  .cats { margin-top: 18px; }
+  .cat-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); border-block: 1px solid var(--line); }
+  .cat { display: grid; justify-items: center; align-content: start; gap: 3px; padding: 9px 0 8px; border-left: 1px solid var(--line); cursor: default; }
   .cat:first-child { border-left: 0; }
-  .cat b { font: 500 12px/1.1 var(--sans); color: var(--print-ink); white-space: nowrap; }
-  .cat i { position: relative; font: 700 24px/1 var(--marker-face); font-style: normal; color: var(--ink); }
-  .cat.weak i { color: var(--m-red); } .cat.strong i { color: var(--m-blue); }
-  .cat:hover, .cat:focus-visible { background: var(--board-2); }
-  .cats-key { margin: 6px 0 0; font-size: 12.5px; color: var(--ink-2); }
-  .cats-key .kr { color: var(--m-red); font-weight: 700; } .cats-key .kt { color: var(--m-blue); font-weight: 700; }
-  .mk { position: absolute; pointer-events: none; overflow: visible; }
-  .mk path { fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-  .mk.ring { left: 50%; top: 50%; width: 42px; height: 31px; transform: translate(-50%, -52%); }
-  .mk.ring path { stroke: var(--m-red); }
-  .mk.tick { right: -15px; top: -1px; width: 15px; height: 14px; }
-  .mk.tick path { stroke: var(--m-blue); stroke-width: 2.2; }
-  .coach { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 4px; font: 700 15px/1.5 var(--sans); }
-  .coach li { display: flex; gap: 9px; align-items: baseline; }
-  .coach li::before { content: ""; flex: none; width: 14px; height: 3px; border-radius: 2px; background: currentColor; transform: translateY(-4px) rotate(-8deg); }
-  .coach .bad { color: var(--m-red); }
-  .flag { margin: 8px 0 0; font-size: 12.5px; color: var(--m-red); }
+  .cat:hover, .cat:focus-visible { background: var(--panel-2); }
+  .cat .cl { font: 700 12px/1.2 var(--num); letter-spacing: .04em; color: var(--ink-3); }
+  .cat .cr { font: 800 26px/1 var(--num); color: var(--ink); }
+  .cat .cs { min-height: 17px; padding: 1px 5px; border-radius: 4px; font: 700 11.5px/15px var(--sans); }
+  .cat.weak { background: var(--down-soft); }
+  .cat.weak .cr, .cat.weak .cs { color: var(--down); }
+  .cat.strong .cr, .cat.strong .cs { color: var(--strong); }
+  .coach { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 4px; font-size: 14px; }
+  .coach li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+  .coach .ck { font-size: 13px; color: var(--ink-2); }
+  .coach b { font-weight: 800; }
+  .coach .num { font-size: 15px; font-weight: 700; }
+  .flag { margin: 8px 0 0; font-size: 13px; color: var(--down); }
+  .calc { margin: 0; padding: 22px 8px; text-align: center; color: var(--ink-2); font-size: 14px; }
 
-  .mstrip, .th { display: grid; grid-template-columns: minmax(0, 1fr) 54px 54px 30px; gap: 8px; align-items: center; }
-  .team.auction .mstrip, .team-head.auction .th { grid-template-columns: minmax(0, 1fr) 58px 30px; }
-  .team-head { margin-bottom: 5px; font: 700 12.5px/1.2 var(--sans); color: var(--print-ink); }
-  .th { padding: 0 5.5px 0 11.5px; }
+  /* ---------- 我的名單 ---------- */
+  .mstrip, .th { display: grid; grid-template-columns: minmax(0, 1fr) 54px 54px 44px; gap: 8px; align-items: center; }
+  .team.auction .mstrip, .team-head.auction .th { grid-template-columns: minmax(0, 1fr) 58px 44px; }
+  .team-head { padding-bottom: 6px; border-bottom: 1px solid var(--line-2); font: 700 12px/1.2 var(--sans); color: var(--ink-3); }
   .th span:not(:first-child) { text-align: right; }
+  .th span:last-child { text-align: center; }
   .th.g2 { display: none; }
-  .team { list-style: none; margin: 0; padding: 0; display: grid; border: 1.5px solid var(--print); border-radius: 8px; overflow: hidden; }
-  .mstrip { padding: 5px 4px 5px 10px; border-top: 1px solid var(--print-2); font-size: 14px; }
+  .team { list-style: none; margin: 0; padding: 0; display: grid; }
+  .mstrip { padding: 4px 0; border-top: 1px solid var(--line); font-size: 14px; }
   .mstrip:first-child { border-top: 0; }
   @container roster (min-width: 640px) {
-    .team, .team-head { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .team, .team-head { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
     .team-head { display: grid; }
     .th.g2 { display: grid; }
     .mstrip:nth-child(2) { border-top: 0; }
-    .mstrip:nth-child(even) { border-left: 1px solid var(--print-2); }
   }
-  .mstrip .pn { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
-  .mstrip .pn small { font-size: 12px; color: var(--ink-2); }
-  .mstrip .pn small .warn { color: var(--m-red); }
-  .mstrip .pp, .mstrip .pv { font: 600 16px/1 var(--print-face); font-variant-numeric: tabular-nums; text-align: right; }
+  .mstrip .pn { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; line-height: 1.35; }
+  .mstrip .pn b { font-weight: 700; overflow-wrap: anywhere; }
+  .mstrip .pn small { font-size: 12px; color: var(--ink-3); }
+  .mstrip .pn small .warn { color: var(--down); }
+  .mstrip .pp, .mstrip .pv { font: 600 16px/1 var(--num); text-align: right; }
   .mstrip .pv { font-weight: 800; }
-  .mstrip.low { background: var(--board-2); }
-  .mstrip.low .mag { background: var(--board-2); color: var(--ink-2); box-shadow: none; }
-  .mstrip.snap { background: var(--mine-tint); }
-  .x { appearance: none; display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 5px; background: none; color: var(--ink-2); cursor: pointer; }
-  .x:hover { color: var(--m-red); background: var(--m-red-soft); }
-  .x .ic { width: 16px; height: 16px; }
+  .mstrip.low .pn b { color: var(--ink-2); }
+  .mstrip.snap { background: var(--accent-soft); }
+  .x { appearance: none; justify-self: center; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 10px; background: none; color: var(--ink-3); cursor: pointer; }
+  .x:hover { color: var(--down); background: var(--down-soft); }
+  .x .ic { width: 17px; height: 17px; }
   .profile { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; margin-top: 12px; }
-  .posmix { margin: 8px 0 0; font-size: 13px; color: var(--ink-2); }
-  .vslist { list-style: none; margin: 0; padding: 0; }
-  @container vs (min-width: 520px) { .vslist { columns: 2; column-gap: 26px; } }
-  .vslist li { display: grid; grid-template-columns: minmax(0, 1fr) auto 60px; gap: 10px; align-items: baseline; padding: 4px 2px; border-bottom: 1px solid var(--print-2); font-size: 13.5px; break-inside: avoid; }
-  .vslist b { font: 700 15px/1.2 var(--print-face); font-variant-numeric: tabular-nums; text-align: right; }
-  .me-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-top: 16px; }
+  .posmix { margin: 10px 0 0; font-size: 13px; color: var(--ink-2); }
   .asof { margin: 0; font-size: 12.5px; color: var(--ink-2); max-width: 72ch; }
+  .vslist { list-style: none; margin: 0; padding: 0; }
+  @container vs (min-width: 520px) { .vslist { columns: 2; column-gap: 28px; } }
+  .vslist li { display: grid; grid-template-columns: minmax(0, 1fr) auto 64px; gap: 10px; align-items: baseline; padding: 6px 2px; border-bottom: 1px solid var(--line); font-size: 14px; break-inside: avoid; }
+  .vslist b { font: 700 15px/1.2 var(--num); font-variant-numeric: tabular-nums; text-align: right; }
 
-  /* ---------- 聯盟磁鐵板 ---------- */
-  .lt { border-bottom: 1px solid var(--print-2); }
+  /* ---------- 聯盟戰力表 ---------- */
+  .lt { border-bottom: 1px solid var(--line); }
+  .lt:last-child { border-bottom: 0; }
   .lt-head, .lt > summary { grid-template-columns: 26px minmax(214px, 1fr) 88px minmax(210px, 252px) 80px 18px; column-gap: 10px; }
-  .lt-head { display: grid; align-items: end; padding: 0 4px 6px; border-bottom: 1.5px solid var(--print); font: 700 12px/1.2 var(--sans); color: var(--print-ink); }
+  .lt-head { display: grid; align-items: end; padding: 0 6px 8px; border-bottom: 1px solid var(--line-2); font: 700 12px/1.2 var(--sans); color: var(--ink-3); }
   .lt-head > span:nth-child(3), .lt-head > span:nth-child(5) { text-align: right; }
-  .lt-head .lch { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; text-align: center; font: 700 11.5px/1.2 var(--print-face); letter-spacing: .03em; }
-  .lt > summary {
-    list-style: none; cursor: pointer; display: grid; align-items: center; gap: 6px 12px; padding: 7px 4px; border-radius: 6px;
-    grid-template-areas: "lr ln lw lc lm lx";
-  }
+  .lt-head .lch { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; text-align: center; font: 700 11.5px/1.2 var(--num); letter-spacing: .03em; }
+  .lt > summary { list-style: none; cursor: pointer; display: grid; align-items: center; gap: 6px 10px; padding: 9px 6px; grid-template-areas: "lr ln lw lc lm lx"; }
   .lt > summary::-webkit-details-marker { display: none; }
-  .lt > summary:hover { background: var(--board-2); }
-  .lr { grid-area: lr; font: 800 21px/1 var(--print-face); color: var(--print-ink); text-align: right; font-variant-numeric: tabular-nums; }
-  .ln { grid-area: ln; min-width: 0; }
-  .nm-strip { padding: 4px 8px 3px; font-size: 14px; }
-  .lt.me .mag { background: var(--tape-mine); border-color: var(--tape-mine-edge); border-bottom-color: var(--tape-mine-side); color: var(--tape-ink); }
-  .lw { grid-area: lw; display: grid; gap: 2px; justify-items: end; }
-  .lw b { font: 800 21px/1 var(--print-face); font-variant-numeric: tabular-nums; }
-  .lw span { font: 700 14px/1.1 var(--print-face); font-variant-numeric: tabular-nums; }
+  .lt > summary:hover { background: var(--panel-2); }
+  .lt.me > summary { background: var(--accent-soft); }
+  .lr { grid-area: lr; font: 800 18px/1 var(--num); color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+  .lt.me .lr { color: var(--accent); }
+  .ln { grid-area: ln; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+  .tname { font: 700 14.5px/1.3 var(--sans); overflow-wrap: break-word; }
+  .lw { grid-area: lw; display: grid; gap: 3px; justify-items: end; }
+  .lw b { font: 800 19px/1 var(--num); font-variant-numeric: tabular-nums; }
+  .lw span { font: 700 13.5px/1.1 var(--num); font-variant-numeric: tabular-nums; }
   .lc { grid-area: lc; display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
-  .lc .c, .heat .c { position: relative; }
-  .lc .c b, .heat .c b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .lc .c { min-height: 30px; }
+  .lc .c b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .lc .c i { font-size: 15px; }
   .lm { grid-area: lm; font-size: 12px; color: var(--ink-2); text-align: right; line-height: 1.4; }
-  .lm b { font: 700 15px var(--print-face); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .lm b { font: 700 15px var(--num); color: var(--ink); font-variant-numeric: tabular-nums; }
   .lm .lsep { display: none; }
-  .lx { grid-area: lx; color: var(--print-ink); }
+  .lx { grid-area: lx; color: var(--ink-3); }
   .lt[open] .lx { transform: rotate(180deg); }
-  .ld { display: grid; gap: 8px; padding: 6px 4px 16px 42px; font-size: 13.5px; color: var(--ink-2); }
+  .ld { display: grid; gap: 10px; padding: 6px 6px 18px 42px; font-size: 13.5px; color: var(--ink-2); }
   .ld p { margin: 0; }
   .ld .sw b { color: var(--ink); }
-  .roster { list-style: none; margin: 0; padding: 0; display: grid; border: 1.5px solid var(--print-2); border-radius: 6px; overflow: hidden; }
-  .roster li { display: grid; grid-template-columns: minmax(0, 1fr) 40px 40px; gap: 8px; align-items: baseline; padding: 5px 8px; font-size: 13px; }
-  .roster li + li { border-top: 1px solid var(--print-2); }
+  .roster-head { display: flex; justify-content: space-between; margin-bottom: -6px; font-size: 12px; font-weight: 700; color: var(--ink-3); }
+  .roster { list-style: none; margin: 0; padding: 0; display: grid; border-block: 1px solid var(--line); }
+  .roster li { display: grid; grid-template-columns: minmax(0, 1fr) 40px 40px; gap: 8px; align-items: baseline; padding: 6px 8px; font-size: 13px; }
+  .roster li + li { border-top: 1px solid var(--line); }
   @container lg (min-width: 480px) {
     .roster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .roster li:nth-child(2) { border-top: 0; }
-    .roster li:nth-child(even) { border-left: 1px solid var(--print-2); }
+    .roster li:nth-child(even) { border-left: 1px solid var(--line); }
   }
   @container lg (min-width: 760px) {
     .roster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .roster li:nth-child(3) { border-top: 0; }
     .roster li:nth-child(even) { border-left: 0; }
-    .roster li:not(:nth-child(3n+1)) { border-left: 1px solid var(--print-2); }
+    .roster li:not(:nth-child(3n+1)) { border-left: 1px solid var(--line); }
   }
   .roster .pn { min-width: 0; color: var(--ink); font-weight: 500; }
-  .roster .pn small { display: block; color: var(--ink-2); font-weight: 400; }
-  .roster .pp { font: 600 14px var(--print-face); color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
-  .roster .pv { font: 800 15px var(--print-face); text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
-  .roster li.low { background: var(--board-2); }
+  .roster .pn small { display: block; color: var(--ink-3); font-weight: 400; }
+  .roster .pp { font: 600 14px var(--num); color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+  .roster .pv { font: 800 15px var(--num); text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
   .roster li.low .pn { color: var(--ink-2); }
-  .roster .fl { font-size: 11.5px; color: var(--m-red); white-space: nowrap; }
-  .roster .fl.gray { color: var(--ink-2); }
-  .roster-head { display: flex; justify-content: space-between; margin-bottom: -4px; font-size: 12px; font-weight: 700; color: var(--print-ink); }
-  .llegend { margin: 12px 0 0; font-size: 12.5px; color: var(--ink-2); max-width: 90ch; }
-  .calc { padding: 22px 8px; text-align: center; color: var(--ink-2); font-size: 14px; }
+  .roster .fl { font-size: 11.5px; color: var(--down); white-space: nowrap; }
+  .roster .fl.gray { color: var(--ink-3); }
+  .llegend { margin: 0; flex: 1 1 320px; font-size: 12.5px; line-height: 1.55; color: var(--ink-2); max-width: 90ch; }
   @container lg (max-width: 720px) {
-    .lt-head { display: none; }
-    .lc .c b { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
-    .lc .c i { font-size: 14px; }
+    .lt-head { position: sticky; top: 0; z-index: 3; grid-template-columns: minmax(0, 1fr); padding: 8px 6px 6px; background: var(--panel); }
+    .lt-head > span:not(.lch) { display: none; }
     .lt > summary { grid-template-columns: 24px minmax(0, 1fr) auto 18px; grid-template-areas: "lr ln lw lx" "lc lc lc lc" "lm lm lm lm"; }
-    .lm { text-align: left; padding-left: 36px; }
+    .lm { text-align: left; padding-left: 34px; }
     .lm br { display: none; }
     .lm .lsep { display: inline; }
-    .ld { padding-left: 4px; }
+    .ld { padding-left: 6px; }
+  }
+  /* 很窄的手機（320）：戰績移到格子下面，隊名獨占第一行，不會從字中間斷 */
+  @container lg (max-width: 280px) {
+    .lt > summary { grid-template-columns: 24px minmax(0, 1fr) 18px; grid-template-areas: "lr ln lx" "lc lc lc" "lw lw lw" "lm lm lm"; }
+    .lw { display: flex; align-items: baseline; gap: 8px; justify-content: flex-start; padding-left: 34px; }
   }
 
-  /* ---------- 類別磁鐵（九項熱度、名次） ---------- */
+  /* ---------- 九類格子（熱度、名次） ---------- */
   .c {
-    display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 34px; padding: 3px 0; border-radius: 4px; cursor: default;
-    background: var(--t0); color: var(--ti0); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .15), 0 1px 1px rgba(20, 30, 40, .12);
+    position: relative; display: grid; justify-items: center; align-content: center; gap: 2px; min-height: 34px; padding: 3px 0; border-radius: 6px; cursor: default;
+    background: var(--t0); color: var(--ti0);
   }
-  .c b { font: 700 10px/1 var(--print-face); letter-spacing: .03em; opacity: .9; }
-  .c i { font: 700 14px/1 var(--print-face); font-style: normal; font-variant-numeric: tabular-nums; }
+  .c b { font: 700 11px/1 var(--num); letter-spacing: .03em; opacity: .9; }
+  .c i { font: 700 14px/1 var(--num); font-style: normal; font-variant-numeric: tabular-nums; }
   .c.z3 { background: var(--t3); color: var(--ti3); } .c.z2 { background: var(--t2); color: var(--ti2); } .c.z1 { background: var(--t1); color: var(--ti1); }
   .c.z-1 { background: var(--t-1); color: var(--ti-1); } .c.z-2 { background: var(--t-2); color: var(--ti-2); } .c.z-3 { background: var(--t-3); color: var(--ti-3); }
-  .c.off { background: transparent; color: var(--ink-2); box-shadow: none; outline: 1.5px dashed var(--print); outline-offset: -1.5px; }
+  .c.off { background: transparent; color: var(--ink-3); outline: 1px dashed var(--line-2); outline-offset: -1px; }
   .c.off i { text-decoration: line-through; }
-  .c:hover, .c:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+  .c:hover { outline: 2px solid var(--ink); outline-offset: 1px; }
 
-  /* ---------- 交易板 ---------- */
+  /* ---------- 交易試算 ---------- */
   #trade { container: tr / inline-size; }
-  .tgrid { position: relative; display: grid; gap: 14px 18px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "pick pick" "give get" "res res"; }
-  .court, .tmid { display: none; }
+  .tgrid { display: grid; gap: 16px 20px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "pick pick" "give get" "res res"; }
   @container tr (min-width: 1040px) {
-    .tgrid { grid-template-columns: minmax(0, 1fr) 46px minmax(0, 1fr) minmax(330px, 1.05fr); grid-template-areas: "pick pick pick res" "give mid get res"; }
-    .court { display: block; grid-row: 2; grid-column: 1 / 4; width: 100%; height: 100%; z-index: 0; pointer-events: none; stroke: var(--print); opacity: .5; }
-    .tmid { display: grid; grid-area: mid; place-items: center; z-index: 1; }
+    .tgrid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(360px, 1.12fr); grid-template-areas: "pick pick res" "give get res"; }
+    .tres { padding-left: 22px; border-left: 1px solid var(--line); }
   }
+  @container tr (max-width: 1039px) { .tres { padding-top: 16px; border-top: 1px solid var(--line); } }
   @container tr (max-width: 600px) { .tgrid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "pick" "give" "get" "res"; } }
-  .swapmag { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--strip); border: 1px solid var(--strip-edge); box-shadow: var(--strip-shadow); color: var(--print-ink); }
   .tpick { grid-area: pick; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
   .tpick select { max-width: 100%; }
-  .tside { position: relative; z-index: 1; grid-area: give; margin: 0; padding: 0; border: 0; min-width: 0; }
+  .tside { grid-area: give; margin: 0; padding: 0; border: 0; min-width: 0; }
   #getBox { grid-area: get; }
-  .tside legend { width: 100%; padding: 0; }
-  .tlist { position: relative; display: grid; gap: 6px; max-height: 430px; overflow: auto; overscroll-behavior: contain; padding: 4px 6px 10px 3px; }
+  .tside legend { padding: 0; margin-bottom: 8px; font: 700 13.5px/1.3 var(--sans); color: var(--ink-2); }
+  .tlist { position: relative; max-height: 440px; overflow: auto; overscroll-behavior: contain; border-block: 1px solid var(--line); }
   @container tr (max-width: 600px) { .tlist { max-height: 300px; } }
-  .tp {
-    display: grid; grid-template-columns: 19px minmax(0, 1fr) auto; gap: 9px; align-items: center; padding: 6px 10px 5px 9px; cursor: pointer;
-    border-radius: 5px; background: var(--strip); border: 1px solid var(--strip-edge); border-bottom: 2.5px solid var(--strip-side); box-shadow: var(--strip-shadow); font-size: 14px;
-  }
-  .tp:hover { box-shadow: var(--strip-lift); }
-  .tp:has(input:checked) { border-color: var(--m-blue); border-bottom-color: var(--m-blue); box-shadow: var(--strip-lift); transform: translateY(-2px) rotate(-.5deg); }
-  .tp.low:not(:has(input:checked)) { background: var(--board-2); box-shadow: none; }
+  .tp { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; cursor: pointer; font-size: 14px; }
+  .tp + .tp { border-top: 1px solid var(--line); }
+  .tp:hover { background: var(--panel-2); }
+  .tp:has(input:checked) { background: var(--accent-soft); }
   .tp .tn { min-width: 0; font-weight: 700; line-height: 1.3; }
-  .tp .tn small { display: block; color: var(--ink-2); font-size: 12px; font-weight: 400; }
-  .tp .tv { font: 800 16px var(--print-face); font-variant-numeric: tabular-nums; text-align: right; }
-  .tres { position: relative; z-index: 1; grid-area: res; align-self: start; display: grid; gap: 10px; align-content: start; min-width: 0; padding: 12px 14px 14px; border: 1.5px solid var(--print); border-radius: 8px; scroll-margin-top: 12px; }
+  .tp .tn small { display: block; color: var(--ink-3); font-size: 12px; font-weight: 400; }
+  .tp.low:not(:has(input:checked)) .tn { color: var(--ink-2); }
+  .tp .tv { font: 800 16px var(--num); font-variant-numeric: tabular-nums; text-align: right; }
+  .tres { grid-area: res; align-self: start; display: grid; gap: 12px; align-content: start; min-width: 0; scroll-margin-top: 12px; container: tres / inline-size; }
   .tres .hint { margin: 0; color: var(--ink-2); font-size: 14px; }
-  /* 交易通道：拿起來的磁鐵排在這裡，中間是麥克筆畫的交換箭頭 */
-  .lane { display: grid; grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr); align-items: center; gap: 4px 8px; padding-bottom: 12px; border-bottom: 1.5px solid var(--print-2); }
-  .lside { display: grid; gap: 6px; align-content: center; min-width: 0; }
-  .lk { font: 700 12.5px/1.2 var(--sans); color: var(--print-ink); }
-  .lmag { appearance: none; display: grid; grid-template-columns: minmax(0, 1fr) 14px; align-items: center; gap: 1px 6px; width: 100%; padding: 5px 7px 4px 10px; text-align: left; cursor: pointer; font: 700 14px/1.25 var(--sans); }
-  .lmag span { min-width: 0; overflow-wrap: anywhere; }
-  .lmag small { grid-column: 1; font: 600 12.5px/1.2 var(--print-face); color: var(--ink-2); font-variant-numeric: tabular-nums; }
-  .lmag .ic { grid-column: 2; grid-row: 1 / span 2; width: 14px; height: 14px; color: var(--ink-2); }
-  .lmag:hover { box-shadow: var(--strip-lift); }
-  .lmag:hover .ic { color: var(--m-red); }
-  .lnone { font-size: 13px; color: var(--ink-2); }
-  .mk.lanex { position: relative; justify-self: center; width: 56px; height: 42px; }
-  .mk.lanex path { stroke: var(--ink); stroke-width: 2.3; }
-  @container tr (max-width: 600px) { .lane { grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr); gap: 4px 6px; } .mk.lanex { width: 44px; height: 34px; } }
-  .verdict { position: relative; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding-bottom: 8px; }
-  .verdict .vk { flex-basis: 100%; font: 700 13px/1.3 var(--sans); color: var(--print-ink); }
-  .verdict .vbig { font: 700 42px/1 var(--marker-face); }
-  .verdict .vsm { font: 700 19px/1 var(--marker-face); }
-  .verdict.up { color: var(--m-green); } .verdict.down { color: var(--m-red); }
-  .mk.under { left: 0; bottom: 0; width: min(230px, 80%); height: 9px; }
-  .mk.under path { stroke: currentColor; stroke-width: 2.6; }
+  .deal { display: grid; grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr); gap: 6px 10px; align-items: start; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .dside { display: grid; gap: 6px; min-width: 0; }
+  .dchips { display: grid; gap: 6px; min-width: 0; }
+  .dk { font: 700 12.5px/1.2 var(--sans); color: var(--ink-3); }
+  .deal-arrow { align-self: center; margin-top: 18px; color: var(--ink-3); }
+  @container tres (max-width: 519px) {
+    .deal { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .deal-arrow { display: none; }
+    .dside { grid-template-columns: 52px minmax(0, 1fr); align-items: center; column-gap: 8px; }
+  }
+  .pchip { appearance: none; display: grid; grid-template-columns: minmax(0, 1fr) 16px; align-items: center; gap: 1px 8px; width: 100%; min-height: 44px; padding: 6px 8px 6px 10px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line-2); text-align: left; cursor: pointer; font: 700 14px/1.25 var(--sans); }
+  .pchip span { min-width: 0; overflow-wrap: anywhere; }
+  .pchip small { grid-column: 1; font: 600 12.5px/1.2 var(--num); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .pchip .ic { grid-column: 2; grid-row: 1 / span 2; width: 16px; height: 16px; color: var(--ink-3); }
+  .pchip:hover { border-color: var(--down); }
+  .pchip:hover .ic { color: var(--down); }
+  .lnone { font-size: 13px; color: var(--ink-3); }
+  .verdict { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+  .verdict .vk { flex-basis: 100%; font: 700 13px/1.3 var(--sans); color: var(--ink-2); }
+  .verdict .vbig { font: 800 46px/1 var(--num); }
+  .verdict .vsm { font: 700 19px/1 var(--num); }
+  .verdict.up { color: var(--up); } .verdict.down { color: var(--down); }
   .vline { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 3px 6px; font-size: 13.5px; color: var(--ink-2); }
-  .vline b { font: 800 17px/1 var(--print-face); color: var(--ink); font-variant-numeric: tabular-nums; }
-  .vline .ic { width: 15px; height: 15px; align-self: center; color: var(--print-ink); }
+  .vline b { font: 800 17px/1 var(--num); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .vline .ic { width: 15px; height: 15px; align-self: center; color: var(--ink-3); }
   .vline .who3 { font-weight: 700; color: var(--ink); margin-right: 4px; }
-  .dcells { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
-  .dcells .c { min-height: 44px; }
-  .dcells .c s { text-decoration: none; font: 700 10.5px/1 var(--print-face); }
+  .vline .ph { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+  .dcells { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; }
+  .dc { display: grid; justify-items: center; gap: 3px; padding: 7px 0 6px; border-radius: 8px; background: var(--panel-2); cursor: default; }
+  .dc b { font: 700 11px/1 var(--num); letter-spacing: .03em; color: var(--ink-3); }
+  .dc i { font: 800 17px/1 var(--num); font-style: normal; font-variant-numeric: tabular-nums; color: var(--ink-2); }
+  .dc s { text-decoration: none; font: 600 11.5px/1 var(--num); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .dc.pos i { color: var(--up); } .dc.neg i { color: var(--down); }
+  .dc.pos.big { background: var(--up-soft); } .dc.neg.big { background: var(--down-soft); }
+  .dc:hover, .dc:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
   .dkey { margin: -4px 0 0; font-size: 12px; color: var(--ink-2); }
   .tnote { margin: 0; font-size: 13px; color: var(--ink-2); }
   .tbtns { display: flex; flex-wrap: wrap; gap: 8px; }
-  .sugg { margin-top: 22px; display: grid; gap: 18px 30px; }
-  .sugg { position: relative; }
-  .sugg > div { position: relative; z-index: 1; }
-  @container tr (min-width: 900px) { .sugg { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); } .sugg .ghost { display: block; } }
-  .slist { list-style: none; margin: 0; padding: 0; }
-  .slist li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; align-items: center; padding: 8px 2px; border-bottom: 1px solid var(--print-2); font-size: 14px; }
-  .slist li.none { display: block; color: var(--ink-2); border-bottom-style: dashed; }
+  .receipt { display: grid; gap: 10px; }
+  .receipt h3 { margin: 0; display: flex; align-items: center; gap: 8px; font: 800 17px/1.3 var(--sans); }
+  .receipt h3 .ic { color: var(--up); width: 20px; height: 20px; }
+  .receipt .rline { margin: 0; font-size: 14px; }
+  .rgrid { margin: 0; display: grid; gap: 0; border-block: 1px solid var(--line); }
+  .rgrid div { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 7px 0; }
+  .rgrid div + div { border-top: 1px solid var(--line); }
+  .rgrid dt { font-size: 13px; color: var(--ink-2); }
+  .rgrid dd { margin: 0; font-size: 14px; }
+  .rgrid dd .num { font-size: 16px; font-weight: 700; }
+  .sugg { margin-top: 24px; display: grid; gap: 22px 32px; }
+  @container tr (min-width: 900px) { .sugg { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); } }
+  .slist { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-2); }
+  .slist li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; align-items: center; padding: 10px 2px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .slist li.none { display: block; color: var(--ink-2); }
   .slist .st { min-width: 0; }
-  .slist .st .ic { width: 15px; height: 15px; vertical-align: -2px; color: var(--print-ink); }
+  .slist .st .ic { width: 15px; height: 15px; vertical-align: -2px; color: var(--ink-3); }
   .slist .st .muted { font-size: 13px; }
+  .slist .ph { display: inline-block; }
+  .slist .sp { display: inline-block; font-size: 13px; color: var(--ink-2); }
+  .slist .sp .tag { margin-left: 6px; }
   .slist .sm { grid-column: 1; font-size: 13px; color: var(--ink-2); }
-  .slist .gain { font: 700 18px/1 var(--marker-face); color: var(--m-green); margin-right: 6px; }
+  .slist .gain { margin-right: 6px; font: 800 17px/1 var(--num); color: var(--up); font-variant-numeric: tabular-nums; }
   .slist .btn { grid-column: 2; grid-row: 1 / span 2; }
 
-  /* ---------- 球員名牌牆 ---------- */
-  .controls { display: grid; gap: 10px; margin-bottom: 14px; }
+  /* ---------- 球員表 ---------- */
+  .controls { display: grid; gap: 10px; margin-bottom: 16px; }
   .crow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
-  .crow .hint2 { font-size: 12.5px; color: var(--ink-2); }
-  .searchbox { position: relative; display: inline-flex; width: min(280px, 100%); }
-  .searchbox .ic { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--print-ink); pointer-events: none; }
-  .searchbox .search { width: 100%; padding-left: 34px; }
-  .layout { display: grid; gap: 22px; align-items: start; }
-  @media (min-width: 1360px) {
-    .layout { grid-template-columns: minmax(0, 1fr) 288px; gap: 22px; }
-    .side { position: sticky; top: 12px; max-height: calc(100vh - var(--tray-h, 56px) - 24px); overflow: auto; overscroll-behavior: contain; padding-right: 4px; }
+  .crow .hint2 { font-size: 12.5px; color: var(--ink-3); }
+  .searchbox { position: relative; display: inline-flex; width: min(300px, 100%); }
+  .searchbox .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--ink-3); pointer-events: none; }
+  .searchbox .search { width: 100%; padding-left: 36px; }
+  .layout { display: grid; gap: 20px; align-items: start; }
+  @media (min-width: 1420px) {
+    .layout { grid-template-columns: minmax(0, 1fr) 288px; gap: 20px; }
+    .side { position: sticky; top: 12px; max-height: calc(100vh - var(--bar-h) - 24px); overflow: auto; overscroll-behavior: contain; }
   }
   .plist { min-width: 0; container: pl / inline-size; }
   .plist-head { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-bottom: 8px; }
   .legend { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ink-2); }
   .legend .sw { display: inline-flex; gap: 2px; }
   .legend .sw i { width: 13px; height: 11px; border-radius: 2px; display: block; }
-  /* 一條印好的格線：每列一位球員，名字貼在磁鐵上；每一欄都跟上面印的欄名對齊 */
+  /* 每一欄寬度固定，表頭和每一列共用同一組欄寬，數字上下對齊 */
   .list-head, .row {
     display: grid; column-gap: 10px; align-items: center;
     grid-template-columns: 34px minmax(0, 1fr) 80px 56px 294px 210px;
     grid-template-areas: "rk who price idx heat act" "rk note price idx heat act";
   }
   .list-head {
-    position: sticky; top: 0; z-index: 4; padding: 8px 12px 6px; background: var(--board);
-    border: 1.5px solid var(--print); border-bottom: 1px solid var(--print); border-radius: 8px 8px 0 0;
-    grid-template-areas: "rk who price idx heat act"; font: 700 12px/1.2 var(--sans); color: var(--print-ink);
+    position: sticky; top: 0; z-index: 4; padding: 9px 10px 8px; background: var(--panel);
+    border-bottom: 1px solid var(--line-2); grid-template-areas: "rk who price idx heat act";
+    font: 700 12px/1.2 var(--sans); color: var(--ink-3);
   }
   .h-rk { grid-area: rk; } .h-who { grid-area: who; } .h-price { grid-area: price; } .h-idx { grid-area: idx; }
-  .h-heat { grid-area: heat; text-align: center; font: 700 11.5px/1.2 var(--print-face); letter-spacing: .03em; }
+  .h-heat { grid-area: heat; text-align: center; font: 700 11.5px/1.2 var(--num); letter-spacing: .03em; }
   .h-act { grid-area: act; padding-right: 62px; text-align: right; }
-  .list { list-style: none; margin: 0; padding: 0; border: 1.5px solid var(--print); border-top: 0; border-radius: 0 0 8px 8px; overflow: hidden; }
-  .row { padding: 9px 12px; border-top: 1px solid var(--print-2); }
-  .row:first-child { border-top: 0; }
-  .is-auction .row.sold { opacity: .55; }
-  .row.mine { background: var(--mine-tint); }
-  .row.flash { box-shadow: inset 0 0 0 2.5px var(--m-blue); }
-  .rk { grid-area: rk; align-self: start; display: grid; justify-items: start; gap: 2px; padding-top: 3px; }
-  .rk .n { font: 800 21px/1 var(--print-face); color: var(--print-ink); font-variant-numeric: tabular-nums; }
-  .rk .pos { font: 700 11.5px/1.2 var(--print-face); letter-spacing: .03em; color: var(--ink-2); }
-  .who { grid-area: who; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; }
-  .name { font-size: 15px; }
-  .row.mine .mag { background: var(--tape-mine); border-color: var(--tape-mine-edge); border-bottom-color: var(--tape-mine-side); color: var(--tape-ink); }
-  .tm { font-size: 12.5px; color: var(--ink-2); }
+  .list { list-style: none; margin: 0; padding: 0; }
+  .row { padding: 10px; border-bottom: 1px solid var(--line); }
+  .row:hover { background: var(--panel-2); }
+  /* 拍賣時別人買走的球員：灰底、名字和價格退一階，文字對比仍 ≥ 4.5 */
+  .is-auction .row.sold:not(.mine) { background: var(--panel-2); }
+  .is-auction .row.sold:not(.mine) .name, .is-auction .row.sold:not(.mine) .price .v { color: var(--ink-2); }
+  .row.mine { background: var(--accent-soft); }
+  .row.flash { box-shadow: inset 0 0 0 2px var(--accent); }
+  .rk { grid-area: rk; align-self: start; display: grid; justify-items: start; gap: 2px; padding-top: 2px; }
+  .rk .n { font: 800 20px/1 var(--num); color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .rk .pos { display: grid; font: 700 11.5px/1.25 var(--num); letter-spacing: .03em; color: var(--ink-3); }   /* 一個位置一行，不會有「· PF」掉到下一行 */
+  .who { grid-area: who; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+  .name { font-weight: 700; font-size: 15px; line-height: 1.3; }
+  .tm { font-size: 12.5px; color: var(--ink-3); }
   .tm span { white-space: nowrap; }
   .tags { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-right: 6px; vertical-align: 1px; }
-  .tag { display: inline-flex; align-items: center; padding: 1px 6px; border: 1.5px solid currentColor; border-radius: 4px; font: 700 11.5px/1.15 var(--sans); white-space: nowrap; }
-  .tag.rook { color: var(--m-blue); }
-  .tag.move { color: var(--ink-2); border-color: var(--print-2); }
-  .tag.target, .tag.win { color: var(--m-green); }
-  .tag.over { color: var(--m-red); }
-  .tag.risk { color: var(--m-red); border-style: dashed; }
+  .tag { display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 999px; font: 700 11.5px/1.35 var(--sans); white-space: nowrap; background: var(--panel-3); color: var(--ink-2); }
+  .tag.rook { background: rgba(31, 85, 194, .1); color: var(--strong); }
+  .tag.target, .tag.win { background: var(--up-soft); color: var(--up); }
+  .tag.over { background: var(--down-soft); color: var(--down); }
+  .tag.risk { background: transparent; color: var(--down); box-shadow: inset 0 0 0 1px var(--down); }
   .pos-inline { display: none; }
   .note { grid-area: note; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
-  .note .pt { color: var(--m-blue); font-weight: 700; }
-  .nw { white-space: nowrap; }
+  .note .pt { color: var(--strong); font-weight: 700; }
   .price { grid-area: price; display: grid; gap: 2px; }
-  .price .v { font: 800 28px/1 var(--print-face); font-variant-numeric: tabular-nums; }
-  .price .v.zero { color: var(--ink-2); font-size: 22px; }
-  .price .sub { font-size: 12px; line-height: 1.35; color: var(--ink-2); }
+  .price .v { font: 800 26px/1 var(--num); font-variant-numeric: tabular-nums; }
+  .price .v.zero { color: var(--ink-3); font-size: 21px; }
+  .price .sub { font-size: 12px; line-height: 1.35; color: var(--ink-3); }
   .price .sub b { font-weight: 700; color: var(--ink); }
   .idx { grid-area: idx; display: flex; align-items: center; gap: 6px; }
-  .idx .score { font: 800 24px/1 var(--print-face); font-variant-numeric: tabular-nums; }
-  .grade { font: 800 13px/1 var(--print-face); padding: 4px 6px; border-radius: 4px; border: 1.5px solid var(--print); color: var(--print-ink); }
-  .grade.gS { background: var(--m-blue); border-color: var(--m-blue); color: var(--on-blue); }
-  .grade.gA { border-color: var(--m-blue); color: var(--m-blue); }
+  .idx .score { font: 800 22px/1 var(--num); font-variant-numeric: tabular-nums; }
+  .grade { min-width: 22px; padding: 3px 5px; border-radius: 6px; text-align: center; font: 800 12.5px/1 var(--num); background: var(--panel-3); color: var(--ink-2); }
+  .grade.gS { background: var(--accent); color: var(--accent-ink); }
+  .grade.gA { background: var(--accent-soft); color: var(--accent); }
   .heat, .h-heat { display: grid; grid-template-columns: repeat(9, 30px); gap: 3px; }
   .heat { grid-area: heat; }
-  .heat .c { min-height: 32px; }
-  /* 隊伍欄：隊名、選秀價（右對齊）和按鈕，寬度固定，每列的 $ 都在同一條線上 */
+  .heat .c { min-height: 30px; }
+  .heat .c b { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .act { grid-area: act; display: grid; grid-template-columns: minmax(0, 1fr) 54px; grid-template-areas: "own btn" "opp btn"; gap: 2px 8px; align-items: center; }
   .act .btn { grid-area: btn; padding-inline: 4px; }
-  .own { grid-area: own; min-width: 0; align-self: end; font-size: 12.5px; line-height: 1.3; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .own .fa { color: var(--m-green); font-weight: 700; }
-  .opp { grid-area: opp; align-self: start; font: 800 16px/1.1 var(--print-face); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
-  .opp small { display: none; margin-right: 3px; font: 500 11px/1 var(--sans); color: var(--ink-2); }
-  .minetag { display: inline-block; padding: 1px 6px; border-radius: 2px; background: var(--tape-mine); color: var(--tape-ink); font-weight: 700; }
+  .own { grid-area: own; min-width: 0; align-self: end; font-size: 12.5px; line-height: 1.3; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); }
+  .own .fa { color: var(--up); font-weight: 700; }
+  .opp { grid-area: opp; align-self: start; font: 800 16px/1.1 var(--num); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .opp small { display: none; margin-right: 3px; font: 500 11.5px/1 var(--sans); color: var(--ink-3); }
+  .minetag { display: inline-block; padding: 0 7px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 700; }
   .editor { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; align-items: center; }
-  .row.editing .act { grid-area: auto / 1 / auto / -1; display: flex; justify-content: flex-end; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--print-2); }
-  .editor input { width: 70px; font: 700 17px var(--print-face); font-variant-numeric: tabular-nums; }
-  .editor input[aria-invalid="true"] { border-color: var(--m-red); }
-  .editor select { max-width: 230px; }
+  .row.editing .act { grid-area: auto / 1 / auto / -1; display: flex; justify-content: flex-end; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line-2); }
+  .editor input { width: 76px; font: 700 17px var(--num); font-variant-numeric: tabular-nums; }
+  .editor input[aria-invalid="true"] { border-color: var(--down); }
+  .editor select { max-width: 240px; }
   .editor .msg { flex-basis: 100%; text-align: right; font-size: 12px; color: var(--ink-2); }
-  .editor .msg.err { color: var(--m-red); font-weight: 700; }
+  .editor .msg.err { color: var(--down); font-weight: 700; }
   .empty { padding: 28px 12px; text-align: center; color: var(--ink-2); }
-  .more { margin-top: 12px; display: flex; justify-content: center; }
-  /* 980px 以下：九項移到第三行，隊伍欄仍在最右邊 */
+  .more { margin-top: 14px; display: flex; justify-content: center; }
   @container pl (max-width: 979px) {
     .list-head, .row { grid-template-columns: 38px minmax(0, 1fr) 80px 56px 210px; grid-template-areas: "rk who price idx act" "rk note price idx act" ". heat heat heat act"; }
-    .list-head { grid-template-areas: "rk who price idx act" ". heat heat heat act"; row-gap: 3px; }
+    .list-head { grid-template-areas: "rk who price idx act" ". heat heat heat act"; row-gap: 4px; }
     .h-act { align-self: start; }
     .heat, .h-heat { grid-template-columns: repeat(9, minmax(0, 54px)); }
-    .heat { margin-top: 7px; }
+    .heat { margin-top: 8px; }
   }
   /* 手機：名字與價格 → 標記與備註 → 九項 → 指數與隊伍 */
   @container pl (max-width: 640px) {
     .list-head, .row { grid-template-columns: 26px minmax(0, 1fr) 80px; column-gap: 10px; grid-template-areas: "rk who price" ". note note" "heat heat heat" "foot foot foot"; }
-    .list-head { grid-template-areas: "heat heat heat"; padding: 6px 10px 5px; }
+    .list-head { grid-template-areas: "heat heat heat"; padding: 8px 0 6px; }
     .h-rk, .h-who, .h-price, .h-idx, .h-act { display: none; }
-    .row { padding: 6px 10px 7px; }
+    .row { padding: 10px 0; }
+    .row:hover { background: none; }
+    .row.mine { margin-inline: -16px; padding-inline: 16px; }
     .rk { padding-top: 2px; }
-    .rk .n { font-size: 18px; }
+    .rk .n { font-size: 17px; }
     .rk .pos { display: none; }
     .pos-inline { display: inline; }
-    .who { gap: 1px 8px; }
     .name { font-size: 14.5px; }
     .price { justify-items: end; text-align: right; }
-    .price .v { font-size: 24px; }
+    .price .v { font-size: 23px; }
     .note { margin-top: 3px; }
     .heat, .h-heat { grid-template-columns: repeat(9, minmax(0, 1fr)); }
-    .heat { margin-top: 5px; }
+    .heat { margin-top: 7px; }
     .heat .c { min-height: 28px; }
     .heat .c i { font-size: 13px; }
-    .idx { grid-area: foot; justify-self: start; margin-top: 5px; }
-    .idx .score { font-size: 21px; }
-    .act { grid-area: foot; justify-self: end; width: min(100% - 60px, 280px); grid-template-columns: minmax(0, 1fr) auto 58px; grid-template-areas: "own opp btn"; margin-top: 5px; }
-    .act .btn { min-height: 30px; }
+    .idx { grid-area: foot; justify-self: start; margin-top: 7px; }
+    .idx .score { font-size: 20px; }
+    .act { grid-area: foot; justify-self: end; width: min(100% - 60px, 280px); grid-template-columns: minmax(0, 1fr) auto 58px; grid-template-areas: "own opp btn"; margin-top: 7px; }
     .own, .opp { align-self: center; }
+    .own { white-space: normal; overflow-wrap: anywhere; }
     .opp small { display: inline; }
     .row.editing .act { grid-area: auto / 1 / auto / -1; width: auto; justify-self: stretch; }
   }
 
-  /* ---------- 側邊：新秀、拍賣用的卡 ---------- */
-  .side { display: grid; gap: 26px; align-content: start; }
-  .sidebox h2 { margin-bottom: 10px; font-size: 16px; }
-  .sidebox .muted { margin: 8px 0 0; }
+  /* ---------- 側欄：新秀、拍賣用 ---------- */
+  .side { display: grid; gap: 16px; align-content: start; }
+  .sidebox h2 { margin: 0 0 10px; font: 800 16px/1.3 var(--sans); }
+  .sidebox .muted { margin: 10px 0 0; }
   .rooks { list-style: none; margin: 0; padding: 0; }
-  .rooks li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--print-2); font-size: 14px; }
-  .rooks .n { font: 800 16px var(--print-face); color: var(--print-ink); text-align: right; font-variant-numeric: tabular-nums; }
-  .rooks .who2 { display: grid; gap: 2px; min-width: 0; }
-  .rooks .find { appearance: none; padding: 0; border: 0; background: none; text-align: left; font: 700 14px/1.3 var(--sans); color: var(--ink); cursor: pointer; }
-  .rooks .find:hover { color: var(--m-blue); text-decoration: underline; }
-  .rooks .t { color: var(--ink-2); font-size: 12px; }
-  .rooks .cls { display: inline-block; margin-right: 6px; padding: 1px 5px; border: 1.5px solid var(--print-2); border-radius: 3px; font-size: 11px; line-height: 1.2; color: var(--ink-2); }
-  .rooks .cls.c2026 { border-color: var(--m-blue); color: var(--m-blue); font-weight: 700; }
-  .rooks .p { font: 800 16px var(--print-face); min-width: 36px; text-align: right; font-variant-numeric: tabular-nums; }
+  .rooks li { position: relative; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; grid-template-areas: "n nm p" ". t g" ". o o"; gap: 2px 8px; align-items: center; min-height: 44px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .rooks li:hover { background: var(--panel-2); }
+  .rooks .n { grid-area: n; font: 800 15px var(--num); color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+  .rooks .find { grid-area: nm; justify-self: start; max-width: 100%; appearance: none; padding: 0; border: 0; background: none; text-align: left; font: 700 14px/1.3 var(--sans); color: var(--ink); cursor: pointer; }
+  .rooks .find::after { content: ''; position: absolute; inset: 0; }
+  .rooks li:hover .find { color: var(--accent); }
+  .rooks .t, .rooks .o { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink-3); font-size: 12px; line-height: 1.45; }
+  .rooks .t { grid-area: t; }
+  .rooks .o { grid-area: o; }
+  .rooks .o .tag { margin-right: 6px; }
+  .rooks .grade { grid-area: g; justify-self: end; }
+  .rooks .cls { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 999px; background: var(--panel-3); font-size: 11.5px; line-height: 1.5; color: var(--ink-2); }
+  .rooks .cls.c2026 { background: rgba(31, 85, 194, .1); color: var(--strong); font-weight: 700; }
+  .rooks .p { grid-area: p; font: 800 16px var(--num); min-width: 36px; text-align: right; font-variant-numeric: tabular-nums; }
   .tiers { display: grid; gap: 5px; }
   .tier { display: grid; grid-template-columns: 58px minmax(0, 1fr) 42px; align-items: center; gap: 8px; font-size: 12.5px; cursor: default; }
   .tier .lab { color: var(--ink-2); white-space: nowrap; }
-  .tier .track { position: relative; height: 14px; border-bottom: 1px solid var(--print-2); }
-  .tier .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--m-blue); border-radius: 0 3px 3px 0; max-width: 100%; }
-  .tier .val { font: 800 15px var(--print-face); text-align: right; font-variant-numeric: tabular-nums; }
-  .tier:hover .fill, .tier:focus-visible .fill { opacity: .82; }
-  .axis { display: grid; grid-template-columns: 58px minmax(0, 1fr) 42px; gap: 8px; margin-top: 4px; font-size: 11.5px; color: var(--ink-2); }
-  .axis span:nth-child(2) { display: flex; justify-content: space-between; border-top: 1px solid var(--print); padding-top: 2px; }
-  .seg { display: flex; border: 1px solid var(--strip-edge); border-radius: 7px; overflow: hidden; background: var(--strip); box-shadow: var(--strip-shadow); margin-bottom: 10px; }
-  .seg button { appearance: none; flex: 1 1 0; min-height: 34px; border: 0; background: none; padding: 5px 10px; font-size: 14px; cursor: pointer; }
-  .seg button + button { border-left: 1px solid var(--strip-edge); }
-  .seg button[aria-pressed="true"] { background: var(--m-blue); color: var(--on-blue); font-weight: 700; }
+  .tier .track { position: relative; height: 12px; border-radius: 6px; background: var(--panel-3); }
+  .tier .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 6px; max-width: 100%; }
+  .tier .val { font: 800 15px var(--num); text-align: right; font-variant-numeric: tabular-nums; }
+  .axis { display: grid; grid-template-columns: 58px minmax(0, 1fr) 42px; gap: 8px; margin-top: 4px; font-size: 11.5px; color: var(--ink-3); }
+  .axis span:nth-child(2) { display: flex; justify-content: space-between; border-top: 1px solid var(--line-2); padding-top: 2px; }
+  .seg { display: flex; margin-bottom: 10px; border: 1px solid var(--line-2); border-radius: 10px; overflow: hidden; }
+  .seg button { appearance: none; flex: 1 1 0; min-height: 36px; border: 0; background: var(--panel); padding: 5px 10px; font-size: 14px; cursor: pointer; }
+  .seg button + button { border-left: 1px solid var(--line-2); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
   .plan-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
-  .slot { padding: 5px 2px; text-align: center; border-radius: 5px; background: var(--strip); border: 1px solid var(--strip-edge); box-shadow: var(--strip-shadow); }
-  .slot .p { display: block; font: 800 17px/1 var(--print-face); font-variant-numeric: tabular-nums; }
-  .slot .r { font-size: 10.5px; color: var(--ink-2); }
+  .slot { padding: 6px 2px; text-align: center; border-radius: 8px; background: var(--panel-2); }
+  .slot .p { display: block; font: 800 17px/1 var(--num); font-variant-numeric: tabular-nums; }
+  .slot .r { font-size: 11px; color: var(--ink-3); }
   .plan-note { margin: 8px 0 0; font-size: 13px; color: var(--ink-2); }
   .tips { margin: 0; padding-left: 1.2em; display: grid; gap: 7px; font-size: 13.5px; color: var(--ink-2); }
   .tips b { color: var(--ink); }
 
-  /* ---------- 貼在板子上的說明紙 ---------- */
-  .method { padding-bottom: 36px; }
-  .sheet { position: relative; max-width: 1040px; margin: 10px auto 0; padding: 26px 24px 20px; border-radius: 2px; background: var(--paper); color: var(--paper-ink); box-shadow: 0 1px 2px rgba(20, 30, 40, .18), 0 8px 22px rgba(20, 30, 40, .10); }
-  .sheet::before, .sheet::after { content: ""; position: absolute; top: -10px; width: 88px; height: 24px; background: var(--tape-clear); box-shadow: 0 1px 1px rgba(20, 30, 40, .08); }
-  .sheet::before { left: 24px; transform: rotate(-4deg); }
-  .sheet::after { right: 24px; transform: rotate(3deg); }
-  .sheet h2 { margin-bottom: 12px; }
-  .sheet .lede { margin: 0 0 14px; max-width: 75ch; font-size: 14.5px; }
-  .sheet dl { margin: 0; display: grid; gap: 12px; max-width: 80ch; }
-  .sheet dt { font-weight: 700; font-size: 14.5px; }
-  .sheet dd { margin: 2px 0 0; font-size: 14px; color: var(--ink-2); }
+  /* ---------- 資料與方法 ---------- */
+  .method { container: method / inline-size; }
+  .method h2 { margin: 0 0 12px; font: 800 18px/1.3 var(--sans); }
+  .method .lede { margin: 0 0 14px; max-width: 75ch; font-size: 14.5px; }
+  .method dl { margin: 0; display: grid; gap: 12px; max-width: 80ch; }
+  .method dt { font-weight: 700; font-size: 14.5px; }
+  .method dd { margin: 2px 0 0; font-size: 14px; color: var(--ink-2); }
+  @container method (min-width: 1000px) { .method dl { display: block; columns: 2; column-gap: 48px; max-width: none; } .method dl > div { break-inside: avoid; margin-bottom: 14px; } }
   .src { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; color: var(--ink-2); }
-  .src a { color: var(--ink); }
+  .src a { color: var(--accent); }
   .store { margin: 12px 0 0; font-size: 13px; color: var(--ink-2); }
-  .store.bad { color: var(--m-red); font-weight: 700; }
+  .store.bad { color: var(--down); font-weight: 700; }
 
-  /* ---------- 筆槽（置底） ---------- */
-  .tray {
-    position: sticky; bottom: 0; z-index: 30; display: flex; align-items: center; gap: 8px 10px;
-    padding: 7px var(--gut) calc(7px + env(safe-area-inset-bottom, 0px)); color: var(--rail-ink);
-    background: linear-gradient(180deg, var(--alu-hi), var(--alu) 40%, var(--alu-lo));
-    border-top: 1px solid var(--alu-lo); box-shadow: 0 -6px 14px rgba(10, 20, 30, .14);
-  }
-  .tray-read { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; min-width: 0; min-height: 36px; align-content: center; text-decoration: none; font: 700 15px/1.2 var(--print-face); font-variant-numeric: tabular-nums; }
-  .tray-read:hover { text-decoration: underline; }
-  .tray-read > span { display: contents; }
-  .tray-read b { font-size: 20px; font-weight: 800; }
-  .tray-read .up { color: var(--rail-green); } .tray-read .down { color: var(--rail-red); }
-  .tray-read .tw { font: 700 13.5px/1.2 var(--sans); color: var(--rail-red); }
-  /* 筆槽兩端的黑色護角 */
-  .tray::before, .tray::after { content: ""; position: absolute; top: 0; bottom: 0; width: calc(var(--rail-w) + 7px); background: var(--cap); pointer-events: none; }
-  .tray::before { left: calc(-1 * var(--rail-w)); border-radius: 0 5px 0 0; }
-  .tray::after { right: calc(-1 * var(--rail-w)); border-radius: 5px 0 0 0; }
-  /* 槽裡躺著三支白板筆：黑、藍（交易）、黑 */
-  .pens { display: flex; align-items: center; gap: 5px; padding: 4px 5px; border-radius: 10px; background: var(--groove); box-shadow: inset 0 2px 3px rgba(0, 0, 0, .22), 0 1px 0 rgba(255, 255, 255, .4); }
-  .pen {
-    position: relative; display: inline-flex; align-items: center; min-height: 32px; padding: 3px 22px 3px 13px;
-    border-radius: 999px 4px 4px 999px; background: var(--pen-body); color: var(--ink); text-decoration: none; white-space: nowrap;
-    font: 700 14px/1.2 var(--sans); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -3px 3px rgba(0, 0, 0, .09), 0 1px 2px rgba(0, 0, 0, .3);
-  }
-  .pen::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 13px; border-radius: 3px 4px 4px 3px; background: var(--pen-cap); box-shadow: inset 2px 0 0 rgba(255, 255, 255, .16), inset 0 -3px 3px rgba(0, 0, 0, .25); }
-  .pen.primary { background: var(--m-blue); color: var(--on-blue); }
-  .pen.primary::after { background: var(--pen-cap-blue); }
-  .pen:hover { text-decoration: underline; text-underline-offset: 3px; }
-  @media (max-width: 480px) {
-    .tray-read .tw, .tray-read .tx { display: none; }
-    .tray { gap: 6px; }
-    .pens { gap: 4px; padding: 3px 4px; }
-    .pen { padding: 3px 17px 3px 10px; font-size: 13.5px; }
-    .pen::after { width: 9px; }
-  }
+  /* ---------- 下方狀態列（每個寬度都有） ---------- */
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--panel); border-top: 1px solid var(--line); box-shadow: 0 -2px 10px rgba(16, 24, 40, .06); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .bar .in { max-width: 1440px; margin: 0 auto; min-height: 60px; padding: 8px var(--gut); display: flex; align-items: center; gap: 8px 12px; }
+  .readout { display: flex; flex-wrap: wrap; align-items: baseline; align-content: center; gap: 2px 10px; min-width: 0; min-height: 44px; padding: 0 8px; margin-left: -8px; border-radius: 10px; text-decoration: none; font: 700 15px/1.2 var(--num); font-variant-numeric: tabular-nums; }
+  .readout:hover { background: var(--panel-2); }
+  .readout > span { display: contents; }
+  .readout b { font-size: 20px; font-weight: 800; }
+  .readout .tw { font: 700 13px/1.2 var(--sans); color: var(--down); }
+  .readout.flash { background: var(--accent-soft); }
+  .nav { display: flex; gap: 6px; margin-left: auto; }
+  .nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 60px; min-height: 44px; padding: 0 14px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line); color: var(--ink); font: 700 14px/1 var(--sans); text-decoration: none; white-space: nowrap; }
+  .nav a:hover { background: var(--panel-3); }
+  .nav a.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .nav a.primary:hover { background: var(--accent-hover); }
+  @media (max-width: 480px) { .readout .tw, .readout .tx { display: none; } .nav a { min-width: 52px; padding: 0 11px; } }
   @media (max-width: 430px) { #lRec { display: none; } }
-  @media (max-width: 340px) { .pen { padding: 3px 14px 3px 8px; font-size: 13px; } .pen::after { width: 8px; } .tray-read b { font-size: 18px; } }
+  @media (max-width: 340px) { .nav a { min-width: 46px; padding: 0 8px; font-size: 13px; } .readout b { font-size: 18px; } }
 
-  /* ---------- 工具提示：黑色標籤 ---------- */
-  .tip { position: fixed; z-index: 50; pointer-events: none; max-width: 240px; padding: 7px 10px; border-radius: 3px; background: var(--tape-dark); color: var(--tape-dark-ink); box-shadow: 0 2px 4px rgba(0, 0, 0, .25), 0 8px 18px rgba(0, 0, 0, .18); font-size: 12.5px; line-height: 1.45; }
-  .tip strong { display: block; font: 800 18px/1.1 var(--print-face); }
+  /* ---------- 復原提示、工具提示 ---------- */
+  .toast { position: fixed; left: 50%; bottom: calc(var(--bar-h) + 12px + env(safe-area-inset-bottom, 0px)); z-index: 45; transform: translateX(-50%); display: flex; align-items: center; gap: 4px 10px; width: max-content; max-width: calc(100vw - 32px); padding: 6px 6px 6px 16px; border-radius: 12px; background: var(--ink); color: var(--panel); box-shadow: var(--shadow-2); font-size: 14px; }
+  .toast span { min-width: 0; }
+  .toast button { appearance: none; flex: none; display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 8px; background: none; color: inherit; font: 800 14px/1 var(--sans); cursor: pointer; }
+  .toast button:hover { background: rgba(127, 127, 127, .22); }
+  .toast #toastUndo { color: var(--accent-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .tip { position: fixed; z-index: 50; pointer-events: none; max-width: 260px; padding: 8px 11px; border-radius: 8px; background: var(--ink); color: var(--panel); box-shadow: var(--shadow-2); font-size: 12.5px; line-height: 1.45; }
+  .tip strong { display: block; font: 800 18px/1.1 var(--num); }
   .tip span { opacity: .82; }
 
-  /* ---------- 動作：拿起磁鐵、吸回去、麥克筆畫上去 ---------- */
+  /* ---------- 動作：只有狀態變化 ---------- */
   @media (prefers-reduced-motion: no-preference) {
-    .btn, .chip, .tp { transition: box-shadow .16s ease-out, transform .16s ease-out, border-color .16s ease-out; }
+    .btn, .chip, .nav a, .tp, .row, .lt > summary, .pchip, .x, .readout { transition: background-color .15s ease-out, border-color .15s ease-out, color .15s ease-out; }
     .lx { transition: transform .2s ease-out; }
-    .draw .mk path, .tres .mk path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ink .46s cubic-bezier(.22, .8, .3, 1) var(--d, 0ms) forwards; }
-    .mstrip.snap .mag { animation: snap .38s cubic-bezier(.2, .9, .3, 1.25); }
-    .lmag.new { animation: lift .22s cubic-bezier(.2, .8, .3, 1); }
+    .pchip.new { animation: pin .2s cubic-bezier(.2, .8, .3, 1); }
+    .toast { animation: rise .2s cubic-bezier(.2, .8, .3, 1); }
   }
-  @keyframes ink { to { stroke-dashoffset: 0; } }
-  @keyframes lift { from { transform: translateY(-9px) rotate(-1.6deg); box-shadow: var(--strip-lift); } }
-  @keyframes snap { 0% { transform: translateY(-7px) rotate(-1.4deg); box-shadow: var(--strip-lift); } 70% { transform: translateY(1px) rotate(0); } 100% { transform: none; } }
+  @keyframes pin { from { opacity: 0; transform: translateY(-4px); } }
+  @keyframes rise { from { opacity: 0; transform: translate(-50%, 6px); } }
 </style>
 </head>
 <body class="is-auction">
-<div class="frame">
 
-  <header class="rail">
+<header class="appbar">
+  <div class="in">
     <a class="back" href="index.html" aria-label="回小工具首頁"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg><span>小工具</span></a>
-    <h1 class="tape">NBA 拍賣選秀板</h1>
+    <h1 class="title">NBA 拍賣選秀板</h1>
     <p class="season" id="season">2026-27 · 拍賣選秀</p>
     <span class="spacer"></span>
-    <button class="btn small" id="themeBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-board"/></svg><span id="themeTxt">自動</span></button>
-  </header>
+    <button class="btn small" id="themeBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-contrast"/></svg><span id="themeTxt">自動</span></button>
+  </div>
+</header>
 
-  <div class="board">
-    <div class="top">
-      <section class="zone" id="myBoard" aria-labelledby="myTeamH">
-        <svg class="ghost g-me" viewBox="0 0 220 130" aria-hidden="true">
-          <g fill="none" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="30" cy="98" r="11"/><circle cx="98" cy="38" r="11"/>
-            <path d="M150 84l18 18m0-18l-18 18M176 24l16 16m0-16l-16 16"/>
-            <path d="M40 90 Q66 46 84 44"/><path d="M76 36l10 8-12 6"/>
-            <path d="M110 46 C140 66 150 108 200 114" stroke-dasharray="2 12"/>
-          </g>
-        </svg>
-        <div class="zone-head">
-          <h2 class="tape mine" id="myTeamH">我的陣容</h2>
-          <p class="zone-note" id="myTeamSub"></p>
-        </div>
-        <div class="tally auction-only" id="auctionStats">
-          <p class="t1"><span class="trec blue" id="sLeft">$200</span><span class="tof">剩餘預算 / $200</span></p>
-          <p class="t2"><span class="tmoney"><small>最高可出價</small><span id="sMax">$187</span></span><span class="tline">要留 $1 給其他名額 · 已買 <b id="sSpots">0</b> / 14 人 · 聯盟剩 <b id="sLeague">$2,800</b>，<span id="sSold">還沒有成交</span> · 通膨 <b id="sInfl">×1.00</b>（剩下的錢 ÷ 剩下的價值）</span></p>
-        </div>
-        <div class="league-only" id="teamLeague" hidden>
-          <div class="tally draw" id="tlSum"></div>
-          <div class="cats draw" id="tlRanks"></div>
-          <p class="cats-key">九類在 14 隊的名次（1 = 最強）：<span class="kr">紅圈</span>是要補的類別，<span class="kt">藍勾</span>是前三名。</p>
-          <ul class="coach" id="tlCoach"></ul>
-          <p class="flag" id="tlFill" hidden></p>
-        </div>
-        <p class="calc league-only" id="tlWait" hidden>計算中…</p>
-      </section>
+<nav class="bar" id="bar" aria-label="我的戰績與跳轉">
+  <div class="in">
+    <a class="readout" href="#myBoard">
+      <span class="league-only" id="trayLeague" hidden><b id="lRank">—</b><span id="lRec">—</span><b id="lMoney">—</b><span class="tw" id="lWeak"></span></span>
+      <span class="auction-only" id="trayAuction"><span>剩 <b id="tLeft">$200</b></span><span>最高可出價 <b id="tMax">$187</b></span><span class="tx">通膨 ×<b id="tInfl">1.00</b></span></span>
+    </a>
+    <span class="nav">
+      <a class="league-only" href="#league" hidden>聯盟</a>
+      <a class="primary league-only" href="#trade" hidden>交易</a>
+      <a href="#players" id="navPlayers">球員</a>
+    </span>
+  </div>
+</nav>
 
-      <div class="colb" id="colb" hidden>
-        <section class="zone" id="league" aria-labelledby="leagueH" hidden>
-          <div class="zone-head">
-            <h2 class="tape" id="leagueH">聯盟戰力</h2>
-            <p class="zone-note">14 隊依平均每週贏的類數排序；格子是九類在聯盟的名次，藍強紅弱。點隊名看名單、強弱項。</p>
-            <button class="btn small" id="restoreBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-eraser"/></svg><span>還原成選秀名單</span></button>
-          </div>
-          <div id="leagueTable"><p class="calc">計算中…</p></div>
-          <p class="llegend">名單裡：選秀價 → 我的估值（不 punt 的建議價）。估值低於自由球員水準（約 $4）的人標灰色，模擬時當成季中會被換掉；長期傷缺的週也用自由球員補上（聯盟有 4 格 IL）。沒考慮每天 11 個先發位置的限制，數字略偏樂觀。</p>
-        </section>
-        <section class="zone" id="vsZone" aria-labelledby="vsH" hidden>
-          <h3 class="ph" id="vsH">我碰到各隊<small>平均每週淨勝類數 · 每週輸贏，最難打的在最上面</small></h3>
-          <ol class="vslist" id="tlVs"></ol>
-        </section>
+<main class="wrap">
+  <div class="top">
+    <section class="panel me" id="myBoard" aria-labelledby="myTeamH">
+      <div class="panel-head">
+        <h2 id="myTeamH">我的陣容</h2>
+        <span class="badge mine league-only" id="mineBadge" hidden>我的隊伍</span>
+        <span class="rank-pill" id="rankPill" hidden></span>
       </div>
+      <div class="auction-only" id="auctionStats">
+        <div class="score">
+          <div class="sc"><span class="rec num" id="sLeft">$200</span><span class="sc-l">剩餘預算（共 $200）</span></div>
+          <div class="sc"><span class="money num" id="sMax">$187</span><span class="sc-l">最高可出價：要留 $1 給其他名額</span></div>
+        </div>
+        <p class="muted auc-line">已買 <b class="num" id="sSpots">0</b> / 14 人 · 聯盟剩 <b class="num" id="sLeague">$2,800</b>，<span id="sSold">還沒有成交</span> · 通膨 <b class="num" id="sInfl">×1.00</b>（剩下的錢 ÷ 剩下的價值）</p>
+      </div>
+      <div class="league-only" id="teamLeague" hidden>
+        <div class="score" id="tlSum"></div>
+        <div class="cats">
+          <h3 class="sub-h">九類名次<small>14 隊中，1 = 最強</small></h3>
+          <div class="cat-grid" id="tlRanks"></div>
+        </div>
+        <ul class="coach" id="tlCoach"></ul>
+        <p class="flag" id="tlFill" hidden></p>
+      </div>
+      <p class="calc league-only" id="tlWait" hidden>計算中…</p>
+    </section>
 
-      <section class="zone" id="myRoster" aria-label="我的名單">
-        <div class="team-head" id="teamHead"></div>
-        <ul class="team" id="teamList"></ul>
-        <p class="muted" id="teamEmpty">在下方球員名牌按「成交」→ 輸入價格 →「我買的」，球員會出現在這裡。</p>
-        <div id="teamProfile" hidden>
-          <div class="profile auction-only" id="profileCells"></div>
-          <p class="posmix" id="posMix"></p>
+    <div class="colb" id="colb" hidden>
+      <section class="panel" id="league" aria-labelledby="leagueH" hidden>
+        <div class="panel-head">
+          <h2 id="leagueH">聯盟戰力</h2>
+          <p class="panel-note">14 隊依平均每週贏的類數排序；格子是九類在聯盟的名次，藍強紅弱。點一隊看名單和強弱項。</p>
         </div>
-        <div class="me-foot">
-          <p class="asof">預估數據是估算，不是官方數字。資料基準 2026-09-28，9/29 匯入選秀結果並依訓練營傷病消息調整出賽數。</p>
-          <button class="btn small auction-only" id="resetBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-eraser"/></svg><span>清除成交紀錄</span></button>
+        <div id="leagueTable"><p class="calc">計算中…</p></div>
+        <div class="panel-foot">
+          <p class="llegend">名單裡：選秀價 → 我的估值（不 punt 的建議價）。估值低於自由球員水準（約 $4）的人標灰色，模擬時當成季中會被換掉；長期傷缺的週也用自由球員補上（聯盟有 4 格 IL）。沒考慮每天 11 個先發位置的限制，數字略偏樂觀。</p>
+          <button class="btn small" id="restoreBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg><span>還原成選秀名單</span></button>
         </div>
+      </section>
+      <section class="panel" id="vsZone" aria-labelledby="vsH" hidden>
+        <div class="panel-head">
+          <h2 id="vsH">我碰到各隊</h2>
+          <p class="panel-note">平均每週淨勝類數與每週輸贏，最難打的在最上面</p>
+        </div>
+        <ol class="vslist" id="tlVs"></ol>
       </section>
     </div>
 
-    <section class="zone" id="trade" aria-labelledby="tradeH" hidden>
-      <div class="zone-head">
-        <h2 class="tape" id="tradeH">交易試算</h2>
-        <p class="zone-note">選對手，點名牌決定送出和拿到的人。對手選「自由球員」就是撿人、丟人；按「套用」會存在這台裝置，聯盟戰力跟著重算。</p>
+    <section class="panel" id="myRoster" aria-labelledby="rosterH">
+      <div class="panel-head">
+        <h2 id="rosterH">我的名單</h2>
+        <p class="panel-note inline" id="myTeamSub"></p>
       </div>
-      <div class="tgrid">
-        <svg class="court" viewBox="0 0 940 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <g fill="none" stroke-width="3">
-            <rect x="3" y="3" width="934" height="494" rx="4"/><path d="M470 3V497"/><circle cx="470" cy="250" r="60"/>
-            <rect x="3" y="170" width="187" height="160"/><circle cx="190" cy="250" r="60"/><path d="M3 30H140M3 470H140M140 30A237.5 237.5 0 0 1 140 470"/>
-            <rect x="750" y="170" width="187" height="160"/><circle cx="750" cy="250" r="60"/><path d="M937 30H800M937 470H800M800 30A237.5 237.5 0 0 0 800 470"/>
-          </g>
-        </svg>
-        <div class="tpick"><label class="plabel" for="partner">交易對象</label><select class="sort" id="partner"></select></div>
-        <fieldset class="tside" id="giveBox"><legend><h3 class="ph">我送出</h3></legend><div class="tlist" id="giveList"></div></fieldset>
-        <div class="tmid" aria-hidden="true"><span class="swapmag"><svg class="ic"><use href="#i-swap"/></svg></span></div>
-        <fieldset class="tside" id="getBox"><legend><h3 class="ph" id="getLegend">我拿到</h3></legend><div class="tlist" id="getList"></div></fieldset>
-        <div class="tres" id="tradeResult" aria-live="polite"></div>
+      <div class="team-head" id="teamHead"></div>
+      <ul class="team" id="teamList"></ul>
+      <p class="muted" id="teamEmpty">在下方球員表按「成交」→ 輸入價格 →「我買的」，球員會出現在這裡。</p>
+      <div id="teamProfile" hidden>
+        <div class="profile auction-only" id="profileCells"></div>
+        <p class="posmix" id="posMix"></p>
       </div>
-      <div class="sugg">
-        <div><h3 class="ph">教練建議 · 一換一<small id="suggState"></small></h3><ol class="slist" id="suggList"></ol></div>
-        <div><h3 class="ph">自由球員<small>撿誰、丟誰</small></h3><ol class="slist" id="pickList"></ol></div>
-        <svg class="ghost" viewBox="0 0 420 230" aria-hidden="true">
-          <g fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 214 Q110 30 300 56"/><path d="M286 40l18 16-20 12"/>
-            <circle cx="22" cy="214" r="13"/><circle cx="168" cy="190" r="13"/><circle cx="372" cy="150" r="13"/>
-            <path d="M104 122l22 22m0-22l-22 22M246 104l22 22m0-22l-22 22"/>
-            <path d="M178 178 C210 120 280 112 352 146" stroke-dasharray="2 13"/>
-          </g>
-        </svg>
-      </div>
-    </section>
-
-    <section class="zone" id="players" aria-labelledby="playersH">
-      <div class="zone-head">
-        <h2 class="tape" id="playersH">球員名牌</h2>
-        <p class="zone-note" id="count"></p>
-      </div>
-      <div class="controls" aria-label="篩選與 punt">
-        <div class="crow">
-          <span class="plabel">Punt</span>
-          <div class="chips" id="punts" role="group" aria-label="放棄的類別"></div>
-          <span class="hint2">放棄的類別：點了就重算價格</span>
-        </div>
-        <div class="crow">
-          <label class="searchbox"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="search" id="q" type="search" placeholder="搜尋球員英文名或球隊" aria-label="搜尋球員"></label>
-          <div class="chips" id="posChips" role="group" aria-label="位置"></div>
-        </div>
-        <div class="crow">
-          <label class="check"><input type="checkbox" id="fRookie">只看近三屆新秀</label>
-          <label class="check"><input type="checkbox" id="fTarget">只看「值得搶」</label>
-          <label class="check"><input type="checkbox" id="fHide"><span id="fHideTxt">隱藏已成交</span></label>
-          <label class="check">排序
-            <select class="sort" id="sort" aria-label="排序">
-              <option value="idx">推薦指數</option>
-              <option value="v">建議價</option>
-              <option value="edge">便宜度（建議價 − 市場價）</option>
-              <option value="espn">ESPN 排名</option>
-              <option value="pts">PTS</option><option value="reb">REB</option><option value="ast">AST</option>
-              <option value="stl">STL</option><option value="blk">BLK</option><option value="tpm">3PM</option>
-              <option value="fg">FG%</option><option value="ft">FT%</option><option value="tov">TO（少者優先）</option>
-            </select>
-          </label>
-        </div>
-      </div>
-      <div class="layout">
-        <div class="plist">
-          <div class="plist-head">
-            <span class="legend" aria-hidden="true">九項預估：弱
-              <span class="sw"><i style="background:var(--t-3)"></i><i style="background:var(--t-2)"></i><i style="background:var(--t-1)"></i><i style="background:var(--t0)"></i><i style="background:var(--t1)"></i><i style="background:var(--t2)"></i><i style="background:var(--t3)"></i></span>強（跟 196 人平均比）</span>
-          </div>
-          <div class="list-head" aria-hidden="true">
-            <span class="h-rk">#</span><span class="h-who">球員 · 備註</span><span class="h-price">建議價</span><span class="h-idx">推薦指數</span>
-            <span class="h-heat"><span>PTS</span><span>REB</span><span>AST</span><span>STL</span><span>BLK</span><span>3PM</span><span>FG%</span><span>FT%</span><span>TO</span></span>
-            <span class="h-act"><span id="hOwn">買家</span> · <span id="hPrice">成交價</span></span>
-          </div>
-          <ol class="list" id="list"></ol>
-          <div class="more"><button class="btn" id="moreBtn" type="button" hidden>顯示全部</button></div>
-        </div>
-
-        <aside class="side" aria-label="新秀與拍賣工具">
-          <section class="sidebox" aria-labelledby="rookH">
-            <h2 class="tape" id="rookH">新秀速覽</h2>
-            <ol class="rooks" id="rookList"></ol>
-            <p class="muted">近三屆選秀（2026 新秀、二年級、三年級）裡推薦指數最高的 15 位，跟著 punt 設定變。點名字會在名牌牆找出他；完整名單請勾「只看近三屆新秀」。</p>
-          </section>
-          <section class="sidebox auction-only" aria-labelledby="tierH">
-            <h2 class="tape" id="tierH">各輪等級價格</h2>
-            <div class="tiers" id="tierBars"></div>
-            <div class="axis" aria-hidden="true"><span></span><span id="tierAxis"></span><span></span></div>
-            <p class="muted">每 14 人一輪。習慣蛇形選秀的話：第 1 輪等級的球員平均值這麼多錢。</p>
-          </section>
-          <section class="sidebox plans auction-only" aria-labelledby="planH">
-            <h2 class="tape" id="planH">$200 怎麼分</h2>
-            <div class="seg" role="group" aria-label="預算配置">
-              <button type="button" data-plan="0" aria-pressed="true">均衡</button>
-              <button type="button" data-plan="1" aria-pressed="false">雙核心</button>
-              <button type="button" data-plan="2" aria-pressed="false">深度</button>
-            </div>
-            <div class="plan-grid" id="planGrid"></div>
-            <p class="plan-note" id="planNote"></p>
-          </section>
-          <section class="sidebox auction-only" aria-labelledby="tipsH">
-            <h2 class="tape" id="tipsH">14 隊拍賣要點</h2>
-            <ol class="tips">
-              <li><b>中段最值錢。</b>196 人被選走，自由球員市場很薄，第 3–8 輪等級（約 $12–25）的球員最常被低估，均衡配置通常比全押兩個球星穩。</li>
-              <li><b>看「最高可出價」。</b>它等於剩餘預算 −（剩餘名額 − 1）× $1，避免最後只剩 $1 要補好幾個人。</li>
-              <li><b>留意「通膨後」價格。</b>記下成交價後才會出現。前段大家保守、錢都還在場上時，後段價格會漲；前段有人把錢花光，後段就便宜。</li>
-              <li><b>先提名你不想要的貴球員。</b>標「易溢價」的名字最適合拿來消耗對手預算。</li>
-              <li><b>中鋒最稀缺。</b>籃板、阻攻、FG% 大多來自中鋒，至少留兩個中鋒的預算。</li>
-              <li><b>新秀有熱度溢價。</b>Boozer、Wilson、Dybantsa 常被喊過產值；Lendeborg 這類後段新秀才是撿便宜的地方。</li>
-              <li><b>板凳三格用 $1。</b>買上限高或傷癒後段回來的球員（Butler、Sharpe 這類），季中再換。</li>
-              <li><b>決定 punt 就點上方的類別。</b>建議價會重算，備註裡標「適合 punt」的球員在你的陣容裡特別值錢。</li>
-            </ol>
-          </section>
-        </aside>
-      </div>
-    </section>
-
-    <section class="zone method" aria-labelledby="methodH">
-      <div class="sheet">
-        <h2 class="tape" id="methodH">資料與方法</h2>
-        <p class="lede" id="lede">傳統 9 項（9-cat）、14 隊、每隊 $200、11 先發＋3 板凳，全聯盟會選走 196 人。建議價由每位球員的 2026-27 預估數據換算，推薦指數再加上傷病風險、成長空間，以及跟 ESPN 排名（市場）的價差。成交後記下價格，上方的預算、最高可出價與通膨會即時更新。</p>
-        <dl>
-          <div><dt>預估數據</dt><dd>以 2025-26 賽季數據、今年夏天的交易與簽約、傷病消息和各隊先發預測為基礎，為每位球員估 2026-27 的每場數據與出賽數；新秀依大學與夏季聯賽表現估算。受限於能查到的資料，ESPN 前 150 名以外的球員角色與傷病沒有逐一確認；9/29 選秀後，出賽數依兩個來源以上的訓練營消息調整過。</dd></div>
-          <div><dt>建議價怎麼算</dt><dd>九項各自換成 z 分數（FG%、FT% 依出手數加權，失誤越少越好，單項上下限 ±5），加總後減去第 197 名的水準（替補水準），乘上出賽比例（出賽數 ÷ 82），再把 14 × $200 扣掉每人保底 $1 之後的 $2,604，按「價值的 1.2 次方」分配。點選 punt 的類別不計入加總。</dd></div>
-          <div><dt>市場價</dt><dd>把 ESPN 2026-27 category 排名放到同一條 9-cat 價格曲線上；沒進 ESPN 前 150 名的球員以第 165 名的價格計。建議價高於市場價 = 可能撿便宜，低於 = 別人可能喊得比他的產值還高。</dd></div>
-          <div><dt>推薦指數</dt><dd>70% 價值分數（建議價除以第 5 名的價格再開根號，第 5 名以上都算滿分）＋ 30% 市場價差分數，再加成長空間（0 / +3 / +6）、扣風險（0 / −4 / −10 / −18）。S ≥ 80、A ≥ 68、B ≥ 56、C ≥ 44。</dd></div>
-          <div><dt>標記</dt><dd>「值得搶」= 建議價比市場價高 $3 以上且至少 25%、風險不高；「易溢價」= ESPN 前 150 名裡，市場價比建議價高 $4 以上且至少 30%；「適合 punt」= 放棄該類別後價值至少變成 1.5 倍、多 $6 以上。</dd></div>
-          <div><dt>聯盟戰力與交易試算</dt><dd>每位球員的一週：2–5 場（平均 3.5），每場以「出賽數 ÷ 82」的機率上場，上場時間有起伏，各項數據與命中數依預估平均值起伏。由此算出一週各項的平均與變異數，一隊 = 14 人加總（每天換陣容，沒算 11 個先發位置的限制），兩隊每一類的差距近似常態分佈，勝率 = Φ(平均差 ÷ 標準差)，FG%、FT% 另外算命中率的起伏。這等同模擬無限多週，跟逐週抽 4,000 週的模擬相比，每類勝率平均只差 0.6 個百分點。缺賽的三分之二當成長期傷缺，那幾週由「自由球員水準」（選秀沒被選走、價值前 20 名的平均）補上；估值低於這個水準的球員也直接當成它。每週輸贏 = （贏的類數 − 輸的類數）× $60，整季以例行賽 20 週計。交易試算、教練建議、自由球員都用同一套算法；名單不足 14 人時用最好的自由球員補上計算。建議只列「對方用同一套算法看也不吃虧（每週少贏不超過 0.05 類）、而且拿到的球員選秀價不比送出的低 $3 以上」的交易。</dd></div>
-        </dl>
-        <div class="src">
-          <span>主要來源：</span>
-          <a href="https://www.espn.com/fantasy/basketball/story/_/id/49959975/fantasy-basketball-roto-category-league-rankings-2026-27-nba-season" target="_blank" rel="noopener">ESPN 2026-27 category rankings</a>
-          <a href="https://www.rotowire.com/basketball/article/fantasy-basketball-rookies-2026-27-adp-draft-advice-136655" target="_blank" rel="noopener">RotoWire 新秀 ADP</a>
-          <a href="https://www.nba.com/news/nba-fantasy-expectations-for-top-rookies" target="_blank" rel="noopener">NBA.com 新秀預期</a>
-          <a href="https://www.nba.com/news/2026-nba-draft-order" target="_blank" rel="noopener">NBA.com 2026 選秀結果</a>
-          <a href="https://athlonsports.com/fantasy/fantasy-basketball-2026-27-auction-draft-guide" target="_blank" rel="noopener">Athlon 拍賣指南</a>
-          <a href="https://www.hoopsrumors.com/" target="_blank" rel="noopener">Hoops Rumors 各隊休賽季整理</a>
-        </div>
-        <p class="store" id="store"></p>
+      <div class="panel-foot">
+        <p class="asof">預估數據是估算，不是官方數字。資料基準 2026-09-28，9/29 匯入選秀結果並依訓練營傷病消息調整出賽數。</p>
+        <button class="btn small auction-only" id="resetBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg><span>清除成交紀錄</span></button>
       </div>
     </section>
   </div>
 
-  <nav class="tray" id="bar" aria-label="我的狀態與跳轉">
-    <a class="tray-read" href="#myBoard">
-      <span class="league-only" id="trayLeague" hidden><b id="lRank">—</b><span id="lRec">—</span><b id="lMoney">—</b><span class="tw" id="lWeak"></span></span>
-      <span class="auction-only" id="trayAuction"><span>剩 <b id="tLeft">$200</b></span><span>最高可出價 <b id="tMax">$187</b></span><span class="tx">通膨 ×<b id="tInfl">1.00</b></span></span>
-    </a>
-    <span class="spacer"></span>
-    <span class="pens">
-      <a class="pen league-only" href="#league" hidden>聯盟</a>
-      <a class="pen primary league-only" href="#trade" hidden>交易</a>
-      <a class="pen" href="#players">球員</a>
-    </span>
-  </nav>
-</div>
+  <section class="panel" id="trade" aria-labelledby="tradeH" hidden>
+    <div class="panel-head">
+      <h2 id="tradeH">交易試算</h2>
+      <p class="panel-note">選對手，勾選要送出和拿到的球員。對手選「自由球員」就是撿人、丟人；按「套用」會存在這台裝置，聯盟戰力跟著重算。</p>
+    </div>
+    <div class="tgrid">
+      <div class="tpick"><label class="plabel" for="partner">交易對象</label><select class="sel" id="partner"></select></div>
+      <fieldset class="tside" id="giveBox"><legend>我送出</legend><div class="tlist" id="giveList"></div></fieldset>
+      <fieldset class="tside" id="getBox"><legend id="getLegend">我拿到</legend><div class="tlist" id="getList"></div></fieldset>
+      <div class="tres" id="tradeResult"></div>
+    </div>
+    <p class="sr" id="tradeSay" aria-live="polite"></p>
+    <div class="sugg">
+      <div><h3 class="sub-h">推薦交易 · 一換一<small id="suggState"></small></h3><ol class="slist" id="suggList"></ol></div>
+      <div><h3 class="sub-h">自由球員<small>撿誰、丟誰</small></h3><ol class="slist" id="pickList"></ol></div>
+    </div>
+  </section>
 
+  <section id="players" aria-labelledby="playersH">
+    <div class="layout">
+      <div class="panel plist">
+        <div class="panel-head">
+          <h2 id="playersH">球員</h2>
+          <p class="panel-note" id="count"></p>
+        </div>
+        <div class="controls" aria-label="篩選與 punt">
+          <div class="crow">
+            <span class="plabel">Punt</span>
+            <div class="chips" id="punts" role="group" aria-label="放棄的類別"></div>
+            <span class="hint2">放棄的類別：點了就重算價格</span>
+          </div>
+          <div class="crow">
+            <label class="searchbox"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="search" id="q" type="search" placeholder="搜尋球員英文名或球隊" aria-label="搜尋球員"></label>
+            <div class="chips" id="posChips" role="group" aria-label="位置"></div>
+          </div>
+          <div class="crow">
+            <label class="check"><input type="checkbox" id="fRookie">只看近三屆新秀</label>
+            <label class="check"><input type="checkbox" id="fTarget">只看「值得搶」</label>
+            <label class="check"><input type="checkbox" id="fHide"><span id="fHideTxt">隱藏已成交</span></label>
+            <label class="check">排序
+              <select class="sel" id="sort" aria-label="排序">
+                <option value="idx">推薦指數</option>
+                <option value="v">建議價</option>
+                <option value="edge">便宜度（建議價 − 市場價）</option>
+                <option value="espn">ESPN 排名</option>
+                <option value="pts">PTS</option><option value="reb">REB</option><option value="ast">AST</option>
+                <option value="stl">STL</option><option value="blk">BLK</option><option value="tpm">3PM</option>
+                <option value="fg">FG%</option><option value="ft">FT%</option><option value="tov">TO（少者優先）</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="plist-head">
+          <span class="legend" aria-hidden="true">九項預估：弱
+            <span class="sw"><i style="background:var(--t-3)"></i><i style="background:var(--t-2)"></i><i style="background:var(--t-1)"></i><i style="background:var(--t0)"></i><i style="background:var(--t1)"></i><i style="background:var(--t2)"></i><i style="background:var(--t3)"></i></span>強（跟 196 人平均比）</span>
+        </div>
+        <div class="list-head" aria-hidden="true">
+          <span class="h-rk">價值#</span><span class="h-who">球員 · 備註</span><span class="h-price">建議價</span><span class="h-idx">推薦指數</span>
+          <span class="h-heat"><span>PTS</span><span>REB</span><span>AST</span><span>STL</span><span>BLK</span><span>3PM</span><span>FG%</span><span>FT%</span><span>TO</span></span>
+          <span class="h-act"><span id="hOwn">買家</span> · <span id="hPrice">成交價</span></span>
+        </div>
+        <ol class="list" id="list"></ol>
+        <div class="more"><button class="btn" id="moreBtn" type="button" hidden>顯示全部</button></div>
+      </div>
+
+      <aside class="side" aria-label="新秀與拍賣工具">
+        <section class="panel sidebox" aria-labelledby="rookH">
+          <h2 id="rookH">新秀速覽</h2>
+          <ol class="rooks" id="rookList"></ol>
+          <p class="muted">近三屆選秀（2026 新秀、二年級、三年級）裡推薦指數最高的 15 位，跟著 punt 設定變。點名字會在球員表找出他；完整名單請勾「只看近三屆新秀」。</p>
+        </section>
+        <section class="panel sidebox auction-only" aria-labelledby="tierH">
+          <h2 id="tierH">各輪等級價格</h2>
+          <div class="tiers" id="tierBars"></div>
+          <div class="axis" aria-hidden="true"><span></span><span id="tierAxis"></span><span></span></div>
+          <p class="muted">每 14 人一輪。習慣蛇形選秀的話：第 1 輪等級的球員平均值這麼多錢。</p>
+        </section>
+        <section class="panel sidebox plans auction-only" aria-labelledby="planH">
+          <h2 id="planH">$200 怎麼分</h2>
+          <div class="seg" role="group" aria-label="預算配置">
+            <button type="button" data-plan="0" aria-pressed="true">均衡</button>
+            <button type="button" data-plan="1" aria-pressed="false">雙核心</button>
+            <button type="button" data-plan="2" aria-pressed="false">深度</button>
+          </div>
+          <div class="plan-grid" id="planGrid"></div>
+          <p class="plan-note" id="planNote"></p>
+        </section>
+        <section class="panel sidebox auction-only" aria-labelledby="tipsH">
+          <h2 id="tipsH">14 隊拍賣要點</h2>
+          <ol class="tips">
+            <li><b>中段最值錢。</b>196 人被選走，自由球員市場很薄，第 3–8 輪等級（約 $12–25）的球員最常被低估，均衡配置通常比全押兩個球星穩。</li>
+            <li><b>看「最高可出價」。</b>它等於剩餘預算 −（剩餘名額 − 1）× $1，避免最後只剩 $1 要補好幾個人。</li>
+            <li><b>留意「通膨後」價格。</b>記下成交價後才會出現。前段大家保守、錢都還在場上時，後段價格會漲；前段有人把錢花光，後段就便宜。</li>
+            <li><b>先提名你不想要的貴球員。</b>標「易溢價」的名字最適合拿來消耗對手預算。</li>
+            <li><b>中鋒最稀缺。</b>籃板、阻攻、FG% 大多來自中鋒，至少留兩個中鋒的預算。</li>
+            <li><b>新秀有熱度溢價。</b>Boozer、Wilson、Dybantsa 常被喊過產值；Lendeborg 這類後段新秀才是撿便宜的地方。</li>
+            <li><b>板凳三格用 $1。</b>買上限高或傷癒後段回來的球員（Butler、Sharpe 這類），季中再換。</li>
+            <li><b>決定 punt 就點上方的類別。</b>建議價會重算，備註裡標「適合 punt」的球員在你的陣容裡特別值錢。</li>
+          </ol>
+        </section>
+      </aside>
+    </div>
+  </section>
+
+  <section class="panel method" aria-labelledby="methodH">
+    <h2 id="methodH">資料與方法</h2>
+    <p class="lede" id="lede">傳統 9 項（9-cat）、14 隊、每隊 $200、11 先發＋3 板凳，全聯盟會選走 196 人。建議價由每位球員的 2026-27 預估數據換算，推薦指數再加上傷病風險、成長空間，以及跟 ESPN 排名（市場）的價差。成交後記下價格，上方的預算、最高可出價與通膨會即時更新。</p>
+    <dl>
+      <div><dt>預估數據</dt><dd>以 2025-26 賽季數據、今年夏天的交易與簽約、傷病消息和各隊先發預測為基礎，為每位球員估 2026-27 的每場數據與出賽數；新秀依大學與夏季聯賽表現估算。受限於能查到的資料，ESPN 前 150 名以外的球員角色與傷病沒有逐一確認；9/29 選秀後，出賽數依兩個來源以上的訓練營消息調整過。</dd></div>
+      <div><dt>建議價怎麼算</dt><dd>九項各自換成 z 分數（FG%、FT% 依出手數加權，失誤越少越好，單項上下限 ±5），加總後減去第 197 名的水準（替補水準），乘上出賽比例（出賽數 ÷ 82），再把 14 × $200 扣掉每人保底 $1 之後的 $2,604，按「價值的 1.2 次方」分配。點選 punt 的類別不計入加總。</dd></div>
+      <div><dt>市場價</dt><dd>把 ESPN 2026-27 category 排名放到同一條 9-cat 價格曲線上；沒進 ESPN 前 150 名的球員以第 165 名的價格計。建議價高於市場價 = 可能撿便宜，低於 = 別人可能喊得比他的產值還高。</dd></div>
+      <div><dt>推薦指數</dt><dd>70% 價值分數（建議價除以第 5 名的價格再開根號，第 5 名以上都算滿分）＋ 30% 市場價差分數，再加成長空間（0 / +3 / +6）、扣風險（0 / −4 / −10 / −18）。S ≥ 80、A ≥ 68、B ≥ 56、C ≥ 44。</dd></div>
+      <div><dt>標記</dt><dd>「值得搶」= 建議價比市場價高 $3 以上且至少 25%、風險不高；「易溢價」= ESPN 前 150 名裡，市場價比建議價高 $4 以上且至少 30%；「適合 punt」= 放棄該類別後價值至少變成 1.5 倍、多 $6 以上。</dd></div>
+      <div><dt>聯盟戰力與交易試算</dt><dd>每位球員的一週：2–5 場（平均 3.5），每場以「出賽數 ÷ 82」的機率上場，上場時間有起伏，各項數據與命中數依預估平均值起伏。由此算出一週各項的平均與變異數，一隊 = 14 人加總（每天換陣容，沒算 11 個先發位置的限制），兩隊每一類的差距近似常態分佈，勝率 = Φ(平均差 ÷ 標準差)，FG%、FT% 另外算命中率的起伏。這等同模擬無限多週，跟逐週抽 4,000 週的模擬相比，每類勝率平均只差 0.6 個百分點。缺賽的三分之二當成長期傷缺，那幾週由「自由球員水準」（選秀沒被選走、價值前 20 名的平均）補上；估值低於這個水準的球員也直接當成它。每週輸贏 = （贏的類數 − 輸的類數）× $60，整季以例行賽 20 週計。交易試算、推薦交易、自由球員都用同一套算法；名單不足 14 人時用最好的自由球員補上計算。推薦交易只列「對方用同一套算法看也不吃虧（每週少贏不超過 0.05 類）、而且拿到的球員選秀價不比送出的低 $3 以上」的交易。</dd></div>
+    </dl>
+    <div class="src">
+      <span>主要來源：</span>
+      <a href="https://www.espn.com/fantasy/basketball/story/_/id/49959975/fantasy-basketball-roto-category-league-rankings-2026-27-nba-season" target="_blank" rel="noopener">ESPN 2026-27 category rankings</a>
+      <a href="https://www.rotowire.com/basketball/article/fantasy-basketball-rookies-2026-27-adp-draft-advice-136655" target="_blank" rel="noopener">RotoWire 新秀 ADP</a>
+      <a href="https://www.nba.com/news/nba-fantasy-expectations-for-top-rookies" target="_blank" rel="noopener">NBA.com 新秀預期</a>
+      <a href="https://www.nba.com/news/2026-nba-draft-order" target="_blank" rel="noopener">NBA.com 2026 選秀結果</a>
+      <a href="https://athlonsports.com/fantasy/fantasy-basketball-2026-27-auction-draft-guide" target="_blank" rel="noopener">Athlon 拍賣指南</a>
+      <a href="https://www.hoopsrumors.com/" target="_blank" rel="noopener">Hoops Rumors 各隊休賽季整理</a>
+    </div>
+    <p class="store" id="store"></p>
+  </section>
+</main>
+
+<div class="toast" id="toast" role="status" hidden><span id="toastMsg"></span><button type="button" id="toastUndo">復原</button><button type="button" id="toastClose" aria-label="關閉提示"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
 <div class="tip" id="tip" role="tooltip" hidden></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -951,11 +864,11 @@
   <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6.5 9.5L12 15l5.5-5.5"/></symbol>
   <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8.5h14.5L15 5M20 15.5H5.5L9 19"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
-  <symbol id="i-eraser" viewBox="0 0 24 24"><path d="M4 15.5l8.3-8.3a2 2 0 0 1 2.8 0l3.2 3.2a2 2 0 0 1 0 2.8L13 18.5H7z M8.4 11.1l5.9 5.9 M13 18.5h7"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></symbol>
-  <symbol id="i-board" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8.5 20l3.5-4 3.5 4M7 8.5l2.5 2.5M14.5 9h3"/></symbol>
+  <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5"/></symbol>
   <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7.5L4.5 12 9 16.5M4.5 12H15a4.5 4.5 0 0 1 0 9h-2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.7 2.7L16.2 9.5"/></symbol>
 </svg>
 
 <script>
@@ -1673,48 +1586,12 @@ const gradeOf = s => s >= 80 ? 'S' : s >= 68 ? 'A' : s >= 56 ? 'B' : s >= 44 ? '
 const money = v => '$' + Math.round(v).toLocaleString('en-US');
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
 const noteText = s => esc(s).replace(/[A-Za-z0-9.%]+(?:-[A-Za-z0-9.%]+)+/g, m => `<span class="nw">${m}</span>`);   // 9-cat、3-and-D 不在連字號處斷行
+const teamHTML = i => noteText(DRAFT_TEAMS[i]);   // 隊名照原樣，First-Rate 這種字也不在連字號處斷
 function statText(p, c) {
   if (c === 'fg') return (p.fgp * 100).toFixed(1);
   if (c === 'ft') return (p.ftp * 100).toFixed(1);
   return p[c].toFixed(1);
 }
-
-// ---------- 麥克筆：同一個種子永遠畫出同一個圈，重畫時不會抖 ----------
-function rng(seed) {
-  let s = (seed >>> 0) || 1;
-  return () => { s = (s + 0x6D2B79F5) | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
-}
-const f1 = x => x.toFixed(1);
-function ringPath(seed) {   // 手畫的圈：比一圈多一點、起筆和收筆不重疊
-  const r = rng(seed), n = 22, turns = 1.06 + r() * 0.1, a0 = -2.5 + r() * 0.8;
-  const rx = 20 + r() * 2, ry = 13 + r() * 2, tilt = (r() - 0.5) * 0.28, cx = 25, cy = 18;
-  const pts = [];
-  for (let i = 0; i <= n; i++) {
-    const a = a0 + i / n * turns * 2 * Math.PI, k = 1 + (r() - 0.5) * 0.07 + (i / n) * 0.07;
-    const x = rx * k * Math.cos(a), y = ry * k * Math.sin(a);
-    pts.push([cx + x * Math.cos(tilt) - y * Math.sin(tilt), cy + x * Math.sin(tilt) + y * Math.cos(tilt)]);
-  }
-  let d = `M${f1(pts[0][0])} ${f1(pts[0][1])}`;
-  for (let i = 1; i < pts.length - 1; i++) {
-    const [x, y] = pts[i], [x2, y2] = pts[i + 1];
-    d += ` Q${f1(x)} ${f1(y)} ${f1((x + x2) / 2)} ${f1((y + y2) / 2)}`;
-  }
-  const last = pts[pts.length - 1];
-  return d + ` L${f1(last[0])} ${f1(last[1])}`;
-}
-function tickPath(seed) {
-  const r = rng(seed), x0 = 3 + r() * 2, y0 = 11 + r() * 2, x1 = 9 + r() * 1.5, y1 = 18 + r() * 1.5, x2 = 21 + r() * 2, y2 = 3 + r() * 2;
-  return `M${f1(x0)} ${f1(y0)} Q${f1(x0 + 1.5)} ${f1(y0 + 3.5)} ${f1(x1)} ${f1(y1)} Q${f1(x1 + 4)} ${f1(y1 - 9)} ${f1(x2)} ${f1(y2)}`;
-}
-function underPath(seed) {
-  const r = rng(seed);
-  let d = `M2 ${f1(5 + r() * 2)}`;
-  for (let x = 30; x <= 198; x += 28) d += ` Q${f1(x - 14)} ${f1(3 + r() * 4)} ${x} ${f1(4 + r() * 3)}`;
-  return d;
-}
-const ringSVG = (seed, delay, stretch) => `<svg class="mk ring" viewBox="0 0 50 36"${stretch ? ' preserveAspectRatio="none"' : ''} aria-hidden="true" style="--d:${delay}ms"><path pathLength="1" d="${ringPath(seed)}"/></svg>`;
-const tickSVG = (seed, delay) => `<svg class="mk tick" viewBox="0 0 24 22" aria-hidden="true" style="--d:${delay}ms"><path pathLength="1" d="${tickPath(seed)}"/></svg>`;
-const underSVG = seed => `<svg class="mk under" viewBox="0 0 200 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${underPath(seed)}"/></svg>`;
 
 // ---------- 畫面 ----------
 const $ = id => document.getElementById(id);
@@ -1767,7 +1644,7 @@ function rowHTML(p, mk, rankIn) {
   if (p.bestPunt && !state.punts.includes(p.bestPunt.c)) punt = ` <span class="pt">適合 punt ${CAT_LABEL[p.bestPunt.c]}（→ ${money(p.bestPunt.v)}）</span>`;
   const cells = CATS.map(c => {
     const off = punted.has(c);
-    return `<span class="c ${off ? 'off' : zClass(p.z[c])}" tabindex="0" data-c="${c}"><b>${CAT_LABEL[c]}</b><i>${statText(p, c)}</i></span>`;
+    return `<span class="c ${off ? 'off' : zClass(p.z[c])}" data-c="${c}"><b>${CAT_LABEL[c]}</b><i>${statText(p, c)}</i></span>`;
   }).join('');
   let act;
   if (leagueMode()) {
@@ -1778,7 +1655,7 @@ function rowHTML(p, mk, rankIn) {
         <button type="button" class="btn small" data-act="cancel">取消</button>
         <span class="msg">換隊或放回自由球員，聯盟戰力會重算</span></div>`;
     } else {
-      const who = t === ME ? '<span class="minetag">我的</span>' : t !== null ? esc(DRAFT_TEAMS[t]) : sold ? '已被選走' : '<span class="fa">自由球員</span>';
+      const who = t === ME ? '<span class="minetag">我的</span>' : t !== null ? teamHTML(t) : sold ? '已被選走' : '<span class="fa">自由球員</span>';
       act = `<span class="own"${t !== null && t !== ME ? ` title="${esc(DRAFT_TEAMS[t])}"` : ''}>${who}</span><span class="opp">${sold && sold.p ? `<small>選秀</small>${money(sold.p)}` : ''}</span>
         <button type="button" class="btn small" data-act="edit" aria-label="改 ${esc(p.name)} 的隊伍">改隊伍</button>`;
     }
@@ -1795,8 +1672,8 @@ function rowHTML(p, mk, rankIn) {
     act = `<span class="own"></span><span class="opp"></span><button type="button" class="btn small" data-act="edit" aria-label="記下 ${esc(p.name)} 的成交">成交</button>`;
   }
   return `<li class="row${sold ? ' sold' : ''}${sold && sold.m ? ' mine' : ''}${editing ? ' editing' : ''}" data-id="${p.id}">
-    <div class="rk"><span class="n">${rankIn}</span><span class="pos">${p.pos.join(' · ')}</span></div>
-    <div class="who"><span class="name mag">${esc(p.name)}</span><span class="tm"><span>${p.team} ${TEAM_ZH[p.team] || ''}</span><span class="pos-inline"> · ${p.pos.join('/')}</span>${p.espn ? `<span> · ESPN #${p.espn}</span>` : ''}</span></div>
+    <div class="rk"><span class="n">${rankIn}</span><span class="pos">${p.pos.map(x => `<span>${x}</span>`).join('')}</span></div>
+    <div class="who"><span class="name">${esc(p.name)}</span><span class="tm"><span>${p.team} ${TEAM_ZH[p.team] || ''}</span><span class="pos-inline"> · ${p.pos.join('/')}</span>${p.espn ? `<span> · ESPN #${p.espn}</span>` : ''}</span></div>
     ${p.note || punt || tags.length ? `<p class="note">${tags.length ? `<span class="tags">${tags.join('')}</span>` : ''}${noteText(p.note)}${punt}</p>` : ''}
     <div class="price"><span class="v${p.v >= 0.5 ? '' : ' zero'}">${vTxt}</span><span class="sub">${sub}</span></div>
     <div class="idx" title="推薦指數"><span class="score">${p.idx}</span><span class="grade g${g}">${g}</span></div>
@@ -1808,7 +1685,7 @@ function rowHTML(p, mk, rankIn) {
 function renderList(mk) {
   const xs = filtered();
   const shown = state.showAll || xs.length <= PAGE ? xs : xs.slice(0, PAGE);
-  $('count').textContent = `${xs.length} 位球員 · # 是目前 punt 設定下的價值排名`;
+  $('count').textContent = `${xs.length} 位球員 · 價值# 是目前 punt 設定下的價值排名`;
   listEl.innerHTML = shown.length
     ? shown.map(p => rowHTML(p, mk, p.rank)).join('')
     : '<li class="empty">沒有符合條件的球員，放寬篩選試試。</li>';
@@ -1844,7 +1721,6 @@ function renderBar(mk) {
   $('tInfl').textContent = mk.infl.toFixed(2);
 }
 
-let rankSig = '', lastSum = '';
 function renderTeam(mk) {
   const on = leagueMode();
   const mine = mk.mine.map(id => byId.get(id)).sort((a, b) => state.sold[b.id].p - state.sold[a.id].p);
@@ -1852,13 +1728,13 @@ function renderTeam(mk) {
   $('teamList').className = 'team' + (on ? '' : ' auction');
   $('teamHead').className = 'team-head' + (on ? '' : ' auction');
   const cols = `<span>${on ? '選秀價' : '買價'}</span>${on ? '<span>估值</span>' : ''}<span></span>`;
-  $('teamHead').innerHTML = mine.length ? `<div class="th"><span>名單 ${mine.length} 人</span>${cols}</div><div class="th g2" aria-hidden="true"><span></span>${cols}</div>` : '';
+  $('teamHead').innerHTML = mine.length ? `<div class="th"><span>球員</span>${cols}</div><div class="th g2" aria-hidden="true"><span>球員</span>${cols}</div>` : '';
   $('teamHead').hidden = !mine.length;
   $('teamList').innerHTML = mine.map(p => {
     const low = on && belowWaiver(p);
     const sub = [p.team, p.pos.join('/')];
     if (low) sub.push('低於自由球員水準'); else if (p.risk >= 2) sub.push('<span class="warn">出賽風險</span>');
-    return `<li class="mstrip${low ? ' low' : ''}${snap.has(p.id) ? ' snap' : ''}"><span class="pn"><span class="mag">${esc(p.name)}</span><small>${sub.join(' · ')}</small></span>`
+    return `<li class="mstrip${low ? ' low' : ''}${snap.has(p.id) ? ' snap' : ''}"><span class="pn"><b>${esc(p.name)}</b><small>${sub.join(' · ')}</small></span>`
       + `<span class="pp">${money(state.sold[p.id].p)}</span>${on ? `<span class="pv">${money(p.bv)}</span>` : ''}`
       + `<button type="button" class="x" data-undo="${p.id}" aria-label="${on ? '把 ' + esc(p.name) + ' 放回自由球員' : '移除 ' + esc(p.name)}" title="${on ? '放回自由球員' : '移除'}"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></li>`;
   }).join('');
@@ -1875,34 +1751,25 @@ function renderTeam(mk) {
     $('posMix').textContent = `可打位置：PG ${cnt.PG} · SG ${cnt.SG} · SF ${cnt.SF} · PF ${cnt.PF} · C ${c}` + (c < 2 && mine.length >= 6 ? '　中鋒偏少，留意籃板與阻攻。' : '') + (on ? '' : '　格子是平均 z 分數，紅色的類別可以考慮直接 punt。');
   }
   const ok = on && !!lg.table;
-  $('teamLeague').hidden = !ok; $('vsZone').hidden = !ok; $('tlWait').hidden = !on || ok;
+  $('teamLeague').hidden = !ok; $('vsZone').hidden = !ok; $('tlWait').hidden = !on || ok; $('rankPill').hidden = !ok;
   if (!ok) return;
   const me = lg.table.teams[ME], n = lg.actual[ME].length;
   const tone = me.m >= 0 ? 'up' : 'down';
-  // 麥克筆寫的戰績：名次圈起來（前三藍、後三紅），贏–輸最大，每週輸贏綠／紅，其餘印成一行
-  const ringTone = me.power <= 3 ? 'good' : me.power > NTEAMS - 3 ? 'bad' : 'mid';
-  const sumHTML = `<p class="t1"><span class="trk ${ringTone}">#${me.power}${ringSVG(7 + me.power * 13, 60, true)}</span><span class="tof">/${NTEAMS}</span><span class="trec">${rec(me.w)}</span></p>`
-    + `<p class="t2"><span class="tmoney ${tone}">${bet(me.m)}/週</span><span class="tline">${NTEAMS} 隊第 ${me.power} 名 · 平均每週贏 ${me.w.toFixed(1)}、輸 ${(9 - me.w).toFixed(1)} 類 · 每差一類 $${BET} · 例行賽 ${SEASON_WEEKS} 週約 <b class="${tone}">${bet(me.m * SEASON_WEEKS)}</b></span></p>`;
-  if (sumHTML !== lastSum) { $('tlSum').innerHTML = sumHTML; lastSum = sumHTML; }   // 數字變了才重寫，圈才會重畫
+  $('rankPill').className = 'rank-pill' + (me.power <= 3 ? ' top' : me.power > NTEAMS - 3 ? ' low' : '');
+  $('rankPill').innerHTML = `第 <b>${me.power}</b> 名<span>／${NTEAMS} 隊</span>`;
+  $('tlSum').innerHTML = `<div class="sc"><span class="rec num">${rec(me.w)}</span><span class="sc-l">平均每週贏–輸的類數</span></div>`
+    + `<div class="sc"><span class="money num ${tone}">${bet(me.m)}<small>/週</small></span><span class="sc-l">每差一類 $${BET} · 例行賽 ${SEASON_WEEKS} 週約 <b class="num ${tone}">${bet(me.m * SEASON_WEEKS)}</b></span></div>`;
   $('tlFill').hidden = n === ROSTER;
   if (n !== ROSTER) $('tlFill').textContent = `名單現在 ${n} 人，模擬時${n > ROSTER ? '先扣掉估值最低的人' : '用最好的自由球員補滿 14 人'}。`;
-  const weak = weakCats(me), weakSet = new Set(weak);
-  const sig = me.rank.join(',') + '|' + weak.join(',');
-  if (sig !== rankSig) {   // 名次變了才重畫，麥克筆記號只在這時候畫一次
-    let d = 60;
-    $('tlRanks').innerHTML = CATS.map((c, k) => {
-      const isWeak = weakSet.has(c), isStrong = !isWeak && me.rank[k] <= 3;
-      const mark = isWeak ? ringSVG(17 + k * 31, (d += 110)) : isStrong ? tickSVG(5 + k * 13, (d += 70)) : '';
-      return `<span class="cat${isWeak ? ' weak' : isStrong ? ' strong' : ''}" tabindex="0" data-lt="${ME}" data-c="${c}"><b>${CAT_TINY[c]}</b><i>${me.rank[k]}${mark}</i></span>`;
-    }).join('');
-    rankSig = sig;
-  }
+  const weakSet = new Set(weakCats(me));
+  $('tlRanks').innerHTML = CATS.map((c, k) => {
+    const isWeak = weakSet.has(c), isStrong = !isWeak && me.rank[k] <= 3;
+    return `<span class="cat${isWeak ? ' weak' : isStrong ? ' strong' : ''}" tabindex="0" data-lt="${ME}" data-c="${c}"><span class="cl">${CAT_LABEL[c]}</span><span class="cr num">${me.rank[k]}</span><span class="cs">${isWeak ? '要補' : isStrong ? '前三' : ''}</span></span>`;
+  }).join('');
   const opp = lg.table.teams.filter(t => t.i !== ME).sort((a, b) => me.vs[a.i] - me.vs[b.i]);
   const hard = opp[0];
-  const weakTxt = weak.map(c => `${CAT_TINY[c]}（第 ${me.rank[CATS.indexOf(c)]} 名）`).join('、');
-  $('tlCoach').innerHTML = `<li class="bad">要補：${weakTxt || '沒有明顯弱項'}</li>`
-    + `<li>最難打：${esc(DRAFT_TEAMS[hard.i])}，每週 ${signed1(me.vs[hard.i])} 類（${bet(me.vs[hard.i])}）</li>`;
-  $('tlVs').innerHTML = opp.map(t => `<li><span>${esc(DRAFT_TEAMS[t.i])}</span><b class="${me.vs[t.i] >= 0 ? 'up' : 'down'}">${signed1(me.vs[t.i])} 類</b><b>${bet(me.vs[t.i])}</b></li>`).join('');
+  $('tlCoach').innerHTML = `<li><span class="ck">最難打</span><b>${teamHTML(hard.i)}</b><span class="num ${me.vs[hard.i] >= 0 ? 'up' : 'down'}">每週 ${signed1(me.vs[hard.i])} 類 · ${bet(me.vs[hard.i])}</span></li>`;
+  $('tlVs').innerHTML = opp.map(t => `<li><span>${teamHTML(t.i)}</span><b class="${me.vs[t.i] >= 0 ? 'up' : 'down'}">${signed1(me.vs[t.i])} 類</b><b>${bet(me.vs[t.i])}</b></li>`).join('');
 }
 
 function renderTiers() {
@@ -1934,14 +1801,13 @@ function renderRookies(mk) {
   $('rookList').innerHTML = rs.map((p, i) => {
     const g = gradeOf(p.idx);
     const sold = state.sold[p.id];
-    const bits = [TEAM_ZH[p.team], p.pos.join('/')];
-    if (p.target) bits.push('值得搶'); else if (p.over) bits.push('易溢價');
-    if (leagueMode()) { const t = ownerOf(p.id); bits.push(t === ME ? '我的' : t !== null ? esc(DRAFT_TEAMS[t]) : sold ? '已被選走' : '自由球員'); }
-    else if (sold) bits.push(sold.m ? '我買的' : '已成交');
-    return `<li><span class="n">${i + 1}</span>
-      <span class="who2"><button type="button" class="find" data-find="${p.id}" aria-label="在名牌牆找出 ${esc(p.name)}">${esc(p.name)}</button>
-      <span class="t"><span class="cls c${p.cls}">${CLS_LABEL[p.cls]}</span>${bits.join(' · ')}</span></span>
-      <span class="grade g${g}">${g}</span><span class="p">${p.v >= 0.5 ? money(adj(p, mk.infl)) : '$0'}</span></li>`;
+    const tag = p.target ? '<span class="tag target">值得搶</span>' : p.over ? '<span class="tag over">易溢價</span>' : '';
+    let who = '';
+    if (leagueMode()) { const t = ownerOf(p.id); who = t === ME ? '我的' : t !== null ? teamHTML(t) : sold ? '已被選走' : '自由球員'; }
+    else if (sold) who = sold.m ? '我買的' : '已成交';
+    return `<li><span class="n">${i + 1}</span><button type="button" class="find" data-find="${p.id}" aria-label="在球員表找出 ${esc(p.name)}">${esc(p.name)}</button><span class="p">${p.v >= 0.5 ? money(adj(p, mk.infl)) : '$0'}</span>
+      <span class="t"><span class="cls c${p.cls}">${CLS_LABEL[p.cls]}</span>${TEAM_ZH[p.team]} · ${p.pos.join('/')}</span><span class="grade g${g}">${g}</span>
+      ${tag || who ? `<span class="o">${tag}${who}</span>` : ''}</li>`;
   }).join('');
 }
 
@@ -1959,7 +1825,7 @@ function renderStore() {
 const CAT_SHORT = { pts: '得分', reb: '籃板', ast: '助攻', stl: '抄截', blk: '阻攻', tpm: '三分', fg: 'FG%', ft: 'FT%', tov: '失誤少' };
 const CAT_WEAK = Object.assign({}, CAT_SHORT, { tov: '失誤多' });
 const LEDE_AUCTION = $('lede').textContent;
-const LEDE_LEAGUE = '傳統 9 項（9-cat）、14 隊、11 先發＋3 板凳，每類各算一勝負，每週分差一類 $60。選秀已經結束：上面是我的戰力、14 隊的聯盟戰力和交易試算，都用每位球員的預估數據算每週對戰勝率；下面的球員名牌保留建議價與推薦指數，勾「只看自由球員」就是還沒被選走的人，每位球員都能改隊伍。';
+const LEDE_LEAGUE = '傳統 9 項（9-cat）、14 隊、11 先發＋3 板凳，每類各算一勝負，每週分差一類 $60。選秀已經結束：上面是我的戰力、14 隊的聯盟戰力和交易試算，都用每位球員的預估數據算每週對戰勝率；下面的球員表保留建議價與推薦指數，勾「只看自由球員」就是還沒被選走的人，每位球員都能改隊伍。';
 const lg = { table: null, actual: null, rosters: null, fill: null, fa: [], ver: 0, shown: -1, job: 0, timer: 0, snap: null, snapTimer: 0 };
 const rec = w => `${w.toFixed(1)}–${(9 - w).toFixed(1)}`;
 const bet = m => { const x = Math.round(m * BET); return (x >= 0 ? '+$' : '−$') + Math.abs(x).toLocaleString('en-US'); };
@@ -1969,7 +1835,7 @@ const wClass = w => w >= 0.7 ? 'z3' : w >= 0.6 ? 'z2' : w >= 0.53 ? 'z1' : w > 0
 const priceOf = p => (state.sold[p.id] ? state.sold[p.id].p : 0);
 const strongCats = t => CATS.map((c, k) => ({ c, w: t.cat[k] })).filter(x => x.w >= 0.6).sort((a, b) => b.w - a.w).slice(0, 3).map(x => x.c);
 const weakCats = t => CATS.map((c, k) => ({ c, w: t.cat[k] })).filter(x => x.w < 0.45).sort((a, b) => a.w - b.w).slice(0, 3).map(x => x.c);
-const cellLT = (t, k) => `<span class="c ${wClass(t.cat[k])}" tabindex="0" data-lt="${t.i}" data-c="${CATS[k]}"><b>${CAT_LABEL[CATS[k]]}</b><i>${t.rank[k]}</i></span>`;
+const cellLT = (t, k) => `<span class="c ${wClass(t.cat[k])}" data-lt="${t.i}" data-c="${CATS[k]}"><b>${CAT_LABEL[CATS[k]]}</b><i>${t.rank[k]}</i></span>`;
 const ownerOptions = t => `<option value="-1"${t === null ? ' selected' : ''}>自由球員</option>` +
   [ME].concat(DRAFT_TEAMS.map((_, i) => i).filter(i => i !== ME))
     .map(i => `<option value="${i}"${t === i ? ' selected' : ''}>${i === ME ? '我的隊（' + esc(DRAFT_TEAMS[i]) + '）' : esc(DRAFT_TEAMS[i])}</option>`).join('');
@@ -1998,6 +1864,8 @@ function scheduleLeague() {
     const mk = market();
     renderLeagueTable(); renderBar(mk); renderTeam(mk); renderTradeUI(); startSuggest();
     syncBarHeight();
+    const f = lg.after; lg.after = null;
+    if (f) f();   // 例如復原之後把焦點放回剛回來的那一列
   }, 0);
 }
 
@@ -2020,7 +1888,7 @@ function renderLeagueTable() {
   if (!leagueMode() || !lg.table || lg.shown === lg.ver) return;
   const open = new Set([...document.querySelectorAll('#leagueTable .lt[open]')].map(d => +d.dataset.t));
   const me = lg.table.teams[ME];
-  const head = `<div class="lt-head" aria-hidden="true"><span></span><span>隊伍</span><span>平均每週</span><span class="lch">${CATS.map(c => `<span>${CAT_LABEL[c]}</span>`).join('')}</span><span>花費 · 估值</span><span></span></div>`;
+  const head = `<div class="lt-head" aria-hidden="true"><span>#</span><span>隊伍</span><span>平均每週</span><span class="lch">${CATS.map(c => `<span>${CAT_LABEL[c]}</span>`).join('')}</span><span>花費 · 估值</span><span></span></div>`;
   $('leagueTable').innerHTML = head + lg.table.teams.slice().sort((a, b) => b.w - a.w).map(t => {
     const i = t.i, isMe = i === ME, roster = lg.actual[i], fill = lg.fill[i];
     const spent = roster.reduce((a, p) => a + priceOf(p), 0), val = roster.reduce((a, p) => a + p.bv, 0);
@@ -2038,7 +1906,7 @@ function renderLeagueTable() {
     }).join('');
     return `<details class="lt${isMe ? ' me' : ''}" data-t="${i}"${open.has(i) ? ' open' : ''}><summary>
       <span class="lr">${t.power}</span>
-      <span class="ln"><span class="nm-strip mag">${esc(DRAFT_TEAMS[i])}</span>${isMe ? '<span class="sr">（我的隊）</span>' : ''}</span>
+      <span class="ln"><span class="tname">${teamHTML(i)}</span>${isMe ? '<span class="badge mine">我的</span>' : ''}</span>
       <span class="lw"><b>${rec(t.w)}</b><span class="${t.m >= 0 ? 'up' : 'down'}">${bet(t.m)}/週</span></span>
       <span class="lc">${CATS.map((c, k) => cellLT(t, k)).join('')}</span>
       <span class="lm">花 <b>${money(spent)}</b><span class="lsep"> · </span><br>估值 <b>${money(val)}</b></span>
@@ -2055,8 +1923,8 @@ function renderLeagueTable() {
 }
 
 // ---------- 交易試算 ----------
-const tr = { partner: null, give: new Set(), get: new Set(), undo: null, note: '', lane: new Set() };
-// 勾起來的名牌一定要看得到：清單捲到第一個勾的人
+const tr = { partner: null, give: new Set(), get: new Set(), undo: null, note: '', lane: new Set(), receipt: null, focus: '' };
+// 勾起來的球員一定要看得到：清單捲到第一個勾的人
 function revealChecked(list) {
   const inp = list.querySelector('input:checked');
   if (!inp) return;
@@ -2094,34 +1962,34 @@ function renderTradeResult() {
   if (!lg.table) { el.innerHTML = ''; return; }
   const outs = [...tr.give].map(id => byId.get(id)), ins = [...tr.get].map(id => byId.get(id));
   const note = tr.note ? `<p class="tnote">${tr.note}</p>` : '';
-  const undo = tr.undo ? '<div class="tbtns"><button type="button" class="btn" data-tact="undo"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg>復原剛才套用的交易</button></div>' : '';
+  const undoBtn = tr.undo ? '<button type="button" class="btn" data-tact="undo"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg>復原剛才套用的交易</button>' : '';
   if (!outs.length && !ins.length) {
-    el.innerHTML = `<p class="hint">點「我送出」和「我拿到」裡的名牌，結果會寫在這裡。也可以直接按下面教練建議的「試算」。</p>${note}${undo}`;
     tr.lane = new Set();
+    if (tr.receipt) { paintResult(el, receiptHTML() + note); return; }
+    paintResult(el, `<p class="hint">勾選「我送出」和「我拿到」的球員，結果會顯示在這裡。也可以直接按下面推薦交易的「試算」。</p>${note}${undoBtn ? `<div class="tbtns">${undoBtn}</div>` : ''}`);
     return;
   }
   const b = tr.partner;
   const r = evalTrade(lg.rosters, lg.table, ME, b, outs, ins, lg.fa, ROSTER);
   const d = r.a.after.w - r.a.before.w;
   const arrow = '<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>';
-  // 交易通道：拿起來的磁鐵（點一下放回去），中間是麥克筆畫的交換箭頭
-  const laneMag = (p, side) => `<button type="button" class="mag lmag${tr.lane.has(p.id) ? '' : ' new'}" data-unpick="${side}|${p.id}" aria-label="把 ${esc(p.name)} 從這筆交易拿掉"><span>${esc(p.name)}</span><small>${p.pos.join('/')} · 估值 ${money(p.bv)}</small><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>`;
-  const laneSide = (ps, side, label) => `<div class="lside"><span class="lk">${label}</span>${ps.length ? ps.map(p => laneMag(p, side)).join('') : '<span class="lnone">（沒有人）</span>'}</div>`;
-  const lane = `<div class="lane">${laneSide(outs, 'give', b >= 0 ? '我送出' : '我丟掉')}`
-    + `<svg class="mk lanex" viewBox="0 0 60 44" aria-hidden="true"><path pathLength="1" d="M6 15 C22 5 38 5 52 13"/><path pathLength="1" style="--d:190ms" d="M45 7.5 L53 13 L45.5 18.5"/>`
-    + `<path pathLength="1" style="--d:110ms" d="M54 30 C38 40 22 40 8 32"/><path pathLength="1" style="--d:300ms" d="M15 26.5 L7 32 L14.5 37.5"/></svg>`
-    + `${laneSide(ins, 'get', b >= 0 ? '我拿到' : '我撿回來')}</div>`;
+  // 這筆交易的球員：每個都是可以拿掉的按鈕
+  const chip = (p, side) => `<button type="button" class="pchip${tr.lane.has(p.id) ? '' : ' new'}" data-unpick="${side}|${p.id}" aria-label="把 ${esc(p.name)} 從這筆交易拿掉"><span>${esc(p.name)}</span><small>${p.pos.join('/')} · 估值 ${money(p.bv)}</small><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>`;
+  const side = (ps, s, label) => `<div class="dside"><span class="dk">${label}</span><div class="dchips">${ps.length ? ps.map(p => chip(p, s)).join('') : '<span class="lnone">（沒有人）</span>'}</div></div>`;
+  const deal = `<div class="deal">${side(outs, 'give', b >= 0 ? '我送出' : '我丟掉')}<svg class="ic deal-arrow" aria-hidden="true"><use href="#i-swap"/></svg>${side(ins, 'get', b >= 0 ? '我拿到' : '我撿回來')}</div>`;
   tr.lane = new Set([...tr.give, ...tr.get]);
-  const verdict = `<div class="verdict ${d >= 0 ? 'up' : 'down'}"><span class="vk">換完你每週</span><span class="vbig">${bet(2 * d)}</span><span class="vsm">${signed2(d)} 類</span>${underSVG(Math.round(Math.abs(d) * 997) + outs.length * 31 + ins.length * 7 + 3)}</div>`;
-  const meLine = `<p class="vline"><span class="who3">你</span><b>${rec(r.a.before.w)}</b>${arrow}<b>${rec(r.a.after.w)}</b><span>· 整季 ${bet(2 * d * SEASON_WEEKS)}</span></p>`;
+  const verdict = `<div class="verdict ${d >= 0 ? 'up' : 'down'}"><span class="vk">換完你每週</span><span class="vbig num">${bet(2 * d)}</span><span class="vsm num">${signed2(d)} 類</span></div>`;
+  const meLine = `<p class="vline"><span class="ph"><span class="who3">你</span><b>${rec(r.a.before.w)}</b>${arrow}<b>${rec(r.a.after.w)}</b> ·</span><span class="ph">整季 ${bet(2 * d * SEASON_WEEKS)}</span></p>`;
   let theirLine = '';
   if (r.b) {
     const db = r.b.after.w - r.b.before.w;
-    theirLine = `<p class="vline"><span class="who3">${esc(DRAFT_TEAMS[b])}</span><b>${rec(r.b.before.w)}</b>${arrow}<b>${rec(r.b.after.w)}</b><span>· 每週 <span class="${db >= 0 ? 'up' : 'down'}">${signed2(db)} 類（${bet(2 * db)}）</span></span></p>`;
+    theirLine = `<p class="vline"><span class="who3">${teamHTML(b)}</span><span class="ph"><b>${rec(r.b.before.w)}</b>${arrow}<b>${rec(r.b.after.w)}</b> ·</span><span class="ph">每週 <span class="${db >= 0 ? 'up' : 'down'}">${signed2(db)} 類（${bet(2 * db)}）</span></span></p>`;
   }
+  // 九類：大數字是這筆交易讓單週勝率變多少，小字是換完後的勝率
   const cells = CATS.map((c, k) => {
     const a = r.a.after.cat[k], bb = r.a.before.cat[k], dd = Math.round(100 * (a - bb));
-    return `<span class="c ${wClass(a)}" tabindex="0" data-dc="${c}" data-b="${bb.toFixed(3)}" data-a="${a.toFixed(3)}"><b>${CAT_LABEL[c]}</b><i>${Math.round(100 * a)}</i><s>${dd > 0 ? '+' + dd : dd < 0 ? '−' + -dd : '±0'}</s></span>`;
+    const cls = dd >= 5 ? 'pos big' : dd > 0 ? 'pos' : dd <= -5 ? 'neg big' : dd < 0 ? 'neg' : '';
+    return `<span class="dc ${cls}" tabindex="0" data-dc="${c}" data-b="${bb.toFixed(3)}" data-a="${a.toFixed(3)}"><b>${CAT_LABEL[c]}</b><i>${dd > 0 ? '+' + dd : dd < 0 ? '−' + -dd : '±0'}</i><s>${Math.round(100 * a)}%</s></span>`;
   }).join('');
   const notes = [];
   if (b >= 0) {
@@ -2138,30 +2006,62 @@ function renderTradeResult() {
   };
   notes.push(...fillText(r.a, '你的'));
   if (r.b) notes.push(...fillText(r.b, '對方'));
-  el.innerHTML = lane + verdict + meLine
-    + `<div class="dcells" aria-label="換完後九項的單週勝率">${cells}</div><p class="dkey">格子是換完後你每一類的單週勝率（%）和增減</p>`
+  paintResult(el, deal + verdict + meLine
+    + `<div class="dcells" aria-label="九類單週勝率的變化">${cells}</div><p class="dkey">大數字是這筆交易讓每一類單週勝率變多少（百分點），小字是換完後的勝率</p>`
     + theirLine
     + notes.map(t => `<p class="tnote">${t}</p>`).join('') + note
-    + '<div class="tbtns"><button type="button" class="btn solid" data-tact="apply">套用這筆交易</button><button type="button" class="btn" data-tact="clear">清除勾選</button></div>'
-    + undo;
+    + `<div class="tbtns"><button type="button" class="btn solid" data-tact="apply">套用這筆交易</button><button type="button" class="btn" data-tact="clear">清除勾選</button>${undoBtn}</div>`);
+  say(`換完你每週 ${bet(2 * d)}，${signed2(d)} 類`);
+}
+// 換掉結果區時保住鍵盤焦點：套用後移到收據標題、復原後移到提示，聯盟重算後回到原本那顆按鈕
+function paintResult(el, html) {
+  const a = document.activeElement;
+  const keep = tr.focus || (a && el.contains(a) ? (a.dataset.tact ? `[data-tact="${a.dataset.tact}"]` : a.matches('.receipt h3') ? '.receipt h3' : a.matches('.hint') ? '.hint' : '') : '');
+  tr.focus = '';
+  el.innerHTML = html;
+  const t = keep && el.querySelector(keep);
+  if (t) { if (!t.matches('button')) t.tabIndex = -1; t.focus({ preventScroll: true }); }
+}
+// 套用之後留在畫面上的收據：誰走誰來、戰績與每週輸贏前後、弱項前後，旁邊就是復原
+function receiptHTML() {
+  const rc = tr.receipt, me = lg.table.teams[ME];
+  const weakNow = weakCats(me).map(c => CAT_TINY[c]).join('、') || '沒有明顯弱項';
+  const who = rc.partner >= 0 ? `跟 <b>${teamHTML(rc.partner)}</b>：` : '自由球員：';
+  const out = rc.give.length ? (rc.partner >= 0 ? '送 ' : '丟 ') + rc.give.map(esc).join('、') : '';
+  const inn = rc.get.length ? (rc.partner >= 0 ? '換 ' : '撿 ') + rc.get.map(esc).join('、') : '';
+  const n = lg.actual[ME].length;
+  say(`已套用。平均每週 ${rec(me.w)}，每週 ${bet(me.m)}`);
+  return `<div class="receipt"><h3><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>已套用這筆交易</h3>
+    <p class="rline">${who}${out}${out && inn ? ' → ' : ''}${inn}</p>
+    <dl class="rgrid">
+      <div><dt>平均每週</dt><dd><span class="num">${rec(rc.w0)}</span> → <b class="num">${rec(me.w)}</b></dd></div>
+      <div><dt>每週輸贏</dt><dd><span class="num">${bet(rc.m0)}</span> → <b class="num ${me.m >= 0 ? 'up' : 'down'}">${bet(me.m)}</b></dd></div>
+      <div><dt>弱項</dt><dd>${rc.weak0} → <b>${weakNow}</b></dd></div>
+    </dl>
+    ${n !== ROSTER ? `<p class="tnote">你的名單現在 ${n} 人，記得也到平台上補人或丟人。</p>` : ''}
+    <div class="tbtns"><button type="button" class="btn" data-tact="undo"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg>復原這筆交易</button></div></div>`;
 }
 function applyTrade() {
   const b = tr.partner;
   if (!tr.give.size && !tr.get.size) return;
+  const me0 = lg.table.teams[ME];
+  tr.receipt = { partner: b, give: [...tr.give].map(id => byId.get(id).name), get: [...tr.get].map(id => byId.get(id).name), w0: me0.w, m0: me0.m, weak0: weakCats(me0).map(c => CAT_TINY[c]).join('、') || '沒有明顯弱項' };
   tr.undo = JSON.parse(JSON.stringify(state.sold));
   lg.snap = new Set([...tr.get]);
   tr.give.forEach(id => { const s = state.sold[id]; if (b >= 0) state.sold[id] = { p: s ? s.p : 0, m: false, t: b }; else delete state.sold[id]; });
   tr.get.forEach(id => { const s = state.sold[id]; state.sold[id] = { p: s ? s.p : 0, m: true, t: ME }; });
   tr.give.clear(); tr.get.clear();
-  tr.note = '已套用，聯盟戰力會重算。套用只會移動你勾的人；名單如果不是 14 人，記得也到平台上補人或丟人。';
+  tr.note = ''; tr.focus = '.receipt h3';
   save(); scheduleLeague(); render(); renderTradeUI();
+  flashReadout();
   clearTimeout(lg.snapTimer);
-  lg.snapTimer = setTimeout(() => { lg.snap = null; document.querySelectorAll('.mstrip.snap').forEach(x => x.classList.remove('snap')); }, 900);
+  lg.snapTimer = setTimeout(() => { lg.snap = null; document.querySelectorAll('.mstrip.snap').forEach(x => x.classList.remove('snap')); }, 1600);
 }
 function undoTrade() {
   if (!tr.undo) return;
-  state.sold = tr.undo; tr.undo = null; tr.note = '已復原。';
+  state.sold = tr.undo; tr.undo = null; tr.receipt = null; tr.note = '已復原剛才套用的交易。'; tr.focus = '.hint';
   save(); scheduleLeague(); render(); renderTradeUI();
+  flashReadout();
 }
 function tryTrade(partner, give, get) {
   tr.partner = partner; tr.give = new Set(give); tr.get = new Set(get); tr.note = '';
@@ -2201,14 +2101,14 @@ function renderSugg() {
   const arrow = '<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>';
   $('suggState').textContent = '對方也不吃虧，依你每週多贏的類數排序';
   $('suggList').innerHTML = pick.map(s => `<li>
-      <span class="st">送 <b>${esc(s.give.name)}</b> ${arrow} 換 <b>${esc(s.get.name)}</b> <span class="muted">· ${esc(DRAFT_TEAMS[s.b])}</span>${s.db > 0.005 ? ' <span class="tag win">雙贏</span>' : ''}</span>
-      <span class="sm"><span class="gain">${bet(2 * s.da)}/週</span>你 ${signed2(s.da)} 類 · 對方 ${signed2(s.db)} · 選秀價 ${money(priceOf(s.give))} → ${money(priceOf(s.get))}</span>
+      <span class="st"><span class="ph">送 <b>${esc(s.give.name)}</b> ${arrow}</span> <span class="ph">換 <b>${esc(s.get.name)}</b></span> <span class="sp">跟 ${esc(DRAFT_TEAMS[s.b])}${s.db > 0.005 ? '<span class="tag win">雙贏</span>' : ''}</span></span>
+      <span class="sm"><span class="gain">${bet(2 * s.da)}/週</span><span class="ph">你 ${signed2(s.da)} 類 ·</span> <span class="ph">對方 ${signed2(s.db)} ·</span> <span class="ph">選秀價 ${money(priceOf(s.give))} → ${money(priceOf(s.get))}</span></span>
       <button type="button" class="btn small" data-try="${s.b}|${s.give.id}|${s.get.id}">試算</button></li>`).join('')
     || '<li class="none">目前找不到對雙方都不虧的一換一。</li>';
   const seen = new Set(), picks = [];
   sg.picks.slice().sort((a, b) => b.dw - a.dw).forEach(x => { if (!seen.has(x.add.id) && picks.length < 5) { seen.add(x.add.id); picks.push(x); } });
   $('pickList').innerHTML = picks.map(x => `<li>
-      <span class="st">撿 <b>${esc(x.add.name)}</b> <span class="muted">${x.add.team}</span>，丟 <b>${esc(x.drop.name)}</b></span>
+      <span class="st"><span class="ph">撿 <b>${esc(x.add.name)}</b> <span class="muted">${x.add.team}</span>，</span><span class="ph">丟 <b>${esc(x.drop.name)}</b></span></span>
       <span class="sm"><span class="gain">${bet(2 * x.dw)}/週</span>你 ${signed2(x.dw)} 類</span>
       <button type="button" class="btn small" data-try="-1|${x.drop.id}|${x.add.id}">試算</button></li>`).join('')
     || '<li class="none">自由球員裡沒有比你現有球員更好的人（清單只含有預估數據的球員）。</li>';
@@ -2217,11 +2117,19 @@ function renderSugg() {
 function commitOwner(id) {
   const sel = $('own-' + id);
   if (!sel) return;
-  const v = +sel.value, prev = state.sold[id];
+  const v = +sel.value, prev = state.sold[id], snap = JSON.parse(JSON.stringify(state.sold));
   if (v < 0) delete state.sold[id];
   else state.sold[id] = { p: prev ? prev.p : 0, m: v === ME, t: v };
   state.editing = null;
   save(); scheduleLeague(); render();
+  offerUndo(`已把 ${byId.get(id).name} 改到${v < 0 ? '自由球員' : v === ME ? '我的隊' : ' ' + DRAFT_TEAMS[v]}`, snap, false, () => focusRowEdit(id));
+  if (!focusRowEdit(id)) $('toastUndo').focus({ preventScroll: true });
+}
+// 編輯框關掉、列重畫之後，把焦點放回這一列的「改隊伍／成交」鍵
+function focusRowEdit(id) {
+  const b = listEl.querySelector(`.row[data-id="${id}"] [data-act="edit"]`);
+  if (b) b.focus({ preventScroll: true });
+  return !!b;
 }
 
 function render() {
@@ -2240,18 +2148,18 @@ function render() {
 }
 function syncBarHeight() {
   const h = $('bar').getBoundingClientRect().height;
-  document.documentElement.style.setProperty('--tray-h', Math.round(h) + 'px');
+  document.documentElement.style.setProperty('--bar-h', Math.round(h) + 'px');
 }
 
-// ---------- 白板／黑板 ----------
-const THEMES = ['auto', 'light', 'dark'], THEME_TXT = { auto: '自動', light: '白板', dark: '黑板' };
+// ---------- 外觀：自動／淺色／深色 ----------
+const THEMES = ['auto', 'light', 'dark'], THEME_TXT = { auto: '自動', light: '淺色', dark: '深色' };
 let theme = 'auto';
 try { const t = localStorage.getItem(THEME_KEY); if (THEMES.includes(t)) theme = t; } catch (e) { /* 不能存就用自動 */ }
 function applyTheme() {
   if (theme === 'auto') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = theme;
   const next = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
   $('themeTxt').textContent = THEME_TXT[theme];
-  $('themeBtn').setAttribute('aria-label', `板子顏色：${THEME_TXT[theme]}，點一下換成${THEME_TXT[next]}`);
+  $('themeBtn').setAttribute('aria-label', `外觀：${THEME_TXT[theme]}，點一下換成${THEME_TXT[next]}`);
 }
 $('themeBtn').addEventListener('click', () => {
   theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
@@ -2293,6 +2201,7 @@ function commit(id, mine) {
   state.sold[id] = { p: v, m: mine, t: mine ? ME : null };
   state.editing = null;
   save(); scheduleLeague(); render();
+  focusRowEdit(id);
 }
 listEl.addEventListener('click', e => {
   const b = e.target.closest('[data-act]');
@@ -2300,19 +2209,19 @@ listEl.addEventListener('click', e => {
   const id = b.closest('.row').dataset.id;
   const act = b.dataset.act;
   if (act === 'edit') { state.editing = id; renderList(market()); }
-  else if (act === 'cancel') { state.editing = null; renderList(market()); }
+  else if (act === 'cancel') { state.editing = null; renderList(market()); focusRowEdit(id); }
   else if (act === 'ownSave') commitOwner(id);
   else if (act === 'other' || act === 'mine') commit(id, act === 'mine');
-  else if (act === 'undo') { delete state.sold[id]; save(); scheduleLeague(); render(); }
+  else if (act === 'undo') { delete state.sold[id]; save(); scheduleLeague(); render(); focusRowEdit(id); }
 });
 listEl.addEventListener('keydown', e => {
   if (e.target.matches('.editor input, .editor select')) {
     const id = e.target.closest('.row').dataset.id;
     if (e.key === 'Enter') { e.preventDefault(); if (e.target.matches('select')) commitOwner(id); else commit(id, e.shiftKey); }
-    else if (e.key === 'Escape') { state.editing = null; renderList(market()); }
+    else if (e.key === 'Escape') { state.editing = null; renderList(market()); focusRowEdit(id); }
   }
 });
-// 交易試算：選對象、點名牌、套用／復原、教練建議的「試算」
+// 交易試算：選對象、勾球員、套用／復原、推薦交易的「試算」
 $('trade').addEventListener('change', e => {
   const t = e.target;
   if (t.id === 'partner') { tr.partner = +t.value; tr.get.clear(); tr.note = ''; renderTradeUI(); return; }
@@ -2324,7 +2233,7 @@ $('trade').addEventListener('change', e => {
 });
 $('trade').addEventListener('click', e => {
   const u = e.target.closest('[data-unpick]');
-  if (u) {   // 通道上的磁鐵點一下 = 放回原本的清單
+  if (u) {   // 交易內容裡的球員點一下 = 從這筆交易拿掉
     const [side, id] = u.dataset.unpick.split('|');
     (side === 'give' ? tr.give : tr.get).delete(id);
     const inp = $('trade').querySelector(`input[data-${side}="${id}"]`);
@@ -2391,10 +2300,50 @@ $('rookList').addEventListener('click', e => {
 });
 $('teamList').addEventListener('click', e => {
   const b = e.target.closest('[data-undo]');
-  if (b) { delete state.sold[b.dataset.undo]; save(); scheduleLeague(); render(); }
+  if (!b) return;
+  const id = b.dataset.undo, snap = JSON.parse(JSON.stringify(state.sold));
+  delete state.sold[id]; save(); scheduleLeague(); render();
+  offerUndo(leagueMode() ? `已把 ${byId.get(id).name} 放回自由球員` : `已移除 ${byId.get(id).name}`, snap, e.detail === 0, () => { const x = $('teamList').querySelector(`[data-undo="${id}"]`); if (x) x.focus({ preventScroll: true }); });
 });
 
-// ---------- 工具提示（類別磁鐵、名次格、輪次長條） ----------
+// ---------- 復原提示、讀數提示、報讀 ----------
+let undoSnap = null, undoBack = null, toastTimer = 0;
+function offerUndo(msg, snapshot, focus, back) {
+  undoSnap = snapshot; undoBack = back || null;
+  $('toastMsg').textContent = msg;
+  $('toast').hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 9000);
+  if (focus) $('toastUndo').focus({ preventScroll: true });
+}
+function hideToast() {
+  const had = $('toast').contains(document.activeElement);
+  $('toast').hidden = true; undoSnap = null; clearTimeout(toastTimer);
+  if (had && undoBack) { if (leagueMode()) lg.after = undoBack; else undoBack(); }
+  undoBack = null;
+}
+$('toastUndo').addEventListener('click', () => {
+  if (!undoSnap) return;
+  state.sold = undoSnap; state.editing = null;
+  save(); scheduleLeague(); render();
+  hideToast();
+  flashReadout();
+});
+$('toastClose').addEventListener('click', hideToast);
+function flashReadout() {
+  const r = document.querySelector('.readout');
+  r.classList.add('flash');
+  clearTimeout(flashReadout.t);
+  flashReadout.t = setTimeout(() => r.classList.remove('flash'), 1500);
+}
+let lastSay = '';
+function say(text) { if (text !== lastSay) { $('tradeSay').textContent = text; lastSay = text; } }
+// 滑鼠和鍵盤用的人按「球員」：跳過去順便把游標放進搜尋框（手機不自動跳出鍵盤）
+$('navPlayers').addEventListener('click', () => {
+  if (window.matchMedia('(pointer: fine)').matches) setTimeout(() => $('q').focus({ preventScroll: true }), 400);
+});
+
+// ---------- 工具提示（九類格子、名次格、輪次長條） ----------
 const tip = $('tip');
 function showTip(el) {
   let html;
@@ -2423,7 +2372,7 @@ function showTip(el) {
   x = Math.max(8, Math.min(window.innerWidth - t.width - 8, x));
   tip.style.left = x + 'px'; tip.style.top = y + 'px';
 }
-const tipTarget = e => e.target.closest && e.target.closest('.c, .cat, .tier');
+const tipTarget = e => e.target.closest && e.target.closest('.c, .cat, .tier, .dc');
 document.addEventListener('pointerover', e => { const el = tipTarget(e); if (el) showTip(el); });
 document.addEventListener('pointerout', e => { if (e.pointerType !== 'touch' && tipTarget(e)) tip.hidden = true; });
 document.addEventListener('pointerdown', e => { if (!tipTarget(e)) tip.hidden = true; });
