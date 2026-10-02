@@ -14,6 +14,18 @@
         "value": "permanent marker",
         "createdAt": "2026-10-02T02:50:00.603Z",
         "reason": "yacht.html's own world (surface brief yacht-html): grease-pencil previews on the committee board, asked for by the finish review; DESIGN.md covers the trip booklet only"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "sofia sans condensed",
+        "createdAt": "2026-10-02T08:21:34.000Z",
+        "reason": "nba-auction.html's own world (surface brief nba-auction-html, tactics-board direction the user chose): the printed numerals and labels on the board, with tabular figures; recorded in DESIGN-nba.md, while DESIGN.md covers the trip booklet only"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "kalam",
+        "createdAt": "2026-10-02T08:21:34.000Z",
+        "reason": "nba-auction.html's own world (surface brief nba-auction-html): the coach's dry-erase marker hand for digits and Latin only (rank, W–L, $/週, the trade verdict); recorded in DESIGN-nba.md, while DESIGN.md covers the trip booklet only"
       }
     ]
   }
