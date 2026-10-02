@@ -494,7 +494,7 @@
   .searchbox .search { width: 100%; padding-left: 34px; }
   .layout { display: grid; gap: 22px; align-items: start; }
   @media (min-width: 1360px) {
-    .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; }
+    .layout { grid-template-columns: minmax(0, 1fr) 288px; gap: 22px; }
     .side { position: sticky; top: 12px; max-height: calc(100vh - var(--tray-h, 56px) - 24px); overflow: auto; overscroll-behavior: contain; padding-right: 4px; }
   }
   .plist { min-width: 0; container: pl / inline-size; }
@@ -504,8 +504,8 @@
   .legend .sw i { width: 13px; height: 11px; border-radius: 2px; display: block; }
   /* 一條印好的格線：每列一位球員，名字貼在磁鐵上；每一欄都跟上面印的欄名對齊 */
   .list-head, .row {
-    display: grid; column-gap: 12px; align-items: center;
-    grid-template-columns: 34px minmax(0, 1fr) 80px 56px 312px 210px;
+    display: grid; column-gap: 10px; align-items: center;
+    grid-template-columns: 34px minmax(0, 1fr) 80px 56px 294px 210px;
     grid-template-areas: "rk who price idx heat act" "rk note price idx heat act";
   }
   .list-head {
@@ -540,6 +540,7 @@
   .pos-inline { display: none; }
   .note { grid-area: note; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
   .note .pt { color: var(--m-blue); font-weight: 700; }
+  .nw { white-space: nowrap; }
   .price { grid-area: price; display: grid; gap: 2px; }
   .price .v { font: 800 28px/1 var(--print-face); font-variant-numeric: tabular-nums; }
   .price .v.zero { color: var(--ink-2); font-size: 22px; }
@@ -550,7 +551,7 @@
   .grade { font: 800 13px/1 var(--print-face); padding: 4px 6px; border-radius: 4px; border: 1.5px solid var(--print); color: var(--print-ink); }
   .grade.gS { background: var(--m-blue); border-color: var(--m-blue); color: var(--on-blue); }
   .grade.gA { border-color: var(--m-blue); color: var(--m-blue); }
-  .heat, .h-heat { display: grid; grid-template-columns: repeat(9, 32px); gap: 3px; }
+  .heat, .h-heat { display: grid; grid-template-columns: repeat(9, 30px); gap: 3px; }
   .heat { grid-area: heat; }
   .heat .c { min-height: 32px; }
   /* 隊伍欄：隊名、選秀價（右對齊）和按鈕，寬度固定，每列的 $ 都在同一條線上 */
@@ -1671,6 +1672,7 @@ const zClass = z => z >= 1.5 ? 'z3' : z >= 0.75 ? 'z2' : z >= 0.25 ? 'z1' : z > 
 const gradeOf = s => s >= 80 ? 'S' : s >= 68 ? 'A' : s >= 56 ? 'B' : s >= 44 ? 'C' : 'D';
 const money = v => '$' + Math.round(v).toLocaleString('en-US');
 const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const noteText = s => esc(s).replace(/[A-Za-z0-9.%]+(?:-[A-Za-z0-9.%]+)+/g, m => `<span class="nw">${m}</span>`);   // 9-cat、3-and-D 不在連字號處斷行
 function statText(p, c) {
   if (c === 'fg') return (p.fgp * 100).toFixed(1);
   if (c === 'ft') return (p.ftp * 100).toFixed(1);
@@ -1795,7 +1797,7 @@ function rowHTML(p, mk, rankIn) {
   return `<li class="row${sold ? ' sold' : ''}${sold && sold.m ? ' mine' : ''}${editing ? ' editing' : ''}" data-id="${p.id}">
     <div class="rk"><span class="n">${rankIn}</span><span class="pos">${p.pos.join(' · ')}</span></div>
     <div class="who"><span class="name mag">${esc(p.name)}</span><span class="tm"><span>${p.team} ${TEAM_ZH[p.team] || ''}</span><span class="pos-inline"> · ${p.pos.join('/')}</span>${p.espn ? `<span> · ESPN #${p.espn}</span>` : ''}</span></div>
-    ${p.note || punt || tags.length ? `<p class="note">${tags.length ? `<span class="tags">${tags.join('')}</span>` : ''}${esc(p.note)}${punt}</p>` : ''}
+    ${p.note || punt || tags.length ? `<p class="note">${tags.length ? `<span class="tags">${tags.join('')}</span>` : ''}${noteText(p.note)}${punt}</p>` : ''}
     <div class="price"><span class="v${p.v >= 0.5 ? '' : ' zero'}">${vTxt}</span><span class="sub">${sub}</span></div>
     <div class="idx" title="推薦指數"><span class="score">${p.idx}</span><span class="grade g${g}">${g}</span></div>
     <div class="heat">${cells}</div>
