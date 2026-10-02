@@ -8,6 +8,12 @@
         "value": "archivo",
         "createdAt": "2026-10-02T02:27:08.368Z",
         "reason": "DESIGN.md records the trip booklet only; yacht.html is its own world (surface brief yacht-html, regatta direction the user chose) and gets its own DESIGN-yacht.md at finish"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "permanent marker",
+        "createdAt": "2026-10-02T02:50:00.603Z",
+        "reason": "yacht.html's own world (surface brief yacht-html): grease-pencil previews on the committee board, asked for by the finish review; DESIGN.md covers the trip booklet only"
       }
     ]
   }

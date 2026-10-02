@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, yacht dice, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`) and the **Yacht dice game** (`yacht.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, investment notes, Yōtei checklist, NBA draft board, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
@@ -50,6 +50,14 @@
 **Capabilities that must survive any redesign.** About a hundred verified YouTube live cameras grouped by region and area with Chinese names, live frame thumbnails refreshed every minute (only while on screen), LIVE / 夜間 / 無畫面 states from frame loading and the sun position, favourites, region and mode filters (收藏, 自駕・路面, 富士山); TW and JP clocks; Open-Meteo weather per area with clothing advice, a ticker and a comparison table, a pack list, Fuji visibility from cloud / code / visibility, a road reading (not official road status) and the 2026-09-01 30 km/h residential-road law note with official links; three automatic picks with their reason; the 8-day trip panel that mirrors `trip.html` (route, note, that day's weather or forecast, that day's cameras); light / dark / system theme; the credits and legal notes (no images stored or rebroadcast; weather CC BY 4.0).
 
 **Evidence on hand.** The camera list, routes and notes already in the page and `trip.html`. Readings (rec, Fuji, road) are derived estimates and must say so; nothing may suggest official status.
+
+## Yacht dice · 快艇骰子 (`yacht.html`)
+
+**Users.** The owner, on phone and desktop about equally, alone against the CPU or with a friend passing one device. Linked from the hub's 遊戲 lot.
+
+**Purpose.** A quick game of Yacht that is fun to watch: the race between the two scores should be visible at a glance, not read off a table. Success: a turn is roll → keep → roll → pick a row with no explanation needed, and either player can tell who is ahead and by how much from across the table.
+
+**Capabilities that must survive any redesign.** Five dice, up to three rolls a turn, holding any dice between rolls; thirteen categories (一點–六點, 三同, 四同, 葫蘆 25, 小順 30, 大順 40, 快艇 50, 機會) with the upper bonus of 35 at 63; 1P vs CPU (the greedy CPU: best-scoring open row, holds for it, rerolls twice) and 2P on one device; a preview of every open row's score for the current roll; the final board with the winner or a tie; a way back to the hub. Nothing is saved (by design: a refresh starts a new game). No new rules or features without the owner asking.
 
 ---
 

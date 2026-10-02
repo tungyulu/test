@@ -18,7 +18,7 @@
   --p0:#e1262b; --p0-ink:#fff; --p1:#ffcd00; --p1-ink:#101318;
   --cn:'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
   --num:'Archivo', 'Noto Sans TC', system-ui, sans-serif;
-  --hand:'Permanent Marker', 'Archivo', cursive;
+  --hand:'Permanent Marker', 'Archivo', system-ui, sans-serif;
   --in:120px; --hal:66px; --pn-w:34px; --pn-h:50px; --gap:16px;
   color-scheme: dark;
 }
@@ -51,6 +51,8 @@ a{color:inherit}
 .sea .buoy circle{fill:var(--yel); stroke:var(--blk); stroke-width:1.5}
 .sea .buoy text{fill:var(--blk); font:800 9px var(--num); font-stretch:66%; text-anchor:middle; dominant-baseline:central}
 .sea .start{stroke:var(--wht); stroke-width:2.5}
+.sea .fin{display:none}
+.chart.is-over .sea .fin{display:inline}
 .sea .start-t{fill:var(--wht); font:700 11px var(--cn); letter-spacing:.24em; text-anchor:middle}
 .sea .hull{fill:var(--wht); stroke:var(--blk); stroke-width:1.4; stroke-linejoin:round}
 .sea .mast{stroke:var(--blk); stroke-width:1.6}
@@ -132,14 +134,14 @@ a{color:inherit}
 
 .roll{min-width:260px; min-height:62px; font-size:21px; gap:16px}
 .roll .flags{display:inline-flex; gap:5px}
-.roll .flags svg{width:22px; height:15px; display:block}
-.roll .flags .spent{opacity:.28}
+.roll .flags svg{width:22px; height:28px; display:block; overflow:visible}
+.roll .flags .pf{transition:transform .3s cubic-bezier(.2,.9,.25,1)}
+.roll .flags .spent .pf{transform:translateY(13px); opacity:.35}
 .roll:disabled{background:transparent; color:var(--on-sea-2); box-shadow:inset 0 0 0 2px rgba(191,210,243,.45); cursor:default; transform:none}
 
 .result{display:flex; flex-direction:column; align-items:center; gap:12px}
-.finish{position:relative; width:150px; height:58px}
-.finish::before{content:""; position:absolute; left:0; right:0; top:0; height:2px; background:var(--wht)}
-.finish svg{position:absolute; left:50%; top:2px; width:50px; height:52px; margin-left:-25px; transform-origin:50% 0}
+.finish svg{display:block; width:70px; height:64px; overflow:visible}
+.finish .ff{transform-box:fill-box; transform-origin:0 0}
 .result h2{margin:0; font:900 clamp(40px,7cqw,96px)/1 var(--cn); color:var(--wht); letter-spacing:.03em}
 .result p{margin:0; font:700 17px/1.5 var(--cn); color:var(--on-sea-2)}
 .result p .n{font-size:28px; font-weight:900; color:var(--wht)}
@@ -209,8 +211,7 @@ td.win{background:#fff2b3}
   .result{gap:8px}
   .result h2{font-size:40px}
   .result p .n{font-size:22px}
-  .finish{height:46px}
-  .finish svg{width:38px; height:40px; margin-left:-19px}
+  .finish svg{width:52px; height:48px}
   .board-in{padding:6px 12px 24px}
   .board h2{display:none}
   thead th{height:44px}
@@ -535,7 +536,10 @@ td.win{background:#fff2b3}
   const boatIcon = pi => `<svg viewBox="-22 -38 44 48" aria-hidden="true">${boatG(pi)}</svg>`;
   // the roll counter on the 擲骰 key: three small flown pennants, one comes down per roll
   const rollFlags = left => `<span class="flags" aria-hidden="true">${[0, 1, 2].map(i =>
-      `<svg viewBox="0 0 22 15" class="${i < left ? '' : 'spent'}"><path d="M1 1L21 7.5L1 14Z" fill="#101318"/></svg>`).join('')}</span>`;
+      `<svg viewBox="0 0 24 30" class="${i < left ? '' : 'spent'}"><path d="M2 1V29" stroke="#101318" stroke-width="2" stroke-linecap="round"/>`
+      + `<g class="pf"><clipPath id="cpr${i}"><path d="M3 2L23 8.5L3 15Z"/></clipPath><g clip-path="url(#cpr${i})"><rect x="3" y="2" width="20" height="13" fill="#f8f7f2"/>`
+      + `<rect x="3" y="2" width="4" height="13" fill="#e1262b"/><rect x="11" y="2" width="4" height="13" fill="#e1262b"/><rect x="19" y="2" width="4" height="13" fill="#e1262b"/></g>`
+      + `<path d="M3 2L23 8.5L3 15Z" fill="none" stroke="#101318" stroke-width="1.2" stroke-linejoin="round"/></g></svg>`).join('')}</span>`;
 
   // seeded random so the chart's decoration stays put between redraws
   function rng(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
@@ -604,7 +608,7 @@ td.win{background:#fff2b3}
           const rr = base * (1 + 0.16 * Math.sin(3*t + ph) + 0.08 * Math.cos(5*t + ring));
           pts.push([sx + rr * Math.cos(t) * 1.25, sy + rr * Math.sin(t)]);
         }
-        const isle = ring === 0 && si === 0;
+        const isle = ring === 0 && si === 0 && !mob;
         s += `<path class="${isle ? 'island' : 'contour'}" d="${smooth(pts)}"/>`;
         if (isle) s += `<path class="island-edge" d="${smooth(pts.map(([x,y]) => [sx + (x-sx)*1.35, sy + (y-sy)*1.35]))}"/>`;
       }
@@ -627,13 +631,18 @@ td.win{background:#fff2b3}
     const st = laneAt(0, 0);
     s += `<path class="start" d="M${st.x} ${st.y - geo.d - 12}V${st.y + geo.d + 6}"/>`;
     s += `<text class="start-t" x="${st.x}" y="${st.y + geo.d + 20}">起航</text>`;
+    if (withTokens) {
+      [0, 1].forEach(pi => s += `<path class="wake p${pi}" id="wake${pi}" d="${lanePath(pi ? -geo.d : geo.d)}" pathLength="${COURSE}" stroke-dasharray="0 ${COURSE + 10}"/>`);
+      [0, 1].forEach(pi => s += `<g id="boat${pi}">${boatG(pi)}</g>`);
+    }
     for (let p = 50; p < COURSE; p += 50) {
       const b = laneAt(0, p / COURSE);
       s += `<g class="buoy" transform="translate(${b.x.toFixed(1)} ${b.y.toFixed(1)})"><circle r="${mob ? 9 : 12}"/><text style="font-size:${mob ? 9 : 11}px">${p}</text></g>`;
     }
-    if (withTokens) {
-      [0, 1].forEach(pi => s += `<path class="wake p${pi}" id="wake${pi}" d="${lanePath(pi ? -geo.d : geo.d)}" pathLength="${COURSE}" stroke-dasharray="0 ${COURSE + 10}"/>`);
-      [0, 1].forEach(pi => s += `<g id="boat${pi}">${boatG(pi)}</g>`);
+    {   // the start line is also the finish: its blue flag flies once the race is over
+      const k = mob ? 0.5 : 1;
+      s += `<g class="fin" transform="translate(${st.x} ${(st.y - geo.d - 12).toFixed(1)}) scale(${k})"><path d="M0 0V-40" stroke="#f8f7f2" stroke-width="2.4" stroke-linecap="round"/>`
+         + `<path d="M1 -39C12 -42 22 -36 36 -39V-21C22 -18 12 -24 1 -21Z" fill="#1d4fc0" stroke="#f8f7f2" stroke-width="1.6" stroke-linejoin="round"/></g>`;
     }
     return s + '</svg>';
   }
@@ -846,14 +855,14 @@ td.win{background:#fff2b3}
     $('#status').innerHTML = `十三回合結束`;
     $('#dockBody').innerHTML = `
       <div class="result">
-        <div class="finish" aria-hidden="true"><svg viewBox="0 0 50 52"><rect x="1" y="0" width="48" height="50" fill="#1d4fc0" stroke="#f8f7f2" stroke-width="2"/></svg></div>
+        <div class="finish" aria-hidden="true"><svg viewBox="0 0 70 64"><path d="M4 2V63" stroke="#f8f7f2" stroke-width="3" stroke-linecap="round"/><g class="ff"><path d="M6 4C24 0 40 9 66 4V36C40 41 24 32 6 36Z" fill="#1d4fc0" stroke="#f8f7f2" stroke-width="2" stroke-linejoin="round"/></g></svg></div>
         <h2>${tie ? '平手' : `${players[w].name} 獲勝`}</h2>
         <p>${tie ? `兩艘船同時抵達 · <span class="n">${max}</span> 分` : `<span class="n">${totals[w]}</span> 比 <span class="n">${totals[1 - w]}</span> · 領先 ${totals[w] - totals[1 - w]} 分`}</p>
         <div class="keys"><button class="key key-y" id="again">再玩一次</button><a class="key key-w" href="index.html">回小工具首頁</a></div>
       </div>`;
     $('#round').innerHTML = `比賽結束`;
     // the committee boat hoists the finishing flag
-    if (!RM.matches) $('.finish svg').animate([{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }], { duration: 520, delay: 300, easing: 'cubic-bezier(.2,.9,.25,1)', fill: 'backwards' });
+    if (!RM.matches) $('.finish .ff').animate([{ transform: 'translateY(26px) scale(1, .2)' }, { transform: 'none' }], { duration: 620, delay: 300, easing: 'cubic-bezier(.2,.9,.25,1)', fill: 'backwards' });
   }
 
   function renderBoard() {
@@ -897,6 +906,7 @@ td.win{background:#fff2b3}
     if (screen !== 'game') buildGame();
     const focusWasOnBoard = document.activeElement && document.activeElement.closest && document.activeElement.closest('#rows');
     if (pendingScore) lastCell[pendingScore.playerIndex] = pendingScore.categoryId;
+    $('#chart').classList.toggle('is-over', state.phase === 'gameover');
     if (state.phase === 'playing') deckPlaying(); else deckGameover();
     renderBoard();
     state.players.forEach((p, pi) => {
