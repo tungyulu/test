@@ -167,7 +167,7 @@ tbody th svg.fl{width:16px; height:17px}
 tbody th .rule{display:block; font:500 11.5px/1.3 var(--cn); color:var(--ink-2); margin-top:1px}
 tr.cat-row td{text-align:center; font:800 20px var(--num); font-stretch:72%; font-variant-numeric:tabular-nums}
 tr.split th, tr.split td{border-bottom:3px solid var(--rule)}
-td .nil{color:#9aa3b5; font-weight:500}
+td .nil{color:#6f7a90; font-weight:500}
 td.scored.zero{color:var(--ink-2); font-weight:600}
 td.last{background:var(--yel)}
 .pv{appearance:none; width:100%; height:32px; border:0; border-radius:2px; background:#e3eafa; color:var(--blu); cursor:pointer;
@@ -224,11 +224,10 @@ td.win{background:#fff2b3}
 }
 @media (max-width:370px){
   .rack{--die:52px}
-  tbody th .rule{display:none}
 }
 @media (max-width:400px){ tbody th .rule{display:none} }
 @media (prefers-reduced-motion:reduce){
-  .pennant,.die,.key,.die::after{transition:none}
+  .pennant,.die,.key,.die::after,.roll .flags .pf{transition:none}
   .die.tumble,.stamp{animation:none}
 }
 </style>

@@ -1,0 +1,590 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T03:00:37+00:00",
+  "title": "Design System: 快艇骰子 · Regatta",
+  "extensions": {
+    "colorMeta": {
+      "sea": {
+        "role": "primary",
+        "displayName": "Chart Blue",
+        "canonical": "#0b3a82",
+        "tonalRamp": [
+          "#000924",
+          "#012155",
+          "#0f3e86",
+          "#305faa",
+          "#5182d0",
+          "#73a5f7",
+          "#abcbfd",
+          "#e6effe"
+        ]
+      },
+      "sea-deep": {
+        "role": "primary",
+        "displayName": "Deep Water",
+        "canonical": "#082e6a",
+        "tonalRamp": [
+          "#000925",
+          "#012156",
+          "#1a3f7d",
+          "#3960a1",
+          "#5982c6",
+          "#7ba6ec",
+          "#aacbff",
+          "#e6efff"
+        ]
+      },
+      "contour": {
+        "role": "neutral",
+        "displayName": "Contour",
+        "canonical": "rgba(168,204,255,.17)",
+        "tonalRamp": [
+          "#000a21",
+          "#06244c",
+          "#24426d",
+          "#42628f",
+          "#6384b3",
+          "#84a7d8",
+          "#a8ccff",
+          "#e5efff"
+        ]
+      },
+      "sounding": {
+        "role": "neutral",
+        "displayName": "Sounding",
+        "canonical": "rgba(176,204,246,.42)",
+        "tonalRamp": [
+          "#000a22",
+          "#0f2545",
+          "#2b4265",
+          "#4a6287",
+          "#6a84aa",
+          "#8ca7cf",
+          "#afcbf5",
+          "#e5effe"
+        ]
+      },
+      "rose": {
+        "role": "tertiary",
+        "displayName": "Chart Magenta",
+        "canonical": "#ff5aa9",
+        "tonalRamp": [
+          "#1c000d",
+          "#490028",
+          "#790547",
+          "#ad0f68",
+          "#db358a",
+          "#fe67ad",
+          "#feaecd",
+          "#fee8ef"
+        ]
+      },
+      "sand": {
+        "role": "tertiary",
+        "displayName": "Sand",
+        "canonical": "#e9cd7c",
+        "tonalRamp": [
+          "#100a00",
+          "#2f2400",
+          "#514003",
+          "#765e0a",
+          "#9a7f2c",
+          "#bea252",
+          "#e3c776",
+          "#feeebe"
+        ]
+      },
+      "signal-red": {
+        "role": "secondary",
+        "displayName": "Signal Red",
+        "canonical": "#e1262b",
+        "tonalRamp": [
+          "#1e0101",
+          "#4c0305",
+          "#7d0d11",
+          "#b31a1f",
+          "#e93032",
+          "#fe746a",
+          "#fdb4ab",
+          "#fee9e6"
+        ]
+      },
+      "signal-yellow": {
+        "role": "secondary",
+        "displayName": "Signal Yellow",
+        "canonical": "#ffcd00",
+        "tonalRamp": [
+          "#100a00",
+          "#2e2403",
+          "#514001",
+          "#765e05",
+          "#9d7f19",
+          "#c6a124",
+          "#f1c426",
+          "#ffeebd"
+        ]
+      },
+      "signal-blue": {
+        "role": "tertiary",
+        "displayName": "Signal Blue",
+        "canonical": "#1d4fc0",
+        "tonalRamp": [
+          "#00052c",
+          "#001a64",
+          "#0332a2",
+          "#2457c8",
+          "#447bf0",
+          "#79a3f8",
+          "#aecafe",
+          "#e6efff"
+        ]
+      },
+      "signal-black": {
+        "role": "neutral",
+        "displayName": "Signal Black",
+        "canonical": "#101318",
+        "tonalRamp": [
+          "#080b10",
+          "#22252b",
+          "#3f4248",
+          "#5e6168",
+          "#7e8389",
+          "#a1a5ac",
+          "#c5c9d1",
+          "#eaeff6"
+        ]
+      },
+      "signal-white": {
+        "role": "neutral",
+        "displayName": "Signal White",
+        "canonical": "#f8f7f2",
+        "tonalRamp": [
+          "#0c0b08",
+          "#262521",
+          "#43423e",
+          "#62615d",
+          "#83827e",
+          "#a6a5a0",
+          "#cac9c4",
+          "#efeeea"
+        ]
+      },
+      "flag-outline": {
+        "role": "neutral",
+        "displayName": "Flag Outline",
+        "canonical": "#0a1c3d",
+        "tonalRamp": [
+          "#000827",
+          "#112446",
+          "#2d4266",
+          "#4b6188",
+          "#6c83ab",
+          "#8da6d0",
+          "#b1caf6",
+          "#e6effe"
+        ]
+      },
+      "on-sea": {
+        "role": "neutral",
+        "displayName": "On Sea",
+        "canonical": "#f8f7f2",
+        "tonalRamp": [
+          "#0c0b08",
+          "#262521",
+          "#43423e",
+          "#62615d",
+          "#83827e",
+          "#a6a5a0",
+          "#cac9c4",
+          "#efeeea"
+        ]
+      },
+      "on-sea-2": {
+        "role": "neutral",
+        "displayName": "Pale Print",
+        "canonical": "#bfd2f3",
+        "tonalRamp": [
+          "#020a20",
+          "#17253d",
+          "#33425d",
+          "#51627e",
+          "#7283a1",
+          "#94a6c5",
+          "#b7caeb",
+          "#e6effe"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Board Ink",
+        "canonical": "#0d1626",
+        "tonalRamp": [
+          "#040b1a",
+          "#1b2536",
+          "#384255",
+          "#566276",
+          "#778398",
+          "#99a6bc",
+          "#bdcae1",
+          "#e6efff"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Board Ink 2",
+        "canonical": "#34466a",
+        "tonalRamp": [
+          "#010826",
+          "#142445",
+          "#304165",
+          "#4e6187",
+          "#6e82aa",
+          "#90a5cf",
+          "#b3caf5",
+          "#e7effe"
+        ]
+      },
+      "preview-tint": {
+        "role": "neutral",
+        "displayName": "Preview Tint",
+        "canonical": "#e3eafa",
+        "tonalRamp": [
+          "#070b15",
+          "#202530",
+          "#3c424f",
+          "#5b616f",
+          "#7c8291",
+          "#9ea5b4",
+          "#c2c9d9",
+          "#e7eeff"
+        ]
+      },
+      "preview-zero-tint": {
+        "role": "neutral",
+        "displayName": "Preview Zero Tint",
+        "canonical": "#edf0f6",
+        "tonalRamp": [
+          "#090b0f",
+          "#232529",
+          "#404247",
+          "#5f6166",
+          "#808288",
+          "#a2a5ab",
+          "#c6c9cf",
+          "#ebeef4"
+        ]
+      },
+      "preview-zero-ink": {
+        "role": "neutral",
+        "displayName": "Preview Zero Ink",
+        "canonical": "#4f6491",
+        "tonalRamp": [
+          "#01062b",
+          "#12224a",
+          "#2d406b",
+          "#4b608d",
+          "#6c82b1",
+          "#8da5d6",
+          "#b1c9fc",
+          "#e7effe"
+        ]
+      },
+      "win-tint": {
+        "role": "neutral",
+        "displayName": "Winner Tint",
+        "canonical": "#fff2b3",
+        "tonalRamp": [
+          "#0f0b00",
+          "#2c2501",
+          "#4d4206",
+          "#6e6125",
+          "#8f8347",
+          "#b2a66a",
+          "#d7ca8d",
+          "#fdf0b1"
+        ]
+      },
+      "key-yellow-hover": {
+        "role": "secondary",
+        "displayName": "Yellow Key Hover",
+        "canonical": "#ffd93d",
+        "tonalRamp": [
+          "#0f0b00",
+          "#2d2402",
+          "#4e4109",
+          "#746000",
+          "#998013",
+          "#c1a31e",
+          "#ecc61c",
+          "#feefb8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Title",
+        "purpose": "快艇骰子 on the menu under the YACHT bunting."
+      },
+      "result": {
+        "displayName": "Result",
+        "purpose": "獲勝 / 平手 headline at game end (40px <980)."
+      },
+      "bar-title": {
+        "displayName": "Bar Title",
+        "purpose": "Top-bar title beside the Y flag (16px <980)."
+      },
+      "key": {
+        "displayName": "Key",
+        "purpose": "Key legends; the roll key is 21px (18px <980)."
+      },
+      "row-head": {
+        "displayName": "Row Head",
+        "purpose": "Board category names and header tags (14px)."
+      },
+      "status": {
+        "displayName": "Status",
+        "purpose": "Dock status line (14px <980); 快艇 line 20px yellow."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Menu sub-line in on-sea-2."
+      },
+      "rule-note": {
+        "displayName": "Rule Note",
+        "purpose": "Category rule under each row head; hidden ≤400px."
+      },
+      "total": {
+        "displayName": "Total",
+        "purpose": "Plaque totals on the chart (50px <980)."
+      },
+      "board-total": {
+        "displayName": "Board Total",
+        "purpose": "總計 row."
+      },
+      "board-cell": {
+        "displayName": "Board Cell",
+        "purpose": "Scored cells, tabular."
+      },
+      "chart-label": {
+        "displayName": "Chart Label",
+        "purpose": "Buoy distances (9px on phones); sail numbers 900 10px at 70 %."
+      },
+      "preview": {
+        "displayName": "Preview",
+        "purpose": "Grease-pencil preview on open board cells only."
+      }
+    },
+    "shadows": [
+      {
+        "name": "die-rest",
+        "value": "0 6px 12px rgba(0,0,0,.32), inset 0 -4px 0 rgba(13,22,38,.10)",
+        "purpose": "Every rolled die."
+      },
+      {
+        "name": "die-held",
+        "value": "0 12px 16px rgba(0,0,0,.34), inset 0 -4px 0 rgba(13,22,38,.10)",
+        "purpose": "A held die, with translateY(-6px) and the 3px yellow ring."
+      }
+    ],
+    "motion": [
+      {
+        "name": "sail",
+        "value": "rAF, min(1500, 650 + Δ·14) ms, ease-out quart 1−(1−k)^4",
+        "purpose": "Boat sails to its new total; wake dasharray and plaque count follow."
+      },
+      {
+        "name": "hoist",
+        "value": "transform .26s cubic-bezier(.2,.9,.25,1), scaleY from the hoist",
+        "purpose": "Held die pennant unfurls from the halyard."
+      },
+      {
+        "name": "lift",
+        "value": "transform/box-shadow/ring opacity .2s cubic-bezier(.2,.9,.25,1)",
+        "purpose": "Held die lifts 6px and rings yellow."
+      },
+      {
+        "name": "bunting",
+        "value": "420ms cubic-bezier(.2,.9,.25,1), delay 120 + 70·i ms, scaleY 0→1",
+        "purpose": "Menu YACHT flags unfurl one by one."
+      },
+      {
+        "name": "tumble",
+        "value": ".42s cubic-bezier(.3,.7,.3,1); faces flick 4× at 70ms",
+        "purpose": "Rerolled dice drop, rotate and settle."
+      },
+      {
+        "name": "strike",
+        "value": ".3s cubic-bezier(.2,.9,.25,1), translateY(13px), opacity .35",
+        "purpose": "A spent answering pennant on the roll key is struck."
+      },
+      {
+        "name": "stamp",
+        "value": ".7s cubic-bezier(.2,.9,.25,1), scale 1.6→1",
+        "purpose": "Newly scored board cell."
+      },
+      {
+        "name": "finish-flag",
+        "value": "620ms, delay 300ms, translateY(26px) scale(1,.2) → none",
+        "purpose": "Finish flag hoists in the result."
+      },
+      {
+        "name": "spinnaker",
+        "value": "2600ms cubic-bezier(.2,.8,.3,1); sail scale 0→1.08→1→0, boat ×1.9",
+        "purpose": "A 50-point 快艇; reduced motion shows the sail statically for 2.4s."
+      },
+      {
+        "name": "key-press",
+        "value": "translateY(1px), transform .12s, background-color .15s",
+        "purpose": "Keys."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Boats placed instantly; no tumble, stamp, bunting or finish hoist; pennant/die/key transitions off."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tiny",
+        "value": "max-width: 370px (dice 52px)"
+      },
+      {
+        "name": "narrow-notes",
+        "value": "max-width: 400px (rule notes hidden)"
+      },
+      {
+        "name": "stacked",
+        "value": "max-width: 979px (loop 240px with totals, dock below, board as own scroll region)"
+      },
+      {
+        "name": "stacked-short",
+        "value": "max-width: 979px and max-height: 640px (page scrolls as a whole)"
+      },
+      {
+        "name": "two-column",
+        "value": "min-width: 980px (chart + 380–420px board)"
+      },
+      {
+        "name": "chart-phone-geometry",
+        "value": "chart width < 640px or height < 400px (JS: inset 42, lane 14, radius 52, boats ×0.7; no islet or rose)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary and Secondary Keys",
+      "kind": "button",
+      "refersTo": "key-primary",
+      "description": "Yellow primary key and white secondary key on the sea, each with a boat icon; near-square 3px corners.",
+      "html": "<div class=\"ds-sea\"><button class=\"ds-key ds-key-y\"><svg viewBox=\"-22 -38 44 48\" width=\"26\" height=\"28\"><path d=\"M2 1V-35\" stroke=\"#101318\" stroke-width=\"1.6\"/><path d=\"M0 -33L0 -3L-18 -3Z\" fill=\"#e1262b\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M5 -30L18 -4L5 -4Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M-20 0H21L15 8H-15Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.4\"/><text x=\"-6\" y=\"-9\" fill=\"#fff\" font-family=\"Archivo\" font-weight=\"900\" font-size=\"10\" text-anchor=\"middle\">1</text></svg>單人對 CPU</button><button class=\"ds-key ds-key-w\"><svg viewBox=\"-22 -38 44 48\" width=\"26\" height=\"28\"><path d=\"M2 1V-35\" stroke=\"#101318\" stroke-width=\"1.6\"/><path d=\"M0 -33L0 -3L-18 -3Z\" fill=\"#ffcd00\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M5 -30L18 -4L5 -4Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M-20 0H21L15 8H-15Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.4\"/><text x=\"-6\" y=\"-9\" fill=\"#101318\" font-family=\"Archivo\" font-weight=\"900\" font-size=\"10\" text-anchor=\"middle\">2</text></svg>兩人輪流</button></div>",
+      "css": ":host{--sea:#0b3a82;--sea-deep:#082e6a;--rose:#ff5aa9;--red:#e1262b;--yel:#ffcd00;--blu:#1d4fc0;--blk:#101318;--wht:#f8f7f2;--ink:#0d1626;--ink-2:#34466a;--on-sea-2:#bfd2f3;--p0:#e1262b;--p1:#ffcd00;--cn:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;--num:'Archivo','Noto Sans TC',system-ui,sans-serif;--hand:'Permanent Marker','Archivo',system-ui,sans-serif} .ds-sea{background:var(--sea);padding:28px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center} .ds-key{appearance:none;border:0;border-radius:3px;min-height:52px;padding:0 22px;font:900 17px/1 var(--cn);letter-spacing:.06em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background-color .15s,transform .12s} .ds-key:active{transform:translateY(1px)} .ds-key:focus-visible{outline:3px solid var(--yel);outline-offset:3px} .ds-key-y{background:var(--yel);color:var(--blk)} .ds-key-y:hover{background:#ffd93d} .ds-key-y:focus-visible{outline-color:var(--wht)} .ds-key-w{background:var(--wht);color:var(--ink)} .ds-key-w:hover{background:#fff}"
+    },
+    {
+      "name": "Roll Key",
+      "kind": "button",
+      "refersTo": "roll-key",
+      "description": "擲骰 with three answering pennants; each roll strikes one. Disabled it becomes a pale outline key.",
+      "html": "<div class=\"ds-sea\"><button class=\"ds-key ds-key-y ds-roll\">擲骰 <span class=\"ds-flags\"><span><svg viewBox=\"0 0 24 30\" width=\"22\" height=\"28\"><path d=\"M2 1V29\" stroke=\"#101318\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M3 2L23 8.5L3 15Z\" fill=\"#f8f7f2\"/><path d=\"M7 3.3V13.7M15 5.8V11.2\" stroke=\"#e1262b\" stroke-width=\"4\"/><path d=\"M3 2L23 8.5L3 15Z\" fill=\"none\" stroke=\"#101318\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/></svg></span><span><svg viewBox=\"0 0 24 30\" width=\"22\" height=\"28\"><path d=\"M2 1V29\" stroke=\"#101318\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M3 2L23 8.5L3 15Z\" fill=\"#f8f7f2\"/><path d=\"M7 3.3V13.7M15 5.8V11.2\" stroke=\"#e1262b\" stroke-width=\"4\"/><path d=\"M3 2L23 8.5L3 15Z\" fill=\"none\" stroke=\"#101318\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/></svg></span><span class=\"ds-spent\"><svg viewBox=\"0 0 24 30\" width=\"22\" height=\"28\"><path d=\"M2 1V29\" stroke=\"#101318\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M3 2L23 8.5L3 15Z\" fill=\"#f8f7f2\"/><path d=\"M7 3.3V13.7M15 5.8V11.2\" stroke=\"#e1262b\" stroke-width=\"4\"/><path d=\"M3 2L23 8.5L3 15Z\" fill=\"none\" stroke=\"#101318\" stroke-width=\"1.2\" stroke-linejoin=\"round\"/></svg></span></span></button><button class=\"ds-key ds-roll\" disabled>選一格計分</button></div>",
+      "css": ":host{--sea:#0b3a82;--sea-deep:#082e6a;--rose:#ff5aa9;--red:#e1262b;--yel:#ffcd00;--blu:#1d4fc0;--blk:#101318;--wht:#f8f7f2;--ink:#0d1626;--ink-2:#34466a;--on-sea-2:#bfd2f3;--p0:#e1262b;--p1:#ffcd00;--cn:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;--num:'Archivo','Noto Sans TC',system-ui,sans-serif;--hand:'Permanent Marker','Archivo',system-ui,sans-serif} .ds-sea{background:var(--sea);padding:28px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center} .ds-key{appearance:none;border:0;border-radius:3px;min-height:52px;padding:0 22px;font:900 17px/1 var(--cn);letter-spacing:.06em;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;transition:background-color .15s,transform .12s} .ds-key:active{transform:translateY(1px)} .ds-key:focus-visible{outline:3px solid var(--yel);outline-offset:3px} .ds-key-y{background:var(--yel);color:var(--blk)} .ds-key-y:hover{background:#ffd93d} .ds-key-y:focus-visible{outline-color:var(--wht)} .ds-key-w{background:var(--wht);color:var(--ink)} .ds-key-w:hover{background:#fff} .ds-roll{min-width:260px;min-height:62px;font-size:21px;gap:16px} .ds-flags{display:inline-flex;gap:5px} .ds-flags svg{display:block} .ds-spent svg{transform:translateY(13px);opacity:.35} .ds-roll:disabled{background:transparent;color:var(--on-sea-2);box-shadow:inset 0 0 0 2px rgba(191,210,243,.45);cursor:default}"
+    },
+    {
+      "name": "Halyard Rack",
+      "kind": "custom",
+      "refersTo": "die",
+      "description": "Dice under a white halyard; a held die lifts, rings yellow and hangs its ICS numeral pennant from the line.",
+      "html": "<div class=\"ds-sea\"><ul class=\"ds-rack\"><li class=\"ds-held\"><span class=\"ds-pn\"><svg viewBox=\"0 0 28 40\" width=\"22\" height=\"33\"><path d=\"M0 0H28L19 40H9Z\" fill=\"#f8f7f2\"/><circle cx=\"14\" cy=\"13\" r=\"6.5\" fill=\"#e1262b\"/><path d=\"M0 0H28L19 40H9Z\" fill=\"none\" stroke=\"#0a1c3d\" stroke-width=\"1.4\"/></svg></span><button class=\"ds-die\"><svg viewBox=\"0 0 60 60\"><circle cx=\"30\" cy=\"30\" r=\"5.6\" fill=\"#101318\"/></svg></button></li><li><span class=\"ds-pn\"></span><button class=\"ds-die\"><svg viewBox=\"0 0 60 60\"><circle cx=\"17\" cy=\"17\" r=\"5.6\" fill=\"#101318\"/><circle cx=\"43\" cy=\"43\" r=\"5.6\" fill=\"#101318\"/></svg></button></li><li class=\"ds-held\"><span class=\"ds-pn\"><svg viewBox=\"0 0 28 40\" width=\"22\" height=\"33\"><clipPath id=\"c3\"><path d=\"M0 0H28L19 40H9Z\"/></clipPath><g clip-path=\"url(#c3)\"><rect width=\"28\" height=\"14\" fill=\"#e1262b\"/><rect y=\"13.5\" width=\"28\" height=\"13.5\" fill=\"#f8f7f2\"/><rect y=\"26.5\" width=\"28\" height=\"14\" fill=\"#1d4fc0\"/></g><path d=\"M0 0H28L19 40H9Z\" fill=\"none\" stroke=\"#0a1c3d\" stroke-width=\"1.4\"/></svg></span><button class=\"ds-die\"><svg viewBox=\"0 0 60 60\"><circle cx=\"17\" cy=\"17\" r=\"5.6\" fill=\"#101318\"/><circle cx=\"30\" cy=\"30\" r=\"5.6\" fill=\"#101318\"/><circle cx=\"43\" cy=\"43\" r=\"5.6\" fill=\"#101318\"/></svg></button></li><li><span class=\"ds-pn\"></span><button class=\"ds-die ds-blank\"></button></li></ul></div>",
+      "css": ":host{--sea:#0b3a82;--sea-deep:#082e6a;--rose:#ff5aa9;--red:#e1262b;--yel:#ffcd00;--blu:#1d4fc0;--blk:#101318;--wht:#f8f7f2;--ink:#0d1626;--ink-2:#34466a;--on-sea-2:#bfd2f3;--p0:#e1262b;--p1:#ffcd00;--cn:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;--num:'Archivo','Noto Sans TC',system-ui,sans-serif;--hand:'Permanent Marker','Archivo',system-ui,sans-serif} .ds-sea{background:var(--sea);padding:20px 28px 28px;display:flex;justify-content:center} .ds-rack{position:relative;display:flex;gap:8px;padding:44px 0 0;margin:0;list-style:none} .ds-rack::before{content:'';position:absolute;left:-12px;right:-12px;top:0;height:2px;background:var(--wht)} .ds-rack li{position:relative} .ds-pn{position:absolute;top:-42px;left:50%;margin-left:-11px;transform-origin:50% 0;transform:scaleY(0);transition:transform .26s cubic-bezier(.2,.9,.25,1)} .ds-held .ds-pn{transform:scaleY(1)} .ds-die{appearance:none;border:0;padding:0;width:58px;height:58px;border-radius:11.6px;background:var(--wht);cursor:pointer;display:block;position:relative;box-shadow:0 6px 12px rgba(0,0,0,.32),inset 0 -4px 0 rgba(13,22,38,.10);transition:transform .2s cubic-bezier(.2,.9,.25,1),box-shadow .2s} .ds-die svg{display:block;width:100%;height:100%} .ds-die::after{content:'';position:absolute;inset:-6px;border:3px solid var(--yel);border-radius:16.6px;opacity:0;transition:opacity .2s} .ds-held .ds-die{transform:translateY(-6px);box-shadow:0 12px 16px rgba(0,0,0,.34),inset 0 -4px 0 rgba(13,22,38,.10)} .ds-held .ds-die::after{opacity:1} .ds-die:focus-visible{outline:3px solid var(--yel);outline-offset:3px} .ds-blank{background:transparent;box-shadow:none;border:2px dashed rgba(191,210,243,.55)}"
+    },
+    {
+      "name": "Results Board",
+      "kind": "card",
+      "refersTo": "results-board",
+      "description": "The committee board: black rules, pennant row icons, grease-pencil previews, the yellow last-row mark and stamped scores; the active player tag is filled in their colour.",
+      "html": "<div class=\"ds-board\"><table><thead><tr><th>類別</th><th><span class=\"ds-ph ds-p0\"><svg viewBox=\"-22 -38 44 48\" width=\"26\" height=\"28\"><path d=\"M2 1V-35\" stroke=\"#101318\" stroke-width=\"1.6\"/><path d=\"M0 -33L0 -3L-18 -3Z\" fill=\"#e1262b\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M5 -30L18 -4L5 -4Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M-20 0H21L15 8H-15Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.4\"/><text x=\"-6\" y=\"-9\" fill=\"#fff\" font-family=\"Archivo\" font-weight=\"900\" font-size=\"10\" text-anchor=\"middle\">1</text></svg>玩家</span></th><th><span class=\"ds-ph\"><svg viewBox=\"-22 -38 44 48\" width=\"26\" height=\"28\"><path d=\"M2 1V-35\" stroke=\"#101318\" stroke-width=\"1.6\"/><path d=\"M0 -33L0 -3L-18 -3Z\" fill=\"#ffcd00\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M5 -30L18 -4L5 -4Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M-20 0H21L15 8H-15Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.4\"/><text x=\"-6\" y=\"-9\" fill=\"#101318\" font-family=\"Archivo\" font-weight=\"900\" font-size=\"10\" text-anchor=\"middle\">2</text></svg>CPU</span></th></tr></thead><tbody><tr><th><span class=\"ds-cat\"><svg viewBox=\"0 0 28 40\" width=\"22\" height=\"33\"><path d=\"M0 0H28L19 40H9Z\" fill=\"#f8f7f2\"/><circle cx=\"14\" cy=\"13\" r=\"6.5\" fill=\"#e1262b\"/><path d=\"M0 0H28L19 40H9Z\" fill=\"none\" stroke=\"#0a1c3d\" stroke-width=\"1.4\"/></svg><span>一點<small>1 的總和</small></span></span></th><td><button class=\"ds-pv\">2</button></td><td><span class=\"ds-nil\">—</span></td></tr><tr><th><span class=\"ds-cat\"><svg viewBox=\"0 0 28 40\" width=\"22\" height=\"33\"><clipPath id=\"c3\"><path d=\"M0 0H28L19 40H9Z\"/></clipPath><g clip-path=\"url(#c3)\"><rect width=\"28\" height=\"14\" fill=\"#e1262b\"/><rect y=\"13.5\" width=\"28\" height=\"13.5\" fill=\"#f8f7f2\"/><rect y=\"26.5\" width=\"28\" height=\"14\" fill=\"#1d4fc0\"/></g><path d=\"M0 0H28L19 40H9Z\" fill=\"none\" stroke=\"#0a1c3d\" stroke-width=\"1.4\"/></svg><span>三點<small>3 的總和</small></span></span></th><td class=\"ds-last\">9</td><td>6</td></tr><tr class=\"ds-split\"><th>四同<small>四顆相同 · 全部點數</small></th><td><button class=\"ds-pv ds-zero\">0</button></td><td><span class=\"ds-nil\">—</span></td></tr></tbody><tfoot><tr><th>總計</th><td>49</td><td>83</td></tr></tfoot></table></div>",
+      "css": ":host{--sea:#0b3a82;--sea-deep:#082e6a;--rose:#ff5aa9;--red:#e1262b;--yel:#ffcd00;--blu:#1d4fc0;--blk:#101318;--wht:#f8f7f2;--ink:#0d1626;--ink-2:#34466a;--on-sea-2:#bfd2f3;--p0:#e1262b;--p1:#ffcd00;--cn:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;--num:'Archivo','Noto Sans TC',system-ui,sans-serif;--hand:'Permanent Marker','Archivo',system-ui,sans-serif} .ds-board{background:var(--wht);color:var(--ink);padding:18px;max-width:420px} table{width:100%;border-collapse:collapse;table-layout:fixed} th,td{height:40px;padding:0 8px;border-bottom:1px solid var(--ink);vertical-align:middle} thead th{height:48px;border-bottom:3px solid var(--ink);font:700 14px var(--cn);text-align:center} thead th:first-child,tbody th,tfoot th{text-align:left} .ds-ph{display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 8px;border-radius:2px} .ds-ph svg{width:16px;height:18px} .ds-p0{background:var(--p0);color:#fff} tbody th{font:700 15px var(--cn)} .ds-cat{display:inline-flex;align-items:center;gap:9px} .ds-cat svg{width:13px;height:19px} small{display:block;font:500 11.5px/1.3 var(--cn);color:var(--ink-2)} td{text-align:center;font:800 20px var(--num);font-stretch:72%;font-variant-numeric:tabular-nums} .ds-split th,.ds-split td{border-bottom:3px solid var(--ink)} .ds-nil{color:#9aa3b5;font-weight:500} .ds-last{background:var(--yel)} .ds-pv{appearance:none;width:100%;height:32px;border:0;border-radius:2px;background:#e3eafa;color:var(--blu);cursor:pointer;font:400 21px/1 var(--hand);transition:background-color .12s,color .12s} .ds-pv:hover{background:var(--blu);color:var(--wht)} .ds-pv:focus-visible{outline:3px solid var(--blu);outline-offset:2px} .ds-pv.ds-zero{color:#4f6491;background:#edf0f6} .ds-pv.ds-zero:hover{background:#4f6491;color:var(--wht)} tfoot th{font:900 16px var(--cn);border:0;border-top:3px solid var(--ink)} tfoot td{font:900 30px var(--num);font-stretch:66%;border:0;border-top:3px solid var(--ink);height:52px}"
+    },
+    {
+      "name": "Top Bar",
+      "kind": "nav",
+      "refersTo": "top-bar",
+      "description": "Deep-water strip: chevron back link, Y flag + title, round count in condensed Archivo.",
+      "html": "<header class=\"ds-top\"><a class=\"ds-back\" href=\"#\" aria-label=\"回小工具首頁\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M15 5l-7 7 7 7\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg></a><h1><svg viewBox=\"0 0 36 40\" width=\"18\" height=\"20\"><defs><pattern id=\"py\" width=\"10\" height=\"10\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\"><rect width=\"10\" height=\"10\" fill=\"#ffcd00\"/><rect width=\"5\" height=\"10\" fill=\"#e1262b\"/></pattern></defs><rect width=\"36\" height=\"40\" fill=\"url(#py)\"/><rect x=\".7\" y=\".7\" width=\"34.6\" height=\"38.6\" fill=\"none\" stroke=\"#0a1c3d\" stroke-width=\"1.4\"/></svg>快艇骰子</h1><span class=\"ds-round\">第 <b>4</b> / 13 回合</span></header>",
+      "css": ":host{--sea:#0b3a82;--sea-deep:#082e6a;--rose:#ff5aa9;--red:#e1262b;--yel:#ffcd00;--blu:#1d4fc0;--blk:#101318;--wht:#f8f7f2;--ink:#0d1626;--ink-2:#34466a;--on-sea-2:#bfd2f3;--p0:#e1262b;--p1:#ffcd00;--cn:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;--num:'Archivo','Noto Sans TC',system-ui,sans-serif;--hand:'Permanent Marker','Archivo',system-ui,sans-serif} .ds-top{display:flex;align-items:center;gap:14px;padding:0 20px;height:56px;background:var(--sea-deep);color:var(--wht);border-bottom:1px solid rgba(168,204,255,.18)} .ds-back{display:inline-flex;color:var(--on-sea-2);padding:8px 4px} .ds-back:hover{color:var(--wht)} .ds-back:focus-visible{outline:3px solid var(--yel);outline-offset:3px} h1{margin:0;font:900 19px/1 var(--cn);letter-spacing:.06em;display:flex;align-items:center;gap:9px} .ds-round{margin-left:auto;font:700 14px var(--cn);color:var(--on-sea-2);white-space:nowrap} .ds-round b{font:800 22px/1 var(--num);font-stretch:70%;color:var(--wht);margin:0 2px}"
+    },
+    {
+      "name": "Plaques",
+      "kind": "custom",
+      "refersTo": "total",
+      "description": "The two totals on the chart: boat icon, name, condensed Archivo total; the active player is underlined 5px in their colour.",
+      "html": "<div class=\"ds-sea\"><div class=\"ds-plq ds-turn0\"><svg viewBox=\"-22 -38 44 48\" width=\"26\" height=\"28\"><path d=\"M2 1V-35\" stroke=\"#101318\" stroke-width=\"1.6\"/><path d=\"M0 -33L0 -3L-18 -3Z\" fill=\"#e1262b\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M5 -30L18 -4L5 -4Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M-20 0H21L15 8H-15Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.4\"/><text x=\"-6\" y=\"-9\" fill=\"#fff\" font-family=\"Archivo\" font-weight=\"900\" font-size=\"10\" text-anchor=\"middle\">1</text></svg><span class=\"ds-who\">玩家</span><span class=\"ds-tot\">49</span></div><div class=\"ds-plq\"><svg viewBox=\"-22 -38 44 48\" width=\"26\" height=\"28\"><path d=\"M2 1V-35\" stroke=\"#101318\" stroke-width=\"1.6\"/><path d=\"M0 -33L0 -3L-18 -3Z\" fill=\"#ffcd00\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M5 -30L18 -4L5 -4Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.2\"/><path d=\"M-20 0H21L15 8H-15Z\" fill=\"#f8f7f2\" stroke=\"#101318\" stroke-width=\"1.4\"/><text x=\"-6\" y=\"-9\" fill=\"#101318\" font-family=\"Archivo\" font-weight=\"900\" font-size=\"10\" text-anchor=\"middle\">2</text></svg><span class=\"ds-who\">CPU</span><span class=\"ds-tot\">83</span></div></div>",
+      "css": ":host{--sea:#0b3a82;--sea-deep:#082e6a;--rose:#ff5aa9;--red:#e1262b;--yel:#ffcd00;--blu:#1d4fc0;--blk:#101318;--wht:#f8f7f2;--ink:#0d1626;--ink-2:#34466a;--on-sea-2:#bfd2f3;--p0:#e1262b;--p1:#ffcd00;--cn:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;--num:'Archivo','Noto Sans TC',system-ui,sans-serif;--hand:'Permanent Marker','Archivo',system-ui,sans-serif} .ds-sea{background:var(--sea);padding:28px;display:flex;gap:40px;justify-content:center;align-items:flex-end} .ds-plq{display:grid;grid-template-columns:auto auto;align-items:end;gap:2px 10px;padding-bottom:8px;position:relative} .ds-plq svg{grid-row:1/3;width:34px;height:38px} .ds-who{font:700 14px/1.2 var(--cn);color:var(--on-sea-2)} .ds-tot{font:900 72px/.86 var(--num);font-stretch:66%;color:var(--wht);letter-spacing:-.01em} .ds-turn0::after{content:'';position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--p0)} .ds-turn0 .ds-who{color:var(--wht)}"
+    },
+    {
+      "name": "Course and Boats",
+      "kind": "custom",
+      "refersTo": "buoy",
+      "description": "A course corner: white dashed centreline, a yellow 50 buoy, the 起航 line, each boat in its lane with its wake in the player colour, and the magenta rose (desktop only).",
+      "html": "<svg class=\"ds-chart\" viewBox=\"0 0 360 200\"><path d=\"M40 0 V130 A50 50 0 0 0 90 180 H360\" class=\"ds-contour\" transform=\"translate(20 -20) scale(.9)\"/><path d=\"M60 20V110A50 50 0 0 0 110 160H340\" class=\"ds-course\"/><path d=\"M82 20V110A28 28 0 0 0 110 138H260\" class=\"ds-wake\" stroke=\"#e1262b\"/><path d=\"M38 20V110A72 72 0 0 0 110 182H220\" class=\"ds-wake\" stroke=\"#ffcd00\"/><path d=\"M260 128V188\" stroke=\"#f8f7f2\" stroke-width=\"2.5\"/><text x=\"260\" y=\"198\" fill=\"#f8f7f2\" font-size=\"9\" font-weight=\"700\" letter-spacing=\"2\" text-anchor=\"middle\">起航</text><g transform=\"translate(150 160)\"><circle r=\"12\" fill=\"#ffcd00\" stroke=\"#101318\" stroke-width=\"1.5\"/><text font-family=\"Archivo\" font-weight=\"800\" font-size=\"11\" text-anchor=\"middle\" dominant-baseline=\"central\" fill=\"#101318\">50</text></g><g transform=\"translate(310 50)\"><circle r=\"26\" fill=\"none\" stroke=\"#ff5aa9\" stroke-width=\"1.2\"/><path d=\"M0 -20L3 0L0 20L-3 0Z\" fill=\"#ff5aa9\"/><text y=\"-31\" fill=\"#ff5aa9\" font-family=\"Archivo\" font-weight=\"700\" font-size=\"11\" text-anchor=\"middle\">N</text></g></svg>",
+      "css": ".ds-chart{display:block;width:100%;max-width:420px;background:#0b3a82} .ds-course{fill:none;stroke:rgba(248,247,242,.5);stroke-width:1.4;stroke-dasharray:6 7} .ds-contour{fill:none;stroke:rgba(168,204,255,.17);stroke-width:1.2} .ds-wake{fill:none;stroke-width:4;stroke-linecap:round}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Regatta Chart",
+    "overview": "The page is a game of Yacht run as a yacht race and seen from above. A drenched chart-blue sea fills the viewport, with pale depth contours around two shoals, scattered soundings and, on desktop, a sand islet and a magenta compass rose. A rounded-rectangle course runs around the chart. Each scored category moves the player's boat along it by those points, so the lead is a distance you can see. The dice you hold hang as International Code of Signals numeral pennants from a white halyard. The scorecard is the race committee's white results board, ruled in black, with previews in grease pencil and scored cells stamped in.\n\nColour is flag colour, flat and at full strength: signal red, yellow, blue, black and white on chart blue. Players are flags too: P1 sails red, P2 sails yellow. Motion is sailing and hoisting only. Fonts come from Google Fonts. The owner declined inlining them, so this is the one external request.\n\nConfirmed rejections: the category default of green felt, a dice cup, and a white scorecard table under a header; nautical clip-art (rope, anchors, wheels).",
+    "keyCharacteristics": [
+      "One drenched sea (`sea`), with every chart mark printed on it at low alpha. Magenta lives only in the compass rose.",
+      "One lap = 350 points. Distance along the course is the score.",
+      "Signal flags drawn to the ICS patterns and hung hoist-up from a horizontal line.",
+      "A flat white committee board with black rules. Grease-pencil previews, stamped scores.",
+      "Archivo condensed numerals, Noto Sans TC for Chinese, Permanent Marker for previews only."
+    ],
+    "rules": [
+      {
+        "name": "The Flag Colours Rule",
+        "body": "Anything that signals is a flag colour (red, yellow, blue, black or white), flat and at full strength. It never gets a gradient, a glow or a tint ramp. Chart marks (contours, soundings, the course) are white or pale blue at low alpha. Nothing else on the sea is semi-transparent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Magenta Rose Rule",
+        "body": "Chart magenta prints the compass rose and nothing else.",
+        "section": "colors"
+      },
+      {
+        "name": "The Players Are Flags Rule",
+        "body": "P1 is red and P2 is yellow, everywhere: mainsail, wake, turn underline and header tag. The sail number is white on red and black on yellow.",
+        "section": "colors"
+      },
+      {
+        "name": "The Sail Number Rule",
+        "body": "Every number is Archivo, condensed (66–80 %). Chinese is Noto Sans TC. Don't set numbers in Noto or at Archivo's normal width.",
+        "section": "typography"
+      },
+      {
+        "name": "The Grease Pencil Rule",
+        "body": "Permanent Marker writes only the uncommitted preview on an open board cell. A scored number is always Archivo.",
+        "section": "typography"
+      },
+      {
+        "name": "The Only Dice Float Rule",
+        "body": "Shadows belong to the dice. Every other element is printed flat on the chart or the board.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep the whole page on the chart-blue sea, with the white committee board as the only other surface.",
+      "**Do** keep one lap at 350 points with buoys every 50, and draw every wake with `pathLength=\"350\"` so its length is the score.",
+      "**Do** use flag colours flat and at full strength, with P1 red and P2 yellow everywhere.",
+      "**Do** draw any new flag to its ICS pattern, hanging hoist-up from a horizontal line, with the 1.4px `flag-outline` stroke.",
+      "**Do** set numbers in condensed Archivo (66–80 %), Chinese in Noto Sans TC, and only previews in Permanent Marker.",
+      "**Do** keep motion to sailing, hoisting, tumbling and stamping, and give every motion an instant reduced-motion path.",
+      "**Do** keep the <980px order (loop with totals → dock → board as its own scroll region) and the short-viewport page-scroll fallback."
+    ],
+    "donts": [
+      "**Don't** use magenta anywhere but the compass rose.",
+      "**Don't** add green felt, a dice cup, or a scorecard table under a plain header.",
+      "**Don't** add nautical clip-art such as rope borders, knots, anchors or ship's wheels. The halyard is a plain 2px white rule.",
+      "**Don't** give anything but the dice a shadow, and never add gradients or glows to the sea or the flags.",
+      "**Don't** write scored numbers in Permanent Marker, or previews in Archivo."
+    ]
+  }
+}
