@@ -1,0 +1,1099 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T08:26:33+00:00",
+  "title": "Design System: NBA 拍賣選秀板 · 戰術板",
+  "extensions": {
+    "colorMeta": {
+      "wall": {
+        "role": "neutral",
+        "displayName": "Locker-Room Wall",
+        "canonical": "#34414E",
+        "tonalRamp": [
+          "#060c12",
+          "#1d252d",
+          "#37414b",
+          "#535f6b",
+          "#717f8e",
+          "#92a0ae",
+          "#b9c6d2",
+          "#e5f0fb"
+        ]
+      },
+      "board": {
+        "role": "neutral",
+        "displayName": "Melamine",
+        "canonical": "#F3F5F4",
+        "tonalRamp": [
+          "#0a0b0b",
+          "#232424",
+          "#3f403f",
+          "#5c5e5d",
+          "#7c7e7d",
+          "#9d9f9e",
+          "#c3c4c4",
+          "#edefee"
+        ]
+      },
+      "board-2": {
+        "role": "neutral",
+        "displayName": "Melamine 2",
+        "canonical": "#E8EDEE",
+        "tonalRamp": [
+          "#090c0c",
+          "#212525",
+          "#3d4141",
+          "#5a5e5f",
+          "#7a7e7f",
+          "#9b9fa0",
+          "#c0c5c6",
+          "#eaeff0"
+        ]
+      },
+      "ghost": {
+        "role": "neutral",
+        "displayName": "Erased Ghost",
+        "canonical": "rgba(52, 64, 76, .13)",
+        "tonalRamp": [
+          "#060c11",
+          "#1d252d",
+          "#37414a",
+          "#545f6a",
+          "#727f8c",
+          "#93a0ad",
+          "#bac6d1",
+          "#e6f0fa"
+        ]
+      },
+      "print": {
+        "role": "neutral",
+        "displayName": "Board Print",
+        "canonical": "#8EA8C3",
+        "tonalRamp": [
+          "#030c17",
+          "#172534",
+          "#304254",
+          "#4b6076",
+          "#678099",
+          "#8aa1ba",
+          "#b1c7dd",
+          "#e3f0fe"
+        ]
+      },
+      "print-2": {
+        "role": "neutral",
+        "displayName": "Board Print Rule",
+        "canonical": "#C9D6E2",
+        "tonalRamp": [
+          "#070c10",
+          "#1e252b",
+          "#384149",
+          "#555f68",
+          "#737f8a",
+          "#95a0aa",
+          "#bbc6cf",
+          "#e7f0f8"
+        ]
+      },
+      "print-ink": {
+        "role": "neutral",
+        "displayName": "Print Ink",
+        "canonical": "#3D5C7C",
+        "tonalRamp": [
+          "#010c1a",
+          "#122539",
+          "#2a425a",
+          "#45607d",
+          "#6080a2",
+          "#83a2c2",
+          "#acc7e5",
+          "#e3f0ff"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Marker Black",
+        "canonical": "#1C2024",
+        "tonalRamp": [
+          "#080c0f",
+          "#202529",
+          "#3c4045",
+          "#595e63",
+          "#797e83",
+          "#9a9fa4",
+          "#bfc5ca",
+          "#eaeff5"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "canonical": "#44515E",
+        "tonalRamp": [
+          "#060c12",
+          "#1d252d",
+          "#37414b",
+          "#535f6b",
+          "#717f8d",
+          "#93a0ae",
+          "#bac6d2",
+          "#e5f0fb"
+        ]
+      },
+      "m-blue": {
+        "role": "primary",
+        "displayName": "Marker Blue",
+        "canonical": "#1D52BA",
+        "tonalRamp": [
+          "#000135",
+          "#001c5d",
+          "#123987",
+          "#2958b3",
+          "#4078e2",
+          "#6b9cf8",
+          "#a6c5fc",
+          "#e6effe"
+        ]
+      },
+      "m-red": {
+        "role": "secondary",
+        "displayName": "Marker Red",
+        "canonical": "#C42E28",
+        "tonalRamp": [
+          "#220000",
+          "#4c0000",
+          "#7c0307",
+          "#a82520",
+          "#d54238",
+          "#f66d60",
+          "#feaca0",
+          "#ffe9e6"
+        ]
+      },
+      "m-green": {
+        "role": "secondary",
+        "displayName": "Marker Green",
+        "canonical": "#0F7A42",
+        "tonalRamp": [
+          "#001103",
+          "#002d13",
+          "#054d27",
+          "#186f3e",
+          "#349259",
+          "#61b37d",
+          "#90d8a6",
+          "#c6ffd6"
+        ]
+      },
+      "m-red-soft": {
+        "role": "secondary",
+        "displayName": "Red Wash",
+        "canonical": "rgba(196, 46, 40, .10)",
+        "tonalRamp": [
+          "#220000",
+          "#4c0000",
+          "#7c0307",
+          "#a82520",
+          "#d54238",
+          "#f66d60",
+          "#feaca0",
+          "#ffe9e6"
+        ]
+      },
+      "on-blue": {
+        "role": "neutral",
+        "displayName": "On Blue",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "strip": {
+        "role": "neutral",
+        "displayName": "Magnet",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "strip-edge": {
+        "role": "neutral",
+        "displayName": "Magnet Edge",
+        "canonical": "#CDD6DF",
+        "tonalRamp": [
+          "#060c12",
+          "#1e252b",
+          "#394148",
+          "#575f66",
+          "#767e86",
+          "#97a0a8",
+          "#bcc5ce",
+          "#e7f0f9"
+        ]
+      },
+      "strip-side": {
+        "role": "neutral",
+        "displayName": "Magnet Thickness",
+        "canonical": "#B8C3CE",
+        "tonalRamp": [
+          "#050c13",
+          "#1d252d",
+          "#38414a",
+          "#555f68",
+          "#747f89",
+          "#95a0aa",
+          "#bbc6d1",
+          "#e5f0fb"
+        ]
+      },
+      "tape": {
+        "role": "neutral",
+        "displayName": "Label Tape",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "tape-mine": {
+        "role": "tertiary",
+        "displayName": "Mine Yellow",
+        "canonical": "#FFD84A",
+        "tonalRamp": [
+          "#120a00",
+          "#2d2300",
+          "#4e3e00",
+          "#705c0d",
+          "#947b19",
+          "#bb9c25",
+          "#e0c25a",
+          "#ffeeb8"
+        ]
+      },
+      "tape-mine-edge": {
+        "role": "tertiary",
+        "displayName": "Mine Yellow Edge",
+        "canonical": "#E9BE1F",
+        "tonalRamp": [
+          "#120a00",
+          "#2e2200",
+          "#4f3e00",
+          "#715b09",
+          "#967a15",
+          "#bd9b20",
+          "#e3c158",
+          "#ffeebc"
+        ]
+      },
+      "tape-mine-side": {
+        "role": "tertiary",
+        "displayName": "Mine Yellow Thickness",
+        "canonical": "#C9A313",
+        "tonalRamp": [
+          "#120a00",
+          "#2e2300",
+          "#4e3e00",
+          "#715b0d",
+          "#967a1a",
+          "#bd9b25",
+          "#e0c266",
+          "#ffeebd"
+        ]
+      },
+      "mine-tint": {
+        "role": "tertiary",
+        "displayName": "Mine Tint",
+        "canonical": "#FFF6CC",
+        "tonalRamp": [
+          "#0f0b00",
+          "#29240d",
+          "#464024",
+          "#655e3d",
+          "#867e58",
+          "#a79f7b",
+          "#ccc5a5",
+          "#f5efd3"
+        ]
+      },
+      "tape-dark": {
+        "role": "neutral",
+        "displayName": "Black Tape",
+        "canonical": "#22262A",
+        "tonalRamp": [
+          "#080c0f",
+          "#212428",
+          "#3c4045",
+          "#5a5e63",
+          "#797e83",
+          "#9a9fa4",
+          "#bfc5ca",
+          "#eaeff5"
+        ]
+      },
+      "tape-dark-ink": {
+        "role": "neutral",
+        "displayName": "Black Tape Ink",
+        "canonical": "#F3F5F4",
+        "tonalRamp": [
+          "#0a0b0b",
+          "#232424",
+          "#3f403f",
+          "#5c5e5d",
+          "#7c7e7d",
+          "#9d9f9e",
+          "#c3c4c4",
+          "#edefee"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "tape-clear": {
+        "role": "neutral",
+        "displayName": "Clear Tape",
+        "canonical": "rgba(176, 192, 210, .42)",
+        "tonalRamp": [
+          "#060c13",
+          "#1c252e",
+          "#36414d",
+          "#525f6d",
+          "#707f8f",
+          "#92a0b0",
+          "#b9c6d4",
+          "#e4f0fd"
+        ]
+      },
+      "alu": {
+        "role": "neutral",
+        "displayName": "Aluminium",
+        "canonical": "#C3C9CF",
+        "tonalRamp": [
+          "#080c0f",
+          "#202529",
+          "#3b4045",
+          "#595e63",
+          "#787e83",
+          "#999fa5",
+          "#bfc5cb",
+          "#e9eff5"
+        ]
+      },
+      "alu-hi": {
+        "role": "neutral",
+        "displayName": "Aluminium Highlight",
+        "canonical": "#E6E9EC",
+        "tonalRamp": [
+          "#090b0d",
+          "#222426",
+          "#3e4042",
+          "#5b5e60",
+          "#7b7e80",
+          "#9c9fa1",
+          "#c1c4c7",
+          "#eceff2"
+        ]
+      },
+      "alu-lo": {
+        "role": "neutral",
+        "displayName": "Aluminium Shade",
+        "canonical": "#8E969E",
+        "tonalRamp": [
+          "#070c11",
+          "#1e252b",
+          "#3a4147",
+          "#575f66",
+          "#767e86",
+          "#979fa8",
+          "#bdc5ce",
+          "#e7f0f8"
+        ]
+      },
+      "cap": {
+        "role": "neutral",
+        "displayName": "Corner Cap",
+        "canonical": "#2A2E33",
+        "tonalRamp": [
+          "#080b10",
+          "#212429",
+          "#3c4045",
+          "#5a5e64",
+          "#797e84",
+          "#9a9fa5",
+          "#bfc5cb",
+          "#eaeff6"
+        ]
+      },
+      "groove": {
+        "role": "neutral",
+        "displayName": "Pen Groove",
+        "canonical": "rgba(40, 50, 60, .14)",
+        "tonalRamp": [
+          "#070c11",
+          "#1e252b",
+          "#394149",
+          "#555f69",
+          "#737f8a",
+          "#95a0ab",
+          "#bbc5d0",
+          "#e7f0f9"
+        ]
+      },
+      "pen-body": {
+        "role": "neutral",
+        "displayName": "Pen Body",
+        "canonical": "#F4F6F7",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232425",
+          "#3e4041",
+          "#5c5e5f",
+          "#7c7d7e",
+          "#9d9fa0",
+          "#c2c4c5",
+          "#edeff0"
+        ]
+      },
+      "pen-cap": {
+        "role": "neutral",
+        "displayName": "Pen Cap",
+        "canonical": "#23272B",
+        "tonalRamp": [
+          "#080c0f",
+          "#212428",
+          "#3c4045",
+          "#5a5e63",
+          "#797e83",
+          "#9a9fa4",
+          "#bfc5ca",
+          "#eaeff5"
+        ]
+      },
+      "pen-cap-blue": {
+        "role": "primary",
+        "displayName": "Blue Pen Cap",
+        "canonical": "#0E2C66",
+        "tonalRamp": [
+          "#000826",
+          "#0e2248",
+          "#253e6d",
+          "#3e5d94",
+          "#597cbd",
+          "#7c9fdc",
+          "#a5c5fd",
+          "#e6efff"
+        ]
+      },
+      "rail-green": {
+        "role": "secondary",
+        "displayName": "Tray Green",
+        "canonical": "#095A30",
+        "tonalRamp": [
+          "#001003",
+          "#002d13",
+          "#154c2b",
+          "#2f6c46",
+          "#498e61",
+          "#70af84",
+          "#9cd4ac",
+          "#ccfdda"
+        ]
+      },
+      "rail-red": {
+        "role": "secondary",
+        "displayName": "Tray Red",
+        "canonical": "#9A1F1A",
+        "tonalRamp": [
+          "#220000",
+          "#4d0000",
+          "#741914",
+          "#9e342c",
+          "#ca5044",
+          "#eb776a",
+          "#feaba0",
+          "#ffe9e5"
+        ]
+      },
+      "tile-3": {
+        "role": "primary",
+        "displayName": "Tile Strong 3",
+        "canonical": "#1D52BA",
+        "tonalRamp": [
+          "#000135",
+          "#001c5d",
+          "#123987",
+          "#2958b3",
+          "#4078e2",
+          "#6b9cf8",
+          "#a6c5fc",
+          "#e6effe"
+        ]
+      },
+      "tile-2": {
+        "role": "primary",
+        "displayName": "Tile Strong 2",
+        "canonical": "#7EA4E4",
+        "tonalRamp": [
+          "#000924",
+          "#0e2346",
+          "#253f6a",
+          "#3f5d91",
+          "#597dba",
+          "#7d9fd9",
+          "#a6c5fa",
+          "#e5efff"
+        ]
+      },
+      "tile-1": {
+        "role": "primary",
+        "displayName": "Tile Strong 1",
+        "canonical": "#C9D8F4",
+        "tonalRamp": [
+          "#060b16",
+          "#1d2432",
+          "#364052",
+          "#525e73",
+          "#707e97",
+          "#929fb7",
+          "#b9c5db",
+          "#e7effe"
+        ]
+      },
+      "tile-0": {
+        "role": "neutral",
+        "displayName": "Tile Neutral",
+        "canonical": "#E3E8EB",
+        "tonalRamp": [
+          "#080c0e",
+          "#212527",
+          "#3c4043",
+          "#5a5e61",
+          "#797e81",
+          "#9a9fa2",
+          "#c0c5c8",
+          "#eaeff2"
+        ]
+      },
+      "tile-n1": {
+        "role": "secondary",
+        "displayName": "Tile Weak 1",
+        "canonical": "#F4CDC9",
+        "tonalRamp": [
+          "#150706",
+          "#321e1c",
+          "#513936",
+          "#735552",
+          "#967370",
+          "#b79592",
+          "#dbbcb9",
+          "#fee9e6"
+        ]
+      },
+      "tile-n2": {
+        "role": "secondary",
+        "displayName": "Tile Weak 2",
+        "canonical": "#E5867E",
+        "tonalRamp": [
+          "#210000",
+          "#440e0e",
+          "#692825",
+          "#90433e",
+          "#b95f58",
+          "#d9837c",
+          "#fcaca5",
+          "#fee9e7"
+        ]
+      },
+      "tile-n3": {
+        "role": "secondary",
+        "displayName": "Tile Weak 3",
+        "canonical": "#C42E28",
+        "tonalRamp": [
+          "#220000",
+          "#4c0000",
+          "#7c0307",
+          "#a82520",
+          "#d54238",
+          "#f66d60",
+          "#feaca0",
+          "#ffe9e6"
+        ]
+      },
+      "tile-ink-blue": {
+        "role": "neutral",
+        "displayName": "Tile Ink Blue",
+        "canonical": "#10223F",
+        "tonalRamp": [
+          "#030b1a",
+          "#182438",
+          "#314059",
+          "#4c5e7c",
+          "#687ea1",
+          "#8ba0c1",
+          "#b2c5e4",
+          "#e6effe"
+        ]
+      },
+      "tile-ink-red-1": {
+        "role": "neutral",
+        "displayName": "Tile Ink Red 1",
+        "canonical": "#3D1311",
+        "tonalRamp": [
+          "#190404",
+          "#371b18",
+          "#593431",
+          "#7c504c",
+          "#a16e69",
+          "#c2908b",
+          "#e5b7b2",
+          "#fee9e6"
+        ]
+      },
+      "tile-ink-red-2": {
+        "role": "neutral",
+        "displayName": "Tile Ink Red 2",
+        "canonical": "#2B0B09",
+        "tonalRamp": [
+          "#170605",
+          "#341d1a",
+          "#543734",
+          "#77534f",
+          "#9b716c",
+          "#bb938e",
+          "#dfbab5",
+          "#ffe9e6"
+        ]
+      },
+      "select": {
+        "role": "tertiary",
+        "displayName": "Selection Yellow",
+        "canonical": "rgba(255, 216, 74, .6)",
+        "tonalRamp": [
+          "#120a00",
+          "#2d2300",
+          "#4e3e00",
+          "#705c0d",
+          "#947b19",
+          "#bb9c25",
+          "#e0c25a",
+          "#ffeeb8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Title",
+        "purpose": "Title tape in the top rail (22px ≥760px)."
+      },
+      "tape": {
+        "displayName": "Tape",
+        "purpose": "Zone headings on label tape."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Body text."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "Wall notes, sub-lines, legends."
+      },
+      "printed-label": {
+        "displayName": "Printed Label",
+        "purpose": "Printed headings (.ph) in print-ink over a 1.5px print rule."
+      },
+      "column-head": {
+        "displayName": "Column Head",
+        "purpose": "Printed column heads of the wall, league board and roster."
+      },
+      "print-number-lg": {
+        "displayName": "Print Number Lg",
+        "purpose": "Wall price (24px on phones)."
+      },
+      "print-number": {
+        "displayName": "Print Number",
+        "purpose": "Rank numbers, league W–L; index is 24px."
+      },
+      "print-label-latin": {
+        "displayName": "Print Label Latin",
+        "purpose": "Latin category heads, positions, heat labels."
+      },
+      "tile-number": {
+        "displayName": "Tile Number",
+        "purpose": "Figures on category tiles."
+      },
+      "marker-record": {
+        "displayName": "Marker Record",
+        "purpose": "Weekly W–L in the tally (50px in a ≤460px container)."
+      },
+      "marker-rank": {
+        "displayName": "Marker Rank",
+        "purpose": "Circled rank #n (40px small)."
+      },
+      "marker-verdict": {
+        "displayName": "Marker Verdict",
+        "purpose": "Trade verdict $ (19px category delta)."
+      },
+      "marker-money": {
+        "displayName": "Marker Money",
+        "purpose": "$/週 in green or red (28px small)."
+      },
+      "marker-cell": {
+        "displayName": "Marker Cell",
+        "purpose": "Nine rank numbers on my board."
+      }
+    },
+    "shadows": [
+      {
+        "name": "magnet-rest",
+        "value": "0 1px 1px rgba(28, 40, 52, .16), 0 2px 5px rgba(28, 40, 52, .07)",
+        "purpose": "Strips, keys, chips, round magnets, segment control. Night: 0 1px 1px rgba(0,0,0,.5), 0 2px 6px rgba(0,0,0,.35)."
+      },
+      {
+        "name": "magnet-lift",
+        "value": "0 3px 4px rgba(28, 40, 52, .18), 0 10px 18px rgba(28, 40, 52, .15)",
+        "purpose": "Hover, checked trade strip, lift and snap keyframes. Night: 0 4px 6px rgba(0,0,0,.55), 0 12px 22px rgba(0,0,0,.45)."
+      },
+      {
+        "name": "magnet-thickness",
+        "value": "border-bottom: 2.5px solid var(--strip-side)",
+        "purpose": "Every name magnet and trade strip; tape-mine-side on mine."
+      },
+      {
+        "name": "tape",
+        "value": "0 1px 1px rgba(20, 30, 40, .24), 0 2px 6px rgba(20, 30, 40, .09)",
+        "purpose": "Label tape, with a laminate sheen linear-gradient(180deg, rgba(255,255,255,.5), transparent 45%)."
+      },
+      {
+        "name": "tile-edge",
+        "value": "inset 0 -2px 0 rgba(0, 0, 0, .15), 0 1px 1px rgba(20, 30, 40, .12)",
+        "purpose": "Category tiles."
+      },
+      {
+        "name": "taped-sheet",
+        "value": "0 1px 2px rgba(20, 30, 40, .18), 0 8px 22px rgba(20, 30, 40, .10)",
+        "purpose": "The method sheet, held by two clear tape strips."
+      },
+      {
+        "name": "tray",
+        "value": "0 -6px 14px rgba(10, 20, 30, .14)",
+        "purpose": "Sticky marker tray."
+      },
+      {
+        "name": "pen-groove",
+        "value": "inset 0 2px 3px rgba(0, 0, 0, .22), 0 1px 0 rgba(255, 255, 255, .4)",
+        "purpose": "The recessed groove holding the pens."
+      },
+      {
+        "name": "tooltip",
+        "value": "0 2px 4px rgba(0, 0, 0, .25), 0 8px 18px rgba(0, 0, 0, .18)",
+        "purpose": "Black label tape tooltip."
+      },
+      {
+        "name": "frame-on-wall",
+        "value": "0 2px 4px rgba(0, 0, 0, .25), 0 20px 46px rgba(0, 0, 0, .35)",
+        "purpose": "The board hanging on the wall at ≥1520px."
+      }
+    ],
+    "motion": [
+      {
+        "name": "marker-stroke",
+        "value": "stroke-dashoffset 1→0, .46s cubic-bezier(.22, .8, .3, 1), delay var(--d)",
+        "purpose": "Rings, ticks, verdict underline, lane arrow; drawn once per data change."
+      },
+      {
+        "name": "lift",
+        "value": ".22s cubic-bezier(.2, .8, .3, 1), from translateY(-9px) rotate(-1.6deg) + magnet-lift",
+        "purpose": "A magnet newly placed on the trade lane."
+      },
+      {
+        "name": "snap",
+        "value": ".38s cubic-bezier(.2, .9, .3, 1.25), translateY(-7px) rotate(-1.4deg) → 1px → none",
+        "purpose": "Received players snap onto my roster after 套用; row tint cleared after 900ms."
+      },
+      {
+        "name": "state",
+        "value": "box-shadow, transform, border-color .16s ease-out",
+        "purpose": "Keys, chips, trade strips; checked strip translateY(-2px) rotate(-.5deg)."
+      },
+      {
+        "name": "chevron",
+        "value": "transform .2s ease-out, rotate(180deg)",
+        "purpose": "League row open."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "No transitions or animations; marks shown drawn, magnets placed instantly."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tray-tight",
+        "value": "max-width: 480px (season hidden, pens tighten); 430px (W–L hidden in tray); 340px"
+      },
+      {
+        "name": "rails",
+        "value": "min-width: 760px (gutter 24px, rail 12px, title 22px)"
+      },
+      {
+        "name": "two-column",
+        "value": "min-width: 1100px (my board + roster | league + 我碰到各隊; gutter 28px)"
+      },
+      {
+        "name": "sticky-side",
+        "value": "min-width: 1360px (wall side column 288px, sticky)"
+      },
+      {
+        "name": "wall",
+        "value": "min-width: 1520px (board hangs on the locker-room wall)"
+      },
+      {
+        "name": "container-wall",
+        "value": "pl ≤979px heat to third row; ≤640px phone row layout"
+      },
+      {
+        "name": "container-league",
+        "value": "lg ≤720px tiles on own row; ≥480px / ≥760px roster in 2 / 3 columns"
+      },
+      {
+        "name": "container-trade",
+        "value": "tr ≥1040px four-column board with court; ≥900px suggestions in two columns; ≤600px one column"
+      },
+      {
+        "name": "container-me",
+        "value": "me ≤460px smaller marker tally"
+      }
+    ],
+    "darkMode": {
+      "selectors": [
+        "@media (prefers-color-scheme: dark) :root:not([data-theme=\"light\"])",
+        ":root[data-theme=\"dark\"]"
+      ],
+      "persist": "localStorage nba-auction-theme (auto / light / dark), applied before first paint",
+      "values": {
+        "wall": "#0B0E11",
+        "board": "#17191C",
+        "board-2": "#202328",
+        "ghost": "rgba(225, 232, 240, .09)",
+        "print": "#3F5D7D",
+        "print-2": "#2C3846",
+        "print-ink": "#8FB0D2",
+        "ink": "#EEF0EC",
+        "ink-2": "#B4BEC8",
+        "m-blue": "#7DB4FF",
+        "m-red": "#FF8077",
+        "m-green": "#64DB9B",
+        "m-red-soft": "rgba(255, 128, 119, .14)",
+        "on-blue": "#0B1A33",
+        "strip": "#262A2F",
+        "strip-edge": "#363D45",
+        "strip-side": "#0E1012",
+        "tape": "#E6E9EB",
+        "tape-mine": "#E9C33A",
+        "tape-mine-edge": "#C9A21C",
+        "tape-mine-side": "#9C7F14",
+        "mine-tint": "#3A3421",
+        "tape-dark": "#E6E9EB",
+        "tape-dark-ink": "#17191C",
+        "paper": "#24282C",
+        "tape-clear": "rgba(255, 255, 255, .12)",
+        "alu": "#4A5158",
+        "alu-hi": "#646C74",
+        "alu-lo": "#31363C",
+        "cap": "#0F1113",
+        "groove": "rgba(0, 0, 0, .32)",
+        "pen-body": "#3A4047",
+        "pen-cap": "#0B0D0F",
+        "pen-cap-blue": "#2F5FA6",
+        "rail-green": "#9AF0C0",
+        "rail-red": "#FFB0A8",
+        "tile-3": "#7DB4FF",
+        "tile-2": "#2F5FA6",
+        "tile-1": "#22385A",
+        "tile-0": "#2A2E33",
+        "tile-n1": "#4B2724",
+        "tile-n2": "#A3433B",
+        "tile-n3": "#FF8077",
+        "select": "rgba(233, 195, 58, .45)"
+      },
+      "note": "Black glass board with liquid-chalk inks; label tape stays light with dark tape ink; tile text flips to light except the two ends (#0B1A33 / #2A0B08)."
+    }
+  },
+  "components": [
+    {
+      "name": "Keys and Chips",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Magnet keys (white, blue solid, red warn) and pill chips; pressed chip blue, punted chip red and struck through.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-row\"><button class=\"ds-btn\">改隊伍</button><button class=\"ds-btn ds-solid\">確定</button><button class=\"ds-btn ds-warn\">確定清除</button></div><div class=\"ds-row\"><button class=\"ds-chip\">全部</button><button class=\"ds-chip\" aria-pressed=\"true\">PG</button><button class=\"ds-chip ds-punt\">FG%</button><button class=\"ds-chip ds-punt\" aria-pressed=\"true\">TO</button></div></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px} .ds-btn{appearance:none;display:inline-flex;align-items:center;min-height:36px;padding:5px 13px;border-radius:6px;background:var(--strip);color:var(--ink);border:1px solid var(--strip-edge);box-shadow:var(--strip-shadow);font:500 14px/1.2 var(--sans);cursor:pointer;transition:box-shadow .16s ease-out,transform .16s ease-out} .ds-btn:hover{box-shadow:var(--strip-lift)} .ds-btn:active{box-shadow:var(--strip-shadow);transform:translateY(1px)} .ds-btn:focus-visible,.ds-chip:focus-visible{outline:2.5px solid var(--m-blue);outline-offset:2px} .ds-solid{background:var(--m-blue);border-color:var(--m-blue);color:var(--on-blue);font-weight:700} .ds-warn{border-color:var(--m-red);color:var(--m-red);background:var(--m-red-soft);font-weight:700} .ds-chip{appearance:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:3px 12px;border-radius:999px;background:var(--strip);border:1px solid var(--strip-edge);box-shadow:var(--strip-shadow);font:700 14px/1.2 var(--print-face);letter-spacing:.04em;color:var(--ink);cursor:pointer;transition:box-shadow .16s ease-out} .ds-chip:hover{box-shadow:var(--strip-lift)} .ds-chip[aria-pressed=true]{background:var(--m-blue);border-color:var(--m-blue);color:var(--on-blue)} .ds-punt::before{content:'';width:10px;height:10px;border-radius:50%;background:var(--print-2);box-shadow:inset 0 -1px 1px rgba(0,0,0,.22)} .ds-punt[aria-pressed=true]{background:var(--m-red-soft);border-color:var(--m-red);color:var(--m-red);text-decoration:line-through 2px} .ds-punt[aria-pressed=true]::before{background:var(--m-red)}"
+    },
+    {
+      "name": "Name Magnets and Label Tape",
+      "kind": "chip",
+      "refersTo": "magnet-strip",
+      "description": "White magnet strip with its thickness edge (yellow for mine) and laminated label tape headings.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-row\"><h2 class=\"ds-tape ds-mine\">創沒有未來</h2><h2 class=\"ds-tape\">聯盟戰力</h2></div><div class=\"ds-row\"><span class=\"ds-mag\">Bam Adebayo</span><span class=\"ds-mag ds-mine-mag\">Derrick White</span><span class=\"ds-mag\">CoulibalyMVP</span></div></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center} .ds-tape{margin:0;padding:4px 11px 3px;border-radius:2px;background:var(--tape) linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 45%);color:#1C2024;font:700 17px/1.3 var(--sans);letter-spacing:.02em;box-shadow:0 1px 1px rgba(20,30,40,.24),0 2px 6px rgba(20,30,40,.09)} .ds-mine{background-color:var(--tape-mine)} .ds-mag{display:inline-block;padding:2px 9px 1px;border-radius:4px;background:var(--strip);color:var(--ink);border:1px solid var(--strip-edge);border-bottom:2.5px solid var(--strip-side);box-shadow:var(--strip-shadow);font:700 15px/1.3 var(--sans)} .ds-mine-mag{background:var(--tape-mine);border-color:var(--tape-mine-edge);border-bottom-color:var(--tape-mine-side)}"
+    },
+    {
+      "name": "Marker Tally",
+      "kind": "custom",
+      "refersTo": "marker-record",
+      "description": "My board: circled rank, printed /14, W–L largest, $/週 in green and one printed line.",
+      "html": "<div class=\"ds-board\"><p class=\"ds-t1\"><span class=\"ds-trk\">#1<svg class=\"ds-ring\" viewBox=\"0 0 50 36\" preserveAspectRatio=\"none\"><path pathLength=\"1\" d=\"M27 4C12 3 3 10 4 19c1 9 12 14 24 13 12-1 19-7 18-15C45 8 34 4 22 5\"/></svg></span><span class=\"ds-tof\">/14</span><span class=\"ds-trec\">5.7–3.3</span></p><p class=\"ds-t2\"><span class=\"ds-money\">+$142/週</span><span class=\"ds-line\">14 隊第 1 名 · 每差一類 $60 · 例行賽 20 週約 <b>+$2,837</b></span></p></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-t1,.ds-t2{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:0 18px} .ds-t2{align-items:baseline;gap:2px 14px} .ds-trk{position:relative;display:inline-block;padding:0 .14em;font:700 52px/1.12 var(--marker-face);color:var(--ink)} .ds-ring{position:absolute;left:-.24em;top:-.2em;width:calc(100% + .48em);height:calc(100% + .36em);transform:rotate(-4deg);overflow:visible} .ds-ring path{fill:none;stroke:var(--m-blue);stroke-width:1.7;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;animation:ds-ink .46s cubic-bezier(.22,.8,.3,1) 60ms forwards} @keyframes ds-ink{to{stroke-dashoffset:0}} @media (prefers-reduced-motion:reduce){.ds-ring path{animation:none;stroke-dashoffset:0}} .ds-tof{margin-left:-8px;align-self:flex-end;padding-bottom:12px;font:700 22px/1 var(--print-face);color:var(--print-ink)} .ds-trec{font:700 66px/1.08 var(--marker-face);color:var(--ink)} .ds-money{font:700 32px/1.15 var(--marker-face);color:var(--m-green)} .ds-line{flex:1 1 250px;font:500 13.5px/1.6 var(--sans);color:var(--ink-2)} .ds-line b{font:800 15.5px/1 var(--print-face);color:var(--m-green);font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Nine Ranks with Marker Marks",
+      "kind": "custom",
+      "refersTo": "marker-cell",
+      "description": "Printed rank grid: red ring on a weak rank, blue tick on a top-3 rank.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-cats\"><span class=\"ds-cat ds-strong\"><b>得分</b><i>3<svg class=\"ds-tick\" viewBox=\"0 0 24 22\"><path d=\"M3 12l6 6L21 4\"/></svg></i></span><span class=\"ds-cat\"><b>籃板</b><i>6</i></span><span class=\"ds-cat ds-weak\"><b>助攻</b><i>9<svg class=\"ds-ring\" viewBox=\"0 0 50 36\"><path d=\"M27 4C12 3 3 10 4 19c1 9 12 14 24 13 12-1 19-7 18-15C45 8 34 4 22 5\"/></svg></i></span><span class=\"ds-cat ds-strong\"><b>抄截</b><i>1<svg class=\"ds-tick\" viewBox=\"0 0 24 22\"><path d=\"M3 12l6 6L21 4\"/></svg></i></span><span class=\"ds-cat ds-weak\"><b>FT%</b><i>11<svg class=\"ds-ring\" viewBox=\"0 0 50 36\"><path d=\"M27 4C12 3 3 10 4 19c1 9 12 14 24 13 12-1 19-7 18-15C45 8 34 4 22 5\"/></svg></i></span></div></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-cats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));max-width:420px;border:1.5px solid var(--print);border-radius:7px} .ds-cat{position:relative;display:grid;justify-items:center;gap:3px;padding:7px 0 9px;border-left:1px solid var(--print-2)} .ds-cat:first-child{border-left:0} .ds-cat:hover{background:var(--board-2)} .ds-cat b{font:500 12px/1.1 var(--sans);color:var(--print-ink)} .ds-cat i{position:relative;font:700 24px/1 var(--marker-face);font-style:normal;color:var(--ink)} .ds-weak i{color:var(--m-red)} .ds-strong i{color:var(--m-blue)} svg{position:absolute;overflow:visible;pointer-events:none} svg path{fill:none;stroke-linecap:round;stroke-linejoin:round} .ds-ring{left:50%;top:50%;width:42px;height:31px;transform:translate(-50%,-52%)} .ds-ring path{stroke:var(--m-red);stroke-width:2.4} .ds-tick{right:-15px;top:-1px;width:15px;height:14px} .ds-tick path{stroke:var(--m-blue);stroke-width:2.2}"
+    },
+    {
+      "name": "Category Tiles",
+      "kind": "custom",
+      "refersTo": "cat-tile",
+      "description": "Square magnet tiles on the seven-step blue-to-red scale; a punted category is a dashed outline.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-heat\"><span class=\"ds-c ds-z3\"><b>PTS</b><i>27.1</i></span><span class=\"ds-c ds-z2\"><b>REB</b><i>8.4</i></span><span class=\"ds-c ds-z1\"><b>AST</b><i>4.0</i></span><span class=\"ds-c\"><b>STL</b><i>1.0</i></span><span class=\"ds-c ds-zn1\"><b>BLK</b><i>0.5</i></span><span class=\"ds-c ds-zn2\"><b>3PM</b><i>0.9</i></span><span class=\"ds-c ds-zn3\"><b>FT%</b><i>.712</i></span><span class=\"ds-c ds-off\"><b>TO</b><i>3.1</i></span></div></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-heat{display:grid;grid-template-columns:repeat(8,44px);gap:3px} .ds-c{display:grid;justify-items:center;align-content:center;gap:2px;min-height:34px;padding:3px 0;border-radius:4px;background:var(--t0);color:#1C2024;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15),0 1px 1px rgba(20,30,40,.12)} .ds-c:hover{outline:2px solid var(--ink);outline-offset:1px} .ds-c b{font:700 10px/1 var(--print-face);letter-spacing:.03em;opacity:.9} .ds-c i{font:700 14px/1 var(--print-face);font-style:normal;font-variant-numeric:tabular-nums} .ds-z3{background:var(--t3);color:#fff} .ds-z2{background:var(--t2);color:#10223F} .ds-z1{background:var(--t1);color:#10223F} .ds-zn1{background:var(--t-1);color:#3D1311} .ds-zn2{background:var(--t-2);color:#2B0B09} .ds-zn3{background:var(--t-3);color:#fff} .ds-off{background:transparent;color:var(--ink-2);box-shadow:none;outline:1.5px dashed var(--print);outline-offset:-1.5px} .ds-off i{text-decoration:line-through}"
+    },
+    {
+      "name": "Ruled Rail Wall",
+      "kind": "card",
+      "refersTo": "magnet-strip",
+      "description": "Sticky printed column head and ruled rows on one fixed-track grid; mine is tinted with a yellow magnet.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-head\"><span>#</span><span>球員</span><span>建議價</span><span>隊伍</span></div><ol class=\"ds-list\"><li class=\"ds-r\"><span class=\"ds-n\">1</span><span><span class=\"ds-mag\">Nikola Jokić</span></span><span class=\"ds-v\">$71</span><span class=\"ds-act\">Coulibaly<b>$66</b></span></li><li class=\"ds-r ds-mine\"><span class=\"ds-n\">2</span><span><span class=\"ds-mag\">Bam Adebayo</span></span><span class=\"ds-v\">$29</span><span class=\"ds-act\"><em>我的</em><b>$26</b></span></li><li class=\"ds-r\"><span class=\"ds-n\">3</span><span><span class=\"ds-mag\">Walker Kessler</span></span><span class=\"ds-v\">$26</span><span class=\"ds-act\"><i>自由球員</i></span></li></ol></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-head,.ds-r{display:grid;grid-template-columns:34px minmax(0,1fr) 80px 120px;column-gap:10px;align-items:center} .ds-head{padding:8px 12px 6px;border:1.5px solid var(--print);border-bottom:1px solid var(--print);border-radius:8px 8px 0 0;font:700 12px/1.2 var(--sans);color:var(--print-ink)} .ds-head span:nth-child(n+3){text-align:right} .ds-list{list-style:none;margin:0;padding:0;border:1.5px solid var(--print);border-top:0;border-radius:0 0 8px 8px;overflow:hidden} .ds-r{padding:9px 12px;border-top:1px solid var(--print-2)} .ds-r:first-child{border-top:0} .ds-mine{background:#FFF6CC} .ds-n{font:800 21px/1 var(--print-face);color:var(--print-ink);font-variant-numeric:tabular-nums} .ds-mag{display:inline-block;padding:2px 9px 1px;border-radius:4px;background:var(--strip);border:1px solid var(--strip-edge);border-bottom:2.5px solid var(--strip-side);box-shadow:var(--strip-shadow);font-weight:700} .ds-mine .ds-mag{background:var(--tape-mine);border-color:var(--tape-mine-edge);border-bottom-color:var(--tape-mine-side)} .ds-v{font:800 28px/1 var(--print-face);text-align:right;font-variant-numeric:tabular-nums} .ds-act{display:grid;justify-items:end;font-size:12.5px} .ds-act b{font:800 16px/1.1 var(--print-face);font-variant-numeric:tabular-nums} .ds-act em{font-style:normal;padding:1px 6px;border-radius:2px;background:var(--tape-mine);font-weight:700} .ds-act i{font-style:normal;color:var(--m-green);font-weight:700}"
+    },
+    {
+      "name": "Trade Lane and Verdict",
+      "kind": "custom",
+      "refersTo": "trade-strip",
+      "description": "Picked magnets on both sides of the drawn double arrow, then the marker verdict with its underline, inside a printed outline.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-res\"><div class=\"ds-lane\"><div class=\"ds-side\"><span class=\"ds-lk\">我送出</span><button class=\"ds-mag\">Rudy Gobert<small>C · 估值 $17</small></button></div><svg class=\"ds-x\" viewBox=\"0 0 60 44\"><path d=\"M6 15 C22 5 38 5 52 13\"/><path d=\"M45 7.5 L53 13 L45.5 18.5\"/><path d=\"M54 30 C38 40 22 40 8 32\"/><path d=\"M15 26.5 L7 32 L14.5 37.5\"/></svg><div class=\"ds-side\"><span class=\"ds-lk\">我拿到</span><button class=\"ds-mag\">Jalen Duren<small>C · 估值 $22</small></button></div></div><div class=\"ds-verdict\"><span class=\"ds-vk\">換完你每週</span><span class=\"ds-big\">+$14</span><span class=\"ds-sm\">+0.12 類</span><svg class=\"ds-under\" viewBox=\"0 0 200 10\" preserveAspectRatio=\"none\"><path d=\"M2 6 C60 3 140 8 198 4\"/></svg></div></div></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-res{display:grid;gap:10px;max-width:420px;padding:12px 14px 14px;border:1.5px solid var(--print);border-radius:8px} .ds-lane{display:grid;grid-template-columns:minmax(0,1fr) 56px minmax(0,1fr);align-items:center;gap:4px 8px;padding-bottom:12px;border-bottom:1.5px solid var(--print-2)} .ds-side{display:grid;gap:6px} .ds-lk{font:700 12.5px/1.2 var(--sans);color:var(--print-ink)} .ds-mag{appearance:none;display:grid;text-align:left;padding:5px 7px 4px 10px;border-radius:4px;background:var(--strip);color:var(--ink);border:1px solid var(--strip-edge);border-bottom:2.5px solid var(--strip-side);box-shadow:var(--strip-shadow);font:700 14px/1.25 var(--sans);cursor:pointer;animation:ds-lift .22s cubic-bezier(.2,.8,.3,1)} .ds-mag:hover{box-shadow:var(--strip-lift)} .ds-mag:focus-visible{outline:2.5px solid var(--m-blue);outline-offset:2px} .ds-mag small{font:600 12.5px/1.2 var(--print-face);color:var(--ink-2)} @keyframes ds-lift{from{transform:translateY(-9px) rotate(-1.6deg);box-shadow:var(--strip-lift)}} .ds-x{width:56px;height:42px;justify-self:center;overflow:visible} .ds-x path,.ds-under path{fill:none;stroke-linecap:round;stroke-linejoin:round} .ds-x path{stroke:var(--ink);stroke-width:2.3} .ds-verdict{position:relative;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;padding-bottom:8px;color:var(--m-green)} .ds-vk{flex-basis:100%;font:700 13px/1.3 var(--sans);color:var(--print-ink)} .ds-big{font:700 42px/1 var(--marker-face)} .ds-sm{font:700 19px/1 var(--marker-face)} .ds-under{position:absolute;left:0;bottom:0;width:min(230px,80%);height:9px;overflow:visible} .ds-under path{stroke:currentColor;stroke-width:2.6} @media (prefers-reduced-motion:reduce){.ds-mag{animation:none}}"
+    },
+    {
+      "name": "Marker Tray",
+      "kind": "nav",
+      "refersTo": "marker-pen-primary",
+      "description": "Sticky aluminium tray with corner caps, the compact readout and three marker pens in a groove; 交易 is the blue pen.",
+      "html": "<div class=\"ds-tray\"><a class=\"ds-read\" href=\"#\"><b>#1</b><span>5.7–3.3</span><b class=\"ds-up\">+$142/週</b><span class=\"ds-tw\">弱 FT% 助攻</span></a><span class=\"ds-sp\"></span><nav class=\"ds-pens\"><a class=\"ds-pen\" href=\"#\">聯盟</a><a class=\"ds-pen ds-primary\" href=\"#\">交易</a><a class=\"ds-pen\" href=\"#\">球員</a></nav></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-tray{position:relative;display:flex;align-items:center;gap:8px 10px;padding:7px 26px;color:#1C2024;background:linear-gradient(180deg,var(--alu-hi),var(--alu) 40%,var(--alu-lo));border-top:1px solid var(--alu-lo);box-shadow:0 -6px 14px rgba(10,20,30,.14)} .ds-tray::before,.ds-tray::after{content:'';position:absolute;top:0;bottom:0;width:19px;background:var(--cap)} .ds-tray::before{left:0;border-radius:0 5px 0 0} .ds-tray::after{right:0;border-radius:5px 0 0 0} .ds-read{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;text-decoration:none;color:inherit;font:700 15px/1.2 var(--print-face);font-variant-numeric:tabular-nums} .ds-read:hover{text-decoration:underline} .ds-read b{font-size:20px;font-weight:800} .ds-up{color:#095A30} .ds-tw{font:700 13.5px/1.2 var(--sans);color:#9A1F1A} .ds-sp{flex:1} .ds-pens{display:flex;gap:5px;padding:4px 5px;border-radius:10px;background:var(--groove);box-shadow:inset 0 2px 3px rgba(0,0,0,.22),0 1px 0 rgba(255,255,255,.4)} .ds-pen{position:relative;display:inline-flex;align-items:center;min-height:32px;padding:3px 22px 3px 13px;border-radius:999px 4px 4px 999px;background:var(--pen-body);color:#1C2024;text-decoration:none;font:700 14px/1.2 var(--sans);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 -3px 3px rgba(0,0,0,.09),0 1px 2px rgba(0,0,0,.3)} .ds-pen::after{content:'';position:absolute;right:0;top:0;bottom:0;width:13px;border-radius:3px 4px 4px 3px;background:var(--pen-cap);box-shadow:inset 2px 0 0 rgba(255,255,255,.16),inset 0 -3px 3px rgba(0,0,0,.25)} .ds-pen:hover{text-decoration:underline;text-underline-offset:3px} .ds-pen:focus-visible{outline:2.5px solid var(--m-blue);outline-offset:2px} .ds-primary{background:var(--m-blue);color:var(--on-blue)} .ds-primary::after{background:var(--pen-cap-blue)}"
+    },
+    {
+      "name": "Field and Select",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "White inset search field and a themed native select with the print-ink chevron; checkbox with the blue marker tick.",
+      "html": "<div class=\"ds-board\"><div class=\"ds-row\"><input class=\"ds-in\" placeholder=\"搜尋球員或球隊\"><select class=\"ds-in ds-sel\"><option>推薦指數</option><option>建議價</option></select><label class=\"ds-check\"><input type=\"checkbox\" checked>只看自由球員</label></div></div>",
+      "css": ":host{--board:#F3F5F4;--board-2:#E8EDEE;--print:#8EA8C3;--print-2:#C9D6E2;--print-ink:#3D5C7C;--ink:#1C2024;--ink-2:#44515E;--m-blue:#1D52BA;--m-red:#C42E28;--m-green:#0F7A42;--m-red-soft:rgba(196,46,40,.10);--on-blue:#fff;--strip:#fff;--strip-edge:#CDD6DF;--strip-side:#B8C3CE;--tape:#fff;--tape-mine:#FFD84A;--tape-mine-edge:#E9BE1F;--tape-mine-side:#C9A313;--alu:#C3C9CF;--alu-hi:#E6E9EC;--alu-lo:#8E969E;--cap:#2A2E33;--groove:rgba(40,50,60,.14);--pen-body:#F4F6F7;--pen-cap:#23272B;--pen-cap-blue:#0E2C66;--t3:#1D52BA;--t2:#7EA4E4;--t1:#C9D8F4;--t0:#E3E8EB;--t-1:#F4CDC9;--t-2:#E5867E;--t-3:#C42E28;--strip-shadow:0 1px 1px rgba(28,40,52,.16),0 2px 5px rgba(28,40,52,.07);--strip-lift:0 3px 4px rgba(28,40,52,.18),0 10px 18px rgba(28,40,52,.15);--sans:'Noto Sans TC',system-ui,sans-serif;--print-face:'Sofia Sans Condensed','Barlow Condensed','Noto Sans TC',system-ui,sans-serif;--marker-face:'Kalam','Noto Sans TC',system-ui,sans-serif} .ds-board{background:var(--board);color:var(--ink);font:15px/1.55 var(--sans);padding:20px} .ds-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center} .ds-in{min-height:36px;padding:5px 10px;border-radius:6px;font:14px var(--sans);background:var(--strip);color:var(--ink);border:1px solid var(--strip-edge);box-shadow:inset 0 1px 2px rgba(20,30,40,.08);caret-color:var(--m-blue)} .ds-in::placeholder{color:var(--ink-2)} .ds-in:focus-visible{outline:2.5px solid var(--m-blue);outline-offset:2px} .ds-sel{appearance:none;padding-right:32px;cursor:pointer;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='%233D5C7C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 9px center;background-size:14px} .ds-check{display:inline-flex;align-items:center;gap:7px;font-size:14px;cursor:pointer} .ds-check input{appearance:none;width:19px;height:19px;margin:0;border-radius:3px;background:var(--strip) center/15px no-repeat;border:1.5px solid var(--print)} .ds-check input:checked{border-color:var(--m-blue);background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.6l3 3.1L13.2 4' fill='none' stroke='%231D52BA' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E\")}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Coach's Tactics Board",
+    "overview": "The page is the manager's locker-room tactics whiteboard. Cool white melamine sits in an aluminium frame: side rails at every width, black corner caps at the top and at the ends of the marker tray, and at very wide screens the whole board hangs on a locker-room wall. The model's numbers are printed on the board in board blue: ruled grids, column heads, a faint court behind the trade magnets. Every player and team name sits on a flat magnet strip with a visible thickness edge, and headings are laminated label tape. The coach's dry-erase marker does the judging: a circled rank, the week's win–loss written large, the money in green or red, red rings around weak category ranks, blue ticks on strong ones, a drawn double arrow between traded magnets. A faint, half-erased old play shows behind my board.\n\nDensity is a working board, not a dashboard. The wall of about 240 players and the 14-team league board are ruled rails with one row per name, and every column is printed once at the top. Night is the black glass board with liquid-chalk inks; the material stays the same and only the surfaces and inks change.\n\nConfirmed rejections, from the direction contract: the category default of a dark sports-analytics dashboard (KPI tiles, neon accents, player headshots), and its opposite, a plain white spreadsheet.",
+    "keyCharacteristics": [
+      "Melamine board in an aluminium frame with black corner caps, at every width; a sticky marker tray at the bottom holds the jump links as marker pens.",
+      "Printed parts are board-blue lines with no fill; names are magnet strips; headings are label tape (yellow for my team).",
+      "Four marker inks only: black, blue (strong), red (weak or losing), green (money or winning).",
+      "Category ranks and per-player heat are square magnet tiles on a blue-to-red scale.",
+      "Noto Sans TC for all Chinese, Sofia Sans Condensed with tabular figures for printed numbers, Kalam for the marker's digits and Latin only.",
+      "Motion is lifting, snapping and marker strokes; all of it is static under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Four Inks Rule",
+        "body": "Anything handwritten or judged is one of four marker inks: black (neutral), blue (strong), red (weak or losing), green (money or winning). There is no fifth ink, no neon, and no other accent; yellow is tape, never ink.",
+        "section": "colors"
+      },
+      {
+        "name": "The Printed Board Rule",
+        "body": "Printed parts (the tally, the nine-rank grid, the trade result box, printed headings, column heads, the court) are `print` lines with no fill. Never turn them into filled cards.",
+        "section": "colors"
+      },
+      {
+        "name": "The Yellow Is Mine Rule",
+        "body": "Yellow tape, yellow magnets and the yellow tint belong to my team only.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Chinese Handwriting Rule",
+        "body": "Kalam writes digits, `#`, `$`, `+ −` and Latin only. No Traditional Chinese marker face exists, so Chinese is always Noto Sans TC, even inside a marker line (週 in `+$142/週` falls back to Noto).",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Print Rule",
+        "body": "Every printed number is Sofia Sans Condensed with `tabular-nums`, so columns of figures line up.",
+        "section": "typography"
+      },
+      {
+        "name": "The Fixed Track Rule",
+        "body": "Every row of the wall is its own grid, so every track is a fixed width except the single `minmax(0, 1fr)` name track. Never use `auto` tracks there; they would size per row and break the column alignment.",
+        "section": "layout"
+      },
+      {
+        "name": "The Ruled Rail Rule",
+        "body": "The wall, my roster and the league rosters are ruled rails: one bordered list with 1px `print-2` rules between rows and no gaps. Never split them into separate cards.",
+        "section": "layout"
+      },
+      {
+        "name": "The Magnet Thickness Rule",
+        "body": "A name magnet always shows its thickness: a 2.5px `strip-side` bottom edge (`tape-mine-side` on mine). Printed parts never get a shadow or an edge.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep the aluminium side rails and black corner caps at every width, and the sticky marker tray with 交易 as the one blue primary pen.",
+      "**Do** use only the four marker inks: black, blue for strong, red for weak or losing, green for money or winning.",
+      "**Do** draw printed parts as `print` board-blue lines with no fill.",
+      "**Do** put every player and team name on a magnet strip with its 2.5px thickness edge, yellow for mine.",
+      "**Do** keep the wall, my roster and the league rosters as ruled rails with 1px `print-2` rules and no gaps.",
+      "**Do** give every wall track a fixed width except the one `minmax(0, 1fr)` name track, so columns align across rows.",
+      "**Do** set Chinese in Noto Sans TC, printed numbers in Sofia Sans Condensed with tabular figures, and only digits and Latin in Kalam.",
+      "**Do** keep motion to lifting, snapping and marker strokes, drawn once per data change, and static under reduced motion."
+    ],
+    "donts": [
+      "**Don't** build a dark analytics dashboard of KPI tiles, neon accents or player headshots, or a plain white spreadsheet.",
+      "**Don't** turn printed parts (the tally, the rank grid, the trade result, column heads) into filled cards.",
+      "**Don't** split the wall or rosters into separate cards with gaps between them.",
+      "**Don't** use `auto` grid tracks in the wall rows.",
+      "**Don't** write Chinese in the marker face, or printed figures in Kalam.",
+      "**Don't** add a fifth ink colour, or use yellow for anything that isn't mine.",
+      "**Don't** use gradients anywhere but the aluminium hardware and the label tape's sheen."
+    ]
+  }
+}
