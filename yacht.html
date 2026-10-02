@@ -1,68 +1,269 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>快艇骰子</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/SplitText.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    body { font-family: 'Noto Sans TC', sans-serif; }
-    .serif { font-family: 'DM Serif Display', Georgia, serif; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>快艇骰子</title>
+<meta name="description" content="快艇骰子：五顆骰子、最多擲三次、十三回合。單人對 CPU 或兩人輪流，每計一格分數，你的帆船就沿著航線前進。" />
+<meta name="theme-color" content="#0b3a82" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --sea:#0b3a82; --sea-deep:#082e6a; --contour:rgba(168,204,255,.17); --sound:rgba(176,204,246,.42);
+  --course:#ff5aa9; --red:#e1262b; --yel:#ffcd00; --blu:#1d4fc0; --blk:#101318; --wht:#f8f7f2;
+  --ink:#0d1626; --ink-2:#34466a; --rule:#0d1626; --rule-soft:#c9cdd6; --sand:#e9cd7c;
+  --on-sea:#f8f7f2; --on-sea-2:#bfd2f3;
+  --p0:#e1262b; --p0-ink:#fff; --p1:#ffcd00; --p1-ink:#101318;
+  --cn:'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  --num:'Archivo', 'Noto Sans TC', system-ui, sans-serif;
+  --die:84px; --in:56px; --hal:66px; --pn-w:34px; --pn-h:50px;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0; background:var(--sea); color:var(--on-sea); font-family:var(--cn); -webkit-text-size-adjust:100%}
+body{min-height:100dvh}
+::selection{background:var(--yel); color:var(--blk)}
+button{font:inherit; color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yel); outline-offset:3px}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+.sprite{position:absolute; width:0; height:0; overflow:hidden}
+.n{font-family:var(--num); font-stretch:72%; font-variant-numeric:tabular-nums lining-nums}
+
+/* ---------- the chart: sea, course lanes, buoys, boats ---------- */
+.chart{position:relative; overflow:hidden; background:var(--sea); isolation:isolate}
+.chart > svg.sea{position:absolute; inset:0; width:100%; height:100%; display:block; z-index:-1}
+.sea .contour{fill:none; stroke:var(--contour); stroke-width:1.2}
+.sea .sound{fill:var(--sound); font:500 10px var(--num); font-stretch:80%}
+.sea .island{fill:var(--sand)}
+.sea .island-edge{fill:none; stroke:rgba(233,205,124,.5); stroke-width:1; stroke-dasharray:2 3}
+.sea .rose{fill:none; stroke:var(--course); stroke-width:1.2}
+.sea .rose-t{fill:var(--course); font:700 11px var(--num)}
+.sea .course{fill:none; stroke:var(--course); stroke-width:1.6; stroke-dasharray:7 6; opacity:.9}
+.sea .lane{fill:none; stroke:none}
+.sea .wake{fill:none; stroke:rgba(248,247,242,.55); stroke-width:3; stroke-linecap:round}
+.sea .wake.p0{stroke:rgba(255,140,140,.75)} .sea .wake.p1{stroke:rgba(255,224,110,.75)}
+.sea .buoy circle{fill:var(--yel); stroke:var(--blk); stroke-width:1.5}
+.sea .buoy text{fill:var(--blk); font:800 9px var(--num); font-stretch:68%; text-anchor:middle; dominant-baseline:central}
+.sea .start{stroke:var(--wht); stroke-width:2.5}
+.sea .start-t{fill:var(--wht); font:700 10px var(--cn); letter-spacing:.2em}
+.sea .hull{fill:var(--wht); stroke:var(--blk); stroke-width:1.4; stroke-linejoin:round}
+.sea .mast{stroke:var(--blk); stroke-width:1.6}
+.sea .jib{fill:var(--wht); stroke:var(--blk); stroke-width:1.2; stroke-linejoin:round}
+.sea .main{stroke:var(--blk); stroke-width:1.2; stroke-linejoin:round}
+.sea .sailno{font:900 10px var(--num); font-stretch:70%; text-anchor:middle}
+.sea .is-turn .hull{stroke-width:2.4}
+.sea .boat text{transform-box:fill-box; transform-origin:center}
+.sea .flip .boat text{transform:scaleX(-1)}
+
+/* the deck in the middle of the loop */
+.deck{position:absolute; inset:var(--in); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; min-height:0}
+
+/* ---------- menu ---------- */
+.menu{height:100dvh; min-height:560px}
+.menu .deck{gap:18px}
+.bunting{position:relative; display:flex; gap:10px; padding-top:2px}
+.bunting::before{content:""; position:absolute; left:-28px; right:-28px; top:0; height:2px; background:var(--wht)}
+.bunting svg{width:clamp(38px,4vw,56px); height:auto; aspect-ratio:36/40; display:block}
+.bunting li{list-style:none; transform-origin:50% 0}
+.bunting{margin:0; padding-left:0}
+.title{margin:4px 0 0; font:900 clamp(52px,13vw,128px)/1 var(--cn); letter-spacing:.02em; color:var(--wht)}
+.sub{margin:0; font:500 15px/1.6 var(--cn); color:var(--on-sea-2); letter-spacing:.06em}
+.keys{display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:6px}
+.key{appearance:none; border:0; border-radius:3px; min-height:52px; padding:0 22px; font:900 17px/1 var(--cn); letter-spacing:.06em; cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; text-decoration:none; transition:background-color .15s, transform .12s}
+.key:active{transform:translateY(1px)}
+.key-y{background:var(--yel); color:var(--blk)} .key-y:hover{background:#ffd93d}
+.key-w{background:var(--wht); color:var(--ink)} .key-w:hover{background:#fff}
+.key-y:focus-visible{outline-color:var(--wht)}
+.key svg{width:20px; height:22px}
+.back{font:500 14px var(--cn); color:var(--on-sea-2); text-decoration:none; padding:10px 6px; border-bottom:1px solid transparent}
+.back:hover{color:var(--wht); border-bottom-color:currentColor}
+
+/* ---------- game layout ---------- */
+.game{display:grid; grid-template-columns:minmax(0,1fr) minmax(380px,420px); grid-template-rows:auto minmax(0,1fr); height:100dvh; min-height:700px}
+.top{grid-column:1/-1; display:flex; align-items:center; gap:14px; padding:0 20px; height:56px; background:var(--sea-deep); border-bottom:1px solid rgba(168,204,255,.18)}
+.top .back{padding:8px 4px}
+.top h1{margin:0; font:900 19px/1 var(--cn); letter-spacing:.06em; display:flex; align-items:center; gap:9px}
+.top h1 svg{width:18px; height:20px}
+.top .round{margin-left:auto; font:700 14px var(--cn); color:var(--on-sea-2); white-space:nowrap}
+.top .round b{font:800 22px/1 var(--num); font-stretch:70%; color:var(--wht); margin:0 2px}
+.game .chart{min-height:0}
+
+.tally{display:flex; gap:clamp(18px,4vw,56px); align-items:flex-end; justify-content:center}
+.plaque{display:grid; grid-template-columns:auto auto; align-items:end; gap:2px 10px; text-align:left; padding-bottom:8px; position:relative}
+.plaque svg{grid-row:1/3; width:34px; height:38px}
+.plaque .who{font:700 14px/1.2 var(--cn); color:var(--on-sea-2)}
+.plaque .tot{font:900 clamp(40px,7vw,96px)/.86 var(--num); font-stretch:66%; color:var(--wht); letter-spacing:-.01em}
+.plaque::after{content:""; position:absolute; left:0; right:0; bottom:0; height:5px; background:transparent}
+.plaque.p0.is-turn::after{background:var(--p0)} .plaque.p1.is-turn::after{background:var(--p1)}
+.plaque.is-turn .who{color:var(--wht)}
+.status{margin:0; min-height:1.5em; font:700 15px/1.5 var(--cn); color:var(--wht)}
+.status .dim{font-weight:500; color:var(--on-sea-2)}
+
+/* the rack: halyard with pennants over five dice */
+.rack{position:relative; display:flex; gap:16px; padding-top:var(--hal); margin:0; list-style:none}
+.rack::before{content:""; position:absolute; left:-18px; right:-18px; top:0; height:2px; background:var(--wht)}
+.rack li{position:relative; display:flex; flex-direction:column; align-items:center}
+.pennant{position:absolute; top:calc(2px - var(--hal)); left:50%; width:var(--pn-w); height:var(--pn-h); margin-left:calc(var(--pn-w) / -2); transform-origin:50% 0; transform:scaleY(0); transition:transform .26s cubic-bezier(.2,.9,.25,1)}
+.pennant svg{width:100%; height:100%; display:block}
+.rack li.is-held .pennant{transform:scaleY(1)}
+.die{appearance:none; border:0; padding:0; width:var(--die); height:var(--die); border-radius:calc(var(--die)*.2); background:var(--wht); cursor:pointer; display:block;
+  box-shadow:0 6px 12px rgba(0,0,0,.32), inset 0 -4px 0 rgba(13,22,38,.10); transition:transform .2s cubic-bezier(.2,.9,.25,1), box-shadow .2s; position:relative}
+.die::after{content:""; position:absolute; inset:-6px; border:3px solid var(--yel); border-radius:calc(var(--die)*.2 + 5px); opacity:0; transition:opacity .2s}
+.die svg{width:100%; height:100%; display:block}
+.die .pip{fill:var(--blk)}
+.die:disabled{cursor:default}
+.die.is-blank{background:transparent; box-shadow:none; border:2px dashed rgba(191,210,243,.55)}
+.rack li.is-held .die{transform:translateY(-6px); box-shadow:0 12px 16px rgba(0,0,0,.34), inset 0 -4px 0 rgba(13,22,38,.10)}
+.rack li.is-held .die::after{opacity:1}
+.die.tumble{animation:tumble .42s cubic-bezier(.3,.7,.3,1)}
+@keyframes tumble{0%{transform:translateY(-14px) rotate(-26deg) scale(.86)}35%{transform:translateY(3px) rotate(14deg) scale(1.06)}65%{transform:translateY(-2px) rotate(-6deg)}100%{transform:none}}
+.rack li.is-held .die.tumble{animation:none}
+
+.roll{min-width:260px; min-height:62px; font-size:21px}
+.roll small{font:700 13px var(--cn); letter-spacing:.04em; opacity:.8}
+.roll:disabled{background:transparent; color:var(--on-sea-2); box-shadow:inset 0 0 0 2px rgba(191,210,243,.45); cursor:default; transform:none}
+
+.result{display:flex; flex-direction:column; align-items:center; gap:12px}
+.result h2{margin:0; font:900 clamp(44px,8vw,104px)/1 var(--cn); color:var(--wht); letter-spacing:.03em}
+.result p{margin:0; font:700 17px/1.5 var(--cn); color:var(--on-sea-2)}
+.result p .n{font-size:28px; font-weight:900; color:var(--wht)}
+
+/* yacht 50: the spinnaker */
+.spin{position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; z-index:5; opacity:0}
+.spin svg{width:min(62vmin,520px); height:auto; overflow:visible}
+.spin text{font:900 76px var(--cn); text-anchor:middle}
+.spin .big{font:900 130px var(--num); font-stretch:66%}
+
+/* ---------- results board ---------- */
+.board{background:var(--wht); color:var(--ink); overflow:auto; overscroll-behavior:contain; scrollbar-color:var(--ink-2) var(--wht); scrollbar-width:thin}
+.board-in{padding:18px 18px 28px}
+.board h2{margin:0 0 10px; font:900 18px/1.3 var(--cn); letter-spacing:.08em; display:flex; justify-content:space-between; align-items:baseline}
+.board h2 span{font:500 13px var(--cn); letter-spacing:.02em; color:var(--ink-2)}
+table{width:100%; border-collapse:collapse; table-layout:fixed}
+col.c-cat{width:auto} col.c-p{width:29%}
+th,td{height:40px; padding:0 8px; border-bottom:1px solid var(--rule-soft); vertical-align:middle}
+thead th{position:sticky; top:-18px; z-index:2; background:var(--wht); height:48px; border-bottom:2.5px solid var(--rule); font:700 14px var(--cn); text-align:center}
+thead th:first-child{text-align:left}
+thead .ph{display:inline-flex; align-items:center; gap:6px; padding:6px 10px 6px 8px; border-radius:2px}
+thead .ph svg{width:16px; height:18px}
+thead th.is-turn.p0 .ph{background:var(--p0); color:var(--p0-ink)}
+thead th.is-turn.p1 .ph{background:var(--p1); color:var(--p1-ink)}
+tbody th{font:700 15px var(--cn); text-align:left; white-space:nowrap}
+tbody th .cat{display:inline-flex; align-items:center; gap:9px}
+tbody th svg{width:13px; height:19px; flex:none}
+tbody th svg.fl{width:16px; height:17px}
+tbody th .rule{display:block; font:500 11.5px/1.3 var(--cn); color:var(--ink-2); margin-top:1px}
+tr.cat-row td{text-align:center; font:800 20px var(--num); font-stretch:72%; font-variant-numeric:tabular-nums}
+tr.split th, tr.split td{border-bottom:2.5px solid var(--rule)}
+td .nil{color:var(--rule-soft); font-weight:500}
+td.scored{color:var(--ink)}
+td.scored.zero{color:var(--ink-2); font-weight:600}
+.pv{appearance:none; width:100%; height:32px; border:1.5px dashed var(--blu); border-radius:3px; background:transparent; color:var(--blu); cursor:pointer;
+  font:800 19px var(--num); font-stretch:72%; font-style:italic; transition:background-color .12s, color .12s}
+.pv:hover{background:var(--blu); color:var(--wht); border-style:solid}
+.pv.zero{color:#5a6f9a; border-color:#8fa3c9}
+.pv.zero:hover{background:#5a6f9a; color:var(--wht)}
+.pv:focus-visible{outline-color:var(--blu); outline-offset:2px}
+tr.sum th{font:500 13px var(--cn); color:var(--ink-2)}
+tr.sum td{text-align:center; font:700 15px var(--num); font-stretch:76%; color:var(--ink-2)}
+tr.sum td .of{font-size:12px; font-weight:500}
+tr.sum td.got{color:var(--ink); font-weight:900}
+tr.total th{font:900 16px var(--cn); color:var(--ink); border-bottom:0; padding-top:6px}
+tr.total td{text-align:center; font:900 30px var(--num); font-stretch:66%; color:var(--ink); border-bottom:0; height:52px}
+tr.total{border-top:2.5px solid var(--rule)}
+td.win{background:#fff2b3}
+.stamp{animation:stamp .7s cubic-bezier(.2,.9,.25,1)}
+@keyframes stamp{0%{background:var(--yel); transform:scale(1.5)}35%{transform:scale(1)}100%{background:transparent}}
+
+/* ---------- phones ---------- */
+@media (max-width:979px){
+  :root{--die:52px; --in:40px; --hal:48px; --pn-w:22px; --pn-h:33px}
+  .game{grid-template-columns:1fr; grid-template-rows:auto clamp(350px,55dvh,460px) minmax(0,1fr); min-height:0}
+  .top{height:46px; padding:0 12px; gap:10px}
+  .top h1{font-size:16px}
+  .top .round{font-size:13px}
+  .top .round b{font-size:19px}
+  .deck{gap:10px}
+  .plaque svg{width:26px; height:30px}
+  .plaque .who{font-size:13px}
+  .plaque .tot{font-size:44px}
+  .rack{gap:7px}
+  .rack::before{left:-10px; right:-10px}
+  .roll{min-width:200px; min-height:52px; font-size:18px}
+  .status{font-size:14px}
+  .board-in{padding:12px 12px 24px}
+  .board h2{display:none}
+  thead th{top:-12px; height:44px}
+  col.c-p{width:27%}
+}
+@media (max-width:979px) and (max-height:640px){
+  .game{height:auto; grid-template-rows:auto 380px auto}
+  .board{overflow:visible}
+  thead th{top:0}
+}
+@media (max-width:400px){
+  :root{--die:50px; --in:38px}
+  .rack{gap:6px}
+  tbody th .rule{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .pennant,.die,.key{transition:none}
+  .die.tumble,.stamp{animation:none}
+}
+</style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-  <div id="app"></div>
+<body>
 
-  <script>
-  gsap.registerPlugin(SplitText);
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="cp-pn"><path d="M0 0H28L19 40H9Z"/></clipPath>
+    <clipPath id="cp-a"><path d="M0 0H36V40L18 27L0 40Z"/></clipPath>
+    <pattern id="pt-y" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#ffcd00"/><rect width="5" height="10" fill="#e1262b"/></pattern>
+  </defs>
+  <!-- International Code of Signals numeral pennants 1–6, hanging from a halyard (hoist at the top) -->
+  <symbol id="pn1" viewBox="0 0 28 40"><g clip-path="url(#cp-pn)"><rect width="28" height="40" fill="#f8f7f2"/><circle cx="14" cy="13" r="6.5" fill="#e1262b"/></g><path d="M0 0H28L19 40H9Z" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="pn2" viewBox="0 0 28 40"><g clip-path="url(#cp-pn)"><rect width="28" height="40" fill="#1d4fc0"/><circle cx="14" cy="13" r="6.5" fill="#f8f7f2"/></g><path d="M0 0H28L19 40H9Z" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="pn3" viewBox="0 0 28 40"><g clip-path="url(#cp-pn)"><rect width="28" height="14" fill="#e1262b"/><rect y="13.5" width="28" height="13.5" fill="#f8f7f2"/><rect y="26.5" width="28" height="14" fill="#1d4fc0"/></g><path d="M0 0H28L19 40H9Z" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="pn4" viewBox="0 0 28 40"><g clip-path="url(#cp-pn)"><rect width="28" height="40" fill="#e1262b"/><rect x="11" width="6" height="40" fill="#f8f7f2"/><rect y="11" width="28" height="6" fill="#f8f7f2"/></g><path d="M0 0H28L19 40H9Z" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="pn5" viewBox="0 0 28 40"><g clip-path="url(#cp-pn)"><rect width="28" height="20" fill="#ffcd00"/><rect y="20" width="28" height="20" fill="#1d4fc0"/></g><path d="M0 0H28L19 40H9Z" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="pn6" viewBox="0 0 28 40"><g clip-path="url(#cp-pn)"><rect width="14" height="40" fill="#101318"/><rect x="14" width="14" height="40" fill="#f8f7f2"/></g><path d="M0 0H28L19 40H9Z" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <!-- letter flags Y A C H T, hanging -->
+  <symbol id="fl-y" viewBox="0 0 36 40"><rect width="36" height="40" fill="url(#pt-y)"/><rect x=".7" y=".7" width="34.6" height="38.6" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="fl-a" viewBox="0 0 36 40"><g clip-path="url(#cp-a)"><rect width="36" height="20" fill="#f8f7f2"/><rect y="20" width="36" height="20" fill="#1d4fc0"/></g><path d="M.7 .7H35.3V38.6L18 26.2L.7 38.6Z" fill="none" stroke="#0a1c3d" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  <symbol id="fl-c" viewBox="0 0 36 40"><rect width="7.2" height="40" fill="#1d4fc0"/><rect x="7.2" width="7.2" height="40" fill="#f8f7f2"/><rect x="14.4" width="7.2" height="40" fill="#e1262b"/><rect x="21.6" width="7.2" height="40" fill="#f8f7f2"/><rect x="28.8" width="7.2" height="40" fill="#1d4fc0"/><rect x=".7" y=".7" width="34.6" height="38.6" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="fl-h" viewBox="0 0 36 40"><rect width="36" height="20" fill="#f8f7f2"/><rect y="20" width="36" height="20" fill="#e1262b"/><rect x=".7" y=".7" width="34.6" height="38.6" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+  <symbol id="fl-t" viewBox="0 0 36 40"><rect width="36" height="13.4" fill="#e1262b"/><rect y="13.3" width="36" height="13.4" fill="#f8f7f2"/><rect y="26.6" width="36" height="13.4" fill="#1d4fc0"/><rect x=".7" y=".7" width="34.6" height="38.6" fill="none" stroke="#0a1c3d" stroke-width="1.4"/></symbol>
+</svg>
 
-  // ─── SVG Dice Faces ──────────────────────────────────────────────────────────
+<div id="app"></div>
 
-  const PIP = (cx, cy) => `<circle cx="${cx}" cy="${cy}" r="4.5" fill="#1e293b"/>`;
-
-  const PIPS = {
-    1: [PIP(30,30)],
-    2: [PIP(15,15), PIP(45,45)],
-    3: [PIP(15,15), PIP(30,30), PIP(45,45)],
-    4: [PIP(15,15), PIP(45,15), PIP(15,45), PIP(45,45)],
-    5: [PIP(15,15), PIP(45,15), PIP(30,30), PIP(15,45), PIP(45,45)],
-    6: [PIP(15,12), PIP(45,12), PIP(15,30), PIP(45,30), PIP(15,48), PIP(45,48)],
-  };
-
-  function dieSVG(value, held, index) {
-    const bg     = held ? '#fef3c7' : '#ffffff';
-    const border = held ? '#f59e0b' : '#94a3b8';
-    const bw     = held ? '3'       : '2';
-    const pips   = value ? PIPS[value].join('') : '';
-    return `<svg id="die-svg-${index}" width="60" height="60" viewBox="0 0 60 60"
-        xmlns="http://www.w3.org/2000/svg" style="display:block;">
-      <rect x="2" y="2" width="56" height="56" rx="10" ry="10"
-        fill="${bg}" stroke="${border}" stroke-width="${bw}"/>
-      ${value ? pips : '<text x="30" y="36" text-anchor="middle" font-size="22" fill="#cbd5e1">?</text>'}
-    </svg>`;
-  }
+<script>
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const RM = matchMedia('(prefers-reduced-motion: reduce)');
 
   // ─── State ───────────────────────────────────────────────────────────────────
 
   const CATEGORIES = [
-    { id:'ones',          label:'一點',   section:'upper' },
-    { id:'twos',          label:'二點',   section:'upper' },
-    { id:'threes',        label:'三點',   section:'upper' },
-    { id:'fours',         label:'四點',   section:'upper' },
-    { id:'fives',         label:'五點',   section:'upper' },
-    { id:'sixes',         label:'六點',   section:'upper' },
-    { id:'threeOfAKind',  label:'三同',   section:'lower' },
-    { id:'fourOfAKind',   label:'四同',   section:'lower' },
-    { id:'fullHouse',     label:'葫蘆',   section:'lower' },
-    { id:'smallStraight', label:'小順',   section:'lower' },
-    { id:'largeStraight', label:'大順',   section:'lower' },
-    { id:'yacht',         label:'快艇',   section:'lower' },
-    { id:'chance',        label:'機會',   section:'lower' },
+    { id:'ones',          label:'一點', section:'upper', note:'1 的總和' },
+    { id:'twos',          label:'二點', section:'upper', note:'2 的總和' },
+    { id:'threes',        label:'三點', section:'upper', note:'3 的總和' },
+    { id:'fours',         label:'四點', section:'upper', note:'4 的總和' },
+    { id:'fives',         label:'五點', section:'upper', note:'5 的總和' },
+    { id:'sixes',         label:'六點', section:'upper', note:'6 的總和' },
+    { id:'threeOfAKind',  label:'三同', section:'lower', note:'三顆相同 · 全部點數' },
+    { id:'fourOfAKind',   label:'四同', section:'lower', note:'四顆相同 · 全部點數' },
+    { id:'fullHouse',     label:'葫蘆', section:'lower', note:'三帶二 · 25' },
+    { id:'smallStraight', label:'小順', section:'lower', note:'四連號 · 30' },
+    { id:'largeStraight', label:'大順', section:'lower', note:'五連號 · 40' },
+    { id:'yacht',         label:'快艇', section:'lower', note:'五顆相同 · 50' },
+    { id:'chance',        label:'機會', section:'lower', note:'全部點數' },
   ];
 
   function blankScorecard() {
@@ -168,6 +369,9 @@
 
   // ─── Game Actions ─────────────────────────────────────────────────────────────
 
+  let pendingRoll  = [];
+  let pendingScore = null;   // { categoryId, playerIndex, value }
+
   function rollDice() {
     if (state.rollsLeft <= 0) return;
     const rolling = [];
@@ -176,16 +380,14 @@
     });
     state.rollsLeft--;
     state.rollPhase = true;
-    _pendingRollAnim = rolling;
+    pendingRoll = rolling;
     render();
   }
 
   function toggleHold(i) {
     if (!state.rollPhase || state.rollsLeft <= 0) return;
     state.dice[i].held = !state.dice[i].held;
-    const isNowHeld = state.dice[i].held;
     render();
-    animateHoldToggle(i, isNowHeld);
   }
 
   function selectCategory(categoryId) {
@@ -193,8 +395,9 @@
     if (player.scorecard[categoryId] !== null) return;
     if (!state.rollPhase) return;
 
-    _pendingScoreAnim = { categoryId, playerIndex: state.currentPlayerIndex };
-    player.scorecard[categoryId] = score(categoryId, state.dice);
+    const value = score(categoryId, state.dice);
+    pendingScore = { categoryId, playerIndex: state.currentPlayerIndex, value };
+    player.scorecard[categoryId] = value;
     state.dice      = blankDice();
     state.rollsLeft = 3;
     state.rollPhase = false;
@@ -285,388 +488,408 @@
     setTimeout(() => { rollDice(); doReroll(2); }, 350);
   }
 
-  // ─── GSAP Animations ─────────────────────────────────────────────────────────
+  // ─── Drawing helpers ────────────────────────────────────────────────────────
 
-  let _prevPhase       = null;
-  let _transitioning   = false;
-  let _pendingRollAnim  = [];
-  let _pendingScoreAnim = null; // { categoryId, playerIndex }
+  const PIP_AT = {
+    1: [[30,30]],
+    2: [[17,17],[43,43]],
+    3: [[17,17],[30,30],[43,43]],
+    4: [[17,17],[43,17],[17,43],[43,43]],
+    5: [[17,17],[43,17],[30,30],[17,43],[43,43]],
+    6: [[17,15],[43,15],[17,30],[43,30],[17,45],[43,45]],
+  };
+  const dieFace = v => v
+    ? `<svg viewBox="0 0 60 60" aria-hidden="true">${PIP_AT[v].map(([x,y]) => `<circle class="pip" cx="${x}" cy="${y}" r="5.6"/>`).join('')}</svg>`
+    : '';
+  const pennant = v => `<svg viewBox="0 0 28 40" aria-hidden="true"><use href="#pn${v}"/></svg>`;
+  const PCOL = ['#e1262b', '#ffcd00'];
+  const PINK = ['#ffffff', '#101318'];
+  // a side-view yacht token: white hull, white jib, mainsail in the player's colour with the sail number
+  const boatG = (pi, cls = '') => `<g class="boat p${pi} ${cls}">
+      <path class="mast" d="M2 1V-35"/>
+      <path class="main" d="M0 -33L0 -3L-18 -3Z" fill="${PCOL[pi]}"/>
+      <path class="jib" d="M5 -30L18 -4L5 -4Z"/>
+      <path class="hull" d="M-20 0H21L15 8H-15Z"/>
+      <text class="sailno" x="-6" y="-9" fill="${PINK[pi]}">${pi + 1}</text>
+    </g>`;
+  const boatIcon = pi => `<svg viewBox="-22 -38 44 48" aria-hidden="true">${boatG(pi)}</svg>`;
 
-  function animateMenuIn() {
-    gsap.from('#menu-card', { opacity: 0, y: 50, duration: 0.5, ease: 'back.out(1.4)' });
+  // seeded random so the chart's decoration stays put between redraws
+  function rng(seed) { return () => (seed = (seed * 16807) % 2147483647) / 2147483647; }
 
-    try {
-      const split = SplitText.create('#menu-title', { type: 'chars' });
-      gsap.from(split.chars, {
-        opacity: 0, y: -24,
-        rotation: gsap.utils.wrap([-14, 14]),
-        stagger: { each: 0.04, from: 'center' },
-        duration: 0.45, ease: 'back.out(2)', delay: 0.12,
+  // ─── The course ─────────────────────────────────────────────────────────────
+  // One lap of a rounded-rectangle course = COURSE points. Each lane is the centreline offset in or out.
+
+  const COURSE = 350;
+  let geo = null;       // { w, h, c, d, r }
+
+  function laneSpec(off) {
+    const { w, h, c, r } = geo;
+    return { ins: c + off, rad: Math.max(8, r - off), w, h };
+  }
+  function lanePath(off) {
+    const { ins, rad, w, h } = laneSpec(off), cx = w / 2;
+    return `M${cx} ${h-ins}H${w-ins-rad}A${rad} ${rad} 0 0 0 ${w-ins} ${h-ins-rad}V${ins+rad}A${rad} ${rad} 0 0 0 ${w-ins-rad} ${ins}`
+         + `H${ins+rad}A${rad} ${rad} 0 0 0 ${ins} ${ins+rad}V${h-ins-rad}A${rad} ${rad} 0 0 0 ${ins+rad} ${h-ins}H${cx}`;
+  }
+  // point and heading at fraction f (0..1) of a lane, measured from the start line; the course runs
+  // counter-clockwise on screen. Lines are [len, start, dir]; arcs are [len, centre, start angle] with
+  // the point at centre + rad·(cos θ, sin θ) (y down) and θ decreasing as the boat sails on.
+  function laneAt(off, f) {
+    const { ins, rad, w, h } = laneSpec(off), cx = w / 2;
+    const sx = w - 2*ins - 2*rad, sy = h - 2*ins - 2*rad, q = Math.PI * rad / 2;
+    const segs = [
+      ['l', w - ins - rad - cx, [cx, h - ins], [1, 0]],
+      ['a', q, [w - ins - rad, h - ins - rad], Math.PI / 2],
+      ['l', sy, [w - ins, h - ins - rad], [0, -1]],
+      ['a', q, [w - ins - rad, ins + rad], 0],
+      ['l', sx, [w - ins - rad, ins], [-1, 0]],
+      ['a', q, [ins + rad, ins + rad], -Math.PI / 2],
+      ['l', sy, [ins, ins + rad], [0, 1]],
+      ['a', q, [ins + rad, h - ins - rad], -Math.PI],
+      ['l', cx - ins - rad, [ins + rad, h - ins], [1, 0]],
+    ];
+    const total = segs.reduce((a, sg) => a + sg[1], 0);
+    let s = Math.max(0, Math.min(1, f)) * total;
+    for (let i = 0; i < segs.length; i++) {
+      const [k, len, p, x] = segs[i];
+      if (s <= len || i === segs.length - 1) {
+        if (k === 'l') return { x: p[0] + x[0] * s, y: p[1] + x[1] * s, dx: x[0], dy: x[1] };
+        const t = x - s / rad;
+        return { x: p[0] + rad * Math.cos(t), y: p[1] + rad * Math.sin(t), dx: Math.sin(t), dy: -Math.cos(t) };
+      }
+      s -= len;
+    }
+  }
+
+  function seaSVG(w, h, withTokens) {
+    const mob = w < 640;
+    geo = { w, h, c: mob ? 24 : 36, d: mob ? 11 : 15, r: mob ? 52 : 100 };
+    const R = rng(Math.round(w * 7 + h * 13));
+    let s = `<svg class="sea" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">`;
+    // depth contours around a shoal, plus soundings
+    const shoals = mob ? [[w*0.86, h*0.83, 0.7]] : [[w*0.86, h*0.8, 1], [w*0.12, h*0.2, 0.75]];
+    shoals.forEach(([sx, sy, k], si) => {
+      for (let ring = 0; ring < 5; ring++) {
+        const base = (24 + ring * 30) * k * (mob ? 0.8 : 1);
+        const pts = [];
+        const ph = R() * 6;
+        for (let a = 0; a < 24; a++) {
+          const t = a / 24 * Math.PI * 2;
+          const rr = base * (1 + 0.16 * Math.sin(3*t + ph) + 0.08 * Math.cos(5*t + ring));
+          pts.push([sx + rr * Math.cos(t) * 1.25, sy + rr * Math.sin(t)]);
+        }
+        s += `<path class="${ring === 0 && !mob && si === 0 ? 'island' : 'contour'}" d="${smooth(pts)}"/>`;
+        if (ring === 0 && !mob && si === 0) s += `<path class="island-edge" d="${smooth(pts.map(([x,y]) => [sx + (x-sx)*1.35, sy + (y-sy)*1.35]))}"/>`;
+      }
+    });
+    const n = mob ? 16 : 34;
+    for (let i = 0; i < n; i++) {
+      const x = 50 + R() * (w - 100), y = 50 + R() * (h - 100);
+      if (Math.abs(x - w / 2) < Math.min(w * 0.42, 380) && Math.abs(y - h / 2) < Math.min(h * 0.36, 300)) continue;
+      s += `<text class="sound" x="${x.toFixed(0)}" y="${y.toFixed(0)}">${Math.floor(4 + R() * 38)}${R() < 0.3 ? '<tspan dy="3" font-size="7">' + Math.floor(R()*9) + '</tspan>' : ''}</text>`;
+    }
+    if (!mob) {   // compass rose, chart magenta
+      const rx = geo.c + 84, ry = h - geo.c - 84, rr = 40;
+      s += `<g transform="translate(${rx} ${ry})"><circle class="rose" r="${rr}"/><circle class="rose" r="${rr-7}"/>`;
+      for (let a = 0; a < 36; a++) { const t = a / 36 * Math.PI * 2, l = a % 9 === 0 ? 7 : 3.5;
+        s += `<path class="rose" d="M${(rr*Math.sin(t)).toFixed(1)} ${(-rr*Math.cos(t)).toFixed(1)}L${((rr-l)*Math.sin(t)).toFixed(1)} ${(-(rr-l)*Math.cos(t)).toFixed(1)}"/>`; }
+      s += `<path d="M0 -30L5 0L0 30L-5 0Z" fill="#ff5aa9" opacity=".85"/><text class="rose-t" y="-${rr+6}" text-anchor="middle">N</text></g>`;
+    }
+    // course centreline, start line, buoys every 50 points
+    s += `<path class="course" d="${lanePath(0)}"/>`;
+    const st = laneAt(0, 0);
+    s += `<path class="start" d="M${st.x} ${st.y - geo.d - 9}V${st.y + geo.d + 9}"/>`;
+    s += `<text class="start-t" x="${st.x - 8}" y="${st.y - geo.d - 8}" text-anchor="end">起航</text>`;
+    for (let p = 50; p < COURSE; p += 50) {
+      const b = laneAt(0, p / COURSE);
+      s += `<g class="buoy" transform="translate(${b.x.toFixed(1)} ${b.y.toFixed(1)})"><circle r="${mob ? 9 : 12}"/><text style="font-size:${mob ? 9 : 11}px">${p}</text></g>`;
+    }
+    if (withTokens) {
+      [0, 1].forEach(pi => {
+        s += `<path class="lane" id="lane${pi}" d="${lanePath(pi ? -geo.d : geo.d)}"/>`;
+        s += `<path class="wake p${pi}" id="wake${pi}" d="${lanePath(pi ? -geo.d : geo.d)}" pathLength="${COURSE}" stroke-dasharray="0 ${COURSE + 10}"/>`;
       });
-    } catch(e) {}
-
-    gsap.from('#menu-subtitle', { opacity: 0, duration: 0.4, delay: 0.48 });
-    // fromTo guarantees buttons reach opacity:1 even if earlier animation steps fail
-    gsap.fromTo('.menu-btn',
-      { opacity: 0, y: 18 },
-      { opacity: 1, y: 0, stagger: 0.12, duration: 0.4, delay: 0.6, ease: 'power2.out', clearProps: 'opacity,y' }
-    );
+      [0, 1].forEach(pi => s += `<g id="boat${pi}">${boatG(pi)}</g>`);
+    }
+    return s + '</svg>';
   }
 
-  function animateDiceRoll(indices) {
-    indices.forEach(i => {
-      const el = document.getElementById(`die-svg-${i}`);
-      if (!el) return;
-      gsap.killTweensOf(el);
-      gsap.timeline()
-        .to(el, { rotation: -22, scaleX: 1.18, scaleY: 0.82, y: -7, duration: 0.07, ease: 'power2.in' })
-        .to(el, { rotation:  16, scaleX: 0.85, scaleY: 1.18, y:  4, duration: 0.09 })
-        .to(el, { rotation:  -9, scaleX: 1.09, scaleY: 0.93, y: -3, duration: 0.07 })
-        .to(el, { rotation:   4, scaleX: 0.97, scaleY: 1.04, y:  1, duration: 0.07 })
-        .to(el, { rotation:   0, scaleX: 1,    scaleY: 1,    y:  0, duration: 0.13, ease: 'back.out(1.8)' });
+  function smooth(pts) {
+    const n = pts.length; let d = '';
+    for (let i = 0; i < n; i++) {
+      const p0 = pts[(i - 1 + n) % n], p1 = pts[i], p2 = pts[(i + 1) % n], p3 = pts[(i + 2) % n];
+      if (i === 0) d += `M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}`;
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += `C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+    }
+    return d + 'Z';
+  }
+
+  // ─── Boats on the course ────────────────────────────────────────────────────
+
+  const shown = [0, 0];          // the totals the boats currently sit at
+  const anim  = [null, null];
+  const boatScale = () => (geo && geo.w < 640) ? 0.7 : 1.12;
+
+  function placeBoat(pi, pts) {
+    const g = $('#boat' + pi), wake = $('#wake' + pi);
+    if (!g || !geo) return;
+    const off = pi ? -geo.d : geo.d;
+    const p = laneAt(off, Math.min(pts, COURSE - 0.5) / COURSE);
+    const flip = p.dx < -0.3 ? -1 : 1;           // sail to the left on the top leg
+    g.classList.toggle('flip', flip < 0);
+    g.setAttribute('transform', `translate(${p.x.toFixed(1)} ${(p.y + 3).toFixed(1)}) scale(${(boatScale() * flip).toFixed(3)} ${boatScale()})`);
+    wake.setAttribute('stroke-dasharray', `${Math.max(0, Math.min(pts, COURSE)).toFixed(2)} ${COURSE + 10}`);
+  }
+
+  function sailTo(pi, target) {
+    if (anim[pi]) cancelAnimationFrame(anim[pi].raf);
+    const from = shown[pi];
+    if (RM.matches || from === target) { shown[pi] = target; placeBoat(pi, target); setTot(pi, target); return; }
+    const dur = Math.min(1500, 650 + Math.abs(target - from) * 14), t0 = performance.now();
+    const step = now => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
+      shown[pi] = from + (target - from) * e;
+      placeBoat(pi, shown[pi]);
+      setTot(pi, Math.round(shown[pi]));
+      if (k < 1) anim[pi].raf = requestAnimationFrame(step);
+      else { shown[pi] = target; anim[pi] = null; }
+    };
+    anim[pi] = { raf: requestAnimationFrame(step) };
+  }
+  function setTot(pi, v) { const el = $(`#tot${pi}`); if (el) el.textContent = v; }
+
+  // ─── Screens ────────────────────────────────────────────────────────────────
+
+  let screen = null;
+  const app = $('#app');
+
+  function drawSea(chart, tokens) {
+    const old = $('svg.sea', chart);
+    const r = chart.getBoundingClientRect();
+    const html = seaSVG(Math.max(300, Math.round(r.width)), Math.max(260, Math.round(r.height)), tokens);
+    if (old) old.outerHTML = html; else chart.insertAdjacentHTML('afterbegin', html);
+  }
+
+  function renderMenu() {
+    screen = 'menu';
+    shown[0] = shown[1] = 0;
+    app.innerHTML = `
+      <main class="chart menu" id="chart">
+        <div class="deck">
+          <ul class="bunting" aria-label="信號旗 Y A C H T">
+            ${['y','a','c','h','t'].map(f => `<li><svg viewBox="0 0 36 40" aria-hidden="true"><use href="#fl-${f}"/></svg></li>`).join('')}
+          </ul>
+          <h1 class="title">快艇骰子</h1>
+          <p class="sub">五顆骰子 · 每回合最多擲三次 · 十三回合</p>
+          <div class="keys">
+            <button class="key key-y" data-start="1p">${boatIcon(0)}單人對 CPU</button>
+            <button class="key key-w" data-start="2p">${boatIcon(1)}兩人輪流</button>
+          </div>
+          <a class="back" href="index.html">← 回小工具首頁</a>
+        </div>
+      </main>`;
+    const chart = $('#chart');
+    drawSea(chart, true);
+    placeBoat(0, 0); placeBoat(1, 0);
+    $$('[data-start]').forEach(b => b.addEventListener('click', () => startGame(b.dataset.start)));
+    if (!RM.matches) $$('.bunting li').forEach((li, i) =>
+      li.animate([{ transform: 'scaleY(0)' }, { transform: 'scaleY(1)' }], { duration: 420, delay: 120 + i * 70, easing: 'cubic-bezier(.2,.9,.25,1)', fill: 'backwards' }));
+  }
+
+  function buildGame() {
+    screen = 'game';
+    shown[0] = shown[1] = 0;
+    const P = state.players;
+    app.innerHTML = `
+      <div class="game">
+        <header class="top">
+          <a class="back" href="index.html" aria-label="回小工具首頁">←</a>
+          <h1><svg viewBox="0 0 36 40" aria-hidden="true"><use href="#fl-y"/></svg>快艇骰子</h1>
+          <span class="round" id="round"></span>
+        </header>
+        <main class="chart" id="chart">
+          <div class="deck" id="deck"></div>
+          <div class="spin" id="spin" aria-hidden="true"></div>
+        </main>
+        <section class="board" aria-labelledby="boardH">
+          <div class="board-in">
+            <h2 id="boardH">成績板 <span>點選分數登記</span></h2>
+            <table>
+              <colgroup><col class="c-cat"><col class="c-p"><col class="c-p"></colgroup>
+              <thead><tr><th scope="col">類別</th>${P.map((p, pi) => `<th scope="col" class="p${pi}" id="ph${pi}"><span class="ph">${boatIcon(pi)}${p.name}</span></th>`).join('')}</tr></thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>`;
+    const chart = $('#chart');
+    drawSea(chart, true);
+    placeBoat(0, 0); placeBoat(1, 0);
+    $('#rows').addEventListener('click', e => {
+      const b = e.target.closest('[data-cat]');
+      if (b) selectCategory(b.dataset.cat);
+    });
+    $('#deck').addEventListener('click', e => {
+      const d = e.target.closest('[data-die]');
+      if (d) toggleHold(+d.dataset.die);
+      if (e.target.closest('#rollKey')) rollDice();
+      if (e.target.closest('#again')) resetGame();
     });
   }
 
-  function animateHoldToggle(index, isNowHeld) {
-    const el = document.getElementById(`die-svg-${index}`);
+  function deckPlaying() {
+    const { players, currentPlayerIndex: cur, dice, rollsLeft, rollPhase, cpuThinking } = state;
+    const canRoll = rollsLeft > 0 && !cpuThinking;
+    const canHold = rollPhase && rollsLeft > 0 && !cpuThinking;
+    const name = players[cur].name;
+    let status;
+    if (cpuThinking) status = `CPU 擲骰中…`;
+    else if (!rollPhase) status = `${name}的回合 <span class="dim">· 先擲骰</span>`;
+    else if (rollsLeft > 0) status = `點骰子保留 <span class="dim">· 再擲，或在成績板選一格</span>`;
+    else status = `擲完了 <span class="dim">· 在成績板選一格計分</span>`;
+    const deck = $('#deck');
+    if (!$('#rack', deck)) {
+      deck.innerHTML = `
+        <div class="tally">${players.map((p, pi) => `<div class="plaque p${pi}" id="plq${pi}">${boatIcon(pi)}<span class="who">${p.name}</span><span class="tot n" id="tot${pi}">${Math.round(shown[pi])}</span></div>`).join('')}</div>
+        <p class="status" id="status" aria-live="polite"></p>
+        <ul class="rack" id="rack" aria-label="骰子">${dice.map((d, i) => `<li><span class="pennant" aria-hidden="true"></span><button class="die" data-die="${i}"></button></li>`).join('')}</ul>
+        <button class="key key-y roll" id="rollKey"></button>`;
+    }
+    players.forEach((p, pi) => $('#plq' + pi).classList.toggle('is-turn', pi === cur));
+    $('#status').innerHTML = status;
+    $$('#rack li').forEach((li, i) => {
+      const d = dice[i], btn = $('.die', li);
+      li.classList.toggle('is-held', !!d.held && d.value !== null);
+      $('.pennant', li).innerHTML = d.value ? pennant(d.value) : '';
+      btn.classList.toggle('is-blank', !d.value);
+      btn.innerHTML = dieFace(d.value);
+      btn.disabled = !canHold;
+      btn.setAttribute('aria-pressed', d.held ? 'true' : 'false');
+      btn.setAttribute('aria-label', d.value ? `第 ${i + 1} 顆，${d.value} 點${d.held ? '，已保留' : ''}` : `第 ${i + 1} 顆，還沒擲`);
+    });
+    const key = $('#rollKey');
+    key.disabled = !canRoll;
+    key.innerHTML = cpuThinking ? 'CPU 的回合'
+      : canRoll ? `擲骰 <small>還有 ${rollsLeft} 次</small>` : '選一格計分';
+    $('#round').innerHTML = `第 <b>${state.round}</b> / 13 回合`;
+
+    if (pendingRoll.length) { tumble(pendingRoll); pendingRoll = []; }
+  }
+
+  function tumble(idx) {
+    if (RM.matches) return;
+    idx.forEach(i => {
+      const btn = $(`[data-die="${i}"]`), v = state.dice[i].value;
+      if (!btn) return;
+      btn.classList.remove('tumble'); void btn.offsetWidth; btn.classList.add('tumble');
+      let n = 0;
+      const flick = setInterval(() => {
+        if (++n > 4 || state.dice[i].value !== v) { clearInterval(flick); if (state.dice[i].value === v) btn.innerHTML = dieFace(v); return; }
+        btn.innerHTML = dieFace(1 + Math.floor(Math.random() * 6));
+      }, 70);
+    });
+  }
+
+  function deckGameover() {
+    const { players } = state;
+    const totals = players.map(p => computeScoreboard(p.scorecard).grandTotal);
+    const max = Math.max(...totals), tie = totals.every(t => t === max);
+    const w = totals.indexOf(max);
+    $('#deck').innerHTML = `
+      <div class="result">
+        <div class="tally">${players.map((p, pi) => `<div class="plaque p${pi}${!tie && pi === w ? ' is-turn' : ''}">${boatIcon(pi)}<span class="who">${p.name}</span><span class="tot n" id="tot${pi}">${Math.round(shown[pi])}</span></div>`).join('')}</div>
+        <h2>${tie ? '平手' : `${players[w].name} 獲勝`}</h2>
+        <p>${tie ? `兩艘船同時抵達 · <span class="n">${max}</span> 分` : `<span class="n">${totals[w]}</span> 比 <span class="n">${totals[1 - w]}</span> · 領先 ${totals[w] - totals[1 - w]} 分`}</p>
+        <div class="keys"><button class="key key-y" id="again">再玩一次</button><a class="key key-w" href="index.html">回小工具首頁</a></div>
+      </div>`;
+    $('#round').innerHTML = `比賽結束`;
+  }
+
+  function renderBoard() {
+    const { players, currentPlayerIndex: cur, dice, rollPhase, cpuThinking, phase } = state;
+    const over = phase === 'gameover';
+    const boards = players.map(p => computeScoreboard(p.scorecard));
+    const max = Math.max(...boards.map(b => b.grandTotal));
+    const win = boards.map(b => over && b.grandTotal === max);
+    players.forEach((p, pi) => $('#ph' + pi).classList.toggle('is-turn', !over && pi === cur));
+    const rows = CATEGORIES.map(cat => {
+      const icon = cat.section === 'upper' ? pennant(CATEGORIES.indexOf(cat) + 1)
+        : cat.id === 'yacht' ? `<svg class="fl" viewBox="0 0 36 40" aria-hidden="true"><use href="#fl-y"/></svg>` : '';
+      const cells = players.map((p, pi) => {
+        const v = p.scorecard[cat.id];
+        if (v !== null) return `<td class="scored${v === 0 ? ' zero' : ''}${win[pi] ? ' win' : ''}" data-cell="${cat.id}-${pi}">${v}</td>`;
+        if (!over && pi === cur && rollPhase && !cpuThinking) {
+          const pv = score(cat.id, dice);
+          return `<td><button class="pv${pv === 0 ? ' zero' : ''}" data-cat="${cat.id}" aria-label="${cat.label}計 ${pv} 分">${pv}</button></td>`;
+        }
+        return `<td${win[pi] ? ' class="win"' : ''}><span class="nil" aria-label="未填">—</span></td>`;
+      }).join('');
+      return `<tr class="cat-row${cat.id === 'sixes' ? ' split' : ''}"><th scope="row"><span class="cat">${icon}<span>${cat.label}<span class="rule">${cat.note}</span></span></span></th>${cells}</tr>`;
+    }).join('');
+    const sum = (label, f) => `<tr class="sum"><th scope="row">${label}</th>${boards.map((b, pi) => `<td${win[pi] ? ' class="win"' : ''}>${f(b)}</td>`).join('')}</tr>`;
+    $('#rows').innerHTML = rows
+      + sum('上區小計', b => b.upperDone || b.upperSubtotal >= 63 ? `${b.upperSubtotal}` : `${b.upperSubtotal}<span class="of"> / 63</span>`)
+      + `<tr class="sum"><th scope="row">上區獎勵 <span class="of">滿 63 加 35</span></th>${boards.map((b, pi) => `<td class="${b.upperBonus ? 'got' : ''}${win[pi] ? ' win' : ''}">${b.upperBonus ? '+35' : '—'}</td>`).join('')}</tr>`
+      + (over ? sum('下區小計', b => b.lowerSubtotal) : '')
+      + `<tr class="total"><th scope="row">總計</th>${boards.map((b, pi) => `<td class="n${win[pi] ? ' win' : ''}">${b.grandTotal}</td>`).join('')}</tr>`;
+    if (pendingScore) {
+      const { categoryId, playerIndex } = pendingScore;
+      const cell = $(`[data-cell="${categoryId}-${playerIndex}"]`);
+      if (cell && !RM.matches) cell.classList.add('stamp');
+    }
+  }
+
+  function spinnaker(pi) {
+    const el = $('#spin');
     if (!el) return;
-    if (isNowHeld) {
-      gsap.timeline()
-        .to(el, { scale: 0.78, duration: 0.1,  ease: 'power2.in' })
-        .to(el, { scale: 1.14, duration: 0.15, ease: 'power2.out' })
-        .to(el, { scale: 1,    duration: 0.12, ease: 'back.out(2)' });
-    } else {
-      gsap.fromTo(el, { scale: 1.1 }, { scale: 1, duration: 0.2, ease: 'power2.out' });
-    }
-  }
-
-  function animateScoreCell() {
-    if (!_pendingScoreAnim) return;
-    const { categoryId, playerIndex } = _pendingScoreAnim;
-    _pendingScoreAnim = null;
-    const row = document.querySelector(`tr[data-cat="${categoryId}"]`);
-    if (!row) return;
-    const tds  = row.querySelectorAll('td');
-    const cell = tds[playerIndex + 1]; // td[0] = label
-    if (!cell) return;
-    gsap.fromTo(cell,
-      { backgroundColor: '#a5f3fc', scale: 1.18 },
-      { backgroundColor: 'transparent', scale: 1, duration: 0.75, ease: 'power2.out' }
-    );
-  }
-
-  function animateGameoverIn() {
-    gsap.from('#winner-card',   { opacity: 0, y: -30, duration: 0.5, ease: 'back.out(1.4)', delay: 0.05 });
-    gsap.from('#winner-trophy', { scale: 0, rotation: -50, duration: 0.6, ease: 'back.out(2)',  delay: 0.1  });
-    gsap.from('#winner-msg',    { opacity: 0, y: 16,  duration: 0.45, ease: 'power2.out',     delay: 0.32 });
-
-    const rows = document.querySelectorAll('#score-table tbody tr');
-    gsap.from(rows, {
-      opacity: 0, x: -28, stagger: 0.03,
-      duration: 0.3, delay: 0.45, ease: 'power2.out',
-    });
-
-    gsap.from('.grand-total-cell', {
-      backgroundColor: '#6ee7b7', scale: 1.15,
-      duration: 0.7, delay: 1.1, ease: 'power2.out', stagger: 0.1,
-    });
-
-    gsap.from('#replay-btn', {
-      opacity: 0, scale: 0.82,
-      duration: 0.45, delay: 1.0, ease: 'back.out(1.5)',
-    });
-  }
-
-  // ─── Render ───────────────────────────────────────────────────────────────────
-
-  function doRender(app) {
-    _prevPhase = state.phase;
-
-    if (state.phase === 'menu') {
-      app.innerHTML = renderMenu();
-      animateMenuIn();
-
-    } else if (state.phase === 'playing') {
-      app.innerHTML = renderPlaying();
-      if (_pendingRollAnim.length > 0) {
-        animateDiceRoll(_pendingRollAnim);
-        _pendingRollAnim = [];
-      }
-      animateScoreCell();
-      if (state.cpuThinking) {
-        const ind = document.getElementById('cpu-indicator');
-        if (ind) gsap.to(ind, { opacity: 0.35, duration: 0.55, yoyo: true, repeat: -1, ease: 'sine.inOut' });
-      }
-
-    } else if (state.phase === 'gameover') {
-      app.innerHTML = renderGameover();
-      animateGameoverIn();
-    }
+    el.innerHTML = `<svg viewBox="-260 -300 520 520"><path d="M-10 -280C150 -230 240 -60 200 200L-10 200Z" fill="${PCOL[pi]}" stroke="#101318" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M-20 -280L-20 200L-200 200Z" fill="#f8f7f2" stroke="#101318" stroke-width="5" stroke-linejoin="round"/>
+      <text x="95" y="-10" fill="${PINK[pi]}">快艇</text><text class="big" x="95" y="130" fill="${PINK[pi]}">50</text></svg>`;
+    if (RM.matches) return;
+    el.animate([
+      { opacity: 0, transform: 'scale(.5) translateX(-30%)' },
+      { opacity: 1, transform: 'scale(1) translateX(0)', offset: .3 },
+      { opacity: 1, transform: 'scale(1.03) translateX(4%)', offset: .75 },
+      { opacity: 0, transform: 'scale(1.08) translateX(14%)' },
+    ], { duration: 1700, easing: 'cubic-bezier(.2,.8,.3,1)' });
   }
 
   function render() {
-    const app = document.getElementById('app');
-    const phaseChanged = _prevPhase !== null && _prevPhase !== state.phase;
-
-    if (phaseChanged && !_transitioning) {
-      _transitioning = true;
-      gsap.killTweensOf(app);
-      gsap.to(app, {
-        opacity: 0, duration: 0.18, ease: 'power2.in',
-        onComplete: () => {
-          _transitioning = false;
-          doRender(app);
-          gsap.to(app, { opacity: 1, duration: 0.3, ease: 'power2.out' });
-        },
-      });
-    } else {
-      doRender(app);
+    if (state.phase === 'menu') { if (screen !== 'menu') renderMenu(); return; }
+    if (screen !== 'game') buildGame();
+    if (state.phase === 'playing') deckPlaying(); else deckGameover();
+    renderBoard();
+    state.players.forEach((p, pi) => {
+      const t = computeScoreboard(p.scorecard).grandTotal;
+      if (Math.abs(t - shown[pi]) > 0.01 && !(anim[pi])) sailTo(pi, t);
+      else if (anim[pi] && t !== Math.round(shown[pi])) sailTo(pi, t);
+      $(`#boat${pi}`)?.classList.toggle('is-turn', state.phase === 'playing' && pi === state.currentPlayerIndex);
+    });
+    if (pendingScore) {
+      if (pendingScore.categoryId === 'yacht' && pendingScore.value === 50) spinnaker(pendingScore.playerIndex);
+      pendingScore = null;
     }
   }
 
-  // ─── Menu ─────────────────────────────────────────────────────────────────────
+  // redraw the chart for the new size, keeping the boats where they are
+  let rz = 0;
+  addEventListener('resize', () => {
+    cancelAnimationFrame(rz);
+    rz = requestAnimationFrame(() => {
+      const chart = $('#chart');
+      if (!chart) return;
+      drawSea(chart, true);
+      placeBoat(0, shown[0]); placeBoat(1, shown[1]);
+      if (state.phase !== 'menu') state.players.forEach((p, pi) => $(`#boat${pi}`)?.classList.toggle('is-turn', state.phase === 'playing' && pi === state.currentPlayerIndex));
+    });
+  });
 
-  function renderMenu() {
-    return `
-    <div class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 px-4">
-      <div id="menu-card" class="bg-white rounded-3xl shadow-2xl p-10 max-w-sm w-full text-center">
-        <div class="text-8xl leading-none mb-2 select-none" aria-hidden="true">🎲</div>
-        <h1 id="menu-title" style="font-family:'DM Serif Display',Georgia,serif;" class="text-4xl text-indigo-800 mt-3 mb-1 leading-tight">快艇骰子</h1>
-        <p id="menu-subtitle" class="text-gray-400 text-xs tracking-widest uppercase mb-8">5 Dice · 13 Rounds</p>
-        <div class="flex flex-col gap-3">
-          <button class="menu-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-2xl transition active:scale-95"
-            onclick="startGame('1p')">單人遊戲（對戰 CPU）</button>
-          <button class="menu-btn w-full bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-bold py-3.5 px-6 rounded-2xl transition active:scale-95"
-            onclick="startGame('2p')">雙人遊戲</button>
-        </div>
-        <a href="index.html" class="inline-block mt-6 text-xs text-gray-400 hover:text-gray-600 transition-colors">← 返回小工具</a>
-      </div>
-    </div>`;
-  }
-
-  // ─── Playing ──────────────────────────────────────────────────────────────────
-
-  function renderPlaying() {
-    const { players, currentPlayerIndex, round, dice, rollsLeft, rollPhase, cpuThinking } = state;
-    const currentPlayer = players[currentPlayerIndex];
-    const canRoll = rollsLeft > 0 && !cpuThinking;
-    const canHold = rollPhase && rollsLeft > 0 && !cpuThinking;
-
-    const diceHTML = dice.map((d, i) => {
-      const holdLabel = d.held
-        ? `<div class="text-xs text-amber-600 font-bold mt-1">保留</div>`
-        : `<div class="text-xs text-gray-300 mt-1">‧</div>`;
-      const cursor = canHold ? 'cursor-pointer' : 'cursor-default';
-      const ring   = d.held ? 'ring-2 ring-amber-400 rounded-xl' : '';
-      return `
-        <div class="flex flex-col items-center ${cursor} select-none"
-          onclick="${canHold ? `toggleHold(${i})` : ''}">
-          <div class="${ring}">${dieSVG(d.value, d.held, i)}</div>
-          ${holdLabel}
-        </div>`;
-    }).join('');
-
-    const scoreRows = CATEGORIES.map(cat => {
-      let p0cell = '', p1cell = '';
-      players.forEach((p, pi) => {
-        const filled    = p.scorecard[cat.id] !== null;
-        const isCurrent = pi === currentPlayerIndex;
-        if (filled) {
-          const cls  = isCurrent ? 'font-semibold text-indigo-700' : 'text-gray-600';
-          const cell = `<td class="text-center py-1 px-2 ${cls}">${p.scorecard[cat.id]}</td>`;
-          if (pi===0) p0cell=cell; else p1cell=cell;
-        } else if (isCurrent && rollPhase && !cpuThinking) {
-          const preview = score(cat.id, dice);
-          const cell = `<td class="text-center py-1 px-2 text-gray-400 italic cursor-pointer hover:bg-indigo-50 hover:text-indigo-600 rounded transition-colors"
-            onclick="selectCategory('${cat.id}')">${preview}</td>`;
-          if (pi===0) p0cell=cell; else p1cell=cell;
-        } else {
-          const cell = `<td class="text-center py-1 px-2 text-gray-300">—</td>`;
-          if (pi===0) p0cell=cell; else p1cell=cell;
-        }
-      });
-      const border = cat.id === 'sixes' ? 'border-b-2 border-indigo-200' : '';
-      return `<tr class="${border}" data-cat="${cat.id}">
-        <td class="py-1 px-2 text-gray-700 text-sm font-medium whitespace-nowrap">${cat.label}</td>
-        ${p0cell}${p1cell}
-      </tr>`;
-    }).join('');
-
-    const bonusCells = players.map((p, pi) => {
-      const { upperSubtotal, upperBonus, upperDone } = computeScoreboard(p.scorecard);
-      const isCurrent = pi === currentPlayerIndex;
-      let content;
-      if (upperBonus > 0) content = `<span class="text-green-600 font-bold">+35 ✓</span>`;
-      else if (upperDone) content = `<span class="text-gray-400">—</span>`;
-      else                content = `<span class="${isCurrent?'text-indigo-500':'text-gray-400'}">${upperSubtotal}/63</span>`;
-      return `<td class="text-center py-1 px-2 text-sm">${content}</td>`;
-    }).join('');
-
-    const upperSubCells = players.map(p => {
-      const { upperSubtotal } = computeScoreboard(p.scorecard);
-      return `<td class="text-center py-1 px-2 text-gray-600 text-sm">${upperSubtotal}</td>`;
-    }).join('');
-
-    const totalCells = players.map(p => {
-      const { grandTotal } = computeScoreboard(p.scorecard);
-      return `<td class="text-center py-1 px-2 font-bold text-indigo-700">${grandTotal}</td>`;
-    }).join('');
-
-    const colHeaders = players.map((p, pi) => {
-      const bg = pi === currentPlayerIndex
-        ? 'bg-indigo-100 text-indigo-800 font-bold' : 'bg-gray-50 text-gray-600';
-      return `<th class="text-center py-2 px-3 text-sm rounded-t-lg ${bg}">${p.name}</th>`;
-    }).join('');
-
-    return `
-    <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 pb-8">
-      <div class="bg-white shadow-sm px-4 py-3 flex items-center justify-between">
-        <h1 class="text-lg font-bold text-indigo-700">🎲 快艇骰子</h1>
-        <span class="text-sm text-gray-500">第 ${round}/13 回合・${currentPlayer.name}的回合</span>
-      </div>
-
-      ${cpuThinking ? `
-      <div id="cpu-indicator" class="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-amber-700 text-sm font-medium">
-        🤖 CPU 思考中…
-      </div>` : ''}
-
-      <div class="max-w-2xl mx-auto px-4 mt-6">
-        <div class="bg-white rounded-2xl shadow p-5 mb-4">
-          <div class="flex justify-center gap-3 mb-4 flex-wrap">${diceHTML}</div>
-          <div class="flex items-center justify-center gap-4">
-            <button onclick="${canRoll ? 'rollDice()' : ''}" ${canRoll ? '' : 'disabled'}
-              class="px-6 py-2 rounded-xl font-bold text-white transition
-                ${canRoll ? 'bg-indigo-600 hover:bg-indigo-700 active:scale-95' : 'bg-gray-300 cursor-not-allowed'}">
-              擲骰
-            </button>
-            <span class="text-sm text-gray-500">剩餘 <span class="font-bold text-indigo-600">${rollsLeft}</span> 次</span>
-          </div>
-          ${!rollPhase && !cpuThinking ? `<p class="text-center text-xs text-gray-400 mt-2">請先擲骰，再選擇計分類別</p>` : ''}
-          ${rollPhase && !cpuThinking  ? `<p class="text-center text-xs text-indigo-400 mt-2">點選骰子可保留，點計分格登記分數</p>` : ''}
-        </div>
-
-        <div class="bg-white rounded-2xl shadow overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-              <thead>
-                <tr>
-                  <th class="text-left py-2 px-2 text-gray-500 font-normal text-xs bg-gray-50">類別</th>
-                  ${colHeaders}
-                </tr>
-              </thead>
-              <tbody>
-                ${scoreRows}
-                <tr class="bg-gray-50 border-t-2 border-gray-200">
-                  <td class="py-1 px-2 text-xs text-gray-500 font-medium">上區小計</td>${upperSubCells}
-                </tr>
-                <tr class="bg-green-50">
-                  <td class="py-1 px-2 text-xs text-gray-500 font-medium">上區獎勵</td>${bonusCells}
-                </tr>
-                <tr class="bg-indigo-50 border-t border-indigo-100">
-                  <td class="py-1 px-2 text-xs font-bold text-indigo-700">總計</td>${totalCells}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  // ─── Game Over ────────────────────────────────────────────────────────────────
-
-  function renderGameover() {
-    const { players } = state;
-    const totals   = players.map(p => computeScoreboard(p.scorecard));
-    const maxTotal = Math.max(...totals.map(t => t.grandTotal));
-    const isWinner = totals.map(t => t.grandTotal === maxTotal);
-    const isTie    = isWinner.every(Boolean);
-
-    const colHeaders = players.map((p, pi) => {
-      const cls = isWinner[pi] ? 'bg-green-100 text-green-800 font-bold' : 'bg-gray-50 text-gray-600';
-      return `<th class="text-center py-2 px-3 text-sm ${cls}">
-        ${p.name}${isWinner[pi] ? (isTie ? ' 🤝' : ' 🏆') : ''}
-      </th>`;
-    }).join('');
-
-    const scoreRows = CATEGORIES.map(cat => {
-      const cells = players.map((p, pi) => {
-        const cls = isWinner[pi] ? 'bg-green-50 font-semibold text-green-800' : 'text-gray-600';
-        return `<td class="text-center py-1 px-2 ${cls}">${p.scorecard[cat.id] ?? 0}</td>`;
-      }).join('');
-      const border = cat.id === 'sixes' ? 'border-b-2 border-indigo-200' : '';
-      return `<tr class="${border}">
-        <td class="py-1 px-2 text-gray-700 text-sm font-medium whitespace-nowrap">${cat.label}</td>
-        ${cells}
-      </tr>`;
-    }).join('');
-
-    const summaryRows = [
-      { label:'上區小計', fn: t => t.upperSubtotal },
-      { label:'上區獎勵', fn: t => t.upperBonus > 0 ? '+35' : '—' },
-      { label:'下區小計', fn: t => t.lowerSubtotal },
-    ].map(row => {
-      const cells = totals.map((t, pi) => {
-        const cls = isWinner[pi] ? 'bg-green-50 font-semibold text-green-800' : 'text-gray-600';
-        return `<td class="text-center py-1 px-2 ${cls}">${row.fn(t)}</td>`;
-      }).join('');
-      return `<tr class="bg-gray-50">
-        <td class="py-1 px-2 text-xs text-gray-500">${row.label}</td>${cells}
-      </tr>`;
-    }).join('');
-
-    const grandCells = totals.map((t, pi) => {
-      const cls = isWinner[pi]
-        ? 'grand-total-cell bg-green-100 font-bold text-green-800 text-base'
-        : 'grand-total-cell font-bold text-gray-600';
-      return `<td class="text-center py-2 px-2 ${cls}">${t.grandTotal}</td>`;
-    }).join('');
-
-    const winnerMsg = isTie
-      ? '平局！勢均力敵！'
-      : `${players[isWinner.indexOf(true)].name} 獲勝！🎉`;
-
-    return `
-    <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 pb-8">
-      <div class="bg-white shadow-sm px-4 py-3 text-center">
-        <h1 class="text-lg font-bold text-indigo-700">🎲 遊戲結束</h1>
-      </div>
-      <div class="max-w-2xl mx-auto px-4 mt-6">
-        <div id="winner-card" class="bg-white rounded-2xl shadow-xl p-6 mb-4 text-center">
-          <div id="winner-trophy" class="text-4xl mb-2">${isTie ? '🤝' : '🏆'}</div>
-          <h2 id="winner-msg" class="text-2xl font-bold text-indigo-700">${winnerMsg}</h2>
-        </div>
-        <div class="bg-white rounded-2xl shadow overflow-hidden mb-4">
-          <div class="overflow-x-auto">
-            <table id="score-table" class="w-full text-sm">
-              <thead>
-                <tr>
-                  <th class="text-left py-2 px-2 text-gray-500 font-normal text-xs bg-gray-50">類別</th>
-                  ${colHeaders}
-                </tr>
-              </thead>
-              <tbody>
-                ${scoreRows}${summaryRows}
-                <tr class="border-t-2 border-indigo-200">
-                  <td class="py-2 px-2 text-sm font-bold text-indigo-700">總計</td>
-                  ${grandCells}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="text-center">
-          <button id="replay-btn" onclick="resetGame()"
-            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-10 rounded-xl transition active:scale-95">
-            再玩一次
-          </button>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  // ─── Boot ─────────────────────────────────────────────────────────────────────
+  window.__yacht = { get state() { return state; }, score, computeScoreboard, startGame, resetGame, rollDice, toggleHold, selectCategory, laneAt };
   render();
-  </script>
+})();
+</script>
 </body>
 </html>

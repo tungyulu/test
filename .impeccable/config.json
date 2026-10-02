@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "archivo",
+        "createdAt": "2026-10-02T02:27:08.368Z",
+        "reason": "DESIGN.md records the trip booklet only; yacht.html is its own world (surface brief yacht-html, regatta direction the user chose) and gets its own DESIGN-yacht.md at finish"
+      }
+    ]
+  }
+}
