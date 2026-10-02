@@ -332,7 +332,7 @@
 
   /* ---------- 聯盟磁鐵板 ---------- */
   .lt { border-bottom: 1px solid var(--print-2); }
-  .lt-head, .lt > summary { grid-template-columns: 26px minmax(150px, 1fr) 92px minmax(236px, 288px) 86px 18px; column-gap: 10px; }
+  .lt-head, .lt > summary { grid-template-columns: 26px minmax(214px, 1fr) 88px minmax(210px, 252px) 80px 18px; column-gap: 10px; }
   .lt-head { display: grid; align-items: end; padding: 0 4px 6px; border-bottom: 1.5px solid var(--print); font: 700 12px/1.2 var(--sans); color: var(--print-ink); }
   .lt-head > span:nth-child(3), .lt-head > span:nth-child(5) { text-align: right; }
   .lt-head .lch { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; text-align: center; font: 700 11.5px/1.2 var(--print-face); letter-spacing: .03em; }
@@ -344,7 +344,7 @@
   .lt > summary:hover { background: var(--board-2); }
   .lr { grid-area: lr; font: 800 21px/1 var(--print-face); color: var(--print-ink); text-align: right; font-variant-numeric: tabular-nums; }
   .ln { grid-area: ln; min-width: 0; }
-  .nm-strip { padding: 4px 10px 3px; font-size: 14.5px; }
+  .nm-strip { padding: 4px 8px 3px; font-size: 14px; }
   .lt.me .mag { background: var(--tape-mine); border-color: var(--tape-mine-edge); border-bottom-color: var(--tape-mine-side); color: var(--tape-ink); }
   .lw { grid-area: lw; display: grid; gap: 2px; justify-items: end; }
   .lw b { font: 800 21px/1 var(--print-face); font-variant-numeric: tabular-nums; }
@@ -505,7 +505,7 @@
   /* 一條印好的格線：每列一位球員，名字貼在磁鐵上；每一欄都跟上面印的欄名對齊 */
   .list-head, .row {
     display: grid; column-gap: 12px; align-items: center;
-    grid-template-columns: 34px minmax(0, 1fr) 84px 60px 330px 160px;
+    grid-template-columns: 34px minmax(0, 1fr) 80px 56px 312px 210px;
     grid-template-areas: "rk who price idx heat act" "rk note price idx heat act";
   }
   .list-head {
@@ -550,13 +550,13 @@
   .grade { font: 800 13px/1 var(--print-face); padding: 4px 6px; border-radius: 4px; border: 1.5px solid var(--print); color: var(--print-ink); }
   .grade.gS { background: var(--m-blue); border-color: var(--m-blue); color: var(--on-blue); }
   .grade.gA { border-color: var(--m-blue); color: var(--m-blue); }
-  .heat, .h-heat { display: grid; grid-template-columns: repeat(9, 34px); gap: 3px; }
+  .heat, .h-heat { display: grid; grid-template-columns: repeat(9, 32px); gap: 3px; }
   .heat { grid-area: heat; }
   .heat .c { min-height: 32px; }
   /* 隊伍欄：隊名、選秀價（右對齊）和按鈕，寬度固定，每列的 $ 都在同一條線上 */
   .act { grid-area: act; display: grid; grid-template-columns: minmax(0, 1fr) 54px; grid-template-areas: "own btn" "opp btn"; gap: 2px 8px; align-items: center; }
   .act .btn { grid-area: btn; padding-inline: 4px; }
-  .own { grid-area: own; min-width: 0; align-self: end; font-size: 12.5px; line-height: 1.3; text-align: right; overflow-wrap: anywhere; }
+  .own { grid-area: own; min-width: 0; align-self: end; font-size: 12.5px; line-height: 1.3; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .own .fa { color: var(--m-green); font-weight: 700; }
   .opp { grid-area: opp; align-self: start; font: 800 16px/1.1 var(--print-face); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
   .opp small { display: none; margin-right: 3px; font: 500 11px/1 var(--sans); color: var(--ink-2); }
@@ -570,9 +570,9 @@
   .editor .msg.err { color: var(--m-red); font-weight: 700; }
   .empty { padding: 28px 12px; text-align: center; color: var(--ink-2); }
   .more { margin-top: 12px; display: flex; justify-content: center; }
-  /* 960px 以下：九項移到第三行，隊伍欄仍在最右邊 */
-  @container pl (max-width: 959px) {
-    .list-head, .row { grid-template-columns: 38px minmax(0, 1fr) 84px 60px 160px; grid-template-areas: "rk who price idx act" "rk note price idx act" ". heat heat heat act"; }
+  /* 980px 以下：九項移到第三行，隊伍欄仍在最右邊 */
+  @container pl (max-width: 979px) {
+    .list-head, .row { grid-template-columns: 38px minmax(0, 1fr) 80px 56px 210px; grid-template-areas: "rk who price idx act" "rk note price idx act" ". heat heat heat act"; }
     .list-head { grid-template-areas: "rk who price idx act" ". heat heat heat act"; row-gap: 3px; }
     .h-act { align-self: start; }
     .heat, .h-heat { grid-template-columns: repeat(9, minmax(0, 54px)); }
@@ -1777,7 +1777,7 @@ function rowHTML(p, mk, rankIn) {
         <span class="msg">換隊或放回自由球員，聯盟戰力會重算</span></div>`;
     } else {
       const who = t === ME ? '<span class="minetag">我的</span>' : t !== null ? esc(DRAFT_TEAMS[t]) : sold ? '已被選走' : '<span class="fa">自由球員</span>';
-      act = `<span class="own">${who}</span><span class="opp">${sold && sold.p ? `<small>選秀</small>${money(sold.p)}` : ''}</span>
+      act = `<span class="own"${t !== null && t !== ME ? ` title="${esc(DRAFT_TEAMS[t])}"` : ''}>${who}</span><span class="opp">${sold && sold.p ? `<small>選秀</small>${money(sold.p)}` : ''}</span>
         <button type="button" class="btn small" data-act="edit" aria-label="改 ${esc(p.name)} 的隊伍">改隊伍</button>`;
     }
   } else if (editing) {
