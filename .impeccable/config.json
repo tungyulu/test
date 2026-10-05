@@ -20,6 +20,27 @@
         "value": "sofia sans condensed",
         "createdAt": "2026-10-02T08:21:34.000Z",
         "reason": "nba-auction.html's own world (surface brief nba-auction-html, the category-standard data app the owner pinned on 2026-10-02): Sofia Sans Condensed with tabular figures for every number and category label; recorded in DESIGN-nba.md, while DESIGN.md covers the trip booklet only"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "form ming",
+        "createdAt": "2026-10-05T07:16:03.121Z",
+        "reason": "invest.html's own world (surface brief invest-html, the passbook direction the owner chose on 2026-10-05): Noto Serif TC subset as the pre-printed form lettering; DESIGN.md covers the trip booklet only"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "pin dots",
+        "createdAt": "2026-10-05T07:16:03.132Z",
+        "reason": "invest.html's own world (surface brief invest-html, passbook direction chosen by the owner 2026-10-05): GNU Unifont subset as the passbook printer's dot-matrix entries; DESIGN.md covers the trip booklet only"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "invest.html"
+        ],
+        "createdAt": "2026-10-05T07:25:27.187Z",
+        "reason": "invest.html passbook world (surface brief invest-html): the flagged 3px borders are full-width printed double rules (border-bottom/top: 3px double) under each page head and above the warning note, not a one-side accent on a card"
       }
     ]
   }

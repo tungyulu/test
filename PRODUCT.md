@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), the **Yacht dice game** (`yacht.html`) and the **NBA fantasy board** (`nba-auction.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, investment notes, Yōtei checklist, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), the **Yacht dice game** (`yacht.html`), the **NBA fantasy board** (`nba-auction.html`) and the **investment plan** (`invest.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, Yōtei checklist, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
@@ -80,6 +80,24 @@
 **Brand commitment (2026-10-02, after the critique).** The owner retired the tactics-board look (it read as cheap: hardware chrome, magnets and tape on every element, a handwriting face for numbers). The page is the category standard played straight: a clean fantasy-sports data app at the craft level of Yahoo Fantasy, Sleeper, ESPN Fantasy and Basketball Monster. Those products set the bar for finish, not a template to copy: none of their branding, colours-as-identity, logos or layouts. No metaphor costume of any kind. The player table keeps all of its information; only explanation that repeats what is already on screen goes.
 
 **Evidence on hand.** The projections (estimates compiled 2026-09-28 from ESPN's rankings, team news and 2025-26 stats, with camp-news adjustments), the official 196 draft picks, the league's rosters as re-pasted on 2026-10-05 (every trade and pickup since the draft, 200 players including IL) and the team names exactly as the league shows them. The projections are estimates and the page says so. No NBA, team or Yahoo logos and no player photos are on hand; none may be added or imitated, and nothing may look like an official NBA or Yahoo product.
+
+## Investment plan · 投資作戰表 (`invest.html`)
+
+**Users.** The owner (Traditional Chinese, Taiwan), a small retail investor in Taiwan stocks and ETFs, on phone and desktop. Linked from the hub's 理財與筆記 lot; the page is public on GitHub Pages, so it never shows account numbers or the owner's name.
+
+**Purpose.** The owner's own forward plan for the portfolio: what happens next and how far the plan has come. Opening the page answers "where is the plan now" first (the next dated action, the cash buffer against its floor, the open short-term position and its exit date), then the standing rules, the price conditions, the current allocation against its targets and the short-term ETF choice. Success: in a few seconds the owner knows the next thing to do and whether any rule applies today.
+
+**Content that must survive any redesign.**
+- The monthly DCA: 0050 NT$15,000 + 00878 NT$5,000 (the whole NT$20,000), never paused; 0050 is not sold to rebalance.
+- The cash buffer: floor NT$10,000, at NT$3,168 after the 2026-09-29 sale; it fills from selling one MediaTek share when the price is ≥ 5,000, 00878 dividends and extra income; kept outside the settlement account.
+- The rules: individual stocks and theme / active ETFs only with extra money, at most 20 % together and 6 % per stock; known large expenses saved ahead by lowering that month's DCA; the emergency sell order buffer → satellites → 00878 → 0050; sale proceeds are not reinvested before their purpose is done; no buying after a +5 % gap.
+- The October short-term plan (decided 2026-10-05): with about NT$40,000 of extra money, top the buffer up first (~6,832), then at most ~33,000 into one active ETF — 00981A, or 00985A for lower volatility — with a −8 % stop and a full exit before 11/4 so cash settles 11/6, before the 11/7 trip.
+- The price conditions: MediaTek (sell 1 at ≥ 5,000, buy back < 4,500, re-check < 3,900), GUC (1 share at 5,600–5,800, 1 more at 5,200–5,400, cap 2, no chase > 6,300, re-check < 4,900), Shin Zu Shing (wait for October revenue), Macronix (no buy-back), 00757 (hold).
+- Current holdings in brief (value, share, role) and the allocation targets: 0050 70–80 %, 00878 15–25 %, satellites ≤ 20 %.
+- Past material (the 9/29 trades, the September review, the version log and every source) stays reachable but folded away at the end, by the owner's choice on 2026-10-05.
+- Static single self-contained HTML file, Traditional Chinese; gains and losses are never coloured red/green (Taiwan broker apps use red = up).
+
+**Evidence on hand.** The holdings snapshot from the 2026-09-29 broker screenshot, the 9/29 trade records, prices and fund facts from 10/1–10/2 search results (cited on the page). Everything is the owner's personal note, not investment advice, and the page says so. No bank, broker or fund logos; nothing may look like a real bank's or broker's document.
 
 ---
 
