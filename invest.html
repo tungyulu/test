@@ -94,7 +94,7 @@
     background-blend-mode: normal;
     padding: 26px 30px 22px;
   }
-  .page::before { /* the guilloche, tinted from the form ink */
+  .page::before { /* a paper veil over the black guilloche strokes, leaving them faint */
     content: ""; position: absolute; inset: 0; pointer-events: none;
     background: var(--paper); opacity: .89;
   }
@@ -244,7 +244,8 @@
   .back details { border-top: 1.5px solid var(--rule-2); border-bottom: 1.5px solid var(--rule-2); }
   .back summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 2px; min-height: 48px; font: 700 15px/1.4 var(--ming); color: var(--form); letter-spacing: .1em; }
   .back summary::-webkit-details-marker { display: none; }
-  .back summary svg { width: 18px; height: 18px; flex: none; transition: rotate .18s ease-out; }
+  .back summary svg { width: 18px; height: 18px; flex: none; }
+  @media (prefers-reduced-motion: no-preference) { .back summary svg { transition: rotate .18s ease-out; } }
   .back details[open] summary svg { rotate: 180deg; }
   .back summary .hint { font: 400 12.5px/1.4 var(--sans); color: var(--form); letter-spacing: 0; }
   .hist { padding: 6px 0 18px; display: grid; gap: 22px; }

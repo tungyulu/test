@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-05T07:34:55+00:00",
+  "title": "Design System: 投資作戰表 · 計畫存摺",
+  "extensions": {
+    "colorMeta": {
+      "desk": {
+        "role": "primary",
+        "displayName": "Cover Cloth",
+        "canonical": "#134a3a",
+        "tonalRamp": [
+          "#001009",
+          "#002d1f",
+          "#134a3a",
+          "#356958",
+          "#558a77",
+          "#76ac98",
+          "#9bd2be",
+          "#d7f7ea"
+        ]
+      },
+      "desk-ink": {
+        "role": "neutral",
+        "displayName": "Desk Ink",
+        "canonical": "#e4eee6",
+        "tonalRamp": [
+          "#080c09",
+          "#1f2620",
+          "#3a423c",
+          "#586059",
+          "#778079",
+          "#98a19a",
+          "#bdc7bf",
+          "#eaf0eb"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Security Paper",
+        "canonical": "#eef3e6",
+        "tonalRamp": [
+          "#0a0c07",
+          "#22261c",
+          "#3e4137",
+          "#5b5f54",
+          "#7b7f74",
+          "#9ca094",
+          "#c1c6ba",
+          "#edf0e8"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Spine Paper",
+        "canonical": "#e2ead6",
+        "tonalRamp": [
+          "#0a0c05",
+          "#212617",
+          "#3c4232",
+          "#5a614f",
+          "#79806e",
+          "#9aa28f",
+          "#c0c8b4",
+          "#ecf1e5"
+        ]
+      },
+      "form": {
+        "role": "primary",
+        "displayName": "Form Green",
+        "canonical": "#2c654b",
+        "tonalRamp": [
+          "#001006",
+          "#002e18",
+          "#0e4c33",
+          "#326b50",
+          "#528b6f",
+          "#74ad90",
+          "#99d4b5",
+          "#d5f8e5"
+        ]
+      },
+      "due": {
+        "role": "neutral",
+        "displayName": "Due Green",
+        "canonical": "#46765e",
+        "tonalRamp": [
+          "#001006",
+          "#002d19",
+          "#194a34",
+          "#396952",
+          "#598a71",
+          "#7aab91",
+          "#9fd2b7",
+          "#d9f7e6"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "rgba(44, 101, 75, .34)",
+        "tonalRamp": [
+          "#001006",
+          "#002e18",
+          "#0e4c33",
+          "#326b50",
+          "#528b6f",
+          "#74ad90",
+          "#99d4b5",
+          "#d5f8e5"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "rgba(44, 101, 75, .62)",
+        "tonalRamp": [
+          "#001006",
+          "#002e18",
+          "#0e4c33",
+          "#326b50",
+          "#528b6f",
+          "#74ad90",
+          "#99d4b5",
+          "#d5f8e5"
+        ]
+      },
+      "ink": {
+        "role": "secondary",
+        "displayName": "Ribbon Navy",
+        "canonical": "#22305e",
+        "tonalRamp": [
+          "#040920",
+          "#141f4c",
+          "#2d3d6c",
+          "#4a5b8d",
+          "#687bb0",
+          "#899dd3",
+          "#adc3fb",
+          "#e0eeff"
+        ]
+      },
+      "seal": {
+        "role": "tertiary",
+        "displayName": "Seal Red",
+        "canonical": "#ad2228",
+        "tonalRamp": [
+          "#280000",
+          "#5b0000",
+          "#80000a",
+          "#a5292c",
+          "#cb4e4b",
+          "#f2716b",
+          "#ff978f",
+          "#ffd6ce"
+        ]
+      },
+      "seal-wash": {
+        "role": "tertiary",
+        "displayName": "Seal Wash",
+        "canonical": "rgba(173, 34, 40, .07)",
+        "tonalRamp": [
+          "#280000",
+          "#5b0000",
+          "#80000a",
+          "#a5292c",
+          "#cb4e4b",
+          "#f2716b",
+          "#ff978f",
+          "#ffd6ce"
+        ]
+      },
+      "dark-desk": {
+        "role": "primary",
+        "displayName": "Night Cover Cloth",
+        "canonical": "#0a1a13",
+        "tonalRamp": [
+          "#050d09",
+          "#182821",
+          "#33443c",
+          "#50635a",
+          "#708279",
+          "#90a49a",
+          "#b5cac0",
+          "#e5f2ec"
+        ]
+      },
+      "dark-desk-ink": {
+        "role": "neutral",
+        "displayName": "Night Desk Ink",
+        "canonical": "#cfe0d4",
+        "tonalRamp": [
+          "#070d09",
+          "#1b281f",
+          "#36443a",
+          "#536258",
+          "#728277",
+          "#93a398",
+          "#b8c9bd",
+          "#e7f2ea"
+        ]
+      },
+      "dark-paper": {
+        "role": "neutral",
+        "displayName": "Night Security Paper",
+        "canonical": "#16231c",
+        "tonalRamp": [
+          "#060d09",
+          "#1a2720",
+          "#36443c",
+          "#536259",
+          "#728279",
+          "#93a39a",
+          "#b8c9bf",
+          "#e7f1eb"
+        ]
+      },
+      "dark-paper-2": {
+        "role": "neutral",
+        "displayName": "Night Spine Paper",
+        "canonical": "#1c2b23",
+        "tonalRamp": [
+          "#060d09",
+          "#192820",
+          "#34443b",
+          "#526259",
+          "#718278",
+          "#91a499",
+          "#b7c9bf",
+          "#e6f2eb"
+        ]
+      },
+      "dark-form": {
+        "role": "primary",
+        "displayName": "Night Form Green",
+        "canonical": "#8fc6a8",
+        "tonalRamp": [
+          "#001005",
+          "#002e18",
+          "#144b33",
+          "#356a50",
+          "#558b6f",
+          "#76ad8f",
+          "#9cd3b5",
+          "#d7f8e5"
+        ]
+      },
+      "dark-due": {
+        "role": "neutral",
+        "displayName": "Night Due Green",
+        "canonical": "#6fa58a",
+        "tonalRamp": [
+          "#001006",
+          "#002e19",
+          "#134b34",
+          "#356a51",
+          "#558b71",
+          "#76ac91",
+          "#9bd3b6",
+          "#d7f8e6"
+        ]
+      },
+      "dark-rule": {
+        "role": "neutral",
+        "displayName": "Night Rule",
+        "canonical": "rgba(143, 198, 168, .26)",
+        "tonalRamp": [
+          "#001005",
+          "#002e18",
+          "#144b33",
+          "#356a50",
+          "#558b6f",
+          "#76ad8f",
+          "#9cd3b5",
+          "#d7f8e5"
+        ]
+      },
+      "dark-rule-2": {
+        "role": "neutral",
+        "displayName": "Night Strong Rule",
+        "canonical": "rgba(143, 198, 168, .5)",
+        "tonalRamp": [
+          "#001005",
+          "#002e18",
+          "#144b33",
+          "#356a50",
+          "#558b6f",
+          "#76ad8f",
+          "#9cd3b5",
+          "#d7f8e5"
+        ]
+      },
+      "dark-ink": {
+        "role": "secondary",
+        "displayName": "Night Ribbon Navy",
+        "canonical": "#cdd8f3",
+        "tonalRamp": [
+          "#070b15",
+          "#1c2337",
+          "#373f55",
+          "#545d74",
+          "#737d95",
+          "#949eb8",
+          "#b9c4de",
+          "#e8eeff"
+        ]
+      },
+      "dark-seal": {
+        "role": "tertiary",
+        "displayName": "Night Seal Red",
+        "canonical": "#ff8d8a",
+        "tonalRamp": [
+          "#240000",
+          "#550000",
+          "#780d1a",
+          "#9d3538",
+          "#c25656",
+          "#e87876",
+          "#ff9e9b",
+          "#ffd9d5"
+        ]
+      },
+      "dark-seal-wash": {
+        "role": "tertiary",
+        "displayName": "Night Seal Wash",
+        "canonical": "rgba(255, 141, 138, .08)",
+        "tonalRamp": [
+          "#240000",
+          "#550000",
+          "#780d1a",
+          "#9d3538",
+          "#c25656",
+          "#e87876",
+          "#ff9e9b",
+          "#ffd9d5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "holder-title": {
+        "displayName": "Holder Title",
+        "purpose": "Holder title: 投資作戰表 on page 1 only, ribbon navy."
+      },
+      "page-head": {
+        "displayName": "Page Head",
+        "purpose": "One Ming page head per page above a 3px double rule."
+      },
+      "fold-head": {
+        "displayName": "Fold Head",
+        "purpose": "The back-cover fold summary."
+      },
+      "clause-head": {
+        "displayName": "Clause Head",
+        "purpose": "第N條 + clause name on 約定事項."
+      },
+      "form-label": {
+        "displayName": "Form Label",
+        "purpose": "Holder-form labels, order-slip keys, ratio-scale names."
+      },
+      "column-head": {
+        "displayName": "Column Head",
+        "purpose": "Ledger and table column heads over a 1.5px strong rule."
+      },
+      "seal-text": {
+        "displayName": "Seal Text",
+        "purpose": "Text inside round seals and form tags."
+      },
+      "entry": {
+        "displayName": "Entry",
+        "purpose": "Every printed entry: dates, amounts, balances, prices, percentages, stock codes."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running prose in ribbon navy."
+      },
+      "clause-body": {
+        "displayName": "Clause Body",
+        "purpose": "Clause text on 約定事項 and the execution steps."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "The third voice: .nt lines under entries, reasons, legends, fine print — adopted for long-CJK legibility, cited by the finish review."
+      }
+    },
+    "shadows": [
+      {
+        "name": "none",
+        "value": "none",
+        "purpose": "The book is flat; depth is rules, double rules, the stitched spine and the guilloche. The round seal uses mix-blend-mode: multiply in light mode (normal in dark) so it soaks into paper and wash."
+      }
+    ],
+    "motion": [
+      {
+        "name": "seal-stamp",
+        "value": "opacity 0 → 1, scale 1.35 → 1, .18s cubic-bezier(.2,.8,.2,1), .25s delay",
+        "purpose": "The next / today seal stamps once on load; JS only, never under prefers-reduced-motion."
+      },
+      {
+        "name": "fold-chevron",
+        "value": "rotate .18s ease-out",
+        "purpose": "Back-cover disclosure chevron turns 180° when open."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "1000px",
+        "purpose": "Spine hidden, pages stack singly."
+      },
+      {
+        "name": "phone",
+        "value": "600px",
+        "purpose": "Ledger rows fold into two-line entries; smaller seals and pads; holdings 目標 column dropped."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Passbook Page",
+      "kind": "card",
+      "refersTo": "page",
+      "description": "A security-paper page with its Ming head, folio and double rule; every section of the plan is one page.",
+      "html": "<section class=\"ds-page\"><div class=\"ds-phead\"><h2>約定事項</h2><span class=\"ds-folio\">第 4 頁</span></div><p>0050 每月 15,000、00878 每月 5,000，照扣不停。</p></section>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-page{background:var(--paper);color:var(--ink);border-radius:8px;padding:26px 30px 22px;font:15px/1.7 var(--sans)}.ds-phead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:3px double var(--rule-2);margin-bottom:16px}.ds-phead h2{margin:0;font:700 21px/1.3 var(--ming);color:var(--form);letter-spacing:.12em}.ds-folio{font:700 12px/1 var(--ming);color:var(--form);letter-spacing:.1em}.ds-dm{font:400 16px/1.5 var(--dots);font-variant-numeric:tabular-nums;font-synthesis:none}"
+    },
+    {
+      "name": "Holder Form Row",
+      "kind": "custom",
+      "refersTo": "form-row",
+      "description": "Ruled dl row on 存戶資料: Ming label, dot-matrix value, sans note in form green, optional NT$1,000-per-cell meter.",
+      "html": "<dl class=\"ds-form\"><div><dt>現金緩衝</dt><dd><span class=\"ds-dm\">3,168 ／ 下限 10,000</span><div class=\"ds-meter\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"part\"></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class=\"ds-nt\">放在交割帳戶以外；一格 1,000</span></dd></div><div><dt>下一筆</dt><dd><span class=\"ds-dm ds-red\">10/07 三 定期定額扣款</span><span class=\"ds-nt\">還有 2 天</span></dd></div></dl>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-form{margin:0;border-top:1px solid var(--rule-2);background:var(--paper);color:var(--ink);padding:0 16px;font:15px/1.7 var(--sans)}.ds-form>div{display:grid;grid-template-columns:88px 1fr;gap:12px;align-items:baseline;padding:10px 0 9px;border-bottom:1px solid var(--rule)}.ds-form dt{font:700 13px/1.5 var(--ming);color:var(--form);letter-spacing:.3em}.ds-form dd{margin:0}.ds-dm{font:400 16px/1.5 var(--dots);font-variant-numeric:tabular-nums}.ds-red{color:var(--seal)}.ds-nt{display:block;font-size:13px;color:var(--form);margin-top:2px}.ds-meter{display:flex;gap:3px;margin-top:7px}.ds-meter i{width:18px;height:10px;border:1px solid var(--rule-2)}.ds-meter i.on{background:var(--ink);border-color:var(--ink)}.ds-meter i.part{background:linear-gradient(90deg,var(--ink) 17%,transparent 0)}"
+    },
+    {
+      "name": "Ledger",
+      "kind": "custom",
+      "refersTo": "ledger-row-next",
+      "description": "交易明細: carry-forward row, the dashed 以下未印 cut line, the sealed next row on a red wash, due rows in due green, a hard-deadline date in seal red.",
+      "html": "<table class=\"ds-ledger\"><thead><tr><th>序</th><th>日期</th><th>摘要</th><th class=\"r\">緩衝結存</th></tr></thead><tbody><tr class=\"carry\"><td class=\"ds-dm no\">0</td><td class=\"ds-dm\">承前頁</td><td><span class=\"ds-dm\">9/29 賣股後緩衝</span></td><td class=\"ds-dm r\">3,168</td></tr><tr class=\"cut\"><td colspan=\"4\"><span></span></td></tr><tr class=\"next\"><td class=\"ds-dm no\">1</td><td class=\"ds-dm d\">10/07 三</td><td class=\"s\"><span class=\"ds-dm\">定期定額扣款</span><span class=\"nt\">扣款前確認交割帳戶有 2 萬</span><span class=\"ds-seal\">下一筆</span></td><td class=\"ds-dm r\">3,168</td></tr><tr class=\"due hard\"><td class=\"ds-dm no\">4</td><td class=\"ds-dm d\">11/04 三</td><td><span class=\"ds-dm\">短線全部賣出</span><span class=\"nt\">中途跌 8% 就提前停損</span></td><td class=\"ds-dm r\">10,000</td></tr></tbody></table>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-ledger{border-collapse:collapse;width:100%;background:var(--paper);color:var(--ink);font:15px/1.7 var(--sans)}.ds-ledger th{font:700 12px/1.3 var(--ming);color:var(--form);letter-spacing:.14em;text-align:left;padding:0 6px 7px;border-bottom:1.5px solid var(--rule-2)}.ds-ledger td{padding:9px 6px 8px;border-bottom:1px solid var(--rule);vertical-align:top}.ds-ledger .r{text-align:right}.ds-dm{font:400 16px/1.5 var(--dots);font-variant-numeric:tabular-nums}.ds-ledger .no{color:var(--form);text-align:right}.ds-ledger .nt{display:block;font-size:12.5px;line-height:1.55;color:var(--form)}.ds-ledger tr.carry td{border-bottom:1.5px solid var(--rule-2)}.ds-ledger tr.due .ds-dm{color:var(--due)}.ds-ledger tr.hard .d{color:var(--seal)}.ds-ledger tr.next td{background:var(--seal-wash)}.ds-ledger tr.next .d{color:var(--seal)}.ds-ledger td.s{position:relative;padding-right:58px}.ds-ledger tr.cut td{padding:0;border:0}.ds-ledger tr.cut span{position:relative;display:block;border-top:1.5px dashed var(--seal)}.ds-ledger tr.cut span::after{content:'以下未印';position:absolute;right:0;top:-9px;padding:0 6px;background:var(--paper);font:700 11px/16px var(--ming);color:var(--seal);letter-spacing:.2em}.ds-seal{position:absolute;right:4px;top:50%;translate:0 -50%;width:46px;height:46px;border:2px solid var(--seal);border-radius:50%;color:var(--seal);display:grid;place-items:center;font:700 12px/1.05 var(--ming);rotate:-10deg;mix-blend-mode:multiply;animation:ds-stamp .18s cubic-bezier(.2,.8,.2,1) .25s both}@keyframes ds-stamp{from{opacity:0;scale:1.35}to{opacity:1;scale:1}}@media (prefers-reduced-motion:reduce){.ds-seal{animation:none}}"
+    },
+    {
+      "name": "Seals",
+      "kind": "custom",
+      "refersTo": "seal-square",
+      "description": "The square 印鑑 seal (vertical columns read right to left, −4°) in its ruled frame, and the round 下一筆 seal (−10°).",
+      "html": "<div class=\"ds-seals\"><div class=\"ds-stampbox\"><span class=\"lbl\">印鑑</span><div class=\"frame\"><div class=\"sq\"><span>緩衝</span><span>優先</span></div></div></div><span class=\"ds-round\">下一筆</span></div>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-seals{display:flex;gap:28px;align-items:center;background:var(--paper);padding:20px}.ds-stampbox{width:92px;text-align:center}.ds-stampbox .lbl{display:block;font:700 11px/1 var(--ming);color:var(--form);letter-spacing:.4em;padding-left:.4em;margin-bottom:6px}.ds-stampbox .frame{width:92px;height:92px;border:1px solid var(--rule-2);display:grid;place-items:center}.ds-stampbox .sq{width:64px;height:64px;border:3px solid var(--seal);border-radius:4px;color:var(--seal);display:grid;grid-template-columns:1fr 1fr;direction:rtl;place-items:center;font:700 22px/1 var(--ming);padding:3px;transform:rotate(-4deg)}.ds-stampbox .sq span{writing-mode:vertical-rl;direction:ltr}.ds-round{width:46px;height:46px;border:2px solid var(--seal);border-radius:50%;color:var(--seal);display:grid;place-items:center;font:700 12px/1.05 var(--ming);text-align:center;rotate:-10deg;mix-blend-mode:multiply}"
+    },
+    {
+      "name": "Ratio Scale",
+      "kind": "custom",
+      "refersTo": "page",
+      "description": "庫存 ratio ruler: 10% ticks, navy bar for the current share, open red bracket with dashed legs for the target band.",
+      "html": "<div class=\"ds-rr\"><span class=\"k\">0050</span><div class=\"ds-ruler\"><span class=\"ticks\"></span><span class=\"now\" style=\"width:73.4%\"></span><span class=\"aim\" style=\"left:70%;width:10%\"></span></div><span class=\"v\">73.4%</span></div>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-rr{display:grid;grid-template-columns:74px 1fr 64px;gap:10px;align-items:center;background:var(--paper);color:var(--ink);padding:16px}.ds-rr .k{font:700 13px/1.2 var(--ming);color:var(--form)}.ds-rr .v{text-align:right;font:400 16px/1.5 var(--dots)}.ds-ruler{position:relative;height:26px}.ds-ruler .ticks{position:absolute;left:0;right:0;bottom:0;height:10px;background-image:linear-gradient(90deg,var(--rule-2) 1px,transparent 1px);background-size:10% 100%;border-bottom:1px solid var(--rule-2);border-right:1px solid var(--rule-2)}.ds-ruler .now{position:absolute;left:0;bottom:3px;height:9px;background:var(--ink)}.ds-ruler .aim{position:absolute;top:0;height:12px;border:1.5px solid var(--seal);border-bottom:0}.ds-ruler .aim::after{content:'';position:absolute;inset:auto -1.5px -14px;height:14px;border-left:1.5px dashed var(--seal);border-right:1.5px dashed var(--seal)}"
+    },
+    {
+      "name": "Clause",
+      "kind": "custom",
+      "refersTo": "page",
+      "description": "約定事項 numbered clause: Ming 第N條 head over sans body; the stop-rule clause in seal red.",
+      "html": "<ol class=\"ds-clauses\"><li><div class=\"h\"><span class=\"n\">第七條</span>不追高</div><p>任何一檔跳空大漲 5% 以上的那天不買，等拉回。</p></li><li><div class=\"h\"><span class=\"n\">第八條</span>短線部位</div><p class=\"stop\">跌 8% 停損；11/04 前不論賺賠全部賣出。</p></li></ol>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-clauses{list-style:none;margin:0;padding:12px 16px;background:var(--paper);color:var(--ink);font-family:var(--sans)}.ds-clauses li{padding:10px 0 9px;border-bottom:1px solid var(--rule)}.ds-clauses .h{font:700 14px/1.6 var(--ming);color:var(--form);letter-spacing:.06em}.ds-clauses .n{font-size:12px;letter-spacing:.2em;margin-right:10px}.ds-clauses p{margin:0;font-size:14.5px;line-height:1.7}.ds-clauses .stop{color:var(--seal);font-weight:600}"
+    },
+    {
+      "name": "Order Slip",
+      "kind": "card",
+      "refersTo": "form-tag",
+      "description": "短線約定 slip: strong-rule frame, Ming keys, bold pick with dot-matrix code, form-green reason.",
+      "html": "<div class=\"ds-order\"><div><span class=\"k\">首選</span><p><span class=\"pick\"><span class=\"dm\">00981A</span> 主動統一台股增長</span><span class=\"why\">主動式規模最大、成交量最好；年費用約 1.11%。</span></p></div><div><span class=\"k\">替代</span><p><span class=\"pick\"><span class=\"dm\">00985A</span> 主動野村台灣50</span><span class=\"why\">走勢比較貼近大盤、波動小一點。</span></p></div></div>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-order{border:1.5px solid var(--rule-2);background:var(--paper);color:var(--ink);font:15px/1.7 var(--sans)}.ds-order>div{display:grid;grid-template-columns:88px 1fr;gap:12px;padding:11px 14px 10px;border-bottom:1px solid var(--rule)}.ds-order>div:last-child{border-bottom:0}.ds-order .k{font:700 13px/1.6 var(--ming);color:var(--form);letter-spacing:.2em}.ds-order p{margin:0}.ds-order .pick{font-weight:700;font-size:15.5px}.ds-order .dm{font:400 16px/1.5 var(--dots)}.ds-order .why{display:block;font-size:13px;color:var(--form);margin-top:2px}"
+    },
+    {
+      "name": "Back Cover Fold",
+      "kind": "nav",
+      "refersTo": "fold-summary",
+      "description": "封底 disclosure between strong rules holding the past trades, review, version log and sources.",
+      "html": "<details class=\"ds-fold\"><summary><span>9 月以前的紀錄<span class=\"hint\">（9/29 成交、9 月檢討、版本、引用來源）</span></span><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 9l6 6 6-6\"/></svg></summary><p>v4.1（2026-10-05）新增 10 月短線計畫。</p></details>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-fold{background:var(--paper);color:var(--ink);border-top:1.5px solid var(--rule-2);border-bottom:1.5px solid var(--rule-2);padding:0 12px;font:13.5px/1.75 var(--sans)}.ds-fold summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 2px;min-height:48px;font:700 15px/1.4 var(--ming);color:var(--form);letter-spacing:.1em}.ds-fold summary::-webkit-details-marker{display:none}.ds-fold summary:hover{color:var(--seal)}.ds-fold summary:focus-visible{outline:2px solid var(--seal);outline-offset:3px;border-radius:2px}.ds-fold .hint{font:400 12.5px/1.4 var(--sans);color:var(--form);letter-spacing:0}.ds-fold svg{width:18px;height:18px;flex:none;transition:rotate .18s ease-out}.ds-fold[open] svg{rotate:180deg}@media (prefers-reduced-motion:reduce){.ds-fold svg{transition:none}}"
+    },
+    {
+      "name": "Top Bar",
+      "kind": "nav",
+      "refersTo": "top-bar-link",
+      "description": "On the cloth desk: back link with SVG chevron (≥44px) and the disclaimer.",
+      "html": "<div class=\"ds-top\"><a href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M15 18l-6-6 6-6\"/></svg>回小工具首頁</a><span>個人投資筆記，非投資建議</span></div>",
+      "css": ":host{--desk:#134a3a;--desk-ink:#e4eee6;--paper:#eef3e6;--paper-2:#e2ead6;--form:#2c654b;--due:#46765e;--rule:rgba(44,101,75,.34);--rule-2:rgba(44,101,75,.62);--ink:#22305e;--seal:#ad2228;--seal-wash:rgba(173,34,40,.07);--ming:'Form Ming','Noto Serif TC','Songti TC','PMingLiU',serif;--dots:'Pin Dots',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;--sans:system-ui,-apple-system,'PingFang TC','Noto Sans TC','Microsoft JhengHei',sans-serif}.ds-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 24px;background:var(--desk);color:var(--desk-ink);font:13px/1.7 var(--sans)}.ds-top a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;min-height:44px}.ds-top a:hover{text-decoration:underline;text-underline-offset:3px}.ds-top a:focus-visible{outline:2px solid var(--seal);outline-offset:3px;border-radius:2px}.ds-top svg{width:16px;height:16px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Plan Passbook",
+    "overview": "The plan is a bank passbook (存摺) opened flat on its own green cloth cover. The desk is the cover, and on it lie three two-page spreads and a back cover. Each spread has pale green security paper with a fine wave guilloche, a stitched spine between the pages and a folio in the corner. The pages are 存戶資料 · 交易明細, then 庫存明細 · 約定事項, then 約定價位 · 短線約定, then the 封底, which holds the folded history. The form is pre-printed in form green: page heads in Ming lettering over a double rule, field labels, column heads, clause numbers. What the plan has to say sits on that form as passbook-printer entries in dot-matrix navy ribbon ink with tabular figures.\n\nProgress is read where the printing stops. Rows whose date has passed are printed in ribbon ink. Rows still to come wait in a lighter green as the planned line, and a dashed red 以下未印 rule marks the place in between. The next row carries a round red 下一筆 seal on a faint red wash. Red is the bank seal's ink and nothing else: the next entry, hard deadlines, stop rules and the 印鑑 box. Gains and losses are never coloured.\n\nThe world comes in two states. Light is a green cloth desk with pale paper. Dark is a night desk with dim paper, light ribbon ink and a lighter seal. Two inlined faces carry the world: `'Form Ming'` for what the bank printed and `'Pin Dots'` for what the printer struck. A third voice, the system sans, carries running prose and long notes.\n\nConfirmed rejections (from the direction contract): the finance-dashboard default (metric cards, donuts, red/green tiles); a hero number as the progress readout; and any bank, broker or fund logo, or anything that could pass for a real institution's document.",
+    "keyCharacteristics": [
+      "A green cloth desk, with paper pages arranged in spreads and a stitched spine between them.",
+      "Form green for everything pre-printed and ribbon navy for every entry. One red, the seal.",
+      "The ledger shows progress through printed versus due ink and a dashed 以下未印 line.",
+      "Round and square red seals, rotated a few degrees, are the only marks that look stamped.",
+      "Ruled, tabular and flat: rules and double rules, no cards and no shadows."
+    ],
+    "rules": [
+      {
+        "name": "The Seal Ink Rule",
+        "body": "Red is the bank's seal and nothing else. It marks only the next entry, the cut line, hard deadlines, stop rules, the target brackets, the 印鑑 seal and focus. Gains, losses and up/down figures stay in ribbon navy, uncoloured.",
+        "section": "colors"
+      },
+      {
+        "name": "The Printed Line Rule",
+        "body": "A ledger row's ink states its status. Due rows are `due` green, printed rows (date before today) are `ink` navy, and the next row is sealed. Never mark status with a badge, an icon or a background tile.",
+        "section": "colors"
+      },
+      {
+        "name": "The Form-and-Entry Rule",
+        "body": "If the bank would have pre-printed it (heads, labels, column titles, clause numbers), set it in Form Ming in form green. If the printer struck it (dates, amounts, balances, codes, prices), set it in Pin Dots. Never cross them: no dot-matrix headings and no Ming numerals.",
+        "section": "typography"
+      },
+      {
+        "name": "The Third Voice Rule",
+        "body": "Long CJK notes and running prose are set in the system sans, in form green for notes and navy for prose. The direction contract doesn't name this voice. The build adopted it because long CJK notes in Pin Dots or Ming were hard to read, and the finish review accepted that on ship. Keep it to explanatory lines. It never carries a heading, a label or a figure.",
+        "section": "typography"
+      },
+      {
+        "name": "The Printed Depth Rule",
+        "body": "No shadows, glows or gradients on surfaces. A page sits apart from the desk by colour alone, and anything grouped is framed by a rule.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep every surface either the cloth desk or passbook paper, with pages in spreads joined by a stitched spine on wide screens.",
+      "**Do** set pre-printed form text in Form Ming in form green, every figure, date and code in Pin Dots, and explanatory notes in the system sans.",
+      "**Do** show plan status through ledger ink (due green, printed navy, next sealed) and keep the 以下未印 line where the printing stops.",
+      "**Do** keep red for the seal's jobs only: the next entry, the cut line, hard deadlines, stop rules, target brackets, the 印鑑 seal and focus.",
+      "**Do** run `python3 tools/invest-font.py` after any text edit, so both inlined subsets cover the new characters.",
+      "**Do** keep every text token at or above 4.5:1 on its paper in both themes (`due` is the floor at 4.6:1).",
+      "**Do** fold ledger rows into two lines at ≤ 600px rather than scrolling the table sideways."
+    ],
+    "donts": [
+      "**Don't** add metric cards, donuts, hero numbers or red/green gain-loss colouring.",
+      "**Don't** add any bank, broker or fund logo, or anything that could pass for a real institution's document.",
+      "**Don't** add shadows, glows or surface gradients. Depth is rules and ink.",
+      "**Don't** set headings or labels in Pin Dots, or figures in Form Ming or the sans.",
+      "**Don't** use red for anything a seal would not mark.",
+      "**Don't** add motion beyond the single seal stamp and the fold chevron."
+    ]
+  }
+}
