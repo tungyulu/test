@@ -79,7 +79,7 @@
 
 **Brand commitment (2026-10-02, after the critique).** The owner retired the tactics-board look (it read as cheap: hardware chrome, magnets and tape on every element, a handwriting face for numbers). The page is the category standard played straight: a clean fantasy-sports data app at the craft level of Yahoo Fantasy, Sleeper, ESPN Fantasy and Basketball Monster. Those products set the bar for finish, not a template to copy: none of their branding, colours-as-identity, logos or layouts. No metaphor costume of any kind. The player table keeps all of its information; only explanation that repeats what is already on screen goes.
 
-**Evidence on hand.** The projections (estimates compiled 2026-09-28 from ESPN's rankings, team news and 2025-26 stats, with camp-news adjustments), the official 196 draft picks and the team names. The projections are estimates and the page says so. No NBA, team or Yahoo logos and no player photos are on hand; none may be added or imitated, and nothing may look like an official NBA or Yahoo product.
+**Evidence on hand.** The projections (estimates compiled 2026-09-28 from ESPN's rankings, team news and 2025-26 stats, with camp-news adjustments), the official 196 draft picks, the league's rosters as re-pasted on 2026-10-05 (every trade and pickup since the draft, 200 players including IL) and the team names exactly as the league shows them. The projections are estimates and the page says so. No NBA, team or Yahoo logos and no player photos are on hand; none may be added or imitated, and nothing may look like an official NBA or Yahoo product.
 
 ---
 

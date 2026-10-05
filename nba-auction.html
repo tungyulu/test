@@ -726,7 +726,7 @@
         <div id="leagueTable"><p class="calc">計算中…</p></div>
         <div class="panel-foot">
           <p class="llegend">名單裡：選秀價 → 我的估值（不 punt 的建議價）。估值低於自由球員水準（約 $4）的人標灰色，模擬時當成季中會被換掉；長期傷缺的週也用自由球員補上（聯盟有 4 格 IL）。沒考慮每天 11 個先發位置的限制，數字略偏樂觀。</p>
-          <button class="btn small" id="restoreBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg><span>還原成選秀名單</span></button>
+          <button class="btn small" id="restoreBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg><span id="restoreTxt">還原成內建名單</span></button>
         </div>
       </section>
       <section class="panel" id="vsZone" aria-labelledby="vsH" hidden>
@@ -751,7 +751,7 @@
         <p class="posmix" id="posMix"></p>
       </div>
       <div class="panel-foot">
-        <p class="asof">預估數據是估算，不是官方數字。資料基準 2026-09-28，9/29 匯入選秀結果並依訓練營傷病消息調整出賽數。</p>
+        <p class="asof">預估數據是估算，不是官方數字。資料基準 2026-09-28，9/29 匯入選秀結果並依訓練營傷病消息調整出賽數，10/5 更新各隊名單（交易與撿人）。</p>
         <button class="btn small auction-only" id="resetBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-undo"/></svg><span>清除成交紀錄</span></button>
       </div>
     </section>
@@ -1028,7 +1028,7 @@ const RAW = [
 ['Nic Claxton','CHI','C',70,10.5,7.3,2.0,0.8,1.4,0.0,1.4,.580,.580,2.6,120,1,0,'n','四方交易到公牛'],
 ['Egor Dëmin','BKN','PG/SG',72,11.5,3.8,4.8,0.8,0.5,2.3,1.9,.395,.780,1.4,121,1,1,'s','三分與助攻量，FG% 很低'],
 ['Oso Ighodaro','PHX','C',78,8.5,6.0,2.2,0.9,0.9,0.0,0.9,.620,.650,1.6,122,1,0,'t',''],
-['Jake LaRavia','LAL','PF/SF',78,11.0,5.5,2.0,1.1,0.6,1.5,1.0,.470,.800,1.6,123,0,0,'',''],
+['Jake LaRavia','LAL','SF/PF',78,11.0,5.5,2.0,1.1,0.6,1.5,1.0,.470,.800,1.6,123,0,0,'',''],
 ['Darryn Peterson','UTA','SG',64,16.5,3.8,3.2,1.2,0.4,2.0,2.0,.435,.810,3.4,124,2,2,'r','新秀第 2 順位；大學 35 場只打 24 場（腿後肌、抽筋），爵士後場擠'],
 ['Anthony Black','ORL','PG/SG/SF',76,11.0,3.5,3.5,1.2,0.6,1.0,1.5,.470,.730,2.2,125,1,0,'',''],
 ['Kyshawn George','WAS','SG/SF/PF',74,11.5,5.0,3.3,1.1,0.6,1.8,1.7,.420,.780,2.0,126,1,0,'t','巫師陣容變擠，可能改打替補'],
@@ -1070,7 +1070,7 @@ const RAW = [
 ['Christian Braun','DEN','SG/SF/PF',76,13.5,5.5,2.5,1.0,0.4,1.1,1.1,.520,.760,2.6,0,1,0,'','ESPN 前 150 名沒列他，出價前先確認健康與角色'],
 ['Draymond Green','GSW','PF/C',68,8.5,6.0,5.3,1.3,0.8,1.3,2.1,.420,.690,1.2,0,1,0,'','36 歲，抄阻助攻型'],
 ['Jimmy Butler','GSW','SF/PF',30,17.0,5.3,4.8,1.3,0.3,0.6,1.6,.490,.840,7.0,0,3,0,'i','一月十字韌帶斷裂，最快 2027 年 1–2 月回歸，只能當後段收藏'],
-['Gui Santos','GSW','SF',76,11.5,5.0,2.3,1.1,0.4,1.2,1.2,.500,.740,2.0,0,1,1,'','上季最後 31 場 15.4 分，預計先發小前鋒'],
+['Gui Santos','GSW','SF/PF',76,11.5,5.0,2.3,1.1,0.4,1.2,1.2,.500,.740,2.0,0,1,1,'','上季最後 31 場 15.4 分，預計先發小前鋒'],
 ['Zach LaVine','SAC','PG/SG/SF',60,20.5,4.0,3.8,0.9,0.3,2.9,2.3,.480,.860,3.8,0,2,0,'','ESPN 前 150 名沒列他，可能有未公開的傷病或角色變化，出價前先查'],
 ['Malik Monk','SAC','SG',68,13.5,3.0,4.0,0.7,0.3,2.0,1.8,.430,.850,2.6,0,1,0,'','國王第六人兼替補控衛'],
 ['De\'Andre Hunter','SAC','SF/PF',70,13.0,4.2,1.6,0.7,0.2,1.6,1.2,.450,.840,3.0,0,1,0,'n',''],
@@ -1085,7 +1085,7 @@ const RAW = [
 ['Sam Hauser','BOS','SF/PF',74,9.0,3.8,1.2,0.6,0.3,2.4,0.5,.450,.860,0.6,0,0,0,'','純三分射手'],
 ['Max Christie','DAL','SG',76,12.5,3.3,2.3,0.9,0.4,2.2,1.1,.450,.840,1.8,0,0,0,'','獨行俠預計先發得分後衛'],
 ['P.J. Washington','DAL','PF/C',68,13.5,7.0,1.9,1.0,1.0,1.5,1.3,.450,.700,2.6,0,1,0,'','上季傷病不斷只打 56 場'],
-['Naji Marshall','DAL','SF',74,13.0,4.5,3.0,1.0,0.3,0.8,1.5,.500,.750,2.8,0,1,0,'','續約 3 年，輪替主力'],
+['Naji Marshall','DAL','SG/SF/PF',74,13.0,4.5,3.0,1.0,0.3,0.8,1.5,.500,.750,2.8,0,1,0,'','續約 3 年，輪替主力'],
 ['Zaccharie Risacher','DAL','SF/PF',72,10.5,3.8,1.3,0.8,0.4,1.5,1.0,.440,.720,1.6,0,1,1,'nt','三方交易到獨行俠'],
 ['Santi Aldama','DAL','PF',62,10.5,6.0,2.3,0.8,0.7,1.5,1.0,.460,.720,1.4,0,2,0,'n','膝蓋小手術後，訓練營狀況待確認'],
 ['Cedric Coward','MEM','SG/SF',74,13.0,5.5,2.3,1.1,0.6,1.7,1.3,.460,.780,2.2,0,0,1,'s','二年級，灰熊先發'],
@@ -1108,7 +1108,7 @@ const RAW = [
 ['Dennis Schröder','CHA','PG',72,11.0,2.5,4.8,0.8,0.1,1.6,1.8,.420,.850,2.0,0,1,0,'n',''],
 ['Moussa Diabaté','CHA','C',70,7.5,7.5,1.4,0.8,0.9,0.0,0.9,.600,.620,2.0,0,1,0,'',''],
 ['Sam Merrill','CLE','SG/SF',66,9.5,2.5,2.0,0.7,0.2,2.6,0.7,.420,.880,0.7,0,1,0,'',''],
-['Jaylon Tyson','CLE','SF',70,9.0,4.5,2.3,0.8,0.3,1.2,1.0,.470,.780,1.4,0,1,1,'t',''],
+['Jaylon Tyson','CLE','SG/SF/PF',70,9.0,4.5,2.3,0.8,0.3,1.2,1.0,.470,.780,1.4,0,1,1,'t',''],
 ['Jusuf Nurkić','UTA','C',66,10.5,9.5,3.0,0.9,0.8,0.6,2.0,.510,.650,2.4,0,1,0,'','Kessler 走後的爵士先發中鋒'],
 ['Isaiah Collier','UTA','PG',66,9.0,2.5,5.5,1.0,0.2,0.6,2.1,.460,.700,2.4,0,1,0,'t',''],
 ['Scoot Henderson','POR','PG',64,10.5,3.0,4.3,0.8,0.3,1.3,2.0,.410,.780,2.2,0,2,1,'','拓荒者控衛人數多，角色不明'],
@@ -1152,64 +1152,69 @@ const RAW = [
 ['Pelle Larsson','MIA','SG/SF',72,7.5,3.2,2.2,0.8,0.2,1.1,0.8,.470,.760,1.2,0,1,1,'t','選秀後補登：熱火輪換側翼（2024 第 44 順位）'],
 ['Daniss Jenkins','DET','PG/SG',64,6.5,2.0,3.0,0.8,0.2,1.0,1.2,.430,.800,1.0,0,1,1,'','選秀後補登：活塞替補控衛（2024 落選秀）'],
 ['Ryan Kalkbrenner','CHA','C',72,6.5,5.5,1.0,0.4,1.1,0.0,0.7,.660,.620,1.4,0,1,1,'s','選秀後補登：2025 第 34 順位中鋒，Naz Reid 加盟後多半替補'],
+['Joan Beringer','MIN','PF/C',66,6.0,4.6,0.6,0.4,1.1,0.0,0.8,.640,.600,1.2,0,1,2,'s','10/5 名單補登：2025 第 17 順位中鋒，上季 40 場、每場 7.9 分鐘 3.9 分 0.7 阻；Reid 離隊後是 Gobert 身後的替補中鋒'],
+['Adem Bona','PHI','C',72,7.0,5.6,0.8,0.6,1.5,0.0,0.9,.610,.640,1.8,0,1,1,'t','10/5 名單補登：上季 71 場 4.8 分 4.3 板 1.2 阻，季末先發 15 場 13.7 分 8.3 板 2.5 阻；Embiid 缺陣時就是先發中鋒'],
+['Derrick Jones Jr.','LAC','SF/PF',64,9.5,3.4,1.3,0.9,0.9,0.9,0.8,.505,.750,2.0,0,1,0,'','10/5 名單補登：上季 50 場（先發 45）10.1 分、0.9 抄 1.0 阻；快艇先發側翼，抄截＋阻攻的小幫手'],
+['Yanic Konan Niederhäuser','LAC','C',38,6.0,4.8,0.6,0.4,1.0,0.0,0.8,.590,.620,1.4,0,3,2,'si','10/5 名單補登：2025 第 30 順位中鋒，3 月右腳 Lisfranc 手術、開季缺陣；回來後是 Lopez 身後的替補中鋒'],
 ];
 /*DATA-END*/
 
 /*DRAFT-BEGIN*/
-// 2026-09-29 正式選秀結果：[球員, 成交價, 隊伍編號]；名字用上面 RAW 的寫法
-const DRAFT_ID = '2026-09-29';
-const DRAFT_TEAMS = ['Patrick\'s Agreeable Team', '有創意的人', '大睿\'s Outstanding Team', '肚bist gut genug', '呂一則的朋友', '費城67人', 'Draweye', 'MeetingTek bullshit', '馬蟻', '創沒有未來', 'CoulibalyMVP', '凱文\'s First-Rate Team', '江立崴還沒離職', '橙橙仔\'s Official Team'];
+// 2026-10-05 聯盟目前名單（9/29 選秀之後的交易、撿人與隊名都已反映，含 IL）：[球員, 選秀價（選秀後撿來的是 0）, 隊伍編號]；名字用上面 RAW 的寫法
+const DRAFT_ID = '2026-10-05';
+const DRAFT_TEAMS = ['Patrick\'s Agreeable Team', '有創意的人', '大睿\'s Outstanding Team', '肚bist gut genug', '呂一則的朋友', '費城67人', 'Draweye', 'MeetingTek bullshit', 'Ni🥤 🍬77 🐜', '創沒有未來', 'Murray大軍帶我飛', '凱文\'s First-Rate Team', '江立崴還沒離職', '橙橙仔\'s Official Team'];
 const DRAFT_ME = 9;
 const DRAFT = [
-  ['Julius Randle', 16, 0], ['Evan Mobley', 28, 1], ['Dillon Brooks', 8, 2], ['Tyrese Maxey', 51, 0],
-  ['Scottie Barnes', 46, 3], ['Kevin Durant', 40, 2], ['Brandon Ingram', 17, 4], ['Jalen Johnson', 50, 5],
-  ['Cade Cunningham', 54, 4], ['LeBron James', 21, 6], ['Nikola Jokić', 101, 7], ['Giannis Antetokounmpo', 56, 2],
-  ['Jayson Tatum', 50, 6], ['Luka Dončić', 61, 8], ['Caleb Wilson', 6, 9], ['Cameron Boozer', 17, 9],
-  ['Derrick White', 24, 9], ['Cooper Flagg', 42, 4], ['Dyson Daniels', 17, 3], ['Mikal Bridges', 16, 9],
-  ['Jaylen Brown', 30, 0], ['Jalen Brunson', 30, 10], ['Victor Wembanyama', 73, 8], ['Domantas Sabonis', 32, 11],
-  ['Jamal Murray', 29, 10], ['Shai Gilgeous-Alexander', 76, 1], ['Anthony Edwards', 51, 8], ['Tyrese Haliburton', 43, 12],
-  ['Amen Thompson', 30, 7], ['Jalen Williams', 27, 13], ['Desmond Bane', 15, 12], ['Stephen Curry', 31, 10],
-  ['Matas Buzelis', 18, 9], ['Joel Embiid', 23, 0], ['Brandon Miller', 17, 5], ['Zach Edey', 8, 10],
-  ['Chet Holmgren', 29, 7], ['James Harden', 27, 7], ['LaMelo Ball', 21, 5], ['Josh Giddey', 30, 1],
-  ['Kel\'el Ware', 23, 3], ['Kawhi Leonard', 32, 10], ['Ayo Dosunmu', 3, 6], ['Karl-Anthony Towns', 47, 6],
-  ['Kon Knueppel', 19, 0], ['Austin Reaves', 35, 0], ['Onyeka Okongwu', 22, 3], ['Bilal Coulibaly', 1, 10],
-  ['Nickeil Alexander-Walker', 13, 10], ['Paolo Banchero', 20, 3], ['Pascal Siakam', 23, 3], ['Trae Young', 26, 12],
-  ['Kyrie Irving', 14, 9], ['Trey Murphy III', 20, 9], ['Donovan Mitchell', 50, 6], ['Anthony Davis', 23, 10],
-  ['Walker Kessler', 23, 9], ['Devin Booker', 27, 11], ['Rudy Gobert', 18, 9], ['Alperen Şengün', 34, 13],
-  ['Deni Avdija', 25, 3], ['Donovan Clingan', 20, 4], ['Bam Adebayo', 26, 9], ['Tyler Herro', 17, 13],
-  ['Lauri Markkanen', 23, 11], ['Jarrett Allen', 17, 0], ['OG Anunoby', 21, 13], ['Damian Lillard', 21, 6],
-  ['Josh Hart', 7, 10], ['Jalen Duren', 21, 12], ['Ausar Thompson', 9, 11], ['Ivica Zubac', 24, 5],
-  ['Jaren Jackson Jr.', 30, 5], ['Yaxel Lendeborg', 5, 9], ['Michael Porter Jr.', 21, 11], ['Kristaps Porziņģis', 3, 10],
-  ['Jaden McDaniels', 13, 2], ['Alex Sarr', 14, 2], ['Stephon Castle', 16, 13], ['Keyonte George', 22, 2],
-  ['De\'Aaron Fox', 12, 5], ['Darryn Peterson', 7, 2], ['Anthony Black', 4, 1], ['Franz Wagner', 16, 12],
-  ['Collin Murray-Boyles', 6, 5], ['Cameron Johnson', 2, 1], ['Naz Reid', 18, 12], ['Dejounte Murray', 14, 4],
-  ['Darius Garland', 17, 4], ['Keegan Murray', 7, 10], ['John Collins', 12, 11], ['Payton Pritchard', 8, 13],
-  ['Isaiah Hartenstein', 15, 2], ['Zion Williamson', 6, 10], ['Miles Bridges', 9, 5], ['RJ Barrett', 1, 8],
-  ['Quentin Grimes', 2, 9], ['Cedric Coward', 8, 12], ['Darius Acuff Jr.', 3, 4], ['Day\'Ron Sharpe', 10, 4],
-  ['Dylan Harper', 11, 2], ['AJ Dybantsa', 10, 1], ['Reed Sheppard', 2, 9], ['Paul George', 11, 5],
-  ['Toumani Camara', 5, 1], ['Ryan Rollins', 8, 3], ['VJ Edgecombe', 18, 13], ['Norman Powell', 11, 5],
-  ['Andrew Wiggins', 11, 13], ['Immanuel Quickley', 4, 11], ['Myles Turner', 11, 13], ['Tobias Harris', 4, 2],
-  ['Jared McCain', 3, 0], ['Derik Queen', 7, 9], ['Coby White', 12, 4], ['Brandin Podziemski', 1, 3],
-  ['Jabari Smith Jr.', 10, 13], ['CJ McCollum', 3, 7], ['Nic Claxton', 16, 11], ['Jalen Green', 1, 2],
-  ['Peyton Watson', 7, 10], ['Aaron Gordon', 10, 1], ['Davion Mitchell', 6, 12], ['Al Horford', 1, 6],
-  ['Jalen Suggs', 8, 11], ['Zaccharie Risacher', 1, 7], ['Jaime Jaquez Jr.', 7, 13], ['Zach LaVine', 4, 5],
-  ['Jusuf Nurkić', 1, 3], ['Neemias Queta', 3, 10], ['Ajay Mitchell', 3, 1], ['Kevin Porter Jr.', 1, 4],
-  ['Maxime Raynaud', 7, 2], ['Moussa Diabaté', 3, 12], ['Khaman Maluach', 6, 1], ['DeMar DeRozan', 2, 4],
-  ['Ja Morant', 2, 12], ['Fred VanVleet', 1, 1], ['Ty Jerome', 9, 11], ['Jakob Poeltl', 1, 13],
-  ['Andrew Nembhard', 3, 4], ['Jimmy Butler', 3, 3], ['Cason Wallace', 4, 1], ['Jerami Grant', 6, 12],
-  ['Devin Vassell', 5, 1], ['Rui Hachimura', 5, 12], ['Max Strus', 1, 5], ['Gradey Dick', 1, 8],
-  ['Jeremiah Fears', 1, 6], ['Bobby Portis', 16, 12], ['Luguentz Dort', 1, 7], ['Kelly Oubre Jr.', 1, 13],
-  ['Kyshawn George', 15, 12], ['Egor Dëmin', 1, 3], ['Isaiah Stewart', 17, 11], ['Mark Williams', 1, 4],
-  ['Sandro Mamukelashvili', 2, 8], ['Wendell Carter Jr.', 4, 1], ['Julian Champagnie', 1, 8], ['Klay Thompson', 1, 6],
-  ['Keaton Wagler', 1, 7], ['Grayson Allen', 10, 13], ['Tre Jones', 1, 0], ['Draymond Green', 1, 3],
-  ['Saddiq Bey', 1, 11], ['Daniel Gafford', 1, 4], ['Jrue Holiday', 2, 3], ['Paul Reed', 1, 5],
-  ['Collin Gillespie', 1, 8], ['Collin Sexton', 1, 6], ['Pelle Larsson', 1, 7], ['Tari Eason', 2, 11],
-  ['Christian Braun', 1, 11], ['Nikola Vučević', 1, 2], ['P.J. Washington', 1, 5], ['Sam Hauser', 2, 8],
-  ['Keldon Johnson', 1, 6], ['Ace Bailey', 1, 7], ['Aaron Nesmith', 1, 0], ['Herbert Jones', 1, 2],
-  ['Oso Ighodaro', 2, 8], ['Brook Lopez', 1, 6], ['Daniss Jenkins', 1, 7], ['Yves Missi', 1, 0],
-  ['Ryan Kalkbrenner', 2, 8], ['Morez Johnson Jr.', 1, 6], ['Santi Aldama', 1, 7], ['Bennedict Mathurin', 2, 7],
-  ['Isaiah Joe', 1, 8], ['Scoot Henderson', 1, 6], ['Mikel Brown Jr.', 1, 7], ['Jordan Poole', 1, 0],
-  ['Sam Merrill', 1, 8], ['Dereck Lively II', 1, 0], ['Kingston Flemings', 1, 8], ['Kyle Filipowski', 1, 0],
+  ['Tyrese Maxey', 51, 0], ['Kon Knueppel', 19, 0], ['Jared McCain', 3, 0], ['Jaylen Brown', 30, 0],
+  ['Julius Randle', 16, 0], ['Kyle Filipowski', 1, 0], ['Joel Embiid', 23, 0], ['Jarrett Allen', 17, 0],
+  ['Tre Jones', 1, 0], ['Jordan Poole', 1, 0], ['Yves Missi', 1, 0], ['Aaron Nesmith', 1, 0],
+  ['Dereck Lively II', 1, 0], ['Devin Booker', 27, 0], ['Shai Gilgeous-Alexander', 76, 1], ['Anthony Black', 4, 1],
+  ['Cameron Johnson', 2, 1], ['Evan Mobley', 28, 1], ['AJ Dybantsa', 10, 1], ['Aaron Gordon', 10, 1],
+  ['Khaman Maluach', 6, 1], ['Toumani Camara', 5, 1], ['Ajay Mitchell', 3, 1], ['Fred VanVleet', 1, 1],
+  ['Cason Wallace', 4, 1], ['Devin Vassell', 5, 1], ['Norman Powell', 11, 1], ['Ivica Zubac', 24, 1],
+  ['Keyonte George', 22, 2], ['Kevin Durant', 40, 2], ['Darryn Peterson', 7, 2], ['Dillon Brooks', 8, 2],
+  ['Giannis Antetokounmpo', 56, 2], ['Jaden McDaniels', 13, 2], ['Alex Sarr', 14, 2], ['Isaiah Hartenstein', 15, 2],
+  ['Dylan Harper', 11, 2], ['Tobias Harris', 4, 2], ['Jalen Green', 1, 2], ['Maxime Raynaud', 7, 2],
+  ['Nikola Vučević', 1, 2], ['Jonathan Kuminga', 0, 2], ['Ryan Rollins', 8, 3], ['Dyson Daniels', 17, 3],
+  ['Deni Avdija', 25, 3], ['Scottie Barnes', 46, 3], ['Paolo Banchero', 20, 3], ['Pascal Siakam', 23, 3],
+  ['Kel\'el Ware', 23, 3], ['Onyeka Okongwu', 22, 3], ['Brandin Podziemski', 1, 3], ['Jusuf Nurkić', 1, 3],
+  ['Draymond Green', 1, 3], ['Egor Dëmin', 1, 3], ['Jrue Holiday', 2, 3], ['Derrick Jones Jr.', 0, 3],
+  ['Jimmy Butler', 3, 3], ['Darius Garland', 17, 4], ['Cade Cunningham', 54, 4], ['Nickeil Alexander-Walker', 13, 4],
+  ['De\'Andre Hunter', 0, 4], ['DeMar DeRozan', 2, 4], ['Cooper Flagg', 42, 4], ['Donovan Clingan', 20, 4],
+  ['Day\'Ron Sharpe', 10, 4], ['Darius Acuff Jr.', 3, 4], ['Coby White', 12, 4], ['Kevin Porter Jr.', 1, 4],
+  ['Andrew Nembhard', 3, 4], ['Daniel Gafford', 1, 4], ['Gui Santos', 0, 4], ['Brandon Ingram', 17, 4],
+  ['Mark Williams', 1, 4], ['Yanic Konan Niederhäuser', 0, 4], ['LaMelo Ball', 21, 5], ['Josh Giddey', 30, 5],
+  ['Kyrie Irving', 14, 5], ['Jalen Johnson', 50, 5], ['Brandon Miller', 17, 5], ['Jaren Jackson Jr.', 30, 5],
+  ['Collin Murray-Boyles', 6, 5], ['Paul Reed', 1, 5], ['Miles Bridges', 9, 5], ['Paul George', 11, 5],
+  ['Zach LaVine', 4, 5], ['Max Strus', 1, 5], ['P.J. Washington', 1, 5], ['Wendell Carter Jr.', 4, 5],
+  ['Ayo Dosunmu', 3, 6], ['Donovan Mitchell', 50, 6], ['Damian Lillard', 21, 6], ['LeBron James', 21, 6],
+  ['Jayson Tatum', 50, 6], ['Karl-Anthony Towns', 47, 6], ['Al Horford', 1, 6], ['Brook Lopez', 1, 6],
+  ['Jeremiah Fears', 1, 6], ['Klay Thompson', 1, 6], ['Collin Sexton', 1, 6], ['Keldon Johnson', 1, 6],
+  ['Morez Johnson Jr.', 1, 6], ['Scoot Henderson', 1, 6], ['Amen Thompson', 30, 7], ['James Harden', 27, 7],
+  ['CJ McCollum', 3, 7], ['Zaccharie Risacher', 1, 7], ['Santi Aldama', 1, 7], ['Luguentz Dort', 1, 7],
+  ['Chet Holmgren', 29, 7], ['Victor Wembanyama', 73, 7], ['Keaton Wagler', 1, 7], ['Pelle Larsson', 1, 7],
+  ['Joan Beringer', 0, 7], ['Daniss Jenkins', 1, 7], ['Bennedict Mathurin', 2, 7], ['Mikel Brown Jr.', 1, 7],
+  ['Luka Dončić', 61, 8], ['Isaiah Joe', 1, 8], ['RJ Barrett', 1, 8], ['Jake LaRavia', 0, 8],
+  ['Sandro Mamukelashvili', 2, 8], ['Julian Champagnie', 1, 8], ['Adem Bona', 0, 8], ['Nikola Jokić', 101, 8],
+  ['Collin Gillespie', 1, 8], ['Sam Hauser', 2, 8], ['Ryan Kalkbrenner', 2, 8], ['Anthony Edwards', 51, 8],
+  ['Kingston Flemings', 1, 8], ['Jaylon Tyson', 0, 8], ['Derrick White', 24, 9], ['Trey Murphy III', 20, 9],
+  ['De\'Aaron Fox', 12, 9], ['Mikal Bridges', 16, 9], ['Caleb Wilson', 6, 9], ['Cameron Boozer', 17, 9],
+  ['Walker Kessler', 23, 9], ['Rudy Gobert', 18, 9], ['Matas Buzelis', 18, 9], ['Bam Adebayo', 26, 9],
+  ['Yaxel Lendeborg', 5, 9], ['Quentin Grimes', 2, 9], ['Reed Sheppard', 2, 9], ['Derik Queen', 7, 9],
+  ['Jalen Brunson', 30, 10], ['Kawhi Leonard', 32, 10], ['Jamal Murray', 29, 10], ['Bilal Coulibaly', 1, 10],
+  ['Anthony Davis', 23, 10], ['Josh Hart', 7, 10], ['Zion Williamson', 6, 10], ['Neemias Queta', 3, 10],
+  ['Stephen Curry', 31, 10], ['Keegan Murray', 7, 10], ['Zach Edey', 8, 10], ['Kristaps Porziņģis', 3, 10],
+  ['Peyton Watson', 7, 10], ['Dejounte Murray', 14, 10], ['Austin Reaves', 35, 11], ['Ausar Thompson', 9, 11],
+  ['Immanuel Quickley', 4, 11], ['Lauri Markkanen', 23, 11], ['Domantas Sabonis', 32, 11], ['Michael Porter Jr.', 21, 11],
+  ['John Collins', 12, 11], ['Nic Claxton', 16, 11], ['Jalen Suggs', 8, 11], ['Ty Jerome', 9, 11],
+  ['Isaiah Stewart', 17, 11], ['Saddiq Bey', 1, 11], ['Tari Eason', 2, 11], ['Christian Braun', 1, 11],
+  ['Tyrese Haliburton', 43, 12], ['Desmond Bane', 15, 12], ['Trae Young', 26, 12], ['Franz Wagner', 16, 12],
+  ['Naz Reid', 18, 12], ['Cedric Coward', 8, 12], ['Jalen Duren', 21, 12], ['Moussa Diabaté', 3, 12],
+  ['Davion Mitchell', 6, 12], ['Ja Morant', 2, 12], ['Jerami Grant', 6, 12], ['Rui Hachimura', 5, 12],
+  ['Bobby Portis', 16, 12], ['Kyshawn George', 15, 12], ['Tyler Herro', 17, 13], ['Stephon Castle', 16, 13],
+  ['Payton Pritchard', 8, 13], ['Jalen Williams', 27, 13], ['Alperen Şengün', 34, 13], ['OG Anunoby', 21, 13],
+  ['Myles Turner', 11, 13], ['Jabari Smith Jr.', 10, 13], ['VJ Edgecombe', 18, 13], ['Andrew Wiggins', 11, 13],
+  ['Jaime Jaquez Jr.', 7, 13], ['Jakob Poeltl', 1, 13], ['Grayson Allen', 10, 13], ['Naji Marshall', 0, 13],
 ];
 /*DRAFT-END*/
 
@@ -1526,7 +1531,8 @@ players.forEach(p => { p.mkt = mktOf(p); p.bv = baseV.get(p.id) || 0; });   // b
   });
 }());
 
-// 選秀結果：DRAFT 的名字對到球員；自由球員水準用「選秀沒被選走的人」算一次就固定
+const ROSTER_ASOF = DRAFT_ID.slice(5).split('-').map(Number).join('/');   // 內建名單的日期，例如 10/5
+// 內建名單（DRAFT，現在是 10/5 的各隊名單）的名字對到球員；自由球員水準用「沒在任何名單上的人」算一次就固定
 const byName = new Map(players.map(p => [p.name, p]));
 const ME = DRAFT_ME, NTEAMS = DRAFT_TEAMS.length;
 const draftIds = new Set(DRAFT.map(d => byName.get(d[0])).filter(Boolean).map(p => p.id));
@@ -1769,7 +1775,7 @@ function renderTeam(mk) {
   }).join('');
   $('teamEmpty').hidden = mine.length > 0;
   $('teamProfile').hidden = mine.length === 0;
-  $('myTeamSub').textContent = on ? `${mine.length} 人 · 選秀花了 ${money(mk.mySpent)}` : mine.length ? `${mine.length} 人 · 花了 ${money(mk.mySpent)}` : '還沒買人';
+  $('myTeamSub').textContent = on ? `${mine.length} 人 · 選秀價合計 ${money(mk.mySpent)}` : mine.length ? `${mine.length} 人 · 花了 ${money(mk.mySpent)}` : '還沒買人';
   if (mine.length) {
     $('profileCells').innerHTML = CATS.map(c => {
       const z = mine.reduce((a, p) => a + p.z[c], 0) / mine.length;
@@ -1846,7 +1852,7 @@ function renderStore() {
   if (saveFailed) { el.className = 'store bad'; el.textContent = '最後一次儲存失敗，成交紀錄可能沒有存到。'; return; }
   const n = Object.keys(state.sold).length;
   el.className = 'store';
-  if (leagueMode()) { el.textContent = `聯盟名單（${n} 位球員有隊伍）、你套用的交易和改過的隊伍都存在這台裝置；手機和電腦各自一份。內建名單更新時，裝置上改過的會被新名單取代。`; return; }
+  if (leagueMode()) { el.textContent = `聯盟名單（${n} 位球員有隊伍，內建的是 ${ROSTER_ASOF} 的名單）、你套用的交易和改過的隊伍都存在這台裝置；手機和電腦各自一份。內建名單更新時，裝置上改過的會被新名單取代。`; return; }
   el.textContent = n ? `已存到這台裝置：${n} 筆成交紀錄與篩選設定。` : '成交紀錄與篩選設定會自動存在這台裝置的瀏覽器裡。';
 }
 
@@ -1917,7 +1923,7 @@ function renderLeagueTable() {
   if (!leagueMode() || !lg.table || lg.shown === lg.ver) return;
   const open = new Set([...document.querySelectorAll('#leagueTable .lt[open]')].map(d => +d.dataset.t));
   const me = lg.table.teams[ME];
-  const head = `<div class="lt-head" aria-hidden="true"><span>#</span><span>隊伍</span><span>平均每週</span><span class="lch">${CATS.map(c => `<span>${CAT_LABEL[c]}</span>`).join('')}</span><span>花費 · 估值</span><span></span></div>`;
+  const head = `<div class="lt-head" aria-hidden="true"><span>#</span><span>隊伍</span><span>平均每週</span><span class="lch">${CATS.map(c => `<span>${CAT_LABEL[c]}</span>`).join('')}</span><span>選秀價 · 估值</span><span></span></div>`;
   $('leagueTable').innerHTML = head + lg.table.teams.slice().sort((a, b) => b.w - a.w).map(t => {
     const i = t.i, isMe = i === ME, roster = lg.actual[i], fill = lg.fill[i];
     const spent = roster.reduce((a, p) => a + priceOf(p), 0), val = roster.reduce((a, p) => a + p.bv, 0);
@@ -1938,7 +1944,7 @@ function renderLeagueTable() {
       <span class="ln"><span class="tname">${teamHTML(i)}</span>${isMe ? '<span class="badge mine">我的</span>' : ''}</span>
       <span class="lw"><b>${rec(t.w)}</b><span class="${t.m >= 0 ? 'up' : 'down'}">${bet(t.m)}/週</span></span>
       <span class="lc">${CATS.map((c, k) => cellLT(t, k)).join('')}</span>
-      <span class="lm">花 <b>${money(spent)}</b><span class="lsep"> · </span><br>估值 <b>${money(val)}</b></span>
+      <span class="lm">選秀價 <b>${money(spent)}</b><span class="lsep"> · </span><br>估值 <b>${money(val)}</b></span>
       <svg class="ic lx" aria-hidden="true"><use href="#i-chev"/></svg>
     </summary><div class="ld">
       <p class="sw">強項：<b>${strong}</b>　弱項：<b>${weak}</b>${punt}</p>
@@ -2297,9 +2303,10 @@ function twoStep(btn, armed, idle, run) {
     run();
   });
 }
-twoStep($('restoreBtn'), '再按一次，還原成選秀名單', '還原成選秀名單', () => {
+$('restoreTxt').textContent = `還原成 ${ROSTER_ASOF} 名單`;
+twoStep($('restoreBtn'), `再按一次，還原成 ${ROSTER_ASOF} 名單`, `還原成 ${ROSTER_ASOF} 名單`, () => {
   state.sold = draftSold(); state.editing = null;
-  tr.give.clear(); tr.get.clear(); tr.undo = null; tr.note = '已還原成選秀名單。';
+  tr.give.clear(); tr.get.clear(); tr.undo = null; tr.note = `已還原成 ${ROSTER_ASOF} 的聯盟名單。`;
   save(); scheduleLeague(); render();
 });
 twoStep($('resetBtn'), '再按一次，清除全部成交', '清除成交紀錄', () => {
