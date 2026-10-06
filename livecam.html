@@ -84,7 +84,7 @@ button{font:inherit; color:inherit}
 .theme-btn:hover{background:var(--ground-ink); color:var(--ground)}
 @media (max-width:699px){
   .topbar{padding:8px 0 6px}
-  .exit, .theme-btn{min-height:36px}
+  .exit, .theme-btn{min-height:44px}
   .title{order:3; flex-basis:100%; font-size:19px}
   .theme-btn{margin-left:auto}
 }
@@ -102,7 +102,7 @@ button{font:inherit; color:inherit}
 .board-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
   padding:9px 12px 8px; background:var(--housing-2); border-bottom:1px solid var(--housing-rule)}
 .bh-l{display:flex; align-items:baseline; gap:4px 10px; flex-wrap:wrap; min-width:0}
-.bh-l b{font-size:16px; font-weight:700; letter-spacing:.04em}
+.bh-l .bh-t{margin:0; font-size:16px; font-weight:700; line-height:1.3; letter-spacing:.04em}
 .bh-l .jp{font-size:11px; color:var(--housing-2ink); letter-spacing:.12em}
 .bh-day{font:600 14px/1.2 var(--en); color:var(--housing-ink)}
 .bh-cd{font-size:12.5px; color:var(--amber)}
@@ -116,24 +116,33 @@ button{font:inherit; color:inherit}
 .board-cols .mode{display:inline-flex; gap:4px; align-items:center; letter-spacing:.04em; color:var(--housing-ink)}
 .board-cols .mode .pg{font-size:14px}
 .board-rows{list-style:none; margin:0; padding:2px 12px 0}
-.board-rows li{display:grid; grid-template-columns:var(--tcol,60px) minmax(0,1fr); gap:10px; align-items:center;
+.board-rows li{display:grid; grid-template-columns:var(--tcol,60px) minmax(0,1fr); gap:10px; align-items:start;
   padding:3px 0; border-bottom:1px solid #16181a}
 .board-rows li:last-child{border-bottom:0}
 .board-rows li.ttl, .board-rows li.note{grid-template-columns:minmax(0,1fr)}
 .led{display:block; min-width:0; line-height:0}
 .led canvas{display:block}
-.board-foot{display:flex; justify-content:space-between; gap:8px; padding:8px 12px 0; font-size:11.5px;
+.board-foot{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:8px 12px 0; font-size:11.5px;
   color:var(--housing-2ink)}
+/* 44px hit areas that keep the foot one text line high (negative margins stay inside the housing) */
+.board-foot a, .board-foot .trip-off{display:inline-flex; align-items:center; min-height:44px; margin:-12px 0 -10px}
 .board-foot a{color:var(--housing-ink); text-underline-offset:3px}
 
 /* Day plates (track number style) */
-.tracks{display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:5px; margin-top:8px}
+.tracks{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px 5px; margin-top:8px}
 .tracks button{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  min-height:50px; padding:4px 0 3px; border-radius:3px; border:1.5px solid var(--navy); background:var(--sign);
-  color:var(--sign-ink); cursor:pointer; line-height:1}
-.tracks b{font:700 20px/1 var(--en)}
+  min-height:48px; padding:5px 2px 4px; border-radius:3px; border:1.5px solid var(--navy); background:var(--sign);
+  color:var(--sign-ink); cursor:pointer; line-height:1; min-width:0}
+.tracks .tk-h{display:flex; align-items:baseline; justify-content:center; gap:5px}
+.tracks b{font:700 19px/1 var(--en)}
 .tracks b small{font-size:11px; margin-right:1px}
-.tracks span{font:500 10.5px/1 var(--en); margin-top:4px; letter-spacing:.02em}
+.tracks .tk-p{font-size:13px; font-weight:700; line-height:1.1; letter-spacing:.02em; white-space:nowrap}
+.tracks .tk-d{font:500 10.5px/1 var(--en); margin-top:4px; letter-spacing:.02em}
+@media (min-width:700px){
+  .tracks{grid-template-columns:repeat(8,minmax(0,1fr)); gap:5px}
+  .tracks button{min-height:62px}
+  .tracks .tk-h{flex-direction:column; align-items:center; gap:4px}
+}
 .tracks button[aria-pressed="true"]{background:var(--navy); color:var(--navy-ink)}
 .tracks button.today::after{content:"今天"; position:absolute; top:-8px; right:-3px; padding:1px 4px 2px;
   font-size:11px; line-height:1.2; background:#c3261b; color:#fff; border-radius:2px}
@@ -143,7 +152,8 @@ button{font:inherit; color:inherit}
 .day{margin-top:10px; background:var(--plate); color:var(--plate-ink); border-radius:4px; overflow:hidden}
 .day-h{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 12px;
   background:var(--navy); color:var(--navy-ink); font-size:14px; font-weight:700; letter-spacing:.04em}
-.day-h a{display:inline-flex; align-items:center; gap:4px; font-weight:400; font-size:13px; color:inherit; text-underline-offset:3px; white-space:nowrap}
+.day-h a{display:inline-flex; align-items:center; gap:4px; min-height:44px; margin:-8px 0; font-weight:400; font-size:13px;
+  color:inherit; text-underline-offset:3px; white-space:nowrap}
 .day-b{display:grid; gap:0}
 @media (min-width:700px){ .day-b{grid-template-columns:minmax(0,1fr) minmax(0,1fr)} }
 .day-sec{padding:10px 12px 12px}
@@ -160,15 +170,24 @@ button{font:inherit; color:inherit}
 .wxrows .tt small{font:400 12px/1.2 var(--tc); margin-left:6px}
 .wxrows .pp{font:600 13px/1 var(--en); white-space:nowrap}
 .wxrows .pp.wet{color:var(--stop)}
+/* climate normal: a hairline tag in place of the rain chance, so it never reads as a forecast */
+.wxrows .pp.nml{font:700 11.5px/1 var(--tc); letter-spacing:.06em; color:var(--plate-2); padding:3px 5px 2px;
+  border:1px solid var(--plate-rule); border-radius:2px}
 .wxrows .wr{grid-column:3 / 5; font-size:12.5px; color:var(--plate-2); margin-top:-4px}
 .hint{margin:6px 0 0; font-size:12px; color:var(--plate-2)}
 .xfer{list-style:none; margin:0; padding:0}
 .xfer li{border-top:1px solid var(--plate-rule)}
 .xfer li:first-child{border-top:0}
-.xfer a{display:flex; align-items:center; gap:8px; padding:7px 0; text-decoration:none; font-size:14px; line-height:1.35}
+.xfer a{display:flex; align-items:center; gap:8px; min-height:44px; padding:6px 0; text-decoration:none; font-size:14px; line-height:1.35}
 .xfer a:hover span:last-child{text-decoration:underline; text-underline-offset:3px}
-.trip-off{margin-left:auto; border:0; background:none; padding:6px 0; font-size:12px; text-decoration:underline;
+.trip-off{margin-left:auto; border:0; background:none; padding:0 0 0 10px; font-size:12px; text-decoration:underline;
   text-underline-offset:3px; cursor:pointer; color:inherit}
+/* With the board closed, this key stands in its place at the top of the page. */
+.trip-back{justify-self:start; display:inline-flex; align-items:center; gap:8px; min-height:44px; padding:0 14px;
+  border-radius:3px; border:1.5px solid var(--ground-ink); background:transparent; color:var(--ground-ink);
+  font-size:14px; font-weight:700; cursor:pointer}
+.trip-back .pg{font-size:18px}
+.trip-back:hover{background:var(--ground-ink); color:var(--ground)}
 
 /* Station numbering badge */
 .no{--line:var(--tk); display:inline-flex; flex-direction:column; align-items:center; justify-content:center; flex:none;
@@ -203,11 +222,17 @@ button{font:inherit; color:inherit}
 .now-line .sun{display:inline-flex; gap:5px; align-items:center}
 .brief-note{margin:8px 0 0; font-size:13.5px; line-height:1.55}
 .brief-note:empty{display:none}
+/* Weather state: loading, nothing at all, or showing the last good answer from this device */
+.wx-state{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px; margin:10px 0 0; padding-top:10px;
+  border-top:1px solid var(--plate-rule); font-size:13.5px; line-height:1.5}
+.wx-state > .pg{font-size:16px; color:var(--plate-2)}
+.wx-state > span{flex:1 1 12em; min-width:0}
+.wx-state .tool{flex:none}
 
 /* Fuji lamps */
 .fuji-now{margin-top:10px}
 .wx-led{margin-top:10px}
-.panel-h .tool{margin-left:auto; min-height:32px; border-color:currentColor; color:inherit}
+.panel-h .tool{margin:-6px 0 -6px auto; min-height:44px; border-color:currentColor; color:inherit}
 .panel-h .tool:hover{background:rgba(255,255,255,.12)}
 .panel-h .tool[aria-expanded="true"]{background:#fff; color:var(--navy)}
 .lamps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0}
@@ -222,13 +247,14 @@ button{font:inherit; color:inherit}
 /* Weather ticker / tools */
 .wx-led{background:var(--housing); padding:7px 10px; border-radius:3px; cursor:default}
 .tools{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
-.tool{display:inline-flex; align-items:center; gap:5px; min-height:38px; padding:0 11px; border-radius:3px;
+.tool{display:inline-flex; align-items:center; gap:5px; min-height:44px; padding:0 12px; border-radius:3px;
   border:1.5px solid var(--plate-ink); background:transparent; color:var(--plate-ink); font-size:13px; cursor:pointer;
   text-decoration:none}
 .tool[aria-expanded="true"]{background:var(--plate-ink); color:var(--plate)}
 .tool .pg{font-size:15px}
 .tool:hover{background:var(--plate-soft)}
 .tool[aria-expanded="true"]:hover{background:var(--plate-ink)}
+.tool[aria-disabled="true"]{cursor:progress; opacity:.7}
 .src{font-size:11.5px; color:var(--plate-2); margin-left:auto; align-self:center}
 .src a{text-underline-offset:2px}
 .wxgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(142px,1fr)); gap:0; margin-top:10px;
@@ -291,14 +317,15 @@ button{font:inherit; color:inherit}
 .filters{position:sticky; top:0; z-index:20; margin:22px -16px 0; padding:8px 16px; background:var(--housing-2);
   color:var(--housing-ink); display:flex; gap:6px; align-items:center; overflow-x:auto; scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.filters button{display:inline-flex; align-items:center; gap:6px; flex:none; min-height:40px; padding:0 11px 0 7px;
+.filters button, .filters .go{display:inline-flex; align-items:center; gap:5px; flex:none; min-height:44px; padding:0 9px 0 6px;
   border-radius:3px; border:1.5px solid #4a4e55; background:transparent; color:inherit; font-size:13.5px; cursor:pointer;
-  white-space:nowrap}
+  white-space:nowrap; text-decoration:none}
 .filters button.plain{padding:0 12px}
 .filters button[aria-pressed="true"]{background:#fff; color:#111; border-color:#fff}
-.filters button:hover{border-color:#fff}
+.filters button:hover, .filters .go:hover{border-color:#fff}
 .filters .pg{font-size:16px}
-.filters .sep{width:1px; align-self:stretch; background:#3a3e44; margin:4px 2px; flex:none}
+.filters .sep{width:1px; align-self:stretch; background:#3a3e44; margin:6px 1px; flex:none}
+@media (max-width:699px){ .filters{gap:5px} }
 .filters .age{margin-left:auto; padding-left:10px; font-size:11.5px; color:var(--housing-2ink); white-space:nowrap; flex:none}
 @media (min-width:1432px){ .filters{margin:22px 0 0; border-radius:4px} }
 
@@ -349,8 +376,8 @@ button{font:inherit; color:inherit}
 .eki-now b{display:block; font:600 20px/1.05 var(--en)}
 .eki-now .nt{display:inline-block; padding:0 4px; border-radius:2px; background:var(--housing); color:var(--amber); font-size:11px}
 .eki-band{height:9px; background:var(--line)}
-.eki-nb{display:flex; justify-content:space-between; gap:10px; padding:6px 10px 7px; font-size:13px; line-height:1.25}
-.eki-nb a{display:inline-flex; align-items:center; gap:5px; text-decoration:none; min-height:32px; min-width:0}
+.eki-nb{display:flex; justify-content:space-between; gap:10px; padding:0 10px; font-size:13px; line-height:1.25}
+.eki-nb a{display:inline-flex; align-items:center; gap:5px; text-decoration:none; min-height:44px; min-width:0}
 .eki-nb a:hover span{text-decoration:underline; text-underline-offset:3px}
 .eki-nb a small{display:block; font:500 10.5px/1.1 var(--en)}
 .eki-nb .nx{margin-left:auto; text-align:right}
@@ -362,7 +389,7 @@ button{font:inherit; color:inherit}
 .cam{position:relative; display:flex; flex-direction:column; min-width:0; padding-top:14px}
 /* each monitor hangs from its own bracket */
 .cam::before{content:""; position:absolute; top:0; left:50%; width:4px; height:14px; margin-left:-2px; background:var(--housing-2)}
-.cam::after{content:""; position:absolute; top:0; left:50%; width:38px; height:4px; margin-left:-19px; background:var(--housing-2); border-radius:1px}
+.cam::after{content:""; position:absolute; top:0; left:50%; width:38px; height:4px; margin-left:-19px; background:var(--housing-2); border-radius:2px}
 .hood{display:flex; align-items:center; gap:6px; padding:4px 4px 0 6px; background:var(--housing-2); border-radius:4px 4px 0 0}
 .pn{font:700 11px/1 var(--en); letter-spacing:.04em; padding:3px 5px 2px; border-radius:2px; background:#fff; color:#111}
 .keys{margin-left:auto; display:flex; gap:4px}
@@ -370,6 +397,8 @@ button{font:inherit; color:inherit}
   background:#2c2f34; color:#e9e9e6; cursor:pointer; text-decoration:none}
 .key:hover{background:#3d4148}
 .key .pg{font-size:17px}
+/* touch: hood keys grow to 44 × 44 */
+@media (max-width:699px), (pointer:coarse){ .key{width:44px; height:44px} .key .pg{font-size:19px} }
 .key.fav[aria-pressed="true"]{color:var(--amber)}
 .cam-link{display:flex; flex-direction:column; text-decoration:none; color:inherit; flex:1}
 .mon{position:relative; display:block; aspect-ratio:16/9; background:#050607; border:5px solid var(--housing-2);
@@ -385,6 +414,14 @@ button{font:inherit; color:inherit}
 .mon .lbl{position:absolute; left:5px; top:5px; z-index:1; padding:2px 5px 1px; border-radius:2px; background:#000;
   font:700 11px/1.2 var(--en); letter-spacing:.08em; color:var(--green)}
 .mon.night .lbl{color:var(--amber)} .mon.err .lbl{color:var(--red)}
+/* no frame yet, or a frozen frame while offline: the label says nothing it cannot back up */
+.mon.wait:not(.err) .lbl{color:var(--housing-2ink)}
+.mon .fail .f-off, .mon .fail .f-ph{display:none}
+.mon.ph .fail .f-on{display:none}
+.mon.ph .fail .f-ph{display:inline}
+.is-offline .mon .fail .f-on, .is-offline .mon .fail .f-ph{display:none}
+.is-offline .mon .fail .f-off{display:inline}
+.wxrows .wr .seg, .wx-state .seg{display:inline-block}
 .mon .yt{position:absolute; right:5px; bottom:5px; z-index:1; display:inline-flex; gap:4px; align-items:center;
   padding:2px 6px; border-radius:2px; background:#000; color:#fff; font-size:11px; opacity:0}
 .cam-link:hover .yt, .cam-link:focus-visible .yt{opacity:1}
@@ -454,10 +491,11 @@ try{ var _t=localStorage.getItem('tk_theme');
   </div>
 
   <div class="top" id="top">
+    <button class="trip-back" type="button" id="tripBack" hidden><svg class="pg" aria-hidden="true"><use href="#p-train"/></svg><span>顯示行程看板</span></button>
     <section class="trip" id="trip" aria-labelledby="bdLabel">
       <div class="board">
         <div class="board-head">
-          <div class="bh-l"><b id="bdLabel">第一天的行程</b><span class="jp" id="bdJp"></span><span class="bh-day" id="bdDay"></span><span class="bh-cd" id="bdCd"></span></div>
+          <div class="bh-l"><h2 class="bh-t" id="bdLabel">第一天的行程</h2><span class="jp" id="bdJp"></span><span class="bh-day" id="bdDay"></span><span class="bh-cd" id="bdCd"></span></div>
           <div class="bh-clock">
             <span class="clk"><i>日本</i><span class="led" id="ledJst"></span><span class="sr" id="jst">--:--</span></span>
             <span class="clk"><i>台灣</i><span class="led" id="ledTwt"></span><span class="sr" id="twt">--:--</span></span>
@@ -478,6 +516,7 @@ try{ var _t=localStorage.getItem('tk_theme');
           <div class="now-line"><b id="today">—</b><em id="weekday"></em>
             <span class="sun"><svg class="pg" id="dnIcon"><use href="#p-sun"/></svg><span id="dn">—</span><em id="dnNote"></em></span></div>
           <p class="brief-note" id="briefNote"></p>
+          <p class="wx-state" id="wxState" role="status" hidden><svg class="pg" aria-hidden="true"><use href="#p-info"/></svg><span></span><button class="tool" type="button" id="wxRetry" hidden>重試</button></p>
 
           <div class="wx" id="wx" hidden>
             <div class="fuji-now">
@@ -486,14 +525,16 @@ try{ var _t=localStorage.getItem('tk_theme');
             </div>
             <div class="wx-led" id="wxTrack"><span class="led" id="wxRun"></span><span class="sr" id="wxText"></span></div>
             <div class="wxgrid" id="wxGrid" hidden></div>
-            <div class="tools">
-              <button class="tool" type="button" id="gridBtn" aria-expanded="false" aria-controls="wxGrid"><svg class="pg"><use href="#p-grid"/></svg><span>展開比較</span></button>
-              <button class="tool" type="button" id="fujiBtn" aria-expanded="false" aria-controls="fujiBox"><svg class="pg"><use href="#p-fuji"/></svg><span>富士山看得到嗎</span></button>
-              <button class="tool" type="button" id="packBtn" aria-expanded="false" aria-controls="packBox"><svg class="pg"><use href="#p-bag"/></svg><span>帶什麼</span></button>
-              <span class="src">天氣 <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">穿衣指數<svg class="pg"><use href="#p-ext"/></svg></a></span>
-            </div>
-            <div class="drop" id="fujiBox" hidden></div>
-            <div class="drop" id="packBox" hidden>
+          </div>
+          <!-- The pack list does not depend on the weather, so it stays reachable when the forecast cannot load. -->
+          <div class="tools">
+            <button class="tool" type="button" id="gridBtn" aria-expanded="false" aria-controls="wxGrid" hidden><svg class="pg" aria-hidden="true"><use href="#p-grid"/></svg><span>展開比較</span></button>
+            <button class="tool" type="button" id="fujiBtn" aria-expanded="false" aria-controls="fujiBox" hidden><svg class="pg" aria-hidden="true"><use href="#p-fuji"/></svg><span>富士山看得到嗎</span></button>
+            <button class="tool" type="button" id="packBtn" aria-expanded="false" aria-controls="packBox"><svg class="pg" aria-hidden="true"><use href="#p-bag"/></svg><span>帶什麼</span></button>
+            <span class="src">天氣 <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">穿衣指數<svg class="pg" aria-hidden="true"><use href="#p-ext"/></svg></a></span>
+          </div>
+          <div class="drop" id="fujiBox" hidden></div>
+          <div class="drop" id="packBox" hidden>
               <h3>十一月的關東・箱根・富士五湖，帶什麼</h3>
               <p>同一天裡，<b>東京市區、熱海海邊、河口湖湖畔</b>可以差 8～10 度。
                 河口湖海拔約 830 公尺，清晨常在 0～3 度，看逆富士要當冬天穿。</p>
@@ -505,8 +546,7 @@ try{ var _t=localStorage.getItem('tk_theme');
                 <div><dt>自駕日</dt><dd>箱根、熱海峠<b>清晨與夜間會起霧</b>；河口湖朝晚接近冰點，橋面與陰面可能結霜。</dd></div>
               </dl>
               <p class="small">穿衣指數以 Weathernews 關東版為準：
-                <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース 服装予報（関東）<svg class="pg"><use href="#p-ext"/></svg></a></p>
-            </div>
+                <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">ウェザーニュース 服装予報（関東）<svg class="pg" aria-hidden="true"><use href="#p-ext"/></svg></a></p>
           </div>
         </div>
       </section>
@@ -518,7 +558,7 @@ try{ var _t=localStorage.getItem('tk_theme');
       </a>
 
       <section class="panel rec" id="rec" hidden aria-labelledby="recH">
-        <div class="panel-h"><h2 id="recH">現在值得看哪裡</h2><span class="r">依各地日夜與天氣自動挑</span></div>
+        <div class="panel-h"><h2 id="recH">現在值得看哪裡</h2><span class="r" id="recNote">依各地日夜與天氣自動挑</span></div>
         <div class="panel-b"><div class="rec-list" id="recList"></div></div>
       </section>
     </div>
@@ -539,7 +579,7 @@ try{ var _t=localStorage.getItem('tk_theme');
         <ol>
           <li><b>最上面是行程看板。</b>今天（出發前是第一天）要去哪、幾點有約，下面是那幾個地方的天氣與該穿什麼。點 D1～D8 換一天。</li>
           <li><b>往下滑是各地的站牌。</b>每個地方一面站牌，下面掛著那裡的攝影機。螢幕上的圖就是現在的樣子，每分鐘自己更新；點下去用 YouTube 看即時影像，手機會直接跳進 App。</li>
-          <li><b>看螢幕左上角的標示。</b>LIVE ＝有畫面；<b>夜間</b>＝那邊天黑了，畫面暗是正常的，不是故障；無畫面＝畫格伺服器沒回應，點進去通常還看得到。</li>
+          <li><b>看螢幕左上角的標示。</b>LIVE ＝畫面已經抓到；<b>夜間</b>＝那邊天黑了，畫面暗是正常的，不是故障；無畫面＝抓不到畫格，可能直播停了或換了網址，點進去可以確認；載入中＝正在抓畫面；<b>停格</b>＝目前離線，看到的是最後一張。</li>
           <li><b>螢幕上緣</b>有兩個鍵：星號把常看的收起來，之後用篩選列的「收藏」就能只看那幾支；圖釘開 Google 地圖看那個地點在哪。</li>
           <li><b>站牌兩端的箭頭</b>走到前一站、下一站；每條線上方的路線圖也可以直接點站名。</li>
           <li><b>「展開比較」</b>把天氣跑馬燈換成表格，各地氣溫、該穿什麼一次看完。<b>「富士山看得到嗎」</b>用河口湖、山中湖、御殿場、箱根的雲量判斷今天能不能看到富士山。</li>
@@ -595,8 +635,9 @@ try{ var _t=localStorage.getItem('tk_theme');
     <section class="panel">
       <div class="panel-h"><h2>畫面說明</h2></div>
       <div class="panel-b">
-        <p>螢幕左上角的標示有三種：<strong>LIVE</strong>＝有畫面；<strong>夜間</strong>＝那個地方太陽已經下山，
-          畫面暗是正常的，不是壞掉；<strong>無畫面</strong>＝畫格伺服器沒回應。</p>
+        <p>螢幕左上角的標示：<strong>LIVE</strong>＝畫面已經抓到；<strong>夜間</strong>＝那個地方太陽已經下山，
+          畫面暗是正常的，不是壞掉；<strong>無畫面</strong>＝抓不到畫格（YouTube 只給灰色預設圖，或伺服器沒回應），直播可能停了，點進去可以確認；
+          <strong>載入中</strong>＝正在抓畫面；<strong>停格</strong>＝目前離線，螢幕上是離線前最後一張。</p>
         <p>畫面來自 YouTube 的直播畫格，有 CDN 快取，可能落後幾分鐘。要看真正的即時影片就點進去。
           頻道主停播或換新網址也很正常——點進去若顯示無法播放，往上點頻道名稱，通常會看到他們開了新的直播。</p>
       </div>
@@ -606,9 +647,8 @@ try{ var _t=localStorage.getItem('tk_theme');
   <footer>
     <div class="sig"><b>東京近郊即時影像</b>
       <span>做法參考 <a href="https://hokkaido-livecam-hubaco.netlify.app/" target="_blank" rel="noopener">北海道各地即時影像（虎拔）</a>，攝影機清單依 <a href="trip.html">關東秋季紅葉巡航</a> 行程重新蒐集</span></div>
-    <button class="tool trip-back" type="button" id="tripBack" hidden><svg class="pg"><use href="#p-train"/></svg><span>重新顯示行程看板</span></button>
     <!-- Bump this line on every revision: date = edit date, +0.1 minor / +1.0 major -->
-    <div class="ver">2026-10-01　Ver 2.0</div>
+    <div class="ver">2026-10-06　Ver 2.1</div>
 
     <section class="legal">
       <h2>版權與資料來源</h2>
@@ -620,6 +660,11 @@ try{ var _t=localStorage.getItem('tk_theme');
             （<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。
             穿著建議、推薦順序、富士山能見度與路面判讀皆為依氣溫、天氣代碼、雲量與能見度自行換算，
             <b>非官方預報、非官方路況</b>，僅供參考。</li>
+        <li><b>11 月平年值</b>　出發前看板的「11 月平年」取自
+            <a href="https://www.data.jma.go.jp/stats/etrn/index.php" target="_blank" rel="noopener">氣象廳 過去の気象データ</a>
+            的平年值（11 月每日最高、最低氣溫的平均；多為 1991–2020 年，成田 2003–2020、辻堂 1992–2020），
+            用最近的測站代表：新宿・原宿・澀谷・銀座＝東京，江之島＝辻堂，山中湖＝山中。箱根的測站只量雨量，所以沒有平年值。
+            平年值不是預報。</li>
         <li><b>日出日落與日夜判斷</b>　依各地座標計算的天文值，非觀測值。地點座標取城鎮位置，
             非攝影機的精確架設點。</li>
         <li><b>外部連結</b>　穿衣指數為
@@ -637,7 +682,7 @@ try{ var _t=localStorage.getItem('tk_theme');
   </footer>
 </div>
 <script>
-/*LED-GLYPHS-BEGIN*/const LEDG={h:"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¥°·×é–—“”…※→⇄─",f:"、。〇《》「」『』【】〜あいうえおかがきぎくぐけげこごさざしじただちっつてとどなにねのはばぱふぶまみめゃやゅょよらりるれろわをんアィイウェエォオカガキクグケコゴサザシジスズセゾタチッツテトドナネノハバパビフブプベホボマミムメモャヤュョヨラリルレロワンヶ・ー一丁七三上下不且世並中丸主之乘乙也了二五交京亮人今付仙以件伊伎会位低住佐何佛佳來依保信俯倉個候值停側傍傘備僅元先光入內全兩八公六共典内再冬冰凍出分切列初判利到刻前剛加勞勢化北区區十升午半協南危即卸厚原去参參取口古另只可台号吃各合吉同名向否周和咖哥哩唐唯商啡單嗎四回国圈國圍圏園圖土在地址坂型城堀堂報場塔塞壁壞士壯夕外多夜夢大天太央奈奔套奧女好如子季宅守完官定宝客宮家宿寄富實寫寬寶寿封對小少尖就局居屋展層山岡岩岸峠峰島崎川巡巨差已巴巾市帆帚帶常帽幅幕幡平幹幾広底店府度座庫庵廊廣建式強彎形彩影往很後得從御德心必忍忙快思急情意愛憶成或截戶房手才打扛技抓折拉拍拱掃掉掌排探接換握搭搶摩播操攝支收改放数整數新斷方旁旅族日早明星是時晚晝晨景晴暗暫曜曲更曽最會月有望朝期木未本李材村束東松板柄校株根格框案梅條梨梭棄棧楓楚業極楽概様樂樓標模横樹橋機橫檔權次歌止正步武段殿比毛氛氣水氷汐江池決汽沒河油治沼沿況泉法波注洋津洲流浅浜浦浪海淞深淺清渋測港湖湘湧湯湾準溫滑滞滿漁漫潮澀濃濕濛濱瀨瀬灌灘灣火灰点為烊烏無然焼煞照熱燈燒燭爬片牌牛特状狀猫率班現球產産用田由町界畔留畫當疊発發白的皆盆益盡盤目直相看県真眺眼眾着瞰知短石確碼磚社神禮秋秒程穩空穿窗立站端競竹第算箱築篩籃系約紅索終結絡絨統絶經綠線緣總繁繞纜置美群羽翌老考而聖聞聲肉背能腰腳臉自與舍舞航般船艇色芒芙芦苑若茅草華落葉著葛蓉蓋薄藍藏藝蘆處號虹螢蠟行街衝衣表衫袋袖被裡裾複襯西要見覓視観覽觀角訂訊訶試認語調談請議護讀變谷豆貓貝費貼資質走起越足跑距跟路踏車軌較載輪輸轉近返迴迷退送逆透逐這通逛速連進逼遊運過道達遙遠遮選遺避還邊那郡部郵都配酒里重野量金鉄銀錄鍵鎌鏡鐘鐵長門閉開間関關阪防降院陣除陰陽隅隔隘際隨險隻雑雙離雨雪雲零雷電需霄霓霜霧霰露青靖静靜靠面音頂順預頭頻風飄飛食飯餐館首駅駐駕駿驛體高鬧鮮鴨鵠鶴麥黑點！＆（）＋，／４：；？＠｜～",b:"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AIAAgAAAAAAAAAAAAAAAAAAAAAAAAAHADkAAQACAAeAeEAAAAAAAAAAAAAAAAAAAAAAAAAHgDiAAIAHgDkAAQAHADiAAAAAAAAAAAAAAAfAeEAAQABAB4A4gACAAIAAgAeAOEAAAAAAAAAAAAAARwA4AAHAjkBwQABAAIAAgAEAAgAMADAAAAAAAAAAAQAggBCAEIAQgBCAEIAQgAEAAQACAAQACAAAAAAAAAAAAAQAIgASABIAEiASIBJAIkAigEMAggAAAAAAAAAAAEAAIAAgACAAIAAgACBAIIAhACIALAAwAAAAAAAAAAAAAAAAAIfAeEBAQEBAIIAggCeAOEAgAAAAAAAAAAAAAAAAAIfAeEBAQCBAIIAggAEAAQACAAQACAAQAAAAAAAAAAAAAABgABAgCCAAQABAAIABAAIATAAwAAAAAAAAAAAAAAAAAAAAAAAgABAAEYAeACIAQgAEAAgAEAAAAAAAAAAAAAAAAAAAAAwAHgAeAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAED4PwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//4AAAAAAAAAAAAAAAAAAAAAAAB//AEAAQABAAEAAQABAAEAAQABAAEAAQABAAUAAgACAAIAAgACAAIAAjwHwPoAAgACAAIAAgQCBAIEAfwAAAAAAAB//AAAAAAAAAAAP/gAAAAAAAAAAAAA//4AAAAAAgACAAIAAgACAAIAA/gCAAIAAgACAAIAAgACAP/+AAAAAP/+AgACAAIAAgACQAIgAhACCAIIAgACAAIAAgACAAAAf/wAgACAAQABAANABSAJEBEIIQRBBIEAAQABAAEAAAAf8BAQEBAQEB/wEBAQEBAQH/AQEBAQEBAQEP/+AAACIBIgEiASIBIg//4SIBIgEiASIBPgEAAQABAAH/wAABAQCCAEQH/8BEAEQARAREQkRBRIFFAEQARABED//gAAAQABAAEAAQA/+CEIIQghCCEIIQg/+CEIAQABAAEAAQACAAIAAgACAH/gAiASIAogBCAEIAogCSIRIiAiQB6AAAIAAQAAAH/8AQABAAEAAQA/+AEAAQABAAEAAQD//gAAAgABAAEAAAB/+AAQACAAQACAAQACAAQAGAAkAEP+AAAA+D8AAQB//AEACST5OAkiOSLLngVACSAxGMEG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/CAkICQgJCAkIEX8RACEAAIAAgACAAIAB/gECAgIEBAkEEIgAUAAgAEAAgAMAHAAEEAQQBBAEEA+QCJgQlBCSKREFEQIQAhAEEAgQEBAgEACAAIAB/AIIDhABIADQAyAcfgCCAwQMiABQAGADgBwAAIAAQD//giACIAQ+BEIMUhSKJUQERAQoBBAEKARGBYGCCD//gggP/gkSD/4AAB//kICh/QIEDQgAkABgA4AcAABAAEAAQABAAEA//4BAAEAAoACgARABEAIIBAQIAjABgAAP/gBAAEAAQABAP/+AQACgAKABEAEQAggEBAgCMAGAQABAAEAAQABAP/+AQABAAKAAoAEQARACiARECEIwAYBAAEAAQAf8BEQERAREBEQERD//gKAAoAEQAggMBjABgIAAgB//ARACCAwGM/mAAAAAH/8AQAREBEIIQRFBAIAAgACAH/8BEAJIDEYz+YBAAkgCCB//AggCCAQIBAgICABAAEAf/wCgARAD/A0GMfmBAAH4AQA//4EAAgQH/gACAIABAA/+CBoL6glSC/oI0glKCgIAQB//AKADGAwGMAGAgACAAIAAgAEAP/+BCAIIAggEEAYQAaAAYAGYBgQYAgQABD8EAQQCPwQJCAkICX+JCBIICggECAoIEQghKAAQBAAEAAQABB8/kQiRCJEIkRCRCREFEQIRBREInxCRIAAAAB/+AAQACAAQAGAAQD//gEAAQABAAEAAQABAAUAAgAAcB+AAQABAH/8BUAJIDEYz+YAQACA//4BAAEABQACAAIAAQB//kACgAQAIAPwPgACAAP8/gACBAIEAgQB/AAAAgABAH/+QAKARABAAED//gBAAEAQQAhACEAAQAFAAIACAAEAf/5AAoAEH/AAAAAAf/wEQARABEAIRAhEEERgPAIAAQB//kACgAQf8BAQEBAf8BAAEAAf+BAIEAgf+BAIAgABAH/+QAKABAAAP/gBAAEAEQAR+BEAEQApAEf+gAACAAEAf/5AAoAEAAB//AEAAQABAD/4AQABIAEQ//4AAAIAAQB//kACiAQP8BAgLEADgBxw4A4f8BAQEBAf8BAQAgABAH/+QAKABB/wEBAQEB/wAgAEAD/4IAggCD/4IAgCAAEAf/5AAoAEf/wCAA0IcZACoAzAcaAGmBiG4oABAAIAAQB//kACiAQP/BBAMIBT+JII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uh6SEP4QEBD+/hCCHoLgggKCqoKo/oCCAAAAAAIABwAHAAcABwACAAIAAgAAAAAAAgACAAAAAAAAAAAAAAAOABEAEQARAAoABDgKEBEgIMAgwBEgDhgAAAAAABAAIABAAIAAgAEAAQABAAEAAIAAgABAACAAEAAAAAAQAAgABAACAAIAAQABAAEAAQACAAIABAAIABAAAAAAAAAAAAABAAEAAQABAAEAP/gBAAEAAQABAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAMAAQABAAIAAAAAAAAAgAEAAgAEAAgAEAAgAEAAgAEAAgAEAAgAEAAAAAAAAAAAAAAQADAAUACQARACEAQQB/wAEAAQADgAAAAAAAAAAAAAAAAAAAGAAYAAAAAAAAABgAGAAAAAAAAAAAAAAAAAAAAAAAAAAYABgAAAAAAAAAGAAYAAgACAAQAAAAAAAAAB8AIIBAQABAAIADAAQABAAAAAAABAAEAAAAAAAAAAAAAAAPADDAQCCHEIkQkRCREJMgTMBAEDBgD4AAAAAABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAAAAAAAAAAAAAAAAAAAAAD4AQYQAeAAAAAAAAAAAAAAAAA=="};/*LED-GLYPHS-END*/
+/*LED-GLYPHS-BEGIN*/const LEDG={h:"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¥°·×é–—“”…※→⇄─",f:"、。〇《》「」『』【】〜あいうえおかがきぎくぐけげこごさざしじただちっつてとどなにねのはばぱふぶまみめゃやゅょよらりるれろわをんアィイウェエォオカガキクグケコゴサザシジスズセゾタチッツテトドナネノハバパビフブプベホボマミムメモャヤュョヨラリルレロワンヶ・ー一丁七三上下不且世並中丸主之乘乙也了二五交京亮人什今付仙以件伊伎会位低住佐何佛佳來依保信俯倉個候值停側傍傘備僅元先光入內全兩八公六共典内再冬冰凍出分切列初判利到刻前剛功加動勞勢化北区區十升午半協南危即卸厚原去参參取口古另只可台号吃各合吉同名向否周和咖哥哩唐唯商啡單嗎四回国圈國圍圏園圖土在地址坂均型城堀堂報場塔塞壁壞士壯夕外多夜夢大天太央奈奔套奧女好如子季宅守完官定宝客宮家宿寄富實寫寬寶寿封對小少尖就局居屋展層山岡岩岸峠峰島崎川巡巨差已巴巾市帆帚帶常帽幅幕幡平年幹幾広底店府度座庫庵廊廣廳建式強彎形彩影往待很律後得從御德心必忍忙快思急情意愛憶應成或截戶房手才打扛技抓折拉拍拱挑掃掉掌排探接換握搭搶摩播操攝支收改放数整數料新斷方旁旅族日早明星是時晚晝晨景晴暗暫曜曲更曽最會月有望朝期木未本李材村束東松板柄校株根格框案梅條梨梭棄棧楓楚業極楽概様樂樓標模横樹橋機橫檔權次歌止正步武段殿每比毛氛氣水氷汐江池決汽沒河油治沼沿況泉法波注洋津洲流浅浜浦浪海消淞深淺清渋測港湖湘湧湯湾準溫滑滞滿漁漫潮澀濃濕濛濱瀨瀬灌灘灣火灰点為烊烏無然焼煞照熱燈燒燭爬片牌牛特状狀猫率班現球產産用田由町界畔留畫當疊発發白的皆盆益盡盤目直相看県真眺眼眾着瞰知短石確碼磚示社神禮秋秒程稍穩空穿窗立站端競竹第算箱築篩籃系約紅索終結絡絨統絶經綠網線緣總繁繞纜置美群羽翌老考而聖聞聯聲肉背能腰腳臉自與舍舞航般船艇色芒芙芦苑若茅草華落葉著葛蓉蓋薄藍藏藝蘆處號虹螢蠟行街衝衣表衫袋袖被裡裾複襯西要見覓視観覽觀角訂計訊訶試認語調談請議護讀變谷豆象貓貝費貼資質走起越足跑距跟路踏車軌較載輪輸轉辻近返迴迷退送逆透逐這通逛速連進逼遊運過道達遙遠遮遲選遺避還邊那郡部郵都配酒里重野量金鉄銀錄鍵鎌鏡鐘鐵長門閉開間関關阪防降院陣除陰陽隅隔隘際隨險隻雑雙離雨雪雲零雷電需霄霓霜霧霰露青靖静靜靠面音頂順預頭頻顯風飄飛食飯餐館首駅駐駕駿驛體高鬧鮮鴨鵠鶴麥麼黑點！＆（）＋，／４：；＝？＠｜～",b:"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AIAAgAAAAAAAAAAAAAAAAAAAAAAAAAHADkAAQACAAeAeEAAAAAAAAAAAAAAAAAAAAAAAAAHgDiAAIAHgDkAAQAHADiAAAAAAAAAAAAAAAfAeEAAQABAB4A4gACAAIAAgAeAOEAAAAAAAAAAAAAARwA4AAHAjkBwQABAAIAAgAEAAgAMADAAAAAAAAAAAQAggBCAEIAQgBCAEIAQgAEAAQACAAQACAAAAAAAAAAAAAQAIgASABIAEiASIBJAIkAigEMAggAAAAAAAAAAAEAAIAAgACAAIAAgACBAIIAhACIALAAwAAAAAAAAAAAAAAAAAIfAeEBAQEBAIIAggCeAOEAgAAAAAAAAAAAAAAAAAIfAeEBAQCBAIIAggAEAAQACAAQACAAQAAAAAAAAAAAAAABgABAgCCAAQABAAIABAAIATAAwAAAAAAAAAAAAAAAAAAAAAAAgABAAEYAeACIAQgAEAAgAEAAAAAAAAAAAAAAAAAAAAAwAHgAeAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAED4PwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//4AAAAAAAAAAAAAAAAAAAAAAAB//AEAAQABAAEAAQABAAEAAQABAAEAAQABAAUAAgACAAIAAgACAAIAAjwHwPoAAgACAAIAAgQCBAIEAfwAAAAAAAB//AAAAAAAAAAAP/gAAAAAAAAAAAAA//4AAAAAAgACAAIAAgACAAIAA/gCAAIAAgACAAIAAgACAP/+AAAAAP/+AgACAAIAAgACQAIgAhACCAIIAgACAAIAAgACAAAAf/wAgACAAQABAANABSAJEBEIIQRBBIEAAQABAAEAAAAf8BAQEBAQEB/wEBAQEBAQH/AQEBAQEBAQEP/+AAACIBIgEiASIBIg//4SIBIgEiASIBPgEAAQABAAH/wAABAQCCAEQH/8BEAEQARAREQkRBRIFFAEQARABED//gAAAQABAAEAAQA/+CEIIQghCCEIIQg/+CEIAQABAAEAAQACAAIAAgACAH/gAiASIAogBCAEIAogCSIRIiAiQB6AAAIAAQAAAH/8AQABAAEAAQA/+AEAAQABAAEAAQD//gAAAgABAAEAAAB/+AAQACAAQACAAQACAAQAGAAkAEP+AAAA+D8AAQB//AEACST5OAkiOSLLngVACSAxGMEG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"};/*LED-GLYPHS-END*/
 /* Camera list.
    Each area carries at:[lat,lon] (town position, not the exact camera spot; good enough for
    day/night and weather), wx: display name used by the ticker and trip panel, and fuji:true when
@@ -780,37 +825,47 @@ const REGIONS=[
 ];
 
 /* Trip data mirrors trip.html (Autumn Road Trip 2026-11-07 → 11-14).
+   p: the day's place (as on trip.html's day tabs), shown on the track plate
+   r: route steps joined by →; every time is Japan time (D1's departure is printed in Taiwan time in brackets)
+   b: times of the steps that are booked tickets on trip.html (stub-booked): the time lights red and the
+      step ends with the booked mark. Deadlines (a time followed by the word for "before") are found in
+      the text and keep the red deadline form.
+      Only trip.html's booked tickets go here; options and to-dos never do.
    c: camera name prefixes (matched against the zh column, up to 3 per prefix)
    wx: weather areas shown for that day */
 const TRIP={name:'Autumn Road Trip 2026',start:'2026-11-07',days:[
- {d:1,md:'11/07',t:'成田降落，直奔橫濱',car:false,
-  r:'成田 16:50 落地 → N\'EX 46 號 18:45 → 橫濱 20:19 → 地鐵藍線阪東橋 → Hotel BUSTEL（伊勢佐木町）→ 周邊覓食',
-  n:'飯店入住到 22:00 止，改搭 50 號會逼近底線。',
+ {d:1,md:'11/07',p:'橫濱',t:'成田降落，直奔橫濱',car:false,
+  r:'台北 13:50 起飛 CX450（台灣時間 12:50）→ 成田 16:50 落地 → N\'EX 46 號 18:45 → 橫濱 20:19 → 地鐵藍線阪東橋 → Hotel BUSTEL（伊勢佐木町）→ 周邊覓食',
+  b:['13:50','16:50'],
+  n:'飯店入住到 22:00 止（待確認），改搭 50 號會逼近底線。',
   c:['成田機場','橫濱'],wx:['成田','橫濱']},
- {d:2,md:'11/08',t:'箱根山道與蘆之湖操駕',car:true,
+ {d:2,md:'11/08',p:'河口湖',t:'箱根山道與蘆之湖操駕',car:true,
+  b:['10:30'],
   r:'関内店 10:30 取車 → 東名（海老名 SA）→ 小田原午餐 → 小田原城（車窗望天守・不下車）→ 箱根新道 → 蘆之湖 Skyline →（備選 御殿場 Outlets）→ 河口湖 Super Hotel → 20:00 紅葉迴廊夜楓',
   n:'Skyline 通行費 ¥1,000 僅收現金；富士山被雲遮改繞熱海小新《燒肉之路》巡禮再進河口湖。',
   c:['東名高速','橫濱青葉','小田原','箱根大観山','箱根','乙女峠','河口湖'],wx:['橫濱','小田原','箱根','河口湖']},
- {d:3,md:'11/09',t:'富士急樂園，南下湘南海岸',car:true,
+ {d:3,md:'11/09',p:'江之島',t:'富士急樂園，南下湘南海岸',car:true,
   r:'河口湖 → 富士急樂園（09:00 開園前到）→ 東富士五湖道路 → 御殿場IC → 東名・圏央道 → 國道 134 → 江の島大橋 → 江之島 Enoshima Hotel（Enospa 溫泉）',
   n:'雨天備案：棄富士急改御殿場 Outlets。江の島大橋車道 22:00–翌 5:00 封閉。',
   c:['河口湖','富士急樂園','山中湖','御殿場','乙女峠','江之島'],wx:['河口湖','山中湖','御殿場','江之島']},
- {d:4,md:'11/10',t:'江之島、鎌倉，傍晚回橫濱',car:true,
+ {d:4,md:'11/10',p:'鎌倉',t:'江之島、鎌倉，傍晚回橫濱',car:true,
   r:'江之島晨遊（島上住客特權）→ 鎌倉高校前（過橋搭江ノ電兩站）→ 回島取車 → 鎌倉大佛 → 國道 134 → 橫濱 APA Bay Tower 卸行李 → 関内店 20:00 前還車',
   n:'還車 20:00 同門市打烊，抓 19:00–19:30 到店、先加滿油；16:30–17:00 離開鎌倉避開尖峰。',
   c:['江之島','七里濱','鎌倉高校前','鎌倉','橫濱'],wx:['江之島','橫濱']},
- {d:5,md:'11/11',t:'試乘 Z → 新宿高球 → 池袋燒肉',car:false,
-  r:'日產全球總部藝廊 10:00 試乘 FAIRLADY Z → 進東京住 Minn 日本橋水天宮前 → 新宿 Victoria Golf／Alpen → 池袋 Sunshine City → 焼肉あぶる',
-  n:'試乘 10/28 開放預約；あぶる 10/11 訂位。',
+ {d:5,md:'11/11',p:'新宿',t:'試乘 Z → 新宿高球 → 池袋動漫與燒肉',car:false,
+  r:'日產全球總部藝廊 10:00 試乘 FAIRLADY Z → APA 11:00 退房 → JR 進東京（住 Minn 日本橋水天宮前）→ 新宿 Victoria Golf／Alpen → 池袋 Sunshine City（寶可夢・animate）→ 19:30 焼肉 あぶる。池袋店',
+  b:['19:30'],
+  n:'試乘 10/28 開放預約，還沒訂；19:10 離開 Sunshine City，焼肉遲到 10 分未聯絡就算取消。',
   c:['橫濱','新宿'],wx:['橫濱','新宿']},
- {d:6,md:'11/12',t:'原宿潮牌與銀座鐵板燒',car:false,
+ {d:6,md:'11/12',p:'銀座',t:'原宿潮牌與銀座鐵板燒',car:false,
   r:'明治神宮 → 原宿・貓街 → 竹下通 Kiddy Land → 表參道 → 銀座線直達銀座 → 和牛鐵板燒（候選・需預約）',
   c:['原宿','青山','銀座','有樂町'],wx:['原宿','銀座']},
- {d:7,md:'11/13',t:'澀谷深度探索與完美燒肉',car:false,
+ {d:7,md:'11/13',p:'澀谷',t:'澀谷深度探索與完美燒肉',car:false,
   r:'宮下公園 → Shibuya PARCO 6F（Nintendo／Pokémon／CAPCOM）→ Shibuya Sky（搶 15:40–16:00 場次）→ 燒肉 → 唐吉訶德',
   c:['澀谷'],wx:['澀谷']},
- {d:8,md:'11/14',t:'帶著滿滿回憶返台',car:false,
-  r:'10:00 退房 → 走 1 分鐘到 T-CAT → 利木津巴士（11:00–11:30 班次）→ 成田 → 15:30 起飛',
+ {d:8,md:'11/14',p:'成田',t:'帶著滿滿回憶返台',car:false,
+  r:'Minn 10:00 退房 → 走 1 分鐘到 T-CAT → 利木津巴士（11:00–11:30 班次，約 55 分）→ 成田 15:30 起飛 CX451',
+  b:['15:30'],
   n:'飯店隔壁就是 T-CAT，完全不用扛行李搭電車。',
   c:['成田機場'],wx:['成田']}
 ]};
@@ -863,6 +918,26 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const TICKER=['新宿','橫濱','江之島','小田原','箱根','河口湖','山中湖','御殿場','熱海','成田'];
 /* Areas used for the "can you see Fuji today" panel. */
 const FUJI_AREAS=['河口湖','富士吉田','山中湖','御殿場','箱根','十國峠'];
+/* November climate normals of the Japan Meteorological Agency for the day panel before the
+   forecast reaches a trip day: weather area → [nearest station with temperature records, mean daily
+   max °C, mean daily min °C, statistics period]. Read on 2026-10-06 from
+   https://www.data.jma.go.jp/stats/etrn/view/nml_sfc_ym.php (Tokyo 44/47662, Yokohama 46/47670,
+   Kawaguchiko 49/47640) and nml_amd_ym.php (Narita 45/0378, Odawara 46/1008, Tsujido 46/1443,
+   Yamanaka 49/0438, Gotemba 50/0441), as prec_no/block_no.
+   Hakone has no entry on purpose: its AMeDAS station (46/0390) records rain only. */
+const NORMALS={
+  '成田':['成田',16.9,6.7,'2003–2020'],
+  '橫濱':['橫濱',17.1,10.1,'1991–2020'],
+  '小田原':['小田原',17.4,8.3,'1991–2020'],
+  '河口湖':['河口湖',13.8,2.2,'1991–2020'],
+  '山中湖':['山中',12.4,0.1,'1991–2020'],
+  '御殿場':['御殿場',15.4,5.7,'1991–2020'],
+  '江之島':['辻堂',17.8,9.5,'1992–2020'],
+  '新宿':['東京',16.7,8.8,'1991–2020'],
+  '原宿':['東京',16.7,8.8,'1991–2020'],
+  '澀谷':['東京',16.7,8.8,'1991–2020'],
+  '銀座':['東京',16.7,8.8,'1991–2020']
+};
 
 /* Sunrise / sunset (astronomical) */
 const RAD=Math.PI/180;
@@ -901,6 +976,8 @@ const SNOWY=new Set([71,73,75,77,85,86]);
 const YT=(id,ch)=> 'https://www.youtube.com/watch?v='+id;
 
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
+/* Phones: board rows wrap instead of scrolling, so a whole step can be read at a glance. */
+const PHONE=matchMedia('(max-width: 699px)');
 
 /* ── Dot-matrix LED ─────────────────────────────────────────────────────────
    Text is drawn dot by dot on <canvas> from the 16-dot GNU Unifont bitmaps in LEDG
@@ -974,25 +1051,51 @@ const LED=(()=>{
       const {dp,pitch}=M, c=this.c;
       let cols = this.opt.fit ? c.n : Math.max(8,Math.floor((this.host.clientWidth||0)/pitch));
       this.cols=cols;
-      this.moving = !!this.opt.scroll && c.n>cols && !RM.matches;
-      /* No scrolling (reduced motion, or not a scrolling row): wrap onto extra lines. */
+      this.moving = !!this.opt.scroll && c.n>cols && !RM.matches && !(this.opt.wrapPhone && PHONE.matches);
+      /* No scrolling (reduced motion, a phone board row, or not a scrolling row): wrap onto extra lines. */
       this.lines=[[0,c.n]];
       if(!this.moving && c.n>cols){
         this.lines=[]; let s=0;
         while(s<c.n){ let e=Math.min(c.n,s+cols);
           if(e<c.n){
-            /* break between glyphs, never inside a run of Latin letters or digits */
-            const al=ch=>/[A-Za-z0-9'.,:%¥]/.test(ch), prev=k=>{ let j=k-1; while(j>0 && !c.st[j]) j--; return c.chs[j]; };
-            let k=e; while(k>s && (!c.st[k] || (al(c.chs[k]) && al(prev(k))))) k--;
+            /* A break point is a glyph start that is not inside a run of Latin letters or digits
+               (T-CAT, 11:00–11:30 stay whole), does not start the next line with closing punctuation
+               or a middle dot, and does not end this line with opening punctuation. Walk back to the
+               nearest one. */
+            const al=ch=>/[A-Za-z0-9'.,:%¥–-]/.test(ch), prev=k=>{ let j=k-1; while(j>0 && !c.st[j]) j--; return c.chs[j]; };
+            const ok=k=>c.st[k] && !(al(c.chs[k]) && al(prev(k))) && !/[；，。、・）》」』：！？]/.test(c.chs[k]) && !/[（《「『]/.test(prev(k));
+            let k=e; while(k>s && !ok(k)) k--;
             if(k<=s){ k=e; while(k>s && !c.st[k]) k--; }
-            /* no line may start with closing punctuation (；，。、）》」) */
-            if(k>s && /[；，。、）》」』：！？]/.test(c.chs[k])){ let j=k-1; while(j>s && !c.st[j]) j--; if(j>s) k=j; }
-            /* …and none may end with opening punctuation (（《「) */
-            if(k>s && /[（《「『]/.test(prev(k))){ let j=k-1; while(j>s && !c.st[j]) j--; if(j>s) k=j; }
             if(k>s) e=k;
           }
           this.lines.push([s,e]); s=e;
           if(c.chs[s]===' ') s+=6; }
+        /* no widow: pull glyphs down from the line above until the last line holds three */
+        const L=this.lines, sp=ch=>ch===' '||ch==='　', gl=(a,b)=>{ let k=0; for(let j=a;j<b;j++) if(c.st[j] && !sp(c.chs[j])) k++; return k; };
+        const al=ch=>/[A-Za-z0-9'.,:%¥–-]/.test(ch);
+        while(L.length>1){
+          const a=L[L.length-2], b=L[L.length-1], gap=b[0]-a[1];
+          if(gl(b[0],b[1])>=3 || gl(a[0],a[1])<=5) break;
+          if(gap && !(gap===6 && c.chs[a[1]]===' ')) break;
+          const back=j=>{ let k=j-1; while(k>a[0] && !c.st[k]) k--; return k; };
+          let k=back(a[1]);
+          if(!gap && al(c.chs[k]) && al(c.chs[b[0]])) break;
+          while(k>a[0] && sp(c.chs[k])) k=back(k);
+          while(al(c.chs[k])){ const p=back(k); if(p<=a[0] || !al(c.chs[p])) break; k=p; }
+          /* never move closing punctuation or a middle dot to the start of the next line: step back past it */
+          while(k>a[0] && /[；，。、・）》」』：！？]/.test(c.chs[k])) k=back(k);
+          /* a Latin run that starts the line above cannot be split: give up instead */
+          while(al(c.chs[k])){ const p=back(k); if(p<=a[0]){ k=a[0]; break; } if(!al(c.chs[p])) break; k=p; }
+          /* prefer to break right after a separator (・、，or a space) within the last four glyphs */
+          for(let j=k, n=0; j>a[0] && n<4; n++){ const p=back(j); if(/[・、，　 ]/.test(c.chs[p])){ k=j; break; } j=p; }
+          if(/[（《「『]/.test(c.chs[back(k)])) k=back(k);
+          if(k<=a[0]) break;
+          /* the grown last line must still fit the board */
+          if(b[1]-k > cols) break;
+          a[1]=k; b[0]=k;
+        }
+        /* a wrapped line never starts with a space */
+        for(let i=1;i<L.length;i++) while(L[i][0]<L[i][1] && sp(c.chs[L[i][0]])){ let j=L[i][0]+1; while(j<L[i][1] && !c.st[j]) j++; L[i][0]=j; }
       }
       const h=this.lines.length*16+(this.lines.length-1)*3;
       this.cv.width=cols*dp; this.cv.height=h*dp;
@@ -1061,6 +1164,7 @@ const LED=(()=>{
   let rz=0;
   addEventListener('resize',()=>{ clearTimeout(rz); rz=setTimeout(()=>{ M=metrics(); tcol(); rows.forEach(r=>r.layout()); },120); });
   RM.addEventListener && RM.addEventListener('change',()=>rows.forEach(r=>r.layout()));
+  PHONE.addEventListener && PHONE.addEventListener('change',()=>rows.forEach(r=>r.layout()));
   return {Row, refresh(){ M=metrics(); tcol(); rows.forEach(r=>r.layout()); }};
 })();
 const AMB='#ffa526', GRN='#4fe070', RED='#ff4d3d';
@@ -1094,10 +1198,10 @@ document.getElementById('board').innerHTML = REGIONS.map(r=>{
           </span>
         </div>
         <a class="cam-link" href="${YT(id,ch)}" target="_blank" rel="noopener" aria-label="${esc(zh)}，用 YouTube 看直播">
-          <span class="mon shot" data-id="${id}">
-            <span class="lbl">LIVE</span>
+          <span class="mon shot wait" data-id="${id}">
+            <span class="lbl">載入中</span>
             <img alt="" loading="lazy" decoding="async">
-            <span class="msg fail">畫面暫時取不到<br>點進去看直播</span>
+            <span class="msg fail"><span class="f-on">畫面暫時取不到<br>點進去看直播</span><span class="f-ph">YouTube 沒有這支的畫格<br>直播可能停了，點進去確認</span><span class="f-off">目前離線<br>連上網路後會自動重抓</span></span>
             <span class="msg nite">這裡太陽已經下山，畫面暗是正常的</span>
             <span class="yt">YouTube${pg('p-ext')}</span>
           </span>
@@ -1138,14 +1242,43 @@ function paintNeighbours(){
   });
 }
 
-/* Frame loading: only visible monitors, stop when scrolled away (saves mobile data). */
+/* Frame loading: only visible monitors, stop when scrolled away (saves mobile data).
+   FRAME remembers each video's last result: 'ok', 'err' (no answer) or 'ph' (YouTube's 120 × 90 grey
+   "no thumbnail" placeholder, which still fires onload — the stream has ended or the id is dead).
+   NET counts this minute's answers: when every frame fails the page treats itself as offline. */
 const visible=new Set();
+const FRAME={};
+const NET={ok:0, bad:0, down:false, lastOk:0};
+const isOffline=()=>!navigator.onLine || NET.down;
+function frameAnswer(ok){
+  if(ok){ NET.ok++; NET.lastOk=Date.now(); if(NET.down){ NET.down=false; paintOffline(); } return; }
+  NET.bad++;
+  if(!NET.ok && NET.bad>=3 && !NET.down){ NET.down=true; paintOffline(); }
+}
 function load(sh){
-  const img=sh.querySelector('img');
-  const url=`https://i.ytimg.com/vi/${sh.dataset.id}/hqdefault_live.jpg?t=${Date.now()}`;
-  const probe=new Image(), id=sh.dataset.id;
-  probe.onload=()=>{ if(sh.dataset.id!==id) return; img.src=url; img.classList.add('on'); sh.classList.remove('err'); paintBadges(); };
-  probe.onerror=()=>{ if(sh.dataset.id!==id) return; if(!img.classList.contains('on')){ sh.classList.add('err'); paintBadges(); } };
+  const img=sh.querySelector('img'), id=sh.dataset.id;
+  if(!navigator.onLine){
+    if(!img.classList.contains('on')) sh.classList.add('err');
+    paintBadges(); return;
+  }
+  const url=`https://i.ytimg.com/vi/${id}/hqdefault_live.jpg?t=${Date.now()}`;
+  const probe=new Image();
+  probe.onload=()=>{
+    if(sh.dataset.id!==id) return;
+    frameAnswer(true);
+    if(probe.naturalWidth<=120){
+      FRAME[id]='ph'; img.classList.remove('on'); img.removeAttribute('src'); sh.classList.add('err','ph');
+    }else{
+      FRAME[id]='ok'; img.src=url; img.classList.add('on'); sh.classList.remove('err','ph');
+    }
+    paintBadges(); recheckRec(sh);
+  };
+  probe.onerror=()=>{
+    if(sh.dataset.id!==id) return;
+    frameAnswer(false);
+    if(!img.classList.contains('on')){ FRAME[id]='err'; sh.classList.add('err'); }
+    paintBadges(); recheckRec(sh);
+  };
   probe.src=url;
 }
 const io=new IntersectionObserver(es=>es.forEach(e=>{
@@ -1154,29 +1287,70 @@ const io=new IntersectionObserver(es=>es.forEach(e=>{
 }),{rootMargin:'320px'});
 document.querySelectorAll('.shot').forEach(s=>io.observe(s));
 
-let lastRefresh=Date.now();
-setInterval(()=>{
+function reloadFrames(){
   visible.forEach(load);
   document.querySelectorAll('.rec-shot').forEach(s=>{ if(s.dataset.id) load(s); });
   lastRefresh=Date.now();
-}, 60000);
+}
+let lastRefresh=Date.now();
 setInterval(()=>{
-  const el=document.getElementById('age');
-  if(el) el.textContent = `畫面 ${Math.round((Date.now()-lastRefresh)/1000)} 秒前更新`;
-}, 1000);
+  NET.ok=0; NET.bad=0;                 // a new round of answers
+  if(!navigator.onLine){ paintOffline(); return; }
+  reloadFrames();
+}, 60000);
+/* Device-local clock time for "last updated" notes: the reader compares it with their own phone. */
+const clockOf=ms=>new Date(ms).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',hour12:false});
+function paintAge(){
+  const el=document.getElementById('age'); if(!el) return;
+  /* offline: the note stops counting and says where the pictures stopped */
+  el.textContent = isOffline()
+    ? (NET.lastOk ? `目前離線・畫面停在 ${clockOf(NET.lastOk)}` : '目前離線')
+    : `畫面 ${Math.round((Date.now()-lastRefresh)/1000)} 秒前更新`;
+}
+setInterval(paintAge, 1000);
 
-/* Monitor status: LIVE / night / no frame */
+/* Online / offline: the monitors, the age note, the weather notice and the day panel follow. */
+let wasOff=false;
+function paintOffline(){
+  const off=isOffline();
+  document.documentElement.classList.toggle('is-offline',off);
+  if(wasOff && !off){
+    /* back online: forget network failures (keep placeholders) and fetch again */
+    Object.keys(FRAME).forEach(k=>{ if(FRAME[k]==='err') delete FRAME[k]; });
+  }
+  wasOff=off;
+  paintAge(); paintBadges();
+  if(typeof paintWxState==='function') paintWxState();
+  if(window.paintTripWx) paintTripWx();
+}
+addEventListener('offline',paintOffline);
+addEventListener('online',()=>{ NET.down=false; NET.ok=0; NET.bad=0; paintOffline(); reloadFrames(); loadWeather(); });
+
+/* Monitor status: LIVE only once a real frame is on the screen; a loading label until then; a
+   frozen label for a frame left over from before going offline; night after dark; no-picture for
+   no frame. */
 const NIGHT_OK=['夜景','街','路','空','鐵'];   // these still show something after dark
 let nightBy={};
 function paintBadges(){
+  const off=isOffline();
   document.querySelectorAll('.cam').forEach(c=>{
     const sh=c.querySelector('.shot'), lbl=c.querySelector('.lbl');
     const tags=(c.dataset.tags||'').split(' ');
     const dark = nightBy[c.dataset.a] && !tags.some(t=>NIGHT_OK.indexOf(t)>=0);
+    const on=sh.querySelector('img').classList.contains('on'), err=sh.classList.contains('err');
     sh.classList.toggle('night', !!dark);
-    const t = sh.classList.contains('err') ? '無畫面' : dark ? '夜間' : 'LIVE';
+    sh.classList.toggle('wait', !err && (!on || off));
+    const t = err ? '無畫面' : !on ? '載入中' : off ? '停格' : dark ? '夜間' : 'LIVE';
     if(lbl.textContent!==t) lbl.textContent=t;
   });
+}
+/* A pick whose frame turns out to be missing is replaced at once (not while offline: then every
+   frame fails and the picks would only churn). */
+let recFix=0;
+function recheckRec(sh){
+  if(!sh.classList.contains('rec-shot') || isOffline() || recFix) return;
+  const f=FRAME[sh.dataset.id];
+  if(f==='ph'||f==='err') recFix=setTimeout(()=>{ recFix=0; paintRec(new Date()); },0);
 }
 
 /* Favourites */
@@ -1196,16 +1370,27 @@ document.getElementById('board').addEventListener('click',e=>{
 /* Line selector: region + mode (favourites / driving / Fuji) */
 let curR='all', curMode='';
 const nav=document.getElementById('filters');
+/* Order for one-handed phone use: back to the board first, then the three modes, then the lines;
+   the modes fit a 375px screen without sideways scrolling. */
 nav.innerHTML =
-  '<button class="plain" data-r="all" aria-pressed="true">全部</button>'
-  + REGIONS.map(r=>`<button data-r="${r.id}" aria-pressed="false"><span class="no s l-${LINE[r.id].toLowerCase()} line" aria-hidden="true"><b>${LINE[r.id]}</b></span>${r.name}</button>`).join('')
+  `<a class="go" href="#top" id="goBoard" aria-label="回到行程看板">${pg('p-train')}<span>看板</span></a>`
   + '<span class="sep"></span>'
   + `<button data-m="fav" aria-pressed="false" id="fcount">${pg('p-star')}<span>${FAV.length?'收藏 '+FAV.length:'收藏'}</span></button>`
   + `<button data-m="road" aria-pressed="false">${pg('p-road')}<span>自駕・路面</span></button>`
   + `<button data-m="fuji" aria-pressed="false">${pg('p-fuji')}<span>富士山</span></button>`
+  + '<span class="sep"></span>'
+  + '<button class="plain" data-r="all" aria-pressed="true">全部</button>'
+  + REGIONS.map(r=>`<button data-r="${r.id}" aria-pressed="false"><span class="no s l-${LINE[r.id].toLowerCase()} line" aria-hidden="true"><b>${LINE[r.id]}</b></span>${r.name}</button>`).join('')
   + '<span class="age" id="age">畫面 0 秒前更新</span>';
 
 nav.addEventListener('click',e=>{
+  if(e.target.closest('#goBoard')){
+    /* back to the board; during the trip it also returns to today's day */
+    e.preventDefault();
+    if(window.tripToday) tripToday();
+    document.getElementById('top').scrollIntoView({behavior:RM.matches?'auto':'smooth',block:'start'});
+    return;
+  }
   const b=e.target.closest('button'); if(!b) return;
   if(b.dataset.r){ curR=b.dataset.r; }
   else if(b.dataset.m){ curMode = curMode===b.dataset.m ? '' : b.dataset.m; }
@@ -1346,7 +1531,28 @@ function wearSVG(t,size){
 }
 
 const wxRow=new LED.Row(document.getElementById('wxRun'),{scroll:true});
-async function loadWeather(){
+/* The last good answer stays on this device (tk_wx_v1) so the page still has weather offline,
+   always shown with its time. FC holds each area's daily forecast (for the trip days); WXBY only
+   today's reading. "Current" readings older than three hours are dropped, never shown as now. */
+const FC={};
+const WXKEY='tk_wx_v1';
+const WXS={state:'loading', at:0, raw:null, busy:false};   // state: loading | ok | cache | none
+const jstDay=ms=>{ const j=new Date(new Date(ms).toLocaleString('en-US',{timeZone:'Asia/Tokyo'}));
+  return j.getFullYear()+'-'+String(j.getMonth()+1).padStart(2,'0')+'-'+String(j.getDate()).padStart(2,'0'); };
+const stampOf=ms=>{ const d=new Date(ms), n=new Date();
+  return (d.toDateString()===n.toDateString()?'':`${d.getMonth()+1}/${d.getDate()} `)+clockOf(ms); };
+function applyWx(raw,at){
+  const today=jstDay(Date.now()), fresh=Date.now()-at < 3*3600000;
+  AREAS.forEach(a=>{
+    delete WXBY[a.key]; delete FC[a.key];
+    const r=raw[a.name]; if(!r || !r.days) return;
+    FC[a.key]=r.days;
+    const d=r.days.find(x=>x.date===today); if(!d) return;
+    WXBY[a.key]={hi:d.hi, lo:d.lo, pp:d.pp, code:d.code, wet:RAINY.has(d.code)||d.pp>=60,
+      vis:fresh?r.vis:null, cloud:fresh?r.cloud:null, cur:fresh?r.cur:null};
+  });
+}
+async function fetchWx(){
   const url='https://api.open-meteo.com/v1/forecast'
     + '?latitude='  + AREAS.map(a=>a.at[0]).join(',')
     + '&longitude=' + AREAS.map(a=>a.at[1]).join(',')
@@ -1358,18 +1564,13 @@ async function loadWeather(){
   const res=await fetch(url);
   if(!res.ok) throw new Error(res.status);
   const data=await res.json();
-
   const jh=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Tokyo'})).getHours();
+  const raw={};
   AREAS.forEach((a,i)=>{
     const one=Array.isArray(data)?data[i]:data;
     const d=one.daily, c=one.current||null;
     const hv=one.hourly&&one.hourly.visibility, hc=one.hourly&&one.hourly.cloud_cover;
-    WXBY[a.key]={
-      hi:Math.round(d.temperature_2m_max[0]),
-      lo:Math.round(d.temperature_2m_min[0]),
-      pp:d.precipitation_probability_max[0] ?? 0,
-      code:d.weather_code[0],
-      wet:RAINY.has(d.weather_code[0]) || (d.precipitation_probability_max[0]||0)>=60,
+    raw[a.name]={
       vis:(hv && hv[jh]!=null) ? hv[jh] : null,          // metres
       cloud:c ? c.cloud_cover : ((hc && hc[jh]!=null) ? hc[jh] : null),
       cur:c?{t:c.temperature_2m,p:c.precipitation,code:c.weather_code,wind:c.wind_speed_10m}:null,
@@ -1378,84 +1579,158 @@ async function loadWeather(){
         code:d.weather_code[k]}))
     };
   });
+  return raw;
+}
+async function loadWeather(){
+  if(WXS.busy) return;
+  WXS.busy=true; paintWxState();
+  try{
+    const raw=await fetchWx(), at=Date.now();
+    WXS.raw=raw; WXS.at=at; WXS.state='ok';
+    try{ localStorage.setItem(WXKEY,JSON.stringify({v:1,at,raw})); }catch(e){}
+  }catch(e){
+    /* keep the last good answer, labelled with its time; with none, say so and offer a retry key */
+    WXS.state = WXS.raw ? 'cache' : 'none';
+  }
+  WXS.busy=false;
+  if(WXS.raw) applyWx(WXS.raw,WXS.at);
+  paintWx();
+}
+function bootWx(){
+  try{
+    const c=JSON.parse(localStorage.getItem(WXKEY)||'null');
+    if(c && c.v===1 && c.raw && c.at){ WXS.raw=c.raw; WXS.at=c.at; applyWx(c.raw,c.at); }
+  }catch(e){}
+  paintWx();
+  loadWeather();
+  setInterval(loadWeather, 30*60*1000);
+}
 
-  const list=AREAS.filter(a=>TICKER.indexOf(a.wx)>=0)
+function paintWx(){
+  const list=AREAS.filter(a=>TICKER.indexOf(a.wx)>=0 && WXBY[a.key])
     .sort((a,b)=>TICKER.indexOf(a.wx)-TICKER.indexOf(b.wx));
-
-  /* LED ticker: city in green, the reading in amber, a wet day's rain chance in red. */
-  const segs=[], plain=[];
-  list.forEach((a,k)=>{
-    const w=WXBY[a.key];
-    if(k) segs.push(['　　',AMB]);
-    segs.push([a.wx+' ',GRN],[`${WMO[w.code]||''} ${w.hi}°/${w.lo}° `,AMB],[`降雨${w.pp}% `,w.wet?RED:AMB],[`${wear(w.hi)[1]}・${rainGear(w)}`,AMB]);
-    plain.push(`${a.wx} ${WMO[w.code]||''} 晝 ${w.hi} 度 朝晚 ${w.lo} 度 降雨 ${w.pp}% ${wear(w.hi)[1]}・${rainGear(w)}`);
-  });
-  wxRow.set(segs);
-  document.getElementById('wxText').textContent='各地天氣：'+plain.join('；');
-
-  document.getElementById('wxGrid').innerHTML = list.map(a=>{
-    const w=WXBY[a.key];
-    return '<div class="wg">'
-      + `<div class="wg-c">${a.wx}</div>`
-      + '<div class="wg-t">'
-      +   `<span class="slot" title="晝間"><i>晝</i>${wearSVG(w.hi,24)}<b>${w.hi}°</b></span>`
-      +   `<span class="slot" title="朝晚"><i>朝晚</i>${wearSVG(w.lo,24)}<b>${w.lo}°</b></span>`
-      + '</div>'
-      + `<div class="wg-p${w.wet?' wet':''}">降雨 ${w.pp}%</div>`
-      + `<div class="wg-w">${WMO[w.code]||''}・${wear(w.hi)[1]}・${rainGear(w)}</div>`
-      + '</div>';
-  }).join('');
-
-  document.getElementById('wx').hidden = false;
-  paintGrid();
+  const has=list.length>0;
+  document.getElementById('wx').hidden=!has;
+  ['gridBtn','fujiBtn'].forEach(id=>{ document.getElementById(id).hidden=!has; });
+  if(!has){
+    const fb=document.getElementById('fujiBox');
+    if(!fb.hidden){ fb.hidden=true; document.getElementById('fujiBtn').setAttribute('aria-expanded','false'); }
+  }else{
+    /* LED ticker: city in green, the reading in amber, a wet day's rain chance in red. */
+    const segs=[], plain=[];
+    list.forEach((a,k)=>{
+      const w=WXBY[a.key];
+      if(k) segs.push(['　　',AMB]);
+      segs.push([a.wx+' ',GRN],[`${WMO[w.code]||''} ${w.hi}°/${w.lo}° `,AMB],[`降雨${w.pp}% `,w.wet?RED:AMB],[`${wear(w.hi)[1]}・${rainGear(w)}`,AMB]);
+      plain.push(`${a.wx} ${WMO[w.code]||''} 晝 ${w.hi} 度 朝晚 ${w.lo} 度 降雨 ${w.pp}% ${wear(w.hi)[1]}・${rainGear(w)}`);
+    });
+    wxRow.set(segs);
+    document.getElementById('wxText').textContent='各地天氣：'+plain.join('；');
+    document.getElementById('wxGrid').innerHTML = list.map(a=>{
+      const w=WXBY[a.key];
+      return '<div class="wg">'
+        + `<div class="wg-c">${a.wx}</div>`
+        + '<div class="wg-t">'
+        +   `<span class="slot" title="晝間"><i>晝</i>${wearSVG(w.hi,24)}<b>${w.hi}°</b></span>`
+        +   `<span class="slot" title="朝晚"><i>朝晚</i>${wearSVG(w.lo,24)}<b>${w.lo}°</b></span>`
+        + '</div>'
+        + `<div class="wg-p${w.wet?' wet':''}">降雨 ${w.pp}%</div>`
+        + `<div class="wg-w">${WMO[w.code]||''}・${wear(w.hi)[1]}・${rainGear(w)}</div>`
+        + '</div>';
+    }).join('');
+    paintGrid();
+  }
+  paintWxState();
+  tick();          // signs, night state and picks first: the Fuji lamps read the night state
   paintFuji();
-  tick();
   if(curMode==='road') paintRoad();
   if(window.paintTripWx) paintTripWx();
 }
+/* One line in the status panel that says what the weather is: loading, missing, or the last good answer. */
+function paintWxState(){
+  const el=document.getElementById('wxState'), msg=el.querySelector('span'), btn=document.getElementById('wxRetry');
+  const off=isOffline(), today=AREAS.some(a=>WXBY[a.key]);
+  let t=[];
+  if(WXS.state==='none') t = off ? ['目前離線，','天氣取不到。'] : ['天氣暫時取不到','（Open-Meteo 沒有回應）。'];
+  else if(WXS.state==='cache') t = [off?'目前離線，':'天氣沒有更新成功，',`顯示上次更新 ${stampOf(WXS.at)} 的資料。`];
+  else if(WXS.state==='loading' && !WXS.raw) t=['天氣載入中…'];
+  /* an answer that does not reach today (an old copy on this device) is not today's weather */
+  if(WXS.raw && !today && WXS.state!=='loading') t=['手上的天氣資料沒有今天的部分，',`最後一次更新是 ${stampOf(WXS.at)}。`];
+  if(WXS.busy && t.length && WXS.state!=='loading') t=['重新載入天氣中…'];
+  const h=t.map(x=>`<span class="seg">${x}</span>`).join('');
+  el.hidden=!t.length;
+  if(msg.innerHTML!==h) msg.innerHTML=h;
+  btn.hidden = !(WXS.state==='none'||WXS.state==='cache'||(WXS.raw && !today));
+  btn.setAttribute('aria-disabled',String(!!WXS.busy));
+}
+document.getElementById('wxRetry').addEventListener('click',()=>{ if(!WXS.busy) loadWeather(); });
 
 /* Fuji visibility: derived from cloud cover, weather code and visibility at the viewing spots.
-   This is a rough model, not an observation. */
-function fujiState(w){
+   This is a rough model, not an observation. After dark a clear reading is not "visible". */
+function fujiState(w,night){
   if(!w) return null;
   const code=w.cur?w.cur.code:w.code, cloud=w.cloud, vis=w.vis;
   if(code===45||code===48||(vis!=null&&vis<3000)) return {k:'stop',s:'起霧・看不到'};
   if(RAINY.has(code)||SNOWY.has(code)) return {k:'stop',s:'降水中・看不到'};
+  let st;
   if(cloud!=null){
-    if(cloud<=30) return {k:'go',s:'看得到機率高'};
-    if(cloud<=70) return {k:'warn',s:'山頭可能被雲遮'};
-    return {k:'stop',s:'雲層厚・大概看不到'};
+    if(cloud<=30) st={k:'go',s:'看得到機率高'};
+    else if(cloud<=70) st={k:'warn',s:'山頭可能被雲遮'};
+    else st={k:'stop',s:'雲層厚・大概看不到'};
   }
-  if(code<=1) return {k:'go',s:'看得到機率高'};
-  if(code===2) return {k:'warn',s:'山頭可能被雲遮'};
-  return {k:'stop',s:'陰・大概看不到'};
+  else if(code<=1) st={k:'go',s:'看得到機率高'};
+  else if(code===2) st={k:'warn',s:'山頭可能被雲遮'};
+  else st={k:'stop',s:'陰・大概看不到'};
+  if(night && st.k==='go') st={k:'warn',s:'雲少・天黑看不清'};
+  return st;
 }
+/* The six lamps are the single source for Fuji: a pick may claim the mountain is out only when its
+   own lamp says so, or, for a Fuji-view area without a lamp, when most of the six lamps do. */
+const fujiLamp=a=>FUJI_AREAS.indexOf(a.wx)>=0 ? fujiState(WXBY[a.key],nightBy[a.key]) : null;
+function fujiVerdict(){
+  const ls=AREAS.filter(a=>FUJI_AREAS.indexOf(a.wx)>=0).map(fujiLamp).filter(Boolean);
+  const go=ls.filter(s=>s.k==='go').length;
+  return {n:ls.length, go, out:ls.length>0 && go>=Math.ceil(ls.length/2)};
+}
+/* what a Fuji camera's pick says when the mountain is not out: the lamp's own reason, never a guess */
+function fujiMiss(a){
+  const l=fujiLamp(a);
+  return l && l.k==='stop' ? '富士山現在看不到' : '富士山頭可能被雲遮';
+}
+function fujiOut(a){
+  if(!a.fuji) return false;
+  const l=fujiLamp(a);
+  return l ? l.k==='go' : fujiVerdict().out;
+}
+let fujiHTML='';
 function paintFuji(){
   const list=AREAS.filter(a=>FUJI_AREAS.indexOf(a.wx)>=0)
     .sort((a,b)=>FUJI_AREAS.indexOf(a.wx)-FUJI_AREAS.indexOf(b.wx));
-  document.getElementById('fujiLamps').innerHTML = list.map(a=>{
-    const st=fujiState(WXBY[a.key]); if(!st) return '';
+  const lamps=list.map(a=>{
+    const st=fujiLamp(a); if(!st) return '';
     return `<li><span class="lamp ${st.k}" aria-hidden="true"></span><span>${a.wx}<span class="s st-${st.k}">${st.s}</span></span></li>`;
   }).join('');
   const rows=list.map(a=>{
-    const w=WXBY[a.key], st=fujiState(w);
+    const w=WXBY[a.key], st=fujiLamp(a);
     if(!st) return '';
     const code=w.cur?w.cur.code:w.code;
     return `<tr><td>${a.wx}</td><td class="st-${st.k}">${st.s}</td>
       <td>${WMO[code]||''}　雲量 <span class="num">${w.cloud!=null?Math.round(w.cloud)+'%':'—'}</span>
         　能見度 <span class="num">${w.vis!=null?(w.vis>=10000?'10 km+':Math.round(w.vis/100)/10+' km'):'—'}</span></td></tr>`;
   }).join('');
+  /* rewritten only when something changed, so an open panel keeps keyboard focus */
+  if(lamps+rows===fujiHTML) return;
+  fujiHTML=lamps+rows;
+  document.getElementById('fujiLamps').innerHTML = lamps;
   document.getElementById('fujiBox').innerHTML =
     `<h3>富士山現在看得到嗎</h3>
-     <p>依各觀景點的雲量、天氣與能見度換算，<strong>不是觀測值</strong>。
+     <p>依各觀景點的雲量、天氣與能見度換算，<strong>不是觀測值</strong>；天黑後一律算看不清。
        秋冬清晨最清楚，午後常起雲；蘆之湖 Skyline、三國峠、十國峠請以最接近的那一格判斷。</p>
      <table class="fuji-t"><tbody>${rows}</tbody></table>
      <p class="small">要看實際畫面，點篩選列的「富士山」只留富士山機位。
        官方：<a href="https://www.fujigoko.tv/" target="_blank" rel="noopener">富士五湖 TV${pg('p-ext')}</a>
        <a href="https://www.fujisan-navi.jp/" target="_blank" rel="noopener">フジヤマ NAVI${pg('p-ext')}</a></p>`;
 }
-loadWeather().catch(()=>{});
-setInterval(()=>loadWeather().catch(()=>{}), 30*60*1000);
 
 /* Recommendations: derived from sun position, current weather code and camera tags.
    One camera per area at most. */
@@ -1474,9 +1749,12 @@ function recommend(now){
     const sky = clear ? '晴' : '多雲';   // the reason names the sky it was picked under
     const foggy   = code===45||code===48;
     const raining = code!==null && RAINY.has(code);
-    const fujiOK  = a.fuji && w && fujiState(w) && fujiState(w).k==='go';
+    const fujiOK  = fujiOut(a);         // the same verdict as the Fuji lamps
 
     a.cams.forEach(c=>{
+      /* a camera without a picture is never a pick (network failures count only while online) */
+      const f=FRAME[c.id];
+      if(f==='ph' || (f==='err' && !isOffline())) return;
       const t=(c.tags||'').split(' '), has=k=>t.indexOf(k)>=0;
       let sc=0, why='', photo=false;
       if(night){
@@ -1488,6 +1766,16 @@ function recommend(now){
         else                { sc=8;  why='夜間・這支會是全黑'; }
         if(afterSet && (has('夜景')||has('街'))){ sc+=9; why='日落剛過的藍調時刻，天還沒全黑'; photo=true; }
         if(raining && sc>40) why+='，而且正在下雨';
+      }else if(code===null){
+        /* no weather for this area: rank by what the camera shows and claim nothing about the sky */
+        if(has('街')||has('路')) { sc=50; why='白天・看得到街上的人與車'; }
+        else if(has('空'))       { sc=46; why='白天・看得到跑道與起降'; }
+        else if(has('海'))       { sc=44; why='白天・海岸線'; }
+        else if(has('山'))       { sc=40; why='白天・山景'; }
+        else                     { sc=40; why='白天的畫面'; }
+        if((nearSet||nearRise) && (has('夕')||has('海')||has('夜景')||(has('山')&&a.fuji))){
+          sc+=12; why=nearSet?'日落前後的時段':'日出前後的時段';
+        }
       }else{
         if(raining){
           if(has('路'))      { sc=80; why='正在下雨・看得出路面濕滑程度'; }
@@ -1500,17 +1788,22 @@ function recommend(now){
           else                     { sc=20; why='起霧・山與海會被整個蓋住'; }
         }else if(clear||partly){
           if(has('山')&&fujiOK) { sc=95; why=sky+'・富士山現在露臉了'; photo=true; }
+          else if(has('山')&&a.fuji) { sc=clear?62:50; why=sky+'・'+fujiMiss(a); }
           else if(has('山'))    { sc=clear?80:55; why=clear?'晴・山看得清楚':'多雲・山頭可能被遮'; }
           else if(has('海'))    { sc=72; why=sky+'・海面通透'; }
           else if(has('空'))    { sc=66; why=sky+'・跑道與雲層都看得到'; }
           else if(has('自然'))  { sc=64; why=sky+'・湖面與樹色清楚'; }
           else                  { sc=58; why=sky+'・日間畫面清楚'; }
         }else{
-          if(has('街')||has('路')) { sc=58; why='陰・市區畫面正常'; }
+          /* overcast or snow: name the sky as the weather code says, never assume plain cloud */
+          if(has('街')||has('路')) { sc=58; why=(WMO[code]||'陰')+'・市區畫面正常'; }
+          else if(has('山')&&fujiOK) { sc=88; why=(WMO[code]||'陰')+'・富士山現在露臉了'; photo=true; }
+          else if(has('山')&&a.fuji) { sc=30; why='雲層低・'+fujiMiss(a); }
           else if(has('山'))       { sc=30; why='雲層低・山頭可能被蓋住'; }
-          else                     { sc=45; why='陰天'; }
+          else                     { sc=45; why=WMO[code]||'陰'; }
         }
-        if((nearSet||nearRise) && !raining && !foggy
+        /* the "best light" bonus needs a sky that can show it */
+        if((nearSet||nearRise) && (clear||partly)
            && (has('夕')||has('海')||has('夜景')||(has('山')&&a.fuji))){
           sc+=22; why=(nearSet?'日落前後':'日出前後')+'・光線最好的時段'; photo=true;
         }
@@ -1535,7 +1828,7 @@ let recBuilt=false;
 function buildRec(){
   document.getElementById('recList').innerHTML = [0,1,2].map(i=>
     `<a class="rec-card" href="https://www.youtube.com/" target="_blank" rel="noopener" hidden>
-      <span class="mon shot rec-shot" data-id=""><span class="lbl">${i+1}</span><img alt="" decoding="async"><span class="msg fail">畫面暫時取不到</span></span>
+      <span class="mon shot rec-shot" data-id=""><span class="lbl">${i+1}</span><img alt="" decoding="async"><span class="msg fail"><span class="f-on">畫面暫時取不到</span><span class="f-ph">畫面暫時取不到</span><span class="f-off">目前離線</span></span></span>
       <span class="rec-b">
         <span class="rec-n"></span>
         <span class="rec-w"></span>
@@ -1547,6 +1840,9 @@ function buildRec(){
 function paintRec(now){
   const top=recommend(now);
   const box=document.getElementById('rec');
+  const nt=document.getElementById('recNote'), anyWx=AREAS.some(a=>WXBY[a.key]);
+  const nx=anyWx?'依各地日夜與天氣自動挑':'依各地日夜自動挑（天氣取不到）';
+  if(nt.textContent!==nx) nt.textContent=nx;
   if(!top.length || top[0].sc<=10){ box.hidden=true; return; }
   if(!recBuilt) buildRec();
   document.querySelectorAll('.rec-card').forEach((a,i)=>{
@@ -1555,7 +1851,7 @@ function paintRec(now){
     const href=YT(o.id,o.ch);
     if(a.getAttribute('href')!==href) a.setAttribute('href',href);
     const ar=AREAS[o.area], sh=a.querySelector('.shot');
-    if(sh.dataset.id!==o.id){ sh.dataset.id=o.id; sh.querySelector('img').classList.remove('on'); sh.classList.remove('err'); load(sh); }
+    if(sh.dataset.id!==o.id){ sh.dataset.id=o.id; sh.querySelector('img').classList.remove('on'); sh.classList.remove('err','ph'); load(sh); }
     const n=a.querySelector('.rec-n'), w=a.querySelector('.rec-w'), x=a.querySelector('.rec-x');
     const nt=o.zh+(o.photo?'<span class="tag-photo">拍照好時機</span>':'');
     if(n.innerHTML!==nt)       n.innerHTML=nt;
@@ -1601,18 +1897,30 @@ function paintRoad(){
 
 /* ── The departure board: my trip, mirrors trip.html ───────────────────────
    `c` lists camera name prefixes; `wx` lists weather areas. Each route step becomes one
-   board row; a time written as its own word (10:30 取車, 富士急樂園（09:00 開園前到）)
-   moves into the time column. */
+   board row; a time written as its own word (also right after an opening bracket) moves into the
+   time column. A time listed in the day's `b` is a booked ticket. */
 const WEEK=['日','一','二','三','四','五','六'];
-function steps(r){
-  return r.split('→').map(s=>s.trim()).filter(Boolean).map(s=>{
+/* Join the words around a removed time without leaving a hole: no space between two CJK
+   characters, one space when either side is a Latin letter or digit. */
+function joinAround(a,b){
+  a=a.replace(/\s+$/,''); b=b.replace(/^\s+/,'');
+  if(!a||!b) return (a+b).trim();
+  const lat=ch=>/[A-Za-z0-9]/.test(ch);
+  return a+(lat(a.slice(-1))||lat(b[0])?' ':'')+b;
+}
+function steps(d){
+  const booked=d.b||[];
+  return d.r.split('→').map(s=>s.trim()).filter(Boolean).map(s=>{
     const m=s.match(/(^|[\s（(])(\d{1,2}:\d{2})(?=$|\s)/);
     if(!m) return {t:'',x:s};
-    /* "関内店 20:00 前還車" is a deadline: the time stays in the sentence and lights red. */
-    const rest=s.slice(m.index+m[0].length);
-    if(/^\s*前/.test(rest)) return {t:m[2].padStart(5,'0'),x:(s.slice(0,m.index)+m[1]+rest.replace(/^\s*前/,'')).replace(/\s{2,}/g,' ').trim()+'（截止）',due:true};
-    const x=(s.slice(0,m.index)+m[1]+s.slice(m.index+m[0].length)).replace(/（\s+/,'（').replace(/\s{2,}/g,' ').trim();
-    return {t:m[2].padStart(5,'0'),x};
+    const t=m[2].padStart(5,'0');
+    let rest=s.slice(m.index+m[0].length);
+    /* a time followed by the word for "before" is a deadline: the time lights red and the step
+       ends with the deadline mark */
+    const due=/^\s*前/.test(rest);
+    if(due) rest=rest.replace(/^\s*前/,'');
+    const x=joinAround(s.slice(0,m.index)+m[1],rest).replace(/\s{2,}/g,' ')+(due?'（截止）':'');
+    return {t,x,due,booked:!due && booked.indexOf(t)>=0};
   });
 }
 function renderTrip(){
@@ -1631,7 +1939,7 @@ function renderTrip(){
   const dateOf=i=>new Date(s[0],s[1]-1,s[2]+i);
   document.getElementById('tripDays').innerHTML = TRIP.days.map((d,i)=>
     `<button type="button" data-i="${i}" aria-pressed="${i===sel}" class="${i===todayIdx?'today':''}"
-       aria-label="第 ${d.d} 天 ${d.md}${i===todayIdx?'（今天）':''}"><b><small>D</small>${d.d}</b><span>${d.md}</span></button>`).join('');
+       aria-label="第 ${d.d} 天 ${d.md} ${d.p}${i===todayIdx?'（今天）':''}"><span class="tk-h"><b><small>D</small>${d.d}</b><span class="tk-p">${d.p}</span></span><span class="tk-d">${d.md}</span></button>`).join('');
 
   const allCams=[]; AREAS.forEach(a=>a.cams.forEach(c=>allCams.push({...c,areaKey:a.key})));
   function camsFor(prefixes){
@@ -1646,21 +1954,28 @@ function renderTrip(){
     return out;
   }
   const dayDate=d=>`${TRIP.start.slice(0,4)}-${d.md.replace('/','-')}`;
+  /* phrases joined by a middle dot, each kept whole when the line wraps */
+  const phr=a=>a.filter(Boolean).map((x,i,all)=>`<span class="seg">${x}${i<all.length-1?'・':''}</span>`).join('');
+  /* A trip day shows its forecast once Open-Meteo reaches that date. Before that it shows the
+     November normals of the JMA, labelled as such, never today's readings dressed up as that day. */
   function wxFor(d){
-    const date=dayDate(d);
-    return (d.wx||[]).map(name=>{
+    const date=dayDate(d); let fc=0, nm=0;
+    const rows=(d.wx||[]).map(name=>{
       const a=AREAS.find(x=>x.wx===name); if(!a) return '';
-      const w=WXBY[a.key];
-      if(!w) return `<li><span class="ar">${name}</span><span></span><span class="tt">—</span><span></span></li>`;
-      const f=(w.days||[]).find(x=>x.date===date);
-      if(f) return `<li><span class="ar">${name}</span>${wearSVG(f.hi,28)}<span class="tt">${f.lo}°～${f.hi}°</span>`
-        + `<span class="pp${f.pp>=50?' wet':''}">降雨 ${f.pp}%</span>`
-        + `<span class="wr">${WMO[f.code]||''}・${wear(f.hi)[1]}・朝晚${wear(f.lo)[1]}</span></li>`;
-      const t=w.cur?Math.round(w.cur.t):w.hi, code=w.cur?w.cur.code:w.code;
-      return `<li><span class="ar">${name}</span>${wearSVG(t,28)}<span class="tt">${t}°<small>現在</small></span>`
-        + `<span class="pp${w.wet?' wet':''}">降雨 ${w.pp}%</span>`
-        + `<span class="wr">${WMO[code]||''}・${wear(t)[1]}・${rainGear(w)}</span></li>`;
+      const f=(FC[a.key]||[]).find(x=>x.date===date);
+      if(f){ fc++;
+        return `<li><span class="ar">${name}</span>${wearSVG(f.hi,28)}<span class="tt">${f.lo}°～${f.hi}°</span>`
+          + `<span class="pp${f.pp>=50?' wet':''}">降雨 ${f.pp}%</span>`
+          + `<span class="wr">${phr([WMO[f.code]||'',wear(f.hi)[1],'朝晚'+wear(f.lo)[1]])}</span></li>`; }
+      nm++;
+      const N=NORMALS[name];
+      if(!N) return `<li><span class="ar">${name}</span><span></span><span class="tt">—</span><span></span>`
+        + `<span class="wr">氣象廳在${name}的測站不量氣溫，沒有平年值</span></li>`;
+      return `<li><span class="ar">${name}</span>${wearSVG(N[1],28)}<span class="tt">${N[2]}°～${N[1]}°</span>`
+        + `<span class="pp nml">平年</span>`
+        + `<span class="wr">${phr(['白天'+wear(N[1])[1],'朝晚'+wear(N[2])[1],N[0]+'測站'])}</span></li>`;
     }).join('');
+    return {rows, fc, nm, date};
   }
 
   /* Board rows are built once per day; the LED rows keep their canvases between redraws. */
@@ -1678,9 +1993,11 @@ function renderTrip(){
     document.getElementById('bdMode').innerHTML = d.car ? pg('p-car')+'自駕日' : pg('p-train')+'大眾運輸';
     document.getElementById('bdFoot').innerHTML = `<a href="trip.html#day-${d.d}">看 D${d.d} 的完整行程</a>`;
 
-    const st=steps(d.r);
+    const st=steps(d);
+    /* a booked ticket: red time (the promise colour of trip.html) and the booked mark at the end */
     const lines=[{k:'ttl',segs:[[d.t,GRN]],sr:d.t}]
-      .concat(st.map(x=>({k:'st',t:x.t,due:x.due,segs:[[x.x,AMB]],sr:(x.t?x.t+(x.due?' 前 ':' '):'')+x.x})));
+      .concat(st.map(x=>({k:'st',t:x.t,due:x.due,bk:x.booked,segs:[[x.x+(x.booked?'・已預約':''),AMB]],
+        sr:(x.t?x.t+(x.due?' 前 ':' '):'')+x.x+(x.booked?'，已預約':'')})));
     if(d.n) lines.push({k:'note',segs:[['※ '+d.n.replace(/。$/,''),RED]],sr:'注意：'+d.n});
     rowsEl.innerHTML = lines.map(l=>
       `<li class="${l.k}">${l.k==='st'?'<span class="led t"></span>':''}<span class="led x"></span><span class="sr">${esc(l.sr)}</span></li>`).join('');
@@ -1689,10 +2006,11 @@ function renderTrip(){
       const l=lines[k];
       if(l.k==='st' && l.t){
         const t=new LED.Row(li.querySelector('.t'),{fit:true});
-        t.set([[l.t,l.due?RED:GRN]]); ledRows.push(t);
+        t.set([[l.t,(l.due||l.bk)?RED:GRN]]); ledRows.push(t);
       }
-      /* steps scroll when long; the day title and the note wrap so a deadline is never half off the board */
-      const x=new LED.Row(li.querySelector('.x'),{scroll:l.k==='st'});
+      /* steps scroll when long (desktop) and wrap on phones; the title and the note always wrap,
+         so a deadline is never half off the board */
+      const x=new LED.Row(li.querySelector('.x'),{scroll:l.k==='st', wrapPhone:true});
       x.set(l.segs); ledRows.push(x);
     });
     if(wipe) ledRows.forEach((r,k)=>r.wipe(k*24));
@@ -1704,37 +2022,59 @@ function renderTrip(){
       return `<li><a href="${YT(c.id,c.ch)}" target="_blank" rel="noopener">${badge(a,'s')}<span>${c.zh}</span></a></li>`;
     }).join('');
     const wx=wxFor(d);
-    const date=dayDate(d);
-    const loaded=AREAS.some(a=>WXBY[a.key]);
-    const inRange=AREAS.some(a=>WXBY[a.key]&&(WXBY[a.key].days||[]).some(x=>x.date===date));
+    const head = !wx.nm ? '這天的預報' : !wx.fc ? '11 月平年（不是預報）' : '這天的預報與 11 月平年';
+    const hint=[];
+    if(wx.fc) hint.push('Open-Meteo 16 天預報，越接近越準'
+      + (WXS.state==='cache' ? `（上次更新 ${stampOf(WXS.at)}，目前沒有更新成功）` : '') + '。');
+    if(wx.nm){
+      hint.push('平年＝氣象廳統計的 11 月每天最高、最低氣溫平均，用來抓大概要穿什麼。');
+      if(WXS.state==='none') hint.push(isOffline() ? '目前離線，預報取不到。' : '預報暫時取不到，稍後會自動再試。');
+      else if(!WXS.raw) hint.push('預報載入中…');
+      else if(wx.date>=jstDay(Date.now())){
+        /* a 16-day forecast reaches a date 15 days ahead */
+        const sw=new Date(wx.date+'T12:00:00'); sw.setDate(sw.getDate()-15);
+        const swd=sw.getFullYear()+'-'+String(sw.getMonth()+1).padStart(2,'0')+'-'+String(sw.getDate()).padStart(2,'0');
+        hint.push(swd>jstDay(Date.now()) ? `${sw.getMonth()+1}/${sw.getDate()} 起會換成這天的預報。`
+          : `預報還沒更新到這天（上次更新 ${stampOf(WXS.at)}），稍後會自動再試。`);
+      }
+    }
     document.getElementById('tripBody').innerHTML =
       `<div class="day-h"><span>D${d.d} 這天的天氣與攝影機</span><a href="trip.html#day-${d.d}">看完整行程${pg('p-right')}</a></div>
        <div class="day-b">`
-      + (wx?`<div class="day-sec"><h3>${inRange?'這天的預報':'各地現在的天氣'}</h3><ul class="wxrows">${wx}</ul>
-             <p class="hint">${!loaded?'天氣載入中；取不到時這裡會留空。':inRange?'Open-Meteo 16 天預報，越接近越準。':'出發前 16 天內會換成當天預報。'}</p></div>`:'')
+      + (wx.rows?`<div class="day-sec"><h3>${head}</h3><ul class="wxrows">${wx.rows}</ul>
+             <p class="hint">${hint.join('')}</p></div>`:'')
       + (cams?`<div class="day-sec"><h3>這天用得到的攝影機</h3><ul class="xfer">${cams}</ul></div>`:'')
       + '</div>';
   }
   window.paintTripWx=paintDay;
   paintBoard(false); paintDay();
 
-  document.getElementById('tripDays').addEventListener('click',e=>{
-    const b=e.target.closest('button'); if(!b) return;
-    if(+b.dataset.i===sel) return;
-    sel=+b.dataset.i;
+  function pick(i){
+    if(i===sel) return;
+    sel=i;
     document.querySelectorAll('#tripDays button').forEach(x=>
       x.setAttribute('aria-pressed',String(+x.dataset.i===sel)));
     paintBoard(true); paintDay();
+  }
+  document.getElementById('tripDays').addEventListener('click',e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    pick(+b.dataset.i);
   });
-  document.getElementById('tripOff').addEventListener('click',()=>setTripOff(true,true));
+  /* the line selector's board key: during the trip it brings today's day back */
+  window.tripToday=()=>{ if(todayIdx>=0) pick(todayIdx); };
+  document.getElementById('tripOff').addEventListener('click',()=>{
+    setTripOff(true,true);
+    document.getElementById('tripBack').focus();
+  });
   document.getElementById('tripBack').addEventListener('click',()=>{
     setTripOff(false,true);
     LED.refresh();
     document.getElementById('trip').scrollIntoView({behavior:RM.matches?'auto':'smooth',block:'start'});
+    document.querySelector('#tripDays button[aria-pressed="true"]').focus({preventScroll:true});
   });
 }
 
-/* Hiding the board is reversible: the footer button comes back whenever it is off. */
+/* Hiding the board is reversible: the show-board key stands in its place at the top while it is off. */
 function setTripOff(off,persist){
   const el=document.getElementById('trip'), back=document.getElementById('tripBack');
   el.hidden=off;
@@ -1794,12 +2134,11 @@ function tick(){
   }else{ dn.textContent='—'; }
 
   const bn=document.getElementById('briefNote');
-  let rainN=0, fujiGo=0, fujiN=0;
+  let rainN=0;
   AREAS.forEach(a=>{
     const w=WXBY[a.key]; if(!w) return;
     const code=w.cur?w.cur.code:w.code;
     if(RAINY.has(code)) rainN++;
-    if(a.fuji && FUJI_AREAS.indexOf(a.wx)>=0){ fujiN++; const f=fujiState(w); if(f&&f.k==='go') fujiGo++; }
   });
   const nightTxt = dark>=AREAS.length*0.6
     ? '多數戶外攝影機已進入夜間，山區、湖畔與海岸會是全黑——這是正常的，不是壞掉。'
@@ -1807,15 +2146,18 @@ function tick(){
   let bt;
   if(rainN>=AREAS.length*0.5)      bt='關東多數地區正在下雨。'+(dark>0?nightTxt:'');
   else if(rainN>0)                 bt=`部分地區正在下雨（${rainN} 區）。`+(dark>0?nightTxt:'');
-  else if(!dark && fujiN && fujiGo>=Math.ceil(fujiN/2)) bt='富士山周邊雲量少，現在是看富士山的好時機。';
+  else if(!dark && fujiVerdict().out) bt='富士山周邊雲量少，現在是看富士山的好時機。';
   else                             bt=nightTxt;
   if(bn.textContent!==bt) bn.textContent=bt;
 
+  paintFuji();
   paintRec(now);
 }
 renderTrip();
 tick(); setInterval(tick,20000);
 applyFilter();
+paintOffline();
+bootWx();
 document.fonts && document.fonts.ready.then(()=>LED.refresh());
 
 document.getElementById('foot').innerHTML =
