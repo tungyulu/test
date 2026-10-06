@@ -2,17 +2,17 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), the **Yacht dice game** (`yacht.html`), the **NBA fantasy board** (`nba-auction.html`) and the **investment plan** (`invest.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, Yōtei checklist, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
+> Scope: this record covers three surfaces of the personal site **我的小工具** (GitHub Pages, `https://tungyulu.github.io/test/`): the **site hub** (`index.html`), the **blackjack table** (`blackjack-game.html`) and its strategy trainer (`blackjack.html`), which share one look, the trip's **live-camera page** (`livecam.html`), the **Yacht dice game** (`yacht.html`), the **NBA fantasy board** (`nba-auction.html`) and the **investment plan** (`invest.html`), each in its own section directly below, and the **Japan autumn road-trip itinerary** (`trip.html`, every section after them). The other pages (betting tracker, usage dashboard, golf analyzer, Yōtei checklist, Tamagotchi guide, etc.) are independent personal tools with their own looks and are not described here beyond their one-line entry in the hub.
 
 ## Site hub · 我的小工具 (`index.html`)
 
 **Users.** The owner (Traditional Chinese, Taiwan), on phone and desktop about equally, opening the hub to jump into one of their tools. The hub link is also shared with friends, who should understand what each tool is from its entry alone.
 
-**Purpose.** The front door to twelve single-file tools. Success: the owner finds and opens any tool in a couple of seconds, and a friend can tell what each one does and pick one that interests them.
+**Purpose.** The front door to thirteen single-file tools. Success: the owner finds and opens any tool in a couple of seconds, and a friend can tell what each one does and pick one that interests them.
 
 **Content (confirmed grouping, in this order).**
 - 旅行: 關東秋季紅葉巡航 (`trip.html`), 東京近郊即時影像 (`livecam.html`)
-- 遊戲: 快艇骰子 (`yacht.html`), 21點實戰牌桌 (`blackjack-game.html`), 21點機率決策挑戰 (`blackjack.html`), 羊蹄山戰鬼 收集清單 (`yotei.html`)
+- 遊戲: 快艇骰子 (`yacht.html`), 21點實戰牌桌 (`blackjack-game.html`), 21點機率決策挑戰 (`blackjack.html`), 羊蹄山戰鬼 收集清單 (`yotei.html`), 塔麻可吉樂園攻略 (`tamagotchi.html`)
 - 運動: NBA 拍賣選秀板 (`nba-auction.html`), 高爾夫球軌跡追蹤 (`golf.html`), 運彩投注紀錄 (`betting.html`)
 - 理財與筆記: 投資作戰表 (`invest.html`), Dyson 選購比對 (`dyson.html`), Usage Dashboard (`usage.html`)
 

@@ -20,6 +20,7 @@
 | [blackjack-game.html](https://tungyulu.github.io/test/blackjack-game.html) | 21點實戰牌桌 · 同一套規則實際開打：虛擬籌碼下注（主注＋完美對子／21+3 副注）、可加 1–4 位照基本策略打的電腦玩家、6 副牌靴、策略教練、即時機率與 Hi-Lo 算牌，數據面板可開關 |
 | [nba-auction.html](https://tungyulu.github.io/test/nba-auction.html) | NBA Fantasy 拍賣選秀板（2026-27）· 乾淨的 fantasy 數據 app 版面（淺色／深色）· 傳統 9 項、14 隊每隊 $200、11 先發＋3 板凳：約 240 位球員的建議價與推薦指數、九項熱度圖、punt 重算；選秀後改成聯盟模式：我的戰力與弱項、14 隊戰力（每週贏幾類、每週輸贏 $）、交易試算、推薦的一換一與自由球員（存本機） |
 | [yotei.html](https://tungyulu.github.io/test/yotei.html) | 羊蹄山戰鬼（Ghost of Yōtei）收集清單 · 依類別／地區逐項打勾（存本機），未完成的點名稱開對應攻略頁（繁中／簡中／英文可切換）；iPhone 建議 Safari「分享 → 加入主畫面」，進度才不會被 Safari 7 天清除 |
+| [tamagotchi.html](https://tungyulu.github.io/test/tamagotchi.html) | 塔麻可吉樂園（Tamagotchi Paradise）攻略 · 照機台旋鈕的四個視角排：選機台、行星等級、每月活動日曆、尋蛋、照顧與龍捲風、結婚與隱藏角色，加上六個場地的完整進化表（可搜尋角色）、實驗室碼與商店碼 |
 
 ## golf-tracer.py
 

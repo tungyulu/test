@@ -7,11 +7,11 @@ related_targets: []
 
 ## Scope
 
-`index.html`, the 我的小工具 site hub: a full redesign, replacing the dark navy card grid. Visitor mode: **Operate** (find a tool and open it). Friends who receive the link must be able to read what each tool is. Twelve tools in four confirmed groups (旅行 / 遊戲 / 運動 / 理財與筆記; see PRODUCT.md › Site hub). Phone and desktop count equally. A self-contained single file: no CSS, JS or font CDN. The hub never restyles the tools.
+`index.html`, the 我的小工具 site hub: a full redesign, replacing the dark navy card grid. Visitor mode: **Operate** (find a tool and open it). Friends who receive the link must be able to read what each tool is. Thirteen tools in four confirmed groups (旅行 / 遊戲 / 運動 / 理財與筆記; see PRODUCT.md › Site hub). Phone and desktop count equally. A self-contained single file: no CSS, JS or font CDN. The hub never restyles the tools.
 
 ## Direction contract
 
-THESIS: The hub is an empty lot (空地) under a blue sky where twelve pink Anywhere Doors (任意門) stand on the grass, one per tool. Open a door and you are somewhere else. It refuses the category default it replaces: a dark grid of same-size icon cards with eyebrow labels.
+THESIS: The hub is an empty lot (空地) under a blue sky where thirteen pink Anywhere Doors (任意門) stand on the grass, one per tool. Open a door and you are somewhere else. It refuses the category default it replaces: a dark grid of same-size icon cards with eyebrow labels.
 
 OWN-WORLD:
 - Cel-flat cartoon daylight. A flat sky-blue field with authored white SVG clouds, and flat grass green with authored tufts and bare-dirt patches.
