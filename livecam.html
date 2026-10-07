@@ -1106,7 +1106,7 @@ const LED=(()=>{
           while(k>a[0] && /[；，。、・）》」』：！？]/.test(c.chs[k])) k=back(k);
           /* a Latin run that starts the line above cannot be split: give up instead */
           while(al(c.chs[k])){ const p=back(k); if(p<=a[0]){ k=a[0]; break; } if(!al(c.chs[p])) break; k=p; }
-          /* prefer to break right after a separator (・、，or a space) within the last four glyphs */
+          /* prefer to break right after a separator (a middle dot, an ideographic comma or a space) within the last four glyphs */
           for(let j=k, n=0; j>a[0] && n<4; n++){ const p=back(j); if(/[・、，　 ]/.test(c.chs[p])){ k=j; break; } j=p; }
           if(/[（《「『]/.test(c.chs[back(k)])) k=back(k);
           /* nor inside a kept segment: move to its start */
@@ -1423,12 +1423,42 @@ nav.addEventListener('click',e=>{
     return;
   }
   const b=e.target.closest('button'); if(!b) return;
+  const anchor=viewAnchor();
   if(b.dataset.r){ curR=b.dataset.r; }
   else if(b.dataset.m){ curMode = curMode===b.dataset.m ? '' : b.dataset.m; }
   syncNav();
   applyFilter();
-  // The bar is sticky, so the viewport is left where it is; jumping to the top was disorienting.
+  landAfterFilter(b, anchor);
 });
+/* What the reader is looking at: the road readings, a line head or an area — the first shown one
+   whose bottom is below the sticky bar — with its distance from the top of the screen. It must be
+   on screen; anything further down is not being read. */
+function viewAnchor(){
+  const barB=nav.getBoundingClientRect().bottom;
+  const a=[...document.querySelectorAll('#road, section.region > .line-h, section.area')]
+    .find(x=>!x.closest('[hidden]') && x.getBoundingClientRect().bottom>barB+8);
+  return a && a.getBoundingClientRect().top<innerHeight ? {el:a, top:a.getBoundingClientRect().top} : null;
+}
+/* Hiding cameras changes the page height, so the viewport must be placed on purpose:
+   a line button goes to that line's head (or, when the line shows nothing, the first shown line or
+   the empty note); turning the road mode on goes to the road readings; everything else (the All key, the
+   modes, turning a mode off) keeps what is being read where it was on screen while it is still
+   shown, and otherwise goes to the first line the filter shows (or the empty note). */
+function landAfterFilter(b, anchor){
+  const go=el=>{ if(el) el.scrollIntoView({behavior:RM.matches?'auto':'smooth', block:'start'}); };
+  const firstShown=()=>document.querySelector('section.region:not([hidden])')||document.getElementById('empty');
+  if(b.dataset.r && curR!=='all'){
+    const r=document.getElementById('r-'+curR);
+    go(r && !r.hidden ? r : firstShown());
+    return;
+  }
+  if(b.dataset.m==='road' && curMode==='road'){ go(document.getElementById('road')); return; }
+  if(anchor && !anchor.el.closest('[hidden]')){
+    window.scrollBy(0, anchor.el.getBoundingClientRect().top-anchor.top);
+    return;
+  }
+  go(firstShown());
+}
 function syncNav(){
   nav.querySelectorAll('button[data-r]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.r===curR)));
   nav.querySelectorAll('button[data-m]').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.m===curMode)));

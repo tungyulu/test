@@ -1358,7 +1358,7 @@ const LED=(()=>{
           while(k>a[0] && /[；，。、・）》」』：！？]/.test(c.chs[k])) k=back(k);
           /* a Latin run that starts the line above cannot be split: give up instead */
           while(al(c.chs[k])){ const p=back(k); if(p<=a[0]){ k=a[0]; break; } if(!al(c.chs[p])) break; k=p; }
-          /* prefer to break right after a separator (・、，or a space) within the last four glyphs */
+          /* prefer to break right after a separator (a middle dot, an ideographic comma or a space) within the last four glyphs */
           for(let j=k, n=0; j>a[0] && n<4; n++){ const p=back(j); if(/[・、，　 ]/.test(c.chs[p])){ k=j; break; } j=p; }
           if(/[（《「『]/.test(c.chs[back(k)])) k=back(k);
           if(k<=a[0]) break;
@@ -1527,7 +1527,7 @@ const TRIP_NAME='關東秋季紅葉巡航', ROUTE='橫濱・箱根・河口湖�
   };
   tick(); setInterval(tick, 15000);
 
-  // ---- 日程表 starts folded on phones (the map above already lists the eight days); always open from 700px
+  // ---- the timetable chapter starts folded on phones (the map above already lists the eight days); always open from 700px
   const planFold = $('#planFold'), wide = matchMedia('(min-width: 700px)');
   const syncFold = () => { if (wide.matches) planFold.open = true; };
   syncFold();
