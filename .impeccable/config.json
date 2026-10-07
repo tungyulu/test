@@ -41,6 +41,24 @@
         ],
         "createdAt": "2026-10-05T07:25:27.187Z",
         "reason": "invest.html passbook world (surface brief invest-html): the flagged 3px borders are full-width printed double rules (border-bottom/top: 3px double) under each page head and above the warning note, not a one-side accent on a card"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "archivo narrow",
+        "files": [
+          "congress-trades.html"
+        ],
+        "createdAt": "2026-10-07T02:27:03.548Z",
+        "reason": "DESIGN.md records the trip booklet only; congress-trades.html is its own newspaper-financial-page world (agate tables in Archivo Narrow, Noto Serif TC masthead and headings), like the other per-page worlds"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "noto serif tc",
+        "files": [
+          "congress-trades.html"
+        ],
+        "createdAt": "2026-10-07T02:27:03.552Z",
+        "reason": "DESIGN.md records the trip booklet only; congress-trades.html is its own newspaper-financial-page world (agate tables in Archivo Narrow, Noto Serif TC masthead and headings), like the other per-page worlds"
       }
     ]
   }

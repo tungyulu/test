@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>國會交易日報</title>
+<meta name="description" content="美國國會議員的股票交易申報，每天更新：最新公布的交易、上次打開之後的新申報、近 30 天最多議員買賣的股票，可以追蹤特定議員或股票代號。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f3efe6; --paper-2:#e8e2d4; --paper-3:#fbf9f4;
+  --ink:#1b1a17; --ink-2:#4b473f;
+  --rule:#1b1a17; --hair:#cbc3b2;
+  --hl:#f6e05e; --hl-ink:#1b1a17;
+  --dem:#1d4f9a; --rep:#ad2a20; --ind:#5b5826;
+  --on-pty:#fbf9f4;
+  --focus:#1d4f9a;
+  --serif:'Noto Serif TC','Songti TC',serif;
+  --sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC',sans-serif;
+  --num:'Archivo Narrow','Noto Sans TC',system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#191816; --paper-2:#26241f; --paper-3:#201f1b;
+    --ink:#ece7dc; --ink-2:#bab3a5;
+    --rule:#ece7dc; --hair:#423f37;
+    --hl:#5c5216; --hl-ink:#fbf3d2;
+    --dem:#93b6ff; --rep:#ff9d92; --ind:#d9d18c;
+    --on-pty:#191816;
+    --focus:#93b6ff;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#191816; --paper-2:#26241f; --paper-3:#201f1b;
+  --ink:#ece7dc; --ink-2:#bab3a5;
+  --rule:#ece7dc; --hair:#423f37;
+  --hl:#5c5216; --hl-ink:#fbf3d2;
+  --dem:#93b6ff; --rep:#ff9d92; --ind:#d9d18c;
+  --on-pty:#191816;
+  --focus:#93b6ff;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:12px}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.6 var(--sans)}
+a{color:inherit;text-underline-offset:3px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+[hidden]{display:none!important}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.seg{display:inline-block}
+.ic{width:18px;height:18px;flex:none;vertical-align:-3px}
+
+/* masthead */
+.mast{max-width:1200px;margin:0 auto;padding:0 16px}
+.mast-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:4px;font:500 13.5px/1.4 var(--sans);border-bottom:1px solid var(--rule)}
+.mast-top a{display:inline-flex;align-items:center;gap:4px;min-height:44px;text-decoration:none}
+.mast-top a:hover{text-decoration:underline}
+.mast-name{margin:18px 0 2px;text-align:center;font:900 clamp(42px,12.5vw,88px)/1.05 var(--serif);letter-spacing:.06em}
+.mast-en{margin:0;text-align:center;font:600 12.5px/1.6 var(--num);letter-spacing:.32em;text-transform:uppercase;color:var(--ink-2)}
+.mast-sub{margin:2px 0 14px;text-align:center;font:500 14.5px/1.6 var(--sans);color:var(--ink-2)}
+.mast-line{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 16px;padding:7px 0 6px;border-top:2px solid var(--rule);box-shadow:inset 0 3px 0 var(--paper),inset 0 4px 0 var(--rule);border-bottom:1px solid var(--rule);font:600 14px/1.5 var(--sans)}
+.mast-line #fresh{font-weight:500;color:var(--ink-2)}
+.mast-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 22px;border-bottom:1px solid var(--hair);font:600 14px/1.4 var(--sans)}
+.mast-nav a{display:inline-flex;align-items:center;min-height:40px;text-decoration:none}
+.mast-nav a:hover{text-decoration:underline}
+
+/* page */
+.page{max-width:1200px;margin:0 auto;padding:0 16px 40px}
+.since{margin-top:16px;padding:12px 14px;background:var(--paper-2);display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.since p{margin:0;flex:1 1 300px}
+.since .warn{flex-basis:100%;font-weight:700}
+.since.is-new{background:var(--hl);color:var(--hl-ink)}
+.since.is-new .btn{border-color:var(--hl-ink);color:var(--hl-ink)}
+.since.is-new .btn-solid{background:var(--hl-ink);color:var(--hl)}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border:1.5px solid var(--ink);border-radius:3px;background:transparent;font:600 14px/1.2 var(--sans);cursor:pointer}
+.btn-solid{background:var(--ink);color:var(--paper)}
+.btn:hover{text-decoration:underline}
+
+.cols{display:grid;gap:28px;margin-top:22px;grid-template-areas:"watch" "latest" "focus"}
+#latest{grid-area:latest;min-width:0}
+#watch{grid-area:watch;min-width:0}
+#focus{grid-area:focus;min-width:0}
+@media (min-width:960px){
+  .cols{grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:auto 1fr;grid-template-areas:"latest watch" "latest focus";column-gap:32px;row-gap:0}
+  #watch,#focus{border-left:1px solid var(--hair);padding-left:24px}
+  #focus{padding-top:26px}
+}
+.kick{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 10px;margin:0 0 10px;padding-top:6px;border-top:2px solid var(--rule);font:700 21px/1.35 var(--serif)}
+.kick small{font:500 13px/1.5 var(--sans);color:var(--ink-2)}
+
+/* filters */
+.filters{display:grid;gap:10px}
+.search{display:flex;align-items:center;gap:8px;padding:6px 6px 6px 12px;border:1.5px solid var(--ink);border-radius:3px;background:var(--paper-3)}
+.search:focus-within{outline:2px solid var(--focus);outline-offset:2px}
+.search input{flex:1;min-width:0;min-height:36px;padding:0;border:0;background:transparent;color:var(--ink);font:16px/1.4 var(--sans)}
+.search input:focus{outline:none}
+.search input::placeholder{color:var(--ink-2);opacity:1}
+.search .x{display:grid;place-items:center;width:36px;height:36px;border:0;background:none;cursor:pointer}
+.toggles{display:flex;flex-wrap:wrap;gap:8px}
+.tg,.seg-g button{min-height:36px;padding:4px 13px;border:1.5px solid var(--ink);background:transparent;font:600 14px/1.2 var(--sans);cursor:pointer}
+.tg{border-radius:999px}
+.seg-g button{border-radius:3px}
+.tg[aria-pressed="true"],.seg-g button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.more-f summary{display:inline-flex;align-items:center;gap:6px;min-height:36px;cursor:pointer;font:600 14px/1.2 var(--sans);list-style:none}
+.more-f summary::-webkit-details-marker{display:none}
+.more-f summary::before{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);margin-right:2px}
+.more-f[open] summary::before{transform:rotate(45deg)}
+.fbody{display:grid;gap:8px;padding:8px 0 4px}
+.seg-g{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.seg-l{min-width:3.6em;font:600 13.5px/1.2 var(--sans);color:var(--ink-2)}
+.count{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;min-height:36px;margin:10px 0 0;font:500 14px/1.5 var(--sans);color:var(--ink-2)}
+.count .tg{color:var(--ink)}
+.count .co{color:var(--ink)}
+
+/* days */
+.days{container-type:inline-size}
+.day{margin-top:18px}
+.day-h{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 12px;margin:0;padding:6px 0 5px;border-bottom:1px solid var(--rule);font:700 clamp(19px,4.8vw,24px)/1.35 var(--serif)}
+.day-n{font:600 14px/1.4 var(--num);color:var(--ink-2)}
+.thead{display:none}
+.filing{padding:10px 0 8px;border-bottom:1px solid var(--hair)}
+.f-head{display:flex;align-items:flex-start;gap:10px}
+.pty{flex:none;display:grid;place-items:center;width:24px;height:24px;margin-top:2px;border-radius:2px;background:var(--ink-2);color:var(--on-pty);font:700 14px/1 var(--num)}
+.pty-D{background:var(--dem)}
+.pty-R{background:var(--rep)}
+.pty-I{background:var(--ind)}
+.f-who{flex:1;min-width:0}
+.f-name{margin:0;font:700 17px/1.35 var(--sans)}
+.f-meta{margin:0;font:400 13.5px/1.5 var(--sans);color:var(--ink-2)}
+.f-new{flex:none;margin-top:3px;padding:4px 6px;border-radius:2px;background:var(--hl);color:var(--hl-ink);font:700 12.5px/1 var(--sans)}
+.lnk{padding:0;border:0;background:none;font:inherit;color:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:var(--hair);text-underline-offset:3px}
+.lnk:hover{text-decoration-color:currentColor}
+.star{flex:none;display:grid;place-items:center;width:44px;height:44px;margin:-8px -8px -8px 0;border:0;border-radius:50%;background:none;color:var(--ink-2);cursor:pointer}
+.star[aria-pressed="true"]{color:var(--ink)}
+.star .ic{width:20px;height:20px}
+
+.trs{list-style:none;margin:6px 0 0;padding:0}
+.tr{display:grid;grid-template-columns:74px minmax(0,1fr) auto;grid-template-areas:"tx asset amt" "tx meta meta" "tx note note";column-gap:10px;row-gap:1px;padding:8px;border-top:1px dotted var(--hair)}
+.tr:first-child{border-top:0}
+.tr:focus{outline:2px solid var(--focus);outline-offset:-2px}
+.tr.is-new{background:var(--hl);color:var(--hl-ink)}
+.tr.is-new .c-meta,.tr.is-new .c-note,.tr.is-new .at{color:var(--hl-ink);border-color:var(--hl-ink)}
+.tr.is-new .tx{border-color:var(--hl-ink)}
+.tr.is-new .tx-buy{background:var(--hl-ink);color:var(--hl)}
+.c-tx{grid-area:tx;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.tx{display:inline-block;padding:3px 6px;border:1.5px solid var(--ink);border-radius:2px;font:700 13px/1.2 var(--sans);white-space:nowrap}
+.tx-buy{background:var(--ink);color:var(--paper)}
+.tx-ex,.tx-other{border-style:dashed}
+.new-tag{padding:2px 4px;border:1.5px solid currentColor;border-radius:2px;font:700 12px/1 var(--sans)}
+.c-asset{grid-area:asset;display:flex;align-items:baseline;gap:6px;min-width:0}
+.tk{flex:none;padding:0;border:0;background:none;color:inherit;cursor:pointer;font:700 15.5px/1.35 var(--num);letter-spacing:.02em;text-decoration:underline;text-decoration-thickness:1px;text-decoration-color:var(--hair);text-underline-offset:3px}
+.tk:hover{text-decoration-color:currentColor}
+.tk,.f-name .lnk,.rank .lnk{position:relative}
+.tk::after,.f-name .lnk::after,.rank .lnk::after{content:"";position:absolute;inset:-10px -6px}
+.at{flex:none;padding:1px 4px;border:1px solid var(--ink-2);border-radius:2px;color:var(--ink-2);font:600 12px/1.25 var(--sans)}
+.an{flex:1 1 0%;min-width:0;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere;font:400 14px/1.45 var(--sans)}
+.c-amt{grid-area:amt;align-self:start;white-space:nowrap;text-align:right;font:600 15.5px/1.35 var(--num);font-variant-numeric:tabular-nums}
+.c-amt.big{font-weight:700}
+.c-amt.huge{padding:1px 6px;border-radius:2px;background:var(--ink);color:var(--paper)}
+.tr.is-new .c-amt.huge{background:var(--hl-ink);color:var(--hl)}
+.c-meta{grid-area:meta;display:flex;flex-wrap:wrap;gap:0 12px;color:var(--ink-2);font:400 13px/1.6 var(--sans)}
+.c-date,.c-lag{font-family:var(--num);font-variant-numeric:tabular-nums}
+.late{font-weight:700;color:inherit;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.tr:not(.is-new) .late{color:var(--ink)}
+.c-note{grid-area:note;color:var(--ink-2);font:400 13px/1.5 var(--sans)}
+.f-foot{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;margin-top:4px;font:500 13.5px/1.4 var(--sans)}
+.f-foot a{display:inline-flex;align-items:center;gap:3px;min-height:36px}
+.f-foot .btn{min-height:36px;padding:4px 12px;font-size:13.5px}
+@container (min-width:720px){
+  .thead,.tr{grid-template-columns:64px 80px minmax(0,1fr) 104px 48px 96px;column-gap:10px}
+  .thead{display:grid;padding:7px 8px 3px;color:var(--ink-2);font:600 12.5px/1.3 var(--sans)}
+  .thead span:nth-child(4),.thead span:nth-child(6){text-align:right}
+  .tr{grid-template-areas:"date tx asset amt own lag" ". . note note note note";align-items:baseline}
+  .c-tx{flex-direction:row;align-items:center}
+  .c-meta{display:contents}
+  .c-date{grid-area:date;font-size:14px}
+  .c-own{grid-area:own;font-size:13.5px}
+  .c-lag{grid-area:lag;text-align:right;font-size:14px}
+  .pre{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+}
+.more{display:flex;justify-content:center;margin-top:18px}
+.state{padding:28px 0;text-align:center;color:var(--ink-2)}
+.state p{margin:0 0 10px}
+
+/* side */
+.hint{margin:0;color:var(--ink-2);font-size:14px}
+.wchips{list-style:none;display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding:0}
+.wchip{display:inline-flex;align-items:center;border:1.5px solid var(--ink);border-radius:999px;font:600 14px/1.2 var(--sans)}
+.wchip .lnk{padding:6px 2px 6px 12px;text-decoration:none}
+.wchip .tkn{font-family:var(--num);font-size:15px}
+.wchip .x{display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:50%;background:none;cursor:pointer}
+.wchip .x .ic{width:15px;height:15px}
+.wlist{list-style:none;margin:0;padding:0}
+.wlist li{padding:8px;border-top:1px dotted var(--hair);font-size:14px;line-height:1.5}
+.wlist li:first-child{border-top:0}
+@media (max-width:959px){.wlist li:nth-child(n+4){display:none}}
+.wlist li.is-new{background:var(--hl);color:var(--hl-ink)}
+.wlist .wl-d{font:600 13.5px var(--num);color:inherit}
+.wlist .wl-a{font:600 14.5px var(--num)}
+.box{margin-top:16px}
+.box:first-of-type{margin-top:0}
+.box h3{margin:0 0 4px;padding-bottom:4px;border-bottom:1px solid var(--rule);font:700 16px/1.4 var(--serif)}
+.box .box-note{margin:0 0 4px;font-size:12.5px;color:var(--ink-2)}
+.rank{list-style:none;margin:0;padding:0;counter-reset:r}
+.rank li{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:6px 0;border-bottom:1px dotted var(--hair);counter-increment:r}
+.rank li::before{content:counter(r);font:700 14px var(--num);color:var(--ink-2)}
+.rank .nm{min-width:0;font-size:14.5px}
+.rank .nm .lnk{font-weight:700}
+.rank .nm .tk{font-size:15.5px}
+.rank .sub{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2);font-size:12.5px;line-height:1.45}
+.rank .n{white-space:nowrap;font:600 14px var(--num)}
+.sumline{margin:0 0 6px;font-size:14px}
+
+/* about */
+.about{margin-top:44px}
+.about-grid{display:grid;gap:4px 32px}
+@media (min-width:760px){.about-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.about h3{margin:14px 0 2px;font:700 16.5px/1.45 var(--serif)}
+.about p{margin:0;font-size:14.5px}
+.foot{margin-top:28px;padding-top:10px;border-top:1px solid var(--rule);color:var(--ink-2);font-size:13px;line-height:1.7}
+.foot p{margin:0 0 4px}
+@media (prefers-reduced-motion: no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+  <symbol id="i-star-on" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></symbol>
+</svg>
+
+<header class="mast">
+  <div class="mast-top">
+    <a href="index.html"><svg class="ic" aria-hidden="true"><use href="#i-back"/></svg>我的小工具</a>
+    <a href="https://www.capitoltrades.com/trades" target="_blank" rel="noopener">Capitol Trades<svg class="ic" aria-hidden="true"><use href="#i-out"/></svg></a>
+  </div>
+  <h1 class="mast-name">國會交易日報</h1>
+  <p class="mast-en" lang="en">Congress Trades Daily</p>
+  <p class="mast-sub"><span class="seg">美國國會議員的</span><span class="seg">股票交易申報，</span><span class="seg">每天更新</span></p>
+  <div class="mast-line">
+    <span id="edition">最新公布：讀取中</span>
+    <span id="fresh">正在取資料…</span>
+  </div>
+  <nav class="mast-nav" aria-label="本頁">
+    <a href="#latest">最新申報</a><a href="#watch">我的追蹤</a><a href="#focus">近 30 天焦點</a><a href="#about">怎麼讀</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="since" id="since" aria-label="上次打開之後"><p>正在取最新的申報…</p></section>
+
+  <div class="cols">
+    <section id="latest" aria-labelledby="h-latest">
+      <h2 class="kick" id="h-latest">最新申報 <small>依公布日排列，新的在上面</small></h2>
+      <div class="filters">
+        <div class="search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><label class="vh" for="q">搜尋議員、股票代號或公司</label><input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="議員名字、股票代號或公司名稱"><button type="button" class="x" id="qClear" aria-label="清除搜尋" hidden><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        <div class="toggles" role="group" aria-label="快速篩選">
+          <button type="button" class="tg" data-t="onlyNew" aria-pressed="false">只看新的</button>
+          <button type="button" class="tg" data-t="onlyWatch" aria-pressed="false">只看追蹤</button>
+          <button type="button" class="tg" data-t="onlyTk" aria-pressed="false">只看有股票代號</button>
+        </div>
+        <details class="more-f" id="moreF">
+          <summary id="moreSum">更多篩選</summary>
+          <div class="fbody">
+            <div class="seg-g" role="group" aria-labelledby="lb-ch"><span class="seg-l" id="lb-ch">院別</span><button type="button" data-f="ch" data-v="all" aria-pressed="true">全部</button><button type="button" data-f="ch" data-v="house" aria-pressed="false">眾議院</button><button type="button" data-f="ch" data-v="senate" aria-pressed="false">參議院</button></div>
+            <div class="seg-g" role="group" aria-labelledby="lb-pty"><span class="seg-l" id="lb-pty">黨籍</span><button type="button" data-f="pty" data-v="all" aria-pressed="true">全部</button><button type="button" data-f="pty" data-v="D" aria-pressed="false">民主黨</button><button type="button" data-f="pty" data-v="R" aria-pressed="false">共和黨</button></div>
+            <div class="seg-g" role="group" aria-labelledby="lb-dir"><span class="seg-l" id="lb-dir">買賣</span><button type="button" data-f="dir" data-v="all" aria-pressed="true">全部</button><button type="button" data-f="dir" data-v="buy" aria-pressed="false">買進</button><button type="button" data-f="dir" data-v="sell" aria-pressed="false">賣出</button></div>
+            <div class="seg-g" role="group" aria-labelledby="lb-min"><span class="seg-l" id="lb-min">金額</span><button type="button" data-f="min" data-v="0" aria-pressed="true">全部</button><button type="button" data-f="min" data-v="15001" aria-pressed="false">$15K 起</button><button type="button" data-f="min" data-v="50001" aria-pressed="false">$50K 起</button><button type="button" data-f="min" data-v="250001" aria-pressed="false">$250K 起</button><button type="button" data-f="min" data-v="1000001" aria-pressed="false">$1M 起</button></div>
+          </div>
+        </details>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <div class="days" id="days"><div class="state"><p>正在取最新的申報…</p></div></div>
+      <div class="more"><button type="button" class="btn" id="moreDays" hidden>再看 10 天</button></div>
+    </section>
+
+    <section id="watch" aria-labelledby="h-watch">
+      <h2 class="kick" id="h-watch" tabindex="-1">我的追蹤</h2>
+      <div id="watchBody"><p class="hint">資料讀進來之後，這裡會列出你追蹤的議員和股票的最近交易。</p></div>
+    </section>
+
+    <section id="focus" aria-labelledby="h-focus">
+      <h2 class="kick" id="h-focus">近 30 天焦點</h2>
+      <div id="focusBody"><p class="hint">資料讀進來之後才會算。</p></div>
+    </section>
+  </div>
+
+  <section class="about" id="about" aria-labelledby="h-about">
+    <h2 class="kick" id="h-about">怎麼讀這份報</h2>
+    <div class="about-grid">
+      <div>
+        <h3>公布日和交易日</h3>
+        <p>每一天的標題是申報公布的日期，也就是議員送出申報的那天，不是交易日。議員常在交易後幾週才申報，所以今天看到的多半是上個月的交易；每筆後面的「N 天後申報」就是兩者相差的天數。</p>
+        <h3>45 天的規定</h3>
+        <p>依 2012 年的 STOCK Act，國會議員本人、配偶和受扶養子女超過 1,000 美元的股票等交易，要在得知交易後 30 天內、最晚交易後 45 天內申報。超過 45 天才申報的，這裡標成「晚報」。</p>
+        <h3>金額和持有人</h3>
+        <p>申報只填金額區間，例如 $1,001–$15,000，這裡縮寫成 $1K–15K；$100K 以上用粗體，$1M 以上反白。持有人是誰的帳戶：本人、配偶、共同（夫妻共有）或子女。眾議院的申報沒填持有人時，就是議員本人。</p>
+        <h3>新申報怎麼標</h3>
+        <p>這台裝置會記得已經載入過哪些申報，之後新出現的用螢光筆標出來，一直留到你按「標為已讀」，關掉分頁再開也還在。追蹤的議員和股票代號也只存在這台裝置上，換手機或換瀏覽器要重新設定。</p>
+      </div>
+      <div>
+        <h3>資料從哪裡來</h3>
+        <p>Capitol Trades 的網站會擋下程式讀取（它的資料介面目前也只回錯誤），所以這頁讀的是 Kadoa 公開整理的同一批官方申報：眾議院書記官處（House Clerk）和參議院電子申報系統（eFD）的定期交易報告。來源大約每天更新一次，只提供最新的 5,000 筆（含行政部門官員，這頁只留國會議員），所以只涵蓋最近約三個月。</p>
+        <p id="cover"></p>
+        <h3>原始申報</h3>
+        <p>每份申報都連到官方文件：眾議院是 PDF；參議院的連結會先要你在 eFD 網站同意使用條款，同意後才看得到。</p>
+        <h3>這不是投資建議</h3>
+        <p>這頁只整理公開申報，整理時可能解析錯誤或有缺漏，一切以原始申報為準。議員名字照來源的寫法，偶爾會縮寫，例如 Mitch McConnell 在來源裡寫成「A. Mitchell」，這頁有補註。交易公布時通常已經過了好幾週，不是即時訊號。</p>
+      </div>
+    </div>
+    <footer class="foot">
+      <p>資料：<a href="https://www.kadoa.com/congress/" target="_blank" rel="noopener">Kadoa congress-trading-monitor</a>（<a href="https://github.com/kadoa-org/congress-trading-monitor" target="_blank" rel="noopener">GitHub</a>），整理自 <a href="https://disclosures-clerk.house.gov/FinancialDisclosure" target="_blank" rel="noopener">House Clerk</a> 和 <a href="https://efdsearch.senate.gov/search/" target="_blank" rel="noopener">Senate eFD</a> 的公開申報。原本想追蹤的網站：<a href="https://www.capitoltrades.com/" target="_blank" rel="noopener">Capitol Trades</a>。</p>
+      <p>頁面每次打開都直接向資料來源讀最新一份，不經過其他伺服器；除了上次看到哪裡和追蹤清單，什麼都不存。</p>
+    </footer>
+  </section>
+</main>
+<noscript><p style="max-width:1200px;margin:0 auto;padding:16px">這一頁要開 JavaScript 才能讀取申報資料。</p></noscript>
+
+<script>
+(() => {
+  'use strict';
+  const SRC = [
+    'https://www.kadoa.com/congress/data/trades.json',
+    'https://raw.githubusercontent.com/kadoa-org/congress-trading-monitor/main/public/data/trades.json'
+  ];
+  const LIMIT = 8, STEP = 10;
+  const K_SEEN = 'congress-seen-v2', K_UNREAD = 'congress-unread-v1', K_WATCH = 'congress-watch-v1';
+  const DOC_HOSTS = ['disclosures-clerk.house.gov', 'efdsearch.senate.gov'];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Storage can be missing or throw (blocked site data, embedded previews): every access is guarded.
+  const LS = (() => { try { const s = window.localStorage; s.setItem('__probe', '1'); s.removeItem('__probe'); return s; } catch (e) { return null; } })();
+  function get(k){ if (!LS) return null; try { return JSON.parse(LS.getItem(k)); } catch (e) { return null; } }
+  function put(k, v){ if (!LS) return false; try { LS.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+
+  const STATES = {AL:'阿拉巴馬州',AK:'阿拉斯加州',AZ:'亞利桑那州',AR:'阿肯色州',CA:'加州',CO:'科羅拉多州',CT:'康乃狄克州',DE:'德拉瓦州',FL:'佛羅里達州',GA:'喬治亞州',HI:'夏威夷州',ID:'愛達荷州',IL:'伊利諾州',IN:'印第安納州',IA:'愛荷華州',KS:'堪薩斯州',KY:'肯塔基州',LA:'路易斯安那州',ME:'緬因州',MD:'馬里蘭州',MA:'麻州',MI:'密西根州',MN:'明尼蘇達州',MS:'密西西比州',MO:'密蘇里州',MT:'蒙大拿州',NE:'內布拉斯加州',NV:'內華達州',NH:'新罕布夏州',NJ:'紐澤西州',NM:'新墨西哥州',NY:'紐約州',NC:'北卡羅來納州',ND:'北達科他州',OH:'俄亥俄州',OK:'奧克拉荷馬州',OR:'奧勒岡州',PA:'賓州',RI:'羅德島州',SC:'南卡羅來納州',SD:'南達科他州',TN:'田納西州',TX:'德州',UT:'猶他州',VT:'佛蒙特州',VA:'維吉尼亞州',WA:'華盛頓州',WV:'西維吉尼亞州',WI:'威斯康辛州',WY:'懷俄明州',DC:'華盛頓特區',PR:'波多黎各',GU:'關島',VI:'美屬維京群島',AS:'美屬薩摩亞',MP:'北馬利安納群島'};
+  const TERRITORY = {DC: 1, PR: 1, GU: 1, VI: 1, AS: 1, MP: 1};
+  const PARTY = {D:'民主黨', R:'共和黨', I:'無黨籍'};
+  const OWNER = {Self:'本人', SP:'配偶', Spouse:'配偶', JT:'共同', Joint:'共同', DC:'子女', Child:'子女'};
+  const ASSET = {OP:'選擇權', 'Stock Option':'選擇權', GS:'公債', 'Municipal Security':'市政債', 'Corporate Bond':'公司債', CS:'公司債', 'Non-Public Stock':'未上市股', PS:'未上市股'};
+  // Source quirks seen in the feed: one member under two filer ids, and a name printed from the legal first name.
+  const FID_ALIAS = {house_john_mcguire: 'house_johnjmr_mcguire_iii'};
+  const NAME_ALIAS = {senate_a_mitchell: 'A. Mitchell（Mitch McConnell）'};
+  const WD = '日一二三四五六';
+  const own = (o, k) => Object.prototype.hasOwnProperty.call(o, k) ? o[k] : undefined;
+
+  const $ = s => document.querySelector(s);
+  function h(tag, attrs, ...kids){
+    const el = document.createElement(tag);
+    if (attrs) for (const k in attrs){
+      const v = attrs[k];
+      if (v == null || v === false) continue;
+      if (k === 'class') el.className = v; else el.setAttribute(k, v === true ? '' : v);
+    }
+    for (const c of kids.flat(Infinity)){ if (c == null || c === false) continue; el.append(c instanceof Node ? c : String(c)); }
+    return el;
+  }
+  function icon(id){
+    const ns = 'http://www.w3.org/2000/svg';
+    const s = document.createElementNS(ns, 'svg'); s.setAttribute('class', 'ic'); s.setAttribute('aria-hidden', 'true');
+    const u = document.createElementNS(ns, 'use'); u.setAttribute('href', '#' + id); s.append(u);
+    return s;
+  }
+  function focusEl(el){ if (!el) return; if (!el.hasAttribute('tabindex') && !/^(BUTTON|A|INPUT)$/.test(el.tagName)) el.setAttribute('tabindex', '-1'); el.focus({preventScroll: true}); }
+
+  // ---------- formatting ----------
+  const clean = s => String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+  const num = v => (v == null || v === '' || !isFinite(Number(v))) ? null : Number(v);
+  function docUrl(u){
+    try { const x = new URL(u); return x.protocol === 'https:' && DOC_HOSTS.includes(x.hostname) ? x.href : null; } catch (e) { return null; }
+  }
+  function ymd(s){ const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ''); return m ? {y: +m[1], m: +m[2], d: +m[3]} : null; }
+  function dayLong(s){ const p = ymd(s); if (!p) return s || '—'; const w = new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay(); return p.m + ' 月 ' + p.d + ' 日（週' + WD[w] + '）'; }
+  function dayShort(s, refY){ const p = ymd(s); if (!p) return '—'; return (refY && p.y !== refY ? p.y + '/' : '') + p.m + '/' + p.d; }
+  function addDays(s, n){ const p = ymd(s); return new Date(Date.UTC(p.y, p.m - 1, p.d + n)).toISOString().slice(0, 10); }
+  function fmtTaipei(d){
+    d = new Date(d);
+    try {
+      const p = {}; new Intl.DateTimeFormat('en-US', {timeZone: 'Asia/Taipei', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).formatToParts(d).forEach(x => { p[x.type] = x.value; });
+      return p.month + '/' + p.day + ' ' + p.hour + ':' + p.minute;
+    } catch (e) { return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+  }
+  function money(n){ if (n >= 1e6) return String(+(n / 1e6).toFixed(1)) + 'M'; if (n >= 1e3) return Math.round(n / 1e3) + 'K'; return String(n); }
+  function amt(r){
+    if (r.lo == null) return r.label || '—';
+    const lo = money(Math.max(0, r.lo - 1));
+    // "Over $50,000,000" has no upper bound in the filing; the feed fills one in.
+    return (r.hi == null || /^over\b/i.test(r.label)) ? '$' + lo + ' 以上' : '$' + lo + '–' + money(r.hi);
+  }
+  function kindOf(t){ return /^purchase/i.test(t) ? 'buy' : /^sale/i.test(t) ? 'sell' : /exchange/i.test(t) ? 'ex' : 'other'; }
+  function txLabel(t){ return /^purchase/i.test(t) ? '買進' : /partial/i.test(t) ? '部分賣出' : /^sale/i.test(t) ? '賣出' : /exchange/i.test(t) ? '交換' : (t || '—'); }
+  function ownerLabel(r){ const o = own(OWNER, r.own); if (o) return o; if (r.own) return String(r.own); return r.ch === 'house' ? '本人' : '未註明'; }
+  function seat(f){
+    const st = own(STATES, f.st) || f.st || '';
+    if (f.ch === 'senate') return '參議員 · ' + st;
+    if (own(TERRITORY, f.st)) return '眾議院代表 · ' + st;
+    const m = /·\s*[A-Z]{2}-(\w+)/.exec(f.office || '');
+    if (m){
+      if (/^(0+|AL)$/i.test(m[1])) return '眾議員 · ' + st + '全州選區';
+      const d = parseInt(m[1], 10);
+      if (isFinite(d)) return '眾議員 · ' + st + '第 ' + d + ' 選區';
+    }
+    return (f.ch === 'house' ? '眾議員' : '議員') + ' · ' + st;
+  }
+  function memberName(x){
+    const alias = own(NAME_ALIAS, x.filer_id);
+    if (alias) return alias;
+    return clean(x.filer_name).replace(/[,;]+$/, '').replace(/^(\S+) \1 /, '$1 ') || '（未列名）';
+  }
+  function shortName(s){ return s.replace(/\s+(option type|company):.*$/i, '').replace(/\s+cmn$/i, '').replace(/\s*-?\s*common stock.*$/i, '').replace(/\s*\(the\)/i, '').replace(/,?\s+(inc|corp|corporation|ltd|plc)\.?$/i, '').trim() || s; }
+  const isGov = r => r.at === 'GS' || /^US-/.test(r.tk);
+  // A frequent boilerplate comment gets a short Chinese rendering; other comments stay as filed.
+  const noteText = n => /^automatic reinvestment of dividends/i.test(n) ? '股息自動再投資' : n;
+
+  // ---------- state ----------
+  let ALL = [], DAYS = [], IDS = new Set(), TICK = new Map();
+  let NEW = new Set(), UNREAD = new Set(), unreadSince = null, lastVisit = null, firstVisit = false, seenSaved = false;
+  let lastMod = null, usedFallback = false, phase = 'loading';
+  let watch = normWatch(get(K_WATCH)), WM = new Set(), WT = new Set();
+  const F = {q: '', ch: 'all', pty: 'all', dir: 'all', min: 0, onlyNew: false, onlyWatch: false, onlyTk: false};
+  let shown = STEP;
+  const expanded = new Set();
+
+  function normWatch(w){
+    return {
+      m: Array.isArray(w && w.m) ? w.m.filter(x => x && typeof x.id === 'string').map(x => ({id: x.id, name: String(x.name || x.id)})) : [],
+      t: Array.isArray(w && w.t) ? w.t.filter(x => typeof x === 'string') : []
+    };
+  }
+  function syncWatch(){ WM = new Set(watch.m.map(x => x.id)); WT = new Set(watch.t); }
+  const isWatched = r => WM.has(r.fid) || (r.tk && WT.has(r.tk));
+  syncWatch();
+
+  // ---------- data ----------
+  async function load(){
+    let err = null;
+    for (let i = 0; i < SRC.length; i++){
+      try {
+        const res = await fetch(SRC[i], {cache: 'no-cache'});
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const lm = res.headers.get('last-modified');
+        const data = await res.json();
+        if (!Array.isArray(data) || !data.some(x => x && x.branch === 'congress' && /^\d{4}-\d{2}-\d{2}/.test(x.filing_date || ''))) throw new Error('資料裡沒有國會議員的交易');
+        return {data, lm: lm ? new Date(lm) : null, fallback: i > 0};
+      } catch (e) { err = e; }
+    }
+    throw err;
+  }
+
+  function ingest(data){
+    ALL = []; IDS = new Set(); TICK = new Map();
+    const names = new Map();
+    for (const x of data){
+      if (!x || x.branch !== 'congress' || !/^\d{4}-\d{2}-\d{2}/.test(x.filing_date || '')) continue;
+      const id = String(x.id);
+      if (IDS.has(id)) continue;
+      const fid0 = String(x.filer_id || x.filer_name);
+      const r = {
+        id, fd: x.filing_date.slice(0, 10), td: String(x.transaction_date || '').slice(0, 10),
+        who: memberName(x), fid: own(FID_ALIAS, fid0) || fid0,
+        ch: x.chamber, pty: x.party, st: x.state, office: clean(x.office),
+        tk: clean(x.ticker).toUpperCase(), asset: clean(x.asset_name), at: x.asset_type,
+        tx: clean(x.transaction_type), lo: num(x.amount_range_low), hi: num(x.amount_range_high), label: clean(x.amount_range_label),
+        own: x.owner, days: num(x.days_to_file), doc: docUrl(x.doc_url), note: clean(x.comment)
+      };
+      r.kind = kindOf(r.tx);
+      r.late = r.days != null && r.days > 45;
+      r.key = [r.who, r.tk, r.asset, r.st, own(STATES, r.st) || '', own(PARTY, r.pty) || ''].join(' ').toLowerCase();
+      r.docKey = r.doc || r.fd + '|' + r.fid;
+      IDS.add(id); ALL.push(r);
+      if (r.tk){
+        let m = names.get(r.tk); if (!m) names.set(r.tk, m = new Map());
+        if (r.asset){ const n = shortName(r.asset); m.set(n, (m.get(n) || 0) + (/^(stock|st)$/i.test(r.at || '') ? 10 : 1)); }
+      }
+    }
+    for (const [tk, m] of names) TICK.set(tk, m.size ? [...m].sort((a, b) => b[1] - a[1])[0][0] : '');
+    // A member keeps one name per filer id (the latest spelling).
+    const latestName = new Map();
+    for (const r of ALL){ const p = latestName.get(r.fid); if (!p || r.fd > p.fd) latestName.set(r.fid, {fd: r.fd, who: r.who}); }
+    for (const r of ALL){ const n = latestName.get(r.fid).who; if (n !== r.who){ r.who = n; r.key = n.toLowerCase() + ' ' + r.key; } }
+    const dmap = new Map();
+    for (const r of ALL){
+      let d = dmap.get(r.fd); if (!d) dmap.set(r.fd, d = new Map());
+      let f = d.get(r.fid); if (!f) d.set(r.fid, f = {fid: r.fid, who: r.who, pty: r.pty, ch: r.ch, st: r.st, office: r.office, rows: []});
+      f.rows.push(r);
+    }
+    DAYS = [...dmap.entries()].sort((a, b) => a[0] < b[0] ? 1 : -1).map(([date, fm]) => ({
+      date,
+      filings: [...fm.values()].map(f => { f.rows.sort((a, b) => a.td < b.td ? 1 : a.td > b.td ? -1 : (b.lo || 0) - (a.lo || 0)); return f; })
+    }));
+  }
+
+  // "Seen" = every filing id this device has loaded, kept per filing date and pruned two weeks
+  // behind the oldest date in the feed, so an older copy of the feed cannot bring old rows back as new.
+  // "Unread" = ids that appeared after an earlier load and have not been marked read yet.
+  function computeNew(){
+    const prev = get(K_SEEN), un = get(K_UNREAD);
+    const keepFrom = addDays(DAYS[DAYS.length - 1].date, -14);
+    const byDay = {}, seen = new Set();
+    const hadSeen = !!(prev && prev.byDay && typeof prev.byDay === 'object');
+    if (hadSeen) for (const d in prev.byDay){
+      if (d >= keepFrom && Array.isArray(prev.byDay[d])){ byDay[d] = prev.byDay[d].filter(id => typeof id === 'string'); byDay[d].forEach(id => seen.add(id)); }
+    }
+    lastVisit = hadSeen && prev.at ? prev.at : null;
+    firstVisit = !hadSeen;
+    const unread = new Set(un && Array.isArray(un.ids) ? un.ids : []);
+    const wasEmpty = unread.size === 0;
+    for (const r of ALL){
+      if (seen.has(r.id)) continue;
+      if (hadSeen) unread.add(r.id);
+      (byDay[r.fd] || (byDay[r.fd] = [])).push(r.id);
+      seen.add(r.id);
+    }
+    // Stored: unread ids still within the kept dates. Shown: the ones present in this copy of the feed.
+    UNREAD = new Set([...unread].filter(id => seen.has(id)));
+    NEW = new Set([...UNREAD].filter(id => IDS.has(id)));
+    unreadSince = UNREAD.size ? (!wasEmpty && un.since ? un.since : lastVisit) : null;
+    seenSaved = put(K_SEEN, {at: Date.now(), byDay});
+    put(K_UNREAD, {ids: [...UNREAD], since: unreadSince});
+  }
+
+  // ---------- filtering ----------
+  // An upper-case query that is a known ticker (what the ticker buttons set) filters on that ticker only;
+  // anything else is a text search, which offers the ticker filter when the word is also a ticker.
+  function query(){
+    const q = F.q.trim(), up = q.toUpperCase();
+    const isTk = q && !/\s/.test(q) && TICK.has(up);
+    if (isTk && q === up) return {tk: up, terms: [], alt: null};
+    return {tk: null, terms: q.toLowerCase().split(/\s+/).filter(Boolean), alt: isTk ? up : null};
+  }
+  function pass(r, q){
+    if (F.ch !== 'all' && r.ch !== F.ch) return false;
+    if (F.pty !== 'all' && r.pty !== F.pty) return false;
+    if (F.dir !== 'all' && r.kind !== F.dir) return false;
+    if (F.min && !(r.lo >= F.min)) return false;
+    if (F.onlyNew && !NEW.has(r.id)) return false;
+    if (F.onlyTk && !r.tk) return false;
+    if (F.onlyWatch && !isWatched(r)) return false;
+    if (q.tk) return r.tk === q.tk;
+    for (const t of q.terms) if (!r.key.includes(t)) return false;
+    return true;
+  }
+  function filtersActive(){ return !!(F.q.trim() || F.ch !== 'all' || F.pty !== 'all' || F.dir !== 'all' || F.min || F.onlyNew || F.onlyWatch || F.onlyTk); }
+
+  // ---------- rendering ----------
+  function starBtn(kind, id, name){
+    const on = kind === 'm' ? WM.has(id) : WT.has(id);
+    return h('button', {type: 'button', class: 'star', 'data-watch': kind, 'data-id': id, 'data-name': name, 'aria-pressed': on ? 'true' : 'false', 'aria-label': '追蹤 ' + name, title: on ? '已追蹤，按一下取消' : '追蹤'}, icon(on ? 'i-star-on' : 'i-star'));
+  }
+  function setStar(b, on){
+    b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.title = on ? '已追蹤，按一下取消' : '追蹤';
+    b.replaceChildren(icon(on ? 'i-star-on' : 'i-star'));
+  }
+
+  function rowEl(r, fd){
+    const isNew = NEW.has(r.id);
+    const y = +fd.slice(0, 4);
+    return h('li', {class: 'tr' + (isNew ? ' is-new' : '')},
+      h('span', {class: 'c-tx'}, h('span', {class: 'tx tx-' + r.kind}, txLabel(r.tx)), isNew ? h('span', {class: 'new-tag'}, '新') : null),
+      h('span', {class: 'c-asset'},
+        r.tk ? h('button', {type: 'button', class: 'tk', 'data-q': r.tk, title: '只看 ' + r.tk}, r.tk) : null,
+        own(ASSET, r.at) ? h('span', {class: 'at'}, own(ASSET, r.at)) : null,
+        h('span', {class: 'an', title: r.asset}, r.asset || '（申報沒寫標的名稱）')),
+      h('span', {class: 'c-amt' + (r.lo >= 100001 ? ' big' : '') + (r.lo >= 1000001 ? ' huge' : ''), title: r.label}, h('span', {class: 'vh'}, '金額 '), amt(r)),
+      h('span', {class: 'c-meta'},
+        h('span', {class: 'c-date'}, h('span', {class: 'pre'}, '交易 '), dayShort(r.td, y)),
+        h('span', {class: 'c-own'}, h('span', {class: 'pre'}, '持有人 '), ownerLabel(r)),
+        h('span', {class: 'c-lag' + (r.late ? ' late' : '')}, r.days == null ? '—' : r.late ? '晚報 ' + r.days + ' 天' : r.days + ' 天後申報')),
+      r.note ? h('span', {class: 'c-note', title: r.note}, noteText(r.note)) : null);
+  }
+
+  function docLinks(rs){
+    const docs = [...new Set(rs.map(r => r.doc).filter(Boolean))];
+    return docs.map((u, i) => {
+      const senate = /efdsearch\.senate\.gov/.test(u);
+      const label = '原始申報' + (docs.length > 1 ? ' ' + (i + 1) : '') + (senate ? '（eFD）' : '（PDF）');
+      return h('a', {href: u, target: '_blank', rel: 'noopener'}, label, icon('i-out'));
+    });
+  }
+
+  function filingEl(date, f, rs){
+    const key = date + '|' + f.fid;
+    const open = expanded.has(key) || rs.length <= LIMIT + 2;
+    const nNew = rs.reduce((n, r) => n + (NEW.has(r.id) ? 1 : 0), 0);
+    const pty = own(PARTY, f.pty);
+    return h('article', {class: 'filing', 'data-key': key},
+      h('header', {class: 'f-head'},
+        h('span', {class: 'pty pty-' + (pty ? f.pty : 'x'), title: pty || '黨籍不明', 'aria-hidden': 'true'}, f.pty || '?'),
+        h('div', {class: 'f-who'},
+          h('h4', {class: 'f-name'}, h('button', {type: 'button', class: 'lnk', 'data-q': f.who, title: '只看 ' + f.who}, f.who)),
+          h('p', {class: 'f-meta'}, [pty || '黨籍不明', seat(f), rs.length + ' 筆'].join(' · '))),
+        nNew ? h('span', {class: 'f-new'}, '新 ' + nNew) : null,
+        starBtn('m', f.fid, f.who)),
+      h('ol', {class: 'trs'}, (open ? rs : rs.slice(0, LIMIT)).map(r => rowEl(r, date))),
+      h('footer', {class: 'f-foot'},
+        open ? null : h('button', {type: 'button', class: 'btn', 'data-expand': key}, '再列 ' + (rs.length - LIMIT) + ' 筆'),
+        docLinks(rs)));
+  }
+
+  function thead(){
+    return h('div', {class: 'thead', 'aria-hidden': 'true'}, ['交易日', '買賣', '標的', '金額（美元）', '持有人', '申報'].map(t => h('span', null, t)));
+  }
+
+  function renderDays(){
+    if (phase !== 'ready') return;
+    const q = query();
+    const frag = document.createDocumentFragment();
+    const docs = new Set();
+    let nRows = 0, nDays = 0, more = false;
+    for (const d of DAYS){
+      const fl = []; let dn = 0;
+      for (const f of d.filings){
+        const rs = f.rows.filter(r => pass(r, q));
+        if (rs.length){ fl.push([f, rs, rs.reduce((m, r) => Math.max(m, r.lo || 0), 0)]); dn += rs.length; rs.forEach(r => docs.add(r.docKey)); }
+      }
+      if (!fl.length) continue;
+      nRows += dn; nDays++;
+      if (nDays > shown){ more = true; continue; }
+      fl.sort((a, b) => b[2] - a[2] || a[0].who.localeCompare(b[0].who));
+      frag.append(h('section', {class: 'day', 'aria-labelledby': 'd-' + d.date},
+        h('h3', {class: 'day-h', id: 'd-' + d.date}, h('span', null, dayLong(d.date) + ' 公布'), h('span', {class: 'day-n'}, dn + ' 筆 · ' + fl.length + ' 位議員')),
+        thead(),
+        fl.map(([f, rs]) => filingEl(d.date, f, rs))));
+    }
+    if (!nRows){
+      frag.append(h('div', {class: 'state'},
+        h('p', null, F.onlyNew && NEW.size === 0 ? '沒有還沒讀的新申報。' : F.onlyWatch && !WM.size && !WT.size ? '還沒有追蹤任何議員或股票。' : '沒有符合的交易。'),
+        h('button', {type: 'button', class: 'btn', 'data-clear': ''}, '清除篩選')));
+    }
+    $('#days').replaceChildren(frag);
+    $('#moreDays').hidden = !more;
+    renderCount(nRows, docs.size, more, q);
+  }
+
+  function renderCount(nRows, nDocs, more, q){
+    const c = $('#count'); c.replaceChildren();
+    c.append(h('span', {class: filtersActive() ? 'co' : null}, (filtersActive() ? '符合 ' : '共 ') + nRows.toLocaleString() + ' 筆交易 · ' + nDocs.toLocaleString() + ' 份申報' + (more ? ' · 先列最近 ' + shown + ' 天' : '')));
+    if (q.tk){
+      const on = WT.has(q.tk), nm = TICK.get(q.tk);
+      c.append(h('span', null, '只列代號 ' + q.tk + (nm ? '（' + nm + '）的交易' : ' 的交易')));
+      c.append(h('button', {type: 'button', class: 'tg', 'data-watch': 't', 'data-id': q.tk, 'data-name': q.tk, 'aria-pressed': on ? 'true' : 'false'}, icon(on ? 'i-star-on' : 'i-star'), ' 追蹤 ' + q.tk));
+    }
+    else if (q.alt){
+      const on = WT.has(q.alt);
+      c.append(h('button', {type: 'button', class: 'lnk', 'data-q': q.alt}, '只看股票代號 ' + q.alt + (TICK.get(q.alt) ? '（' + TICK.get(q.alt) + '）' : '')));
+      c.append(h('button', {type: 'button', class: 'tg', 'data-watch': 't', 'data-id': q.alt, 'data-name': q.alt, 'aria-pressed': on ? 'true' : 'false'}, icon(on ? 'i-star-on' : 'i-star'), ' 追蹤 ' + q.alt));
+    }
+    if (filtersActive()) c.append(h('button', {type: 'button', class: 'lnk', 'data-clear': ''}, '清除篩選'));
+    const n = ['ch', 'pty', 'dir'].filter(k => F[k] !== 'all').length + (F.min ? 1 : 0);
+    $('#moreSum').textContent = n ? '更多篩選（' + n + '）' : '更多篩選';
+  }
+
+  function renderSince(){
+    const el = $('#since'); el.replaceChildren(); el.className = 'since';
+    if (phase === 'loading'){ el.append(h('p', null, '正在取最新的申報…')); return; }
+    if (phase === 'error'){ el.append(h('p', null, '取不到資料，所以今天的報還沒送到。')); return; }
+    if (NEW.size){
+      el.classList.add('is-new');
+      const who = new Set(); let w = 0;
+      for (const r of ALL) if (NEW.has(r.id)){ who.add(r.fid); if (isWatched(r)) w++; }
+      el.append(h('p', null, (unreadSince ? '台灣時間 ' + fmtTaipei(unreadSince) + ' 之後' : '') + '新公布 ' + NEW.size + ' 筆交易，來自 ' + who.size + ' 位議員' + (w ? '，其中 ' + w + ' 筆是你追蹤的' : '') + '。螢光筆會一直留著，直到你按「標為已讀」。'),
+        h('button', {type: 'button', class: 'btn btn-solid', 'data-shownew': '', 'aria-pressed': F.onlyNew ? 'true' : 'false'}, '只看新的'),
+        h('button', {type: 'button', class: 'btn', 'data-read': ''}, '標為已讀'));
+    } else if (firstVisit){
+      el.append(h('p', null, seenSaved ? '第一次在這台裝置打開這份報。之後再來，新公布的申報會用螢光筆標出來。' : '第一次打開這份報。'));
+    } else {
+      el.append(h('p', null, '上次打開' + (lastVisit ? '（台灣時間 ' + fmtTaipei(lastVisit) + '）' : '') + '之後沒有新的申報。來源大約每天更新一次，美國的週末和國定假日通常沒有新申報。'));
+    }
+    if (!seenSaved) el.append(h('p', {class: 'warn'}, '這個瀏覽器不讓網頁存資料（可能封鎖了網站資料），所以記不得看過哪些申報，追蹤清單也存不了。'));
+    const st = staleDays();
+    if (st) el.append(h('p', {class: 'warn'}, '資料已經 ' + st + ' 天沒有更新，來源可能暫停了；最新內容請直接看 Capitol Trades。'));
+  }
+
+  function staleDays(){
+    const now = Date.now();
+    if (lastMod && !isNaN(lastMod)){ const d = Math.floor((now - lastMod) / 864e5); return d >= 3 ? d : 0; }
+    if (!DAYS.length) return 0;
+    const p = ymd(DAYS[0].date), d = Math.floor((now - Date.UTC(p.y, p.m - 1, p.d)) / 864e5);
+    return d >= 7 ? d : 0;
+  }
+
+  function renderMast(){
+    $('#edition').textContent = '最新公布 ' + dayLong(DAYS[0].date);
+    $('#fresh').textContent = (lastMod && !isNaN(lastMod) ? '資料檔更新 ' + fmtTaipei(lastMod) + '（台灣時間）' : '資料檔更新時間不明') + (usedFallback ? ' · 備用來源' : '');
+    const oldest = DAYS[DAYS.length - 1].date;
+    const filers = new Set(ALL.map(r => r.fid)).size;
+    $('#cover').textContent = '現在涵蓋 ' + dayLong(oldest) + '以來公布的 ' + ALL.length.toLocaleString() + ' 筆國會交易，' + filers + ' 位議員。';
+  }
+
+  function renderWatch(){
+    const body = $('#watchBody'); body.replaceChildren();
+    if (!watch.m.length && !watch.t.length){
+      body.append(h('p', {class: 'hint'}, '還沒有追蹤。按議員名字右邊的 ', icon('i-star'), '，或搜尋股票代號後按「追蹤」，他們的最近交易就會列在這裡。'));
+      return;
+    }
+    const ul = h('ul', {class: 'wchips', 'aria-label': '追蹤中'});
+    for (const m of watch.m) ul.append(h('li', {class: 'wchip'},
+      h('button', {type: 'button', class: 'lnk', 'data-q': m.name}, m.name),
+      h('button', {type: 'button', class: 'x', 'data-watch': 'm', 'data-id': m.id, 'data-name': m.name, 'aria-label': '取消追蹤 ' + m.name}, icon('i-x'))));
+    for (const t of watch.t) ul.append(h('li', {class: 'wchip'},
+      h('button', {type: 'button', class: 'lnk tkn', 'data-q': t}, t),
+      h('button', {type: 'button', class: 'x', 'data-watch': 't', 'data-id': t, 'data-name': t, 'aria-label': '取消追蹤 ' + t}, icon('i-x'))));
+    body.append(ul);
+    if (phase !== 'ready') return;
+    const rs = ALL.filter(isWatched).sort((a, b) => a.fd < b.fd ? 1 : a.fd > b.fd ? -1 : a.td < b.td ? 1 : a.td > b.td ? -1 : 0);
+    if (!rs.length){ body.append(h('p', {class: 'hint'}, '最近三個月沒有他們的交易。')); return; }
+    body.append(h('ol', {class: 'wlist', 'aria-label': '追蹤對象的最近交易'}, rs.slice(0, 6).map(r => h('li', {class: NEW.has(r.id) ? 'is-new' : null},
+      h('span', {class: 'wl-d'}, dayShort(r.fd) + ' 公布'), ' · ', h('b', null, r.who), NEW.has(r.id) ? ' · 新' : '', h('br'),
+      txLabel(r.tx) + ' ' + (r.tk || shortName(r.asset).slice(0, 28) || '—') + ' · ', h('span', {class: 'wl-a'}, amt(r))))));
+    if (!F.onlyWatch) body.append(h('p', {class: 'hint', style: 'margin-top:8px'}, h('button', {type: 'button', class: 'lnk', 'data-onlywatch': ''}, '在最新申報裡只看追蹤的（' + rs.length + ' 筆）')));
+  }
+
+  function renderFocus(){
+    const body = $('#focusBody'); body.replaceChildren();
+    const latest = DAYS[0].date, from = addDays(latest, -29);
+    const win = ALL.filter(r => r.fd >= from);
+    const buy = new Map(), sell = new Map(), people = new Map();
+    let late = 0;
+    for (const r of win){
+      if (r.late) late++;
+      if (r.tk && !isGov(r) && (r.kind === 'buy' || r.kind === 'sell')){
+        const m = r.kind === 'buy' ? buy : sell;
+        let o = m.get(r.tk); if (!o) m.set(r.tk, o = {tk: r.tk, who: new Set(), n: 0});
+        o.who.add(r.fid); o.n++;
+      }
+      let p = people.get(r.fid); if (!p) people.set(r.fid, p = {who: r.who, pty: r.pty, n: 0, b: 0, s: 0});
+      p.n++; if (r.kind === 'buy') p.b++; else if (r.kind === 'sell') p.s++;
+    }
+    const top = m => [...m.values()].sort((a, b) => b.who.size - a.who.size || b.n - a.n || a.tk.localeCompare(b.tk)).slice(0, 6);
+    const tkItem = o => h('li', null,
+      h('span', {class: 'nm'}, h('button', {type: 'button', class: 'tk', 'data-q': o.tk}, o.tk), h('span', {class: 'sub'}, TICK.get(o.tk) || '')),
+      h('span', {class: 'n'}, o.who.size + ' 位 · ' + o.n + ' 筆'));
+    body.append(h('p', {class: 'sumline'}, dayShort(from) + '–' + dayShort(latest) + ' 公布 ' + win.length.toLocaleString() + ' 筆、' + people.size + ' 位議員；' + late + ' 筆超過 45 天才申報。'));
+    const b = top(buy), s = top(sell);
+    body.append(h('section', {class: 'box', 'aria-labelledby': 'fx-buy'}, h('h3', {id: 'fx-buy'}, '最多議員買進'), h('p', {class: 'box-note'}, '依買進的議員人數，不含公債'), b.length ? h('ol', {class: 'rank'}, b.map(tkItem)) : h('p', {class: 'hint'}, '這段期間沒有。')));
+    body.append(h('section', {class: 'box', 'aria-labelledby': 'fx-sell'}, h('h3', {id: 'fx-sell'}, '最多議員賣出'), h('p', {class: 'box-note'}, '依賣出的議員人數，不含公債'), s.length ? h('ol', {class: 'rank'}, s.map(tkItem)) : h('p', {class: 'hint'}, '這段期間沒有。')));
+    const big = win.filter(r => r.lo != null).sort((a, b) => b.lo - a.lo || (b.fd < a.fd ? -1 : b.fd > a.fd ? 1 : 0) || a.who.localeCompare(b.who) || a.id.localeCompare(b.id)).slice(0, 6);
+    body.append(h('section', {class: 'box', 'aria-labelledby': 'fx-big'}, h('h3', {id: 'fx-big'}, '金額最大'), h('p', {class: 'box-note'}, '依申報的金額區間'),
+      h('ol', {class: 'rank'}, big.map(r => h('li', null,
+        h('span', {class: 'nm'}, h('button', {type: 'button', class: 'lnk', 'data-q': r.who}, r.who),
+          h('span', {class: 'sub'}, txLabel(r.tx) + ' ' + (r.tk || shortName(r.asset)) + ' · ' + dayShort(r.fd) + ' 公布')),
+        h('span', {class: 'n'}, amt(r)))))));
+    const act = [...people.values()].sort((a, b) => b.n - a.n || a.who.localeCompare(b.who)).slice(0, 6);
+    body.append(h('section', {class: 'box', 'aria-labelledby': 'fx-act'}, h('h3', {id: 'fx-act'}, '申報最多筆的議員'),
+      h('ol', {class: 'rank'}, act.map(p => h('li', null,
+        h('span', {class: 'nm'}, h('button', {type: 'button', class: 'lnk', 'data-q': p.who}, p.who), h('span', {class: 'sub'}, (own(PARTY, p.pty) || '黨籍不明') + ' · 買 ' + p.b + ' · 賣 ' + p.s)),
+        h('span', {class: 'n'}, p.n + ' 筆'))))));
+  }
+
+  function renderAll(){ renderSince(); renderDays(); renderWatch(); }
+
+  function renderError(e){
+    $('#edition').textContent = '最新公布：取不到';
+    $('#fresh').textContent = '資料讀取失敗';
+    const msg = e && e.name === 'TypeError' ? '連線失敗' : (e && e.message) || '原因不明';
+    $('#days').replaceChildren(h('div', {class: 'state'},
+      h('p', null, '取不到申報資料（' + msg + '）。可能是網路斷了，或資料來源暫時停了。'),
+      h('p', null, h('button', {type: 'button', class: 'btn', 'data-retry': ''}, '重試')),
+      h('p', null, '也可以直接看 ', h('a', {href: 'https://www.capitoltrades.com/trades', target: '_blank', rel: 'noopener'}, 'Capitol Trades'), ' 或 ', h('a', {href: 'https://www.kadoa.com/congress/', target: '_blank', rel: 'noopener'}, 'Kadoa'), '。')));
+    $('#count').replaceChildren();
+    $('#moreDays').hidden = true;
+  }
+
+  // ---------- actions ----------
+  function toList(){ focusEl($('#h-latest')); $('#latest').scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'}); }
+  function setQuery(v){
+    $('#q').value = v; F.q = v; $('#qClear').hidden = !v;
+    shown = STEP; renderDays(); toList();
+  }
+  function setToggle(name, on){
+    F[name] = on;
+    const b = document.querySelector('[data-t="' + name + '"]'); if (b) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  function clearFilters(){
+    Object.assign(F, {q: '', ch: 'all', pty: 'all', dir: 'all', min: 0});
+    ['onlyNew', 'onlyWatch', 'onlyTk'].forEach(k => setToggle(k, false));
+    $('#q').value = ''; $('#qClear').hidden = true;
+    document.querySelectorAll('.seg-g button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.v === 'all' || b.dataset.v === '0') ? 'true' : 'false'));
+    shown = STEP; renderAll();
+  }
+  function toggleWatch(kind, id, name){
+    let on;
+    if (kind === 'm'){
+      const i = watch.m.findIndex(x => x.id === id);
+      if (i >= 0){ watch.m.splice(i, 1); on = false; } else { watch.m.push({id, name}); on = true; }
+    } else {
+      const i = watch.t.indexOf(id);
+      if (i >= 0){ watch.t.splice(i, 1); on = false; } else { watch.t.push(id); on = true; }
+    }
+    syncWatch(); put(K_WATCH, watch);
+    document.querySelectorAll('.star[data-watch="' + kind + '"]').forEach(b => { if (b.dataset.id === id) setStar(b, on); });
+    return on;
+  }
+  function expand(key, btn){
+    expanded.add(key);
+    const cut = key.indexOf('|'), date = key.slice(0, cut), fid = key.slice(cut + 1);
+    const d = DAYS.find(x => x.date === date), f = d && d.filings.find(x => x.fid === fid);
+    if (!f) return;
+    const q = query(), rs = f.rows.filter(r => pass(r, q)).slice(LIMIT).map(r => rowEl(r, date));
+    btn.closest('.filing').querySelector('.trs').append(...rs);
+    btn.remove();
+    if (rs[0]) focusEl(rs[0]);
+  }
+
+  document.addEventListener('click', e => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    const ds = t.dataset;
+    if (ds.q != null){ setQuery(ds.q); return; }
+    if (ds.watch){
+      const chipX = t.classList.contains('x');
+      const sel = '[data-watch="' + ds.watch + '"][data-id="' + CSS.escape(ds.id) + '"]';
+      toggleWatch(ds.watch, ds.id, ds.name);
+      renderWatch();
+      if (NEW.size) renderSince();
+      if (F.onlyWatch || !t.classList.contains('star')) renderDays();
+      if (!document.body.contains(t)){
+        const n = chipX ? document.querySelector('.wchip .x') : (document.querySelector('#count ' + sel) || document.querySelector(sel));
+        focusEl(n || $('#h-watch'));
+      }
+      return;
+    }
+    if (ds.expand){ expand(ds.expand, t); return; }
+    if (ds.f){
+      F[ds.f] = ds.f === 'min' ? Number(ds.v) : ds.v;
+      t.parentElement.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === t ? 'true' : 'false'));
+      shown = STEP; renderDays(); return;
+    }
+    if (ds.t){
+      setToggle(ds.t, !F[ds.t]); shown = STEP; renderDays();
+      if (ds.t === 'onlyNew') renderSince(); else if (ds.t === 'onlyWatch') renderWatch();
+      return;
+    }
+    if (ds.clear != null){ clearFilters(); focusEl($('#q')); return; }
+    if (ds.shownew != null){
+      setToggle('onlyNew', !F.onlyNew); shown = STEP; renderSince(); renderDays();
+      if (F.onlyNew) toList(); else focusEl($('#since [data-shownew]'));
+      return;
+    }
+    if (ds.read != null){
+      NEW = new Set(); UNREAD = new Set(); unreadSince = null; put(K_UNREAD, {ids: [], since: null});
+      setToggle('onlyNew', false); renderAll(); focusEl($('#since p')); return;
+    }
+    if (ds.onlywatch != null){ setToggle('onlyWatch', true); shown = STEP; renderDays(); renderWatch(); toList(); return; }
+    if (ds.retry != null){ boot(true); return; }
+    if (t.id === 'moreDays'){
+      const before = document.querySelectorAll('#days .day').length;
+      shown += STEP; renderDays();
+      const next = document.querySelectorAll('#days .day')[before];
+      focusEl(next ? next.querySelector('.day-h') : $('#h-latest'));
+      return;
+    }
+    if (t.id === 'qClear'){ $('#q').value = ''; F.q = ''; t.hidden = true; shown = STEP; renderDays(); focusEl($('#q')); }
+  });
+
+  let qTimer = 0;
+  $('#q').addEventListener('input', e => {
+    $('#qClear').hidden = !e.target.value;
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { F.q = e.target.value; shown = STEP; renderDays(); }, 160);
+  });
+  $('#q').addEventListener('keydown', e => { if (e.key === 'Escape' && e.target.value){ e.target.value = ''; F.q = ''; $('#qClear').hidden = true; renderDays(); } });
+
+  async function boot(retry){
+    phase = 'loading'; renderSince();
+    $('#days').replaceChildren(h('div', {class: 'state'}, h('p', null, '正在取最新的申報…')));
+    try {
+      const {data, lm, fallback} = await load();
+      lastMod = lm; usedFallback = fallback;
+      ingest(data);
+      computeNew();
+      phase = 'ready';
+      renderMast(); renderFocus(); renderAll();
+      if (retry) focusEl($('#h-latest'));
+    } catch (e){
+      phase = 'error';
+      renderSince(); renderError(e); renderWatch();
+      if (retry) focusEl($('#days [data-retry]'));
+    }
+  }
+  renderWatch();
+  boot(false);
+})();
+</script>
+</body>
+</html>
