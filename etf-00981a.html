@@ -187,6 +187,7 @@ ol.items{list-style:none;margin:0;padding:0}
 .cell{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding:9px 11px 10px;margin:-1px 0 0 -1px;background:var(--paper);border:0;border-top:1px solid var(--hair);border-left:1px solid var(--hair);text-align:left;cursor:pointer;min-height:84px;color:var(--ink);min-width:0}
 .cell:hover{background:var(--paper-2)}
 .cell:focus-visible{outline-offset:-3px;z-index:1}
+.cell.k-add:focus-visible{outline-offset:-5px}
 .cell .nm{max-width:100%;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--act)}
 .cell .w{font:400 var(--fs-s)/1.5 var(--num);color:var(--ink-2)}
 .cell .w b{font-weight:700;color:var(--ink);font-size:var(--fs-m)}
@@ -639,6 +640,7 @@ function moveTable(box, list, side){
         r.hidden = !show;
       });
       paint();
+      writeHash();
     });
     box.append(h('div', {class: 'foot'}, bt));
     box._paintMore = paint;
@@ -957,9 +959,11 @@ let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(dra
 /* ---------- navigation ---------- */
 function go(i){
   /* Re-rendering replaces the rows, so put focus back on the same stock (or the stepper). */
-  const a = document.activeElement, host = a && a.closest('[data-c]'), box = host && host.closest('[id]');
+  const a = document.activeElement, inDetail = !!(a && a.closest('.detail'));
+  const host = a && !inDetail && a.closest('[data-c]'), box = host && host.closest('[id]');
   cur = Math.max(0, Math.min(DAYS.length - 1, i));
   render();
+  if (inDetail){ $(cur > 0 ? 'prev' : 'next').focus({preventScroll: true}); return; }
   if (!host || !box) return;
   const back = document.querySelector('#' + box.id + ' [data-c="' + CSS.escape(host.dataset.c) + '"]');
   (back ? (back.matches('button') ? back : back.querySelector('.stk button')) : $(cur > 0 ? 'prev' : 'next'))?.focus({preventScroll: true});
@@ -1011,12 +1015,12 @@ async function boot(){
     $('main').replaceChildren(h('div', {class: 'titlebar'}, h('h1', {text: '00981A 持股異動日報'})),
       h('div', {class: 'err', role: 'alert'},
         h('h2', {text: '讀不到持股資料'}),
-        h('p', {text: '資料檔 ' + DATA_URL + ' 沒有載入（' + e.message + '）。'}),
-        h('p', null, '直接用檔案總管打開本機的 HTML 時，瀏覽器不允許讀資料檔，請改開 ',
+        h('p', {text: e ? '資料檔 ' + DATA_URL + ' 沒有載入（' + e.message + '）。' : '資料檔 ' + DATA_URL + ' 有載入，但裡面沒有任何交易日。'}),
+        e && h('p', null, '直接用檔案總管打開本機的 HTML 時，瀏覽器不允許讀資料檔，請改開 ',
           h('a', {href: 'https://tungyulu.github.io/test/etf-00981a.html', text: 'tungyulu.github.io/test/etf-00981a.html'}), '。')));
   }
   DAYS = (DB.days || []).filter(d => d.h && d.h.length);
-  if (!DAYS.length){ fail(new Error('資料檔裡沒有任何交易日')); return; }
+  if (!DAYS.length){ fail(null); return; }
   for (const d of DAYS) for (const r of d.h) NAMES.set(r[0], r[1]);
   const sel = $('day');
   for (let i = DAYS.length - 1; i >= 0; i--) sel.append(h('option', {value: DAYS[i].d, text: rocLabel(DAYS[i].d)}));
