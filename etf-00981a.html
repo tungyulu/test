@@ -947,7 +947,7 @@ function drawChart(){
   const hide = () => { xh.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); tip.hidden = true; };
   svg.addEventListener('pointermove', e => show(e.clientX));
   svg.addEventListener('pointerdown', e => show(e.clientX));
-  svg.addEventListener('pointerleave', hide);
+  svg.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hide(); });
 }
 function niceStep(raw){
   const p = Math.pow(10, Math.floor(Math.log10(raw || 1))), f = raw / p;
@@ -974,6 +974,7 @@ $('latest').addEventListener('click', () => go(DAYS.length - 1));
 $('day').addEventListener('change', () => go(DAYS.findIndex(d => d.d === $('day').value)));
 $('vs').addEventListener('change', () => { vsN = +$('vs').value; render(); });
 document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && open && (e.target === open.btn || open.el.contains(e.target))){ closeDetail(); return; }
   if (e.altKey || e.ctrlKey || e.metaKey) return;
   if (e.target.closest('input,select,textarea')) return;
   if (e.key === 'ArrowLeft' && cur > 0) go(cur - 1);

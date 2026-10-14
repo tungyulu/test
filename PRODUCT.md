@@ -99,7 +99,7 @@
 
 **Evidence on hand.** The holdings snapshot from the 2026-09-29 broker screenshot, the 9/29 trade records, prices and fund facts from 10/1–10/2 search results (cited on the page). Everything is the owner's personal note, not investment advice, and the page says so. No bank, broker or fund logos; nothing may look like a real bank's or broker's document.
 
-## Active ETF portfolio · 00981A 持股日報 (`etf-00981a.html`)
+## Active ETF portfolio · 00981A 持股異動日報 (`etf-00981a.html`)
 
 **Users.** The owner, following 統一台股增長主動式 ETF (00981A) — the active ETF named in the October short-term plan — mostly on the phone after the close. Linked from the hub's 理財與筆記 lot.
 
@@ -107,7 +107,7 @@
 
 **Content that must survive any redesign.**
 - Data is the fund's own published basket (統一投信 PCF), one snapshot per trading day since 2025-05-26, kept in `data/etf-00981a.json` by a daily GitHub Actions job; prices are TWSE / TPEx closing quotes. Sources and the update time are on the page.
-- A position the fund reports at 0.00 % (usually one lot kept after selling out) counts as sold; buying it back counts as new; changes that never touch a real weight (parked → gone, parked → parked) are not trades. Trade amounts are estimates at the closing price and say so.
+- A position the fund reports at 0.00 % (usually one lot kept after selling out) counts as sold; buying it back counts as new; changes that never touch a real weight (parked → gone, parked → parked) are not trades. Trade amounts are estimates at the closing price and say so. On an ex-dividend day a listed stock's change is measured from TWSE's ex-dividend reference price, never shown as 0; OTC ex-dividend days show no change (—).
 - Price changes use the Taiwan quote convention (red up, green down) and always carry a sign and an arrow; buy / sell are never coloured red / green (filled vs outlined tags).
 - Not investment advice, and the page says so. No fund-company or exchange logos.
 

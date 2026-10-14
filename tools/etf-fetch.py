@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Fetch the daily portfolio of an active ETF managed by Uni-President (ezmoney.com.tw)
-plus that day's closing prices, and keep them in one JSON file for etf.html.
+plus that day's closing prices, and keep them in one JSON file for etf-00981a.html.
 
 Holdings come from the fund's PCF (creation/redemption basket) service, which accepts any
 past date: querying business day D returns the portfolio as of the close of the business
-day before D. Prices come from TWSE (MI_INDEX) and, for OTC stocks, TPEx.
+day before D. Prices come from TWSE (MI_INDEX) and, for OTC stocks, TPEx. On an ex-dividend day TWSE prints
+the change as "X 0.00"; the real change is measured from the ex-dividend reference price (TWT49U).
 
   python3 tools/etf-fetch.py                 # update: add every new trading day
   python3 tools/etf-fetch.py --since 2025-05-15   # backfill from a date (idempotent)
+  python3 tools/etf-fetch.py --repair-exdiv       # re-price stored ex-dividend days
 
 Standard library only, so it runs on a bare GitHub Actions runner.
 """
@@ -109,8 +111,8 @@ def twse(day):
         {'response': 'json', 'date': day.strftime('%Y%m%d'), 'type': 'ALLBUT0999'}))
     d = json.loads(raw)
     if d.get('stat') != 'OK':
-        return None, None
-    px, taiex = {}, None
+        return None, None, set()
+    px, taiex, xs = {}, None, set()
     for t in d.get('tables') or []:
         f = t.get('fields') or []
         if '證券代號' in f and '收盤價' in f:
@@ -120,9 +122,12 @@ def twse(day):
                 sign = re.sub(r'<[^>]*>', '', r[isg]).strip()
                 if c is None:
                     continue
-                if diff is not None and sign == '-':
+                if sign == 'X':  # not compared with the previous close (ex-dividend and the like)
+                    xs.add(r[ic].strip())
+                    diff = None
+                elif diff is not None and sign == '-':
                     diff = -diff
-                elif sign not in ('+', '-'):
+                elif sign != '+':
                     diff = 0.0 if diff is not None else None
                 px[r[ic].strip()] = [c, diff]
         elif '指數' in f and taiex is None:
@@ -131,7 +136,30 @@ def twse(day):
                     sign = re.sub(r'<[^>]*>', '', r[2]).strip()
                     pts = num(r[3])
                     taiex = [num(r[1]), -pts if sign == '-' else pts]
-    return px, taiex
+    return px, taiex, xs
+
+
+def exdiv_refs(start, end):
+    """{(ISO date, code): ex-dividend reference price} for TWSE stocks between two dates."""
+    raw = fetch('https://www.twse.com.tw/exchangeReport/TWT49U?' + urllib.parse.urlencode(
+        {'response': 'json', 'startDate': start.strftime('%Y%m%d'), 'endDate': end.strftime('%Y%m%d')}))
+    d = json.loads(raw)
+    refs = {}
+    if d.get('stat') != 'OK':
+        return refs
+    f = d.get('fields') or []
+    idd, ic, iref = f.index('資料日期'), f.index('股票代號'), f.index('除權息參考價')
+    for r in d.get('data') or []:
+        m = re.match(r'(\d+)年(\d+)月(\d+)日', r[idd])
+        ref = num(r[iref])
+        if m and ref:
+            day = dt.date(int(m.group(1)) + 1911, int(m.group(2)), int(m.group(3)))
+            refs[(day.isoformat(), r[ic].strip())] = ref
+    return refs
+
+
+def from_ref(quote, ref):
+    return [quote[0], round(quote[0] - ref, 2)]
 
 
 def tpex(day):
@@ -178,11 +206,21 @@ def add_prices(db):
             continue
         day = dt.date.fromisoformat(x['d'])
         codes = {r[0] for r in x['h']} | ({r[0] for r in days[i - 1]['h']} if i else set())
-        px, ix = twse(day)
+        px, ix, xs = twse(day)
         time.sleep(3)  # TWSE blocks clients that ask more than a few times in five seconds
         if px is None:
             print(f'  {x["d"]}: no TWSE quotes yet')
             continue
+        if xs & (codes | {FUND['ticker']}):
+            try:
+                refs = exdiv_refs(day, day)
+            except Exception as e:  # keep the day unpriced so the next run tries again
+                print(f'  {x["d"]}: TWT49U failed ({e})', file=sys.stderr)
+                continue
+            time.sleep(3)
+            for c in xs:
+                if (x['d'], c) in refs:
+                    px[c] = from_ref(px[c], refs[(x['d'], c)])
         if codes - px.keys():
             try:
                 px.update({k: v for k, v in tpex(day).items() if k not in px})
@@ -197,13 +235,39 @@ def add_prices(db):
         save(db)
 
 
+def repair_exdiv(db):
+    """Re-price every stored ex-dividend day from its reference price (one TWT49U request)."""
+    days = [x for x in db['days'] if 'px' in x]
+    if not days:
+        return
+    refs = exdiv_refs(dt.date.fromisoformat(days[0]['d']), dt.date.fromisoformat(days[-1]['d']))
+    fixed = 0
+    for x in days:
+        for c, q in list(x['px'].items()):
+            if (x['d'], c) in refs and q[1] != from_ref(q, refs[(x['d'], c)])[1]:
+                x['px'][c] = from_ref(q, refs[(x['d'], c)])
+                fixed += 1
+        if x.get('etf') and (x['d'], FUND['ticker']) in refs:
+            new = from_ref(x['etf'], refs[(x['d'], FUND['ticker'])])
+            if new != x['etf']:
+                x['etf'] = new
+                fixed += 1
+    print(f'{len(refs)} ex-dividend records; {fixed} stored quote(s) re-priced')
+    if fixed:
+        save(db)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--since', help='backfill from this date (YYYY-MM-DD)')
     ap.add_argument('--no-prices', action='store_true')
+    ap.add_argument('--repair-exdiv', action='store_true')
     a = ap.parse_args()
 
     db = load()
+    if a.repair_exdiv:
+        repair_exdiv(db)
+        return
     have = {x['d'] for x in db['days']}
     today = dt.datetime.now(TZ).date()
     if a.since:
