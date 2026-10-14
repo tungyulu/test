@@ -1,0 +1,639 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T08:41:28+00:00",
+  "title": "Design System: 00981A 持股異動日報 · 重大訊息公告",
+  "extensions": {
+    "colorMeta": {
+      "desk": {
+        "role": "neutral",
+        "displayName": "Desk Blue-Grey",
+        "canonical": "#e6ebf1",
+        "tonalRamp": [
+          "#080b0f",
+          "#212429",
+          "#3c4045",
+          "#5a5e63",
+          "#797e83",
+          "#9a9fa4",
+          "#c0c5ca",
+          "#eaeff5"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Notice White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Rule Wash",
+        "canonical": "#f4f7fb",
+        "tonalRamp": [
+          "#090b0e",
+          "#222427",
+          "#3e4043",
+          "#5b5e61",
+          "#7b7d81",
+          "#9c9fa2",
+          "#c1c4c8",
+          "#eceff3"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Notice Ink",
+        "canonical": "#15171c",
+        "tonalRamp": [
+          "#090b10",
+          "#222429",
+          "#3d4045",
+          "#5b5d64",
+          "#7a7d84",
+          "#9b9ea5",
+          "#c1c4cb",
+          "#ebeef6"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "canonical": "#4a5160",
+        "tonalRamp": [
+          "#060b16",
+          "#1e2431",
+          "#39404e",
+          "#565e6d",
+          "#767d8e",
+          "#979faf",
+          "#bcc4d6",
+          "#e8effd"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "#9aa7b9",
+        "tonalRamp": [
+          "#040b18",
+          "#1a2533",
+          "#364150",
+          "#535f6f",
+          "#727e8f",
+          "#93a0b1",
+          "#b8c5d8",
+          "#e5effe"
+        ]
+      },
+      "hair": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#d4dbe5",
+        "tonalRamp": [
+          "#070b12",
+          "#1f242c",
+          "#3b4048",
+          "#585e67",
+          "#777e87",
+          "#989fa8",
+          "#bec5ce",
+          "#e8eff9"
+        ]
+      },
+      "head": {
+        "role": "neutral",
+        "displayName": "Form Header Blue",
+        "canonical": "#d9e3f0",
+        "tonalRamp": [
+          "#060c14",
+          "#1d252e",
+          "#38404b",
+          "#565e69",
+          "#757e8a",
+          "#969fab",
+          "#bbc5d2",
+          "#e5f0fd"
+        ]
+      },
+      "act": {
+        "role": "primary",
+        "displayName": "Notice Navy",
+        "canonical": "#24467a",
+        "tonalRamp": [
+          "#000923",
+          "#012151",
+          "#1d3f72",
+          "#3a5e94",
+          "#597eb7",
+          "#79a0db",
+          "#a2c6fd",
+          "#e6effe"
+        ]
+      },
+      "act-ink": {
+        "role": "primary",
+        "displayName": "On-Navy White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "up": {
+        "role": "secondary",
+        "displayName": "Quote Red",
+        "canonical": "#c1121f",
+        "tonalRamp": [
+          "#1e0101",
+          "#480608",
+          "#7b040e",
+          "#ad181e",
+          "#dc3637",
+          "#fb6860",
+          "#fdaca4",
+          "#ffe9e6"
+        ]
+      },
+      "down": {
+        "role": "secondary",
+        "displayName": "Quote Green",
+        "canonical": "#0b7339",
+        "tonalRamp": [
+          "#001004",
+          "#022d12",
+          "#0b4d26",
+          "#057137",
+          "#379256",
+          "#5cb476",
+          "#83db9b",
+          "#cbfed6"
+        ]
+      },
+      "bar": {
+        "role": "neutral",
+        "displayName": "Title Bar Ink",
+        "canonical": "#15171c",
+        "tonalRamp": [
+          "#090b10",
+          "#222429",
+          "#3d4045",
+          "#5b5d64",
+          "#7a7d84",
+          "#9b9ea5",
+          "#c1c4cb",
+          "#ebeef6"
+        ]
+      },
+      "bar-ink": {
+        "role": "neutral",
+        "displayName": "Title Bar Text",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "dark-desk": {
+        "role": "neutral",
+        "displayName": "Night Desk Blue-Grey",
+        "canonical": "#101215",
+        "tonalRamp": [
+          "#090b0e",
+          "#222427",
+          "#3d4043",
+          "#5b5e62",
+          "#7b7d81",
+          "#9c9fa3",
+          "#c1c4c9",
+          "#eceff3"
+        ]
+      },
+      "dark-paper": {
+        "role": "neutral",
+        "displayName": "Night Notice White",
+        "canonical": "#1a1d22",
+        "tonalRamp": [
+          "#090b10",
+          "#212429",
+          "#3c4046",
+          "#5a5e64",
+          "#7a7d84",
+          "#9b9fa5",
+          "#c0c4cb",
+          "#eaeff6"
+        ]
+      },
+      "dark-paper-2": {
+        "role": "neutral",
+        "displayName": "Night Rule Wash",
+        "canonical": "#21252c",
+        "tonalRamp": [
+          "#080b11",
+          "#20242b",
+          "#3c4048",
+          "#595e66",
+          "#797d86",
+          "#999fa8",
+          "#bfc4ce",
+          "#e9eff8"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Night Notice Ink",
+        "canonical": "#e9ebef",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#232427",
+          "#3e4043",
+          "#5c5e61",
+          "#7b7d81",
+          "#9c9ea2",
+          "#c2c4c8",
+          "#eceef2"
+        ]
+      },
+      "dark-ink-2": {
+        "role": "neutral",
+        "displayName": "Night Secondary Ink",
+        "canonical": "#aeb5c2",
+        "tonalRamp": [
+          "#070b14",
+          "#1f242e",
+          "#3a404b",
+          "#585e69",
+          "#777d8a",
+          "#989fab",
+          "#bdc4d2",
+          "#e7effd"
+        ]
+      },
+      "dark-rule": {
+        "role": "neutral",
+        "displayName": "Night Strong Rule",
+        "canonical": "#56617a",
+        "tonalRamp": [
+          "#040a1d",
+          "#1a2339",
+          "#353f57",
+          "#525d76",
+          "#717d97",
+          "#929eba",
+          "#b7c4e1",
+          "#e7effe"
+        ]
+      },
+      "dark-hair": {
+        "role": "neutral",
+        "displayName": "Night Hairline",
+        "canonical": "#323946",
+        "tonalRamp": [
+          "#060b16",
+          "#1e2430",
+          "#39404d",
+          "#565e6c",
+          "#757e8c",
+          "#969fae",
+          "#bcc4d5",
+          "#e7effe"
+        ]
+      },
+      "dark-head": {
+        "role": "neutral",
+        "displayName": "Night Form Header Blue",
+        "canonical": "#273449",
+        "tonalRamp": [
+          "#030b1c",
+          "#182438",
+          "#334056",
+          "#505e75",
+          "#6f7e96",
+          "#909fb9",
+          "#b5c5e0",
+          "#e6effe"
+        ]
+      },
+      "dark-act": {
+        "role": "primary",
+        "displayName": "Pale Signal Blue",
+        "canonical": "#a8c1f0",
+        "tonalRamp": [
+          "#000729",
+          "#102246",
+          "#2b3f66",
+          "#485d87",
+          "#667da9",
+          "#879fcc",
+          "#acc5f4",
+          "#e7effe"
+        ]
+      },
+      "dark-act-ink": {
+        "role": "primary",
+        "displayName": "Night On-Navy White",
+        "canonical": "#101215",
+        "tonalRamp": [
+          "#090b0e",
+          "#222427",
+          "#3d4043",
+          "#5b5e62",
+          "#7b7d81",
+          "#9c9fa3",
+          "#c1c4c9",
+          "#eceff3"
+        ]
+      },
+      "dark-up": {
+        "role": "secondary",
+        "displayName": "Night Quote Red",
+        "canonical": "#ff7066",
+        "tonalRamp": [
+          "#1f0001",
+          "#4b0104",
+          "#7a0a0f",
+          "#ab1d20",
+          "#d24640",
+          "#f96a61",
+          "#fbada4",
+          "#fee9e6"
+        ]
+      },
+      "dark-down": {
+        "role": "secondary",
+        "displayName": "Night Quote Green",
+        "canonical": "#4fd38a",
+        "tonalRamp": [
+          "#000f05",
+          "#032c17",
+          "#0d4c2c",
+          "#0a7040",
+          "#0f9557",
+          "#2fba73",
+          "#60e298",
+          "#c7fed9"
+        ]
+      },
+      "dark-bar": {
+        "role": "neutral",
+        "displayName": "Night Title Bar Ink",
+        "canonical": "#273449",
+        "tonalRamp": [
+          "#030b1c",
+          "#182438",
+          "#334056",
+          "#505e75",
+          "#6f7e96",
+          "#909fb9",
+          "#b5c5e0",
+          "#e6effe"
+        ]
+      },
+      "dark-bar-ink": {
+        "role": "neutral",
+        "displayName": "Night Title Bar Text",
+        "canonical": "#e9ebef",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#232427",
+          "#3e4043",
+          "#5c5e61",
+          "#7b7d81",
+          "#9c9ea2",
+          "#c2c4c8",
+          "#eceef2"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "title": {
+        "displayName": "Title",
+        "purpose": "The reversed title bar only."
+      },
+      "form-label": {
+        "displayName": "Form Label",
+        "purpose": "主旨 / 說明 / 附表 / 備註 row labels; the same Kai face sets item numerals and 備註 markers."
+      },
+      "subject": {
+        "displayName": "Subject",
+        "purpose": "The one 主旨 sentence; stock names are navy links, counts tabular figures."
+      },
+      "item-head": {
+        "displayName": "Item Head",
+        "purpose": "說明 / 附表 item headings, stock names in rows and cells, the detail heading."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text and table values."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Every number, tabular and lining; bold when it is the main value."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Column heads, notes, codes, sub-lines, keys, axis labels, the tooltip."
+      },
+      "state-tag": {
+        "displayName": "State Tag",
+        "purpose": "The 新增 / 加碼 / 減碼 / 剔除 line-form tags."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet-lift",
+        "value": "0 1px 2px rgba(20,30,50,.06), 0 8px 24px rgba(20,30,50,.06)",
+        "purpose": "The sheet on the desk, light mode only; none in dark mode and none inside the sheet."
+      }
+    ],
+    "motion": [
+      {
+        "name": "detail-open",
+        "value": "opacity 0 → 1, translateY(-4px) → 0, .18s cubic-bezier(.2,.7,.2,1)",
+        "purpose": "The in-place stock detail opening; the only motion on the page, none under prefers-reduced-motion."
+      },
+      {
+        "name": "scroll-to-detail",
+        "value": "scrollIntoView smooth (auto under reduced motion)",
+        "purpose": "Brings an opened detail or a 主旨-linked row into view."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sheet-gutter",
+        "value": "1071px"
+      },
+      {
+        "name": "halves-stack",
+        "value": "899px"
+      },
+      {
+        "name": "header-two-col",
+        "value": "760px"
+      },
+      {
+        "name": "phone",
+        "value": "560px"
+      },
+      {
+        "name": "narrow",
+        "value": "420px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Notice Sheet",
+      "kind": "card",
+      "refersTo": "sheet",
+      "description": "The white ruled sheet with its reversed title bar and one labelled form row; every section of the page is a row like this.",
+      "html": "<main class=\"ds-sheet\"><div class=\"ds-bar\"><h1>00981A 持股異動日報</h1><p>整理自統一投信公開的申購買回清單，不是官方公告</p></div><section class=\"ds-row\"><div class=\"ds-lab\">主旨</div><div class=\"ds-body\"><p class=\"ds-subj\">今天新增 <button class=\"ds-nm\">台達電</button>，加碼 <button class=\"ds-nm\">台積電</button>，剔除 <button class=\"ds-nm\">聯發科</button>。</p></div></section></main>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-sheet{max-width:640px;background:var(--paper);color:var(--ink);border:1px solid var(--rule);box-shadow:0 1px 2px rgba(20,30,50,.06),0 8px 24px rgba(20,30,50,.06);font:400 var(--fs-m)/1.65 var(--sans)}.ds-bar{background:var(--bar);color:var(--bar-ink);padding:14px 18px 13px}.ds-bar h1{margin:0;font:900 var(--fs-l)/1.3 var(--sans);letter-spacing:.02em}.ds-bar p{margin:2px 0 0;font-size:var(--fs-s);opacity:.86}.ds-row{display:grid;grid-template-columns:5.2em minmax(0,1fr)}.ds-lab{padding:14px 0 14px 14px;font:700 var(--fs-l)/1.35 var(--kai);border-right:1px solid var(--hair)}.ds-body{padding:14px 16px 18px}.ds-subj{margin:0;font:700 var(--fs-l)/1.5 var(--sans)}.ds-nm{font:inherit;color:var(--act);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}.ds-nm:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--act);outline-offset:2px}"
+    },
+    {
+      "name": "Key",
+      "kind": "button",
+      "refersTo": "key",
+      "description": "Square 44px key: white ground, navy bold label, strong-rule border; rule-wash on hover.",
+      "html": "<button class=\"ds-key\" type=\"button\">回到最新</button> <button class=\"ds-key\" type=\"button\" disabled>後一日</button>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-key{min-width:44px;min-height:44px;padding:0 10px;border:1px solid var(--rule);border-radius:0;background:var(--paper);color:var(--act);font:700 var(--fs-s) var(--sans);cursor:pointer}.ds-key:hover:not(:disabled){background:var(--paper-2)}.ds-key:disabled{color:var(--ink-2);opacity:.45;cursor:default}.ds-key:focus-visible{outline:2px solid var(--act);outline-offset:2px}"
+    },
+    {
+      "name": "Segment Switch",
+      "kind": "button",
+      "refersTo": "key-pressed",
+      "description": "The detail's weight / lots switch: joined square keys, the pressed one ink-filled.",
+      "html": "<div class=\"ds-mode\"><button aria-pressed=\"true\">權重</button><button aria-pressed=\"false\">張數</button></div>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-mode{display:inline-flex;border:1px solid var(--rule)}.ds-mode button{min-height:44px;padding:0 14px;border:0;background:var(--paper);color:var(--act);font:700 var(--fs-s) var(--sans);cursor:pointer}.ds-mode button+button{border-left:1px solid var(--rule)}.ds-mode button:hover{background:var(--paper-2)}.ds-mode button[aria-pressed=true]{background:var(--ink);color:var(--paper)}.ds-mode button:focus-visible{outline:2px solid var(--act);outline-offset:2px}"
+    },
+    {
+      "name": "Select",
+      "kind": "input",
+      "refersTo": "select",
+      "description": "Square native select in navy bold with a drawn 2px chevron.",
+      "html": "<span class=\"ds-sel\"><select><option>前一交易日</option><option>5 個交易日前</option></select></span>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-sel{position:relative;display:inline-flex}.ds-sel select{appearance:none;min-height:44px;padding:0 30px 0 10px;border:1px solid var(--rule);border-radius:0;background:var(--paper);color:var(--act);font:700 var(--fs-m) var(--sans);cursor:pointer}.ds-sel select:hover{background:var(--paper-2)}.ds-sel select:focus-visible{outline:2px solid var(--act);outline-offset:2px}.ds-sel::after{content:'';position:absolute;right:11px;top:50%;width:6px;height:6px;border-right:2px solid var(--act);border-bottom:2px solid var(--act);transform:translateY(-70%) rotate(45deg);pointer-events:none}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "search-input",
+      "description": "Square search field with a strong-rule border; focus is the navy ring.",
+      "html": "<input class=\"ds-q\" type=\"search\" placeholder=\"搜尋股票名稱或代號\">",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-q{min-height:44px;width:260px;padding:0 10px;border:1px solid var(--rule);border-radius:0;background:var(--paper);color:var(--ink);font:400 var(--fs-m) var(--sans)}.ds-q::placeholder{color:var(--ink-2)}.ds-q:focus-visible{outline:2px solid var(--act);outline-offset:2px}"
+    },
+    {
+      "name": "State Tags",
+      "kind": "chip",
+      "refersTo": "state-new",
+      "description": "Buy / sell state as line form in ink: double = new, filled = add, dashed = cut, outlined and struck = out.",
+      "html": "<span class=\"ds-st ds-new\">新增</span> <span class=\"ds-st ds-add\">加碼</span> <span class=\"ds-st ds-cut\">減碼</span> <span class=\"ds-st ds-out\">剔除</span>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-st{display:inline-block;padding:1px 7px;font:700 var(--fs-s)/1.4 var(--sans);white-space:nowrap;color:var(--ink)}.ds-new{border:3px double var(--ink);padding:0 5px}.ds-add{background:var(--ink);color:var(--paper);border:1px solid var(--ink)}.ds-cut{border:1.5px dashed var(--ink);padding:.5px 6.5px}.ds-out{border:1px solid var(--ink);text-decoration:line-through;text-decoration-thickness:1px}"
+    },
+    {
+      "name": "Ruled Table",
+      "kind": "custom",
+      "refersTo": "table-row",
+      "description": "說明一 / 二 table: strong-rule frame, pale-blue head row, hairline rows, navy stock name, quote-coloured change with arrow and sign.",
+      "html": "<div class=\"ds-tb\"><div class=\"ds-th\"><span class=\"l\">股票</span><span>張數變化</span><span>當日</span></div><div class=\"ds-tr\"><span class=\"l\"><button>台積電</button> <span class=\"ds-st\">加碼</span></span><span class=\"n\">+120 張</span><span class=\"n up\">▲ 1.85%</span></div><div class=\"ds-tr\"><span class=\"l\"><button>聯發科</button></span><span class=\"n\">−40 張</span><span class=\"n down\">▼ 0.62%</span></div></div>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-tb{border:1px solid var(--rule);background:var(--paper);color:var(--ink);font:400 var(--fs-m)/1.5 var(--sans);max-width:520px}.ds-th,.ds-tr{display:grid;grid-template-columns:minmax(0,1fr) max-content max-content;column-gap:14px;align-items:center;padding:0 10px;text-align:right}.ds-th{min-height:34px;background:var(--head);border-bottom:1px solid var(--rule);font-size:var(--fs-s);color:var(--ink-2)}.ds-tr{min-height:46px;border-top:1px solid var(--hair)}.ds-th+.ds-tr{border-top:0}.ds-tr:hover{background:var(--paper-2)}.l{text-align:left}.ds-tr button{border:0;background:none;padding:0;font:700 var(--fs-m)/1.35 var(--sans);color:var(--act);cursor:pointer}.ds-tr button:focus-visible{outline:2px solid var(--act);outline-offset:2px}.n{font-family:var(--num);font-variant-numeric:tabular-nums lining-nums}.up{color:var(--up)}.down{color:var(--down)}.ds-st{display:inline-block;padding:1px 7px;font:700 var(--fs-s)/1.4 var(--sans);background:var(--ink);color:var(--paper)}"
+    },
+    {
+      "name": "Holding Cell",
+      "kind": "card",
+      "refersTo": "holding-cell",
+      "description": "附表一 cells sharing hairlines; the frame repeats the buy / sell state (double new, solid add, dashed cut); the open cell takes the header blue.",
+      "html": "<div class=\"ds-cells\"><button class=\"ds-cell k-new\"><span class=\"nm\">台達電</span><span class=\"w\"><b>3.12%</b> 2308</span><span class=\"ch up\">▲ 2.10%</span></button><button class=\"ds-cell k-add\"><span class=\"nm\">台積電</span><span class=\"w\"><b>9.84%</b> 2330</span><span class=\"ch up\">▲ 1.85%</span></button><button class=\"ds-cell k-cut\" aria-expanded=\"true\"><span class=\"nm\">廣達</span><span class=\"w\"><b>2.40%</b> 2382</span><span class=\"ch down\">▼ 0.95%</span></button></div>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-cells{display:grid;grid-template-columns:repeat(3,128px);border:1px solid var(--rule);overflow:hidden;background:var(--paper)}.ds-cell{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding:9px 11px 10px;margin:-1px 0 0 -1px;min-height:84px;background:var(--paper);border:0;border-top:1px solid var(--hair);border-left:1px solid var(--hair);color:var(--ink);text-align:left;cursor:pointer;font:400 var(--fs-m)/1.5 var(--sans)}.ds-cell:hover{background:var(--paper-2)}.ds-cell:focus-visible{outline:2px solid var(--act);outline-offset:2px}.ds-cell[aria-expanded=true]{background:var(--head)}.nm{font-weight:700;color:var(--act)}.w{font:400 var(--fs-s)/1.5 var(--num);color:var(--ink-2)}.w b{font-size:var(--fs-m);color:var(--ink)}.ch{font:600 var(--fs-s)/1.5 var(--num)}.up{color:var(--up)}.down{color:var(--down)}.ds-cell::before{content:'';position:absolute;pointer-events:none}.k-new::before{inset:4px;border:4px double var(--ink)}.k-add::before{inset:0;border:2px solid var(--ink)}.k-cut::before{inset:4px;border:1.5px dashed var(--ink)}"
+    },
+    {
+      "name": "In-place Detail",
+      "kind": "custom",
+      "refersTo": "detail",
+      "description": "A stock's history opened directly under the row or cell that was tapped, one at a time; ruled fact grid, square close key, 180ms open.",
+      "html": "<div class=\"ds-detail\"><div class=\"ds-dh\"><h3>台積電<span class=\"code\">2330</span></h3><button class=\"ds-x\" aria-label=\"關閉\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 6l12 12M18 6L6 18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg></button></div><dl class=\"ds-facts\"><div><dt>權重</dt><dd>9.84%</dd></div><div><dt>持有張數</dt><dd>12,480</dd></div><div><dt>首次買進</dt><dd>114/5/27</dd></div></dl></div>",
+      "css": ":host{--desk:#e6ebf1;--paper:#ffffff;--paper-2:#f4f7fb;--ink:#15171c;--ink-2:#4a5160;--rule:#9aa7b9;--hair:#d4dbe5;--head:#d9e3f0;--act:#24467a;--act-ink:#ffffff;--up:#c1121f;--down:#0b7339;--bar:#15171c;--bar-ink:#ffffff;--fs-l:24px;--fs-m:15px;--fs-s:13px;--sans:'Noto Sans TC',system-ui,-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;--num:'Source Sans 3','Noto Sans TC',system-ui,sans-serif;--kai:'LXGW WenKai TC','BiauKai','DFKai-SB','Kaiti TC',serif}.ds-detail{border-top:1px solid var(--rule);padding:12px 12px 14px;background:var(--paper);color:var(--ink);font:400 var(--fs-m)/1.5 var(--sans);max-width:520px}@media (prefers-reduced-motion:no-preference){.ds-detail{animation:ds-open .18s cubic-bezier(.2,.7,.2,1)}}@keyframes ds-open{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}.ds-dh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.ds-dh h3{margin:0;font:700 var(--fs-m)/1.4 var(--sans)}.code{margin-left:6px;font:400 var(--fs-s) var(--num);color:var(--ink-2)}.ds-x{min-width:44px;min-height:44px;border:1px solid var(--rule);background:var(--paper);color:var(--act);cursor:pointer;display:grid;place-items:center}.ds-x:hover{background:var(--paper-2)}.ds-x:focus-visible{outline:2px solid var(--act);outline-offset:2px}.ds-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:10px 0 0;border:1px solid var(--rule)}.ds-facts>div{border-right:1px solid var(--hair)}.ds-facts>div:last-child{border-right:0}.ds-facts dt{padding:2px 8px;background:var(--head);font-size:var(--fs-s);color:var(--ink-2)}.ds-facts dd{margin:0;padding:4px 8px 6px;font:700 var(--fs-m) var(--num)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Disclosure Notice",
+    "overview": "The page is one formal notice per trading day, the kind a listed company files on 公開資訊觀測站 and a government office writes as 公文. A white sheet lies on a cool blue-grey desk. An ink-reversed title bar names it, a ruled header grid gives the date, the notice number and the comparison, and the body runs in fixed form rows: 主旨 (one sentence saying what the manager bought and sold), 說明 (numbered items: 一、買進 and 二、賣出 as two hard halves, 三、行情, 四、誰拉、誰拖), 附表 (一、持股一覽 as a cell grid, 二、持股明細 as a sortable table) and 備註. The structure is the form, not decoration.\n\nHierarchy comes from three type sizes, weight, reversal and 1px rules. Only three hues carry meaning: navy marks what can be pressed, and red and green mark price direction. Buy and sell state is never a colour. It is drawn as line form in ink, the way a clerk would mark a printed table. The page is dense and calm on purpose: everything is visible, and the only thing that opens is a stock's own history, in place under the row or cell that was tapped.\n\nThe confirmed rejections are the broker-app card dashboard and the dark quote terminal. The dark theme stays a dimmed document, not a terminal.",
+    "keyCharacteristics": [
+      "A white document sheet on a blue-grey desk, square corners, 1px blue-grey rules everywhere.",
+      "Ink-reversed title bar; pale-blue header rows on every table and fact grid.",
+      "Kai-face form labels (主旨 / 說明 / 附表 / 備註 and the 一、二、 numerals); Noto Sans TC for everything else, Source Sans 3 tabular figures for numbers.",
+      "Three type sizes only: 24 / 15 / 13.",
+      "Navy on pressable things only; red up and green down on price change only.",
+      "Buy / sell state as line form: double = new, filled = add, dashed = cut, outlined and struck = out.",
+      "A stock's history opens in place, one at a time, never in a modal."
+    ],
+    "rules": [
+      {
+        "name": "The Pressable Navy Rule",
+        "body": "Navy appears only on something that responds to a tap: a link, key, select, stock name, fold button or the focus ring. Never use it for headings, labels, figures or decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Quote Colour Rule",
+        "body": "Red and green mean price direction (red up, green down) and nothing else, always with a sign and a ▲ / ▼ arrow. A buy or a sell is never red or green.",
+        "section": "colors"
+      },
+      {
+        "name": "The Line Form Rule",
+        "body": "Buy and sell state is drawn in ink as a frame: a double line means new (新增), a filled ink tag or a solid 2px frame means add (加碼), a dashed line means cut (減碼), and an outlined, struck-through tag means out (剔除). Sold rows grey to secondary ink with the name struck through.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Sizes Rule",
+        "body": "Only 24, 15 and 13px exist. Rank comes from weight, reversal and rules, never from a fourth size.",
+        "section": "typography"
+      },
+      {
+        "name": "The Form Voice Rule",
+        "body": "Kai is reserved for what the form itself prints: the four row labels, the item numerals and the 備註 markers. Content is never set in Kai, and a new label needs its characters added to the Kai subset.",
+        "section": "typography"
+      },
+      {
+        "name": "The Ruled Depth Rule",
+        "body": "Inside the sheet, depth is a rule or a header tint, never a shadow, card or gradient. A group gets a 1px rule frame and a pale-blue head row.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep every section a labelled form row: Kai label left, content right, a strong rule between rows.",
+      "Do put a pale-blue head row on every table and fact grid, and frame it with a 1px strong rule.",
+      "Do write a price change with a sign and a ▲ / ▼ arrow as well as the quote colour.",
+      "Do mark a new buy / sell state with one of the four line forms in ink.",
+      "Do open a stock's history in place under what was tapped, one at a time, with its state in the hash.",
+      "Do keep every tap target at least 44px and every text / ground pair at least 4.5:1 in both themes."
+    ],
+    "donts": [
+      "Don't use navy on anything that cannot be pressed.",
+      "Don't colour a buy or a sell red or green, or a price change anything but red up / green down.",
+      "Don't add a fourth type size or set content in the Kai face.",
+      "Don't round corners, add cards, shadows or gradients inside the sheet.",
+      "Don't open a stock's history in a modal, a drawer or a new page.",
+      "Don't turn the dark theme into a quote terminal; it is the same document, dimmed."
+    ]
+  }
+}

@@ -59,6 +59,24 @@
         ],
         "createdAt": "2026-10-07T02:27:03.552Z",
         "reason": "DESIGN.md records the trip booklet only; congress-trades.html is its own newspaper-financial-page world (agate tables in Archivo Narrow, Noto Serif TC masthead and headings), like the other per-page worlds"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "ibm plex sans condensed",
+        "createdAt": "2026-10-14T08:09:27.725Z",
+        "reason": "agent: root DESIGN.md documents trip-v2.html only; etf-00981a.html is its own world (same pattern as other pages)"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "source sans 3",
+        "createdAt": "2026-10-14T08:29:00.681Z",
+        "reason": "agent: root DESIGN.md documents trip-v2.html only; etf-00981a.html is its own world (user chose the 重大訊息公告 direction 2026-10-14)"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "lxgw wenkai tc",
+        "createdAt": "2026-10-14T08:29:00.687Z",
+        "reason": "agent: root DESIGN.md documents trip-v2.html only; etf-00981a.html is its own world (user chose the 重大訊息公告 direction 2026-10-14)"
       }
     ]
   }
