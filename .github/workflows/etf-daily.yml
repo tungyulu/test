@@ -1,4 +1,5 @@
-# Daily snapshot of the 00981A portfolio for etf-00981a.html.
+# Daily snapshot of the Uni-President active ETF portfolios (00981A, 00403A, 00988A, 00411A)
+# for etf-00981a.html, one data/etf-<ticker>.json per fund.
 # Uni-President publishes the day's basket around 16:30 Taiwan time; the second run
 # catches days when the first one was early or the source was slow.
 name: etf-daily
@@ -28,12 +29,16 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/etf-00981a.json
+          git add data/etf-*.json
           if git diff --cached --quiet; then
             echo 'No new data.'
             exit 0
           fi
-          last=$(python3 -c "import json;print(json.load(open('data/etf-00981a.json'))['days'][-1]['d'])")
-          git commit -m "chore(data): 00981A holdings through ${last}"
+          last=$(python3 -c "
+          import json, subprocess
+          files = subprocess.run(['git', 'diff', '--cached', '--name-only'], capture_output=True, text=True).stdout.split()
+          print(', '.join(f\"{d['fund']['ticker']} {d['days'][-1]['d']}\" for d in (json.load(open(f)) for f in sorted(files))))
+          ")
+          git commit -m "chore(data): active ETF holdings (${last})"
           git pull --rebase
           git push

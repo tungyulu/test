@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>00981A 持股異動日報</title>
-<meta name="description" content="統一台股增長主動式 ETF（00981A）每天的投資組合：一句話講完今天經理人買了什麼、賣了什麼，再逐條列出加減碼張數、估計金額、持股當天的漲跌與對基金的貢獻，以及每檔股票的持有歷史。">
+<meta name="description" content="統一投信四檔主動式 ETF（00981A、00403A、00988A、00411A）每天的投資組合：一句話講完今天經理人買了什麼、賣了什麼，再逐條列出加減碼數量、估計金額、持股當天的漲跌與對基金的貢獻，以及每檔股票的持有歷史。">
 <script>
 try{const t=localStorage.getItem('etf-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}
 </script>
@@ -66,6 +66,18 @@ button,select,input{font:inherit;color:inherit}
 .util{max-width:1040px;margin:0 auto;padding:6px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .util a,.util button{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 4px;border:0;background:none;color:var(--ink-2);text-decoration:none;font-size:var(--fs-s);cursor:pointer}
 .util a:hover,.util button:hover{color:var(--ink)}
+
+/* fund tabs, sitting on the sheet like folder index tabs; the current one joins the title bar */
+.funds{max-width:1040px;margin:0 auto;display:flex;align-items:flex-end}
+@media (max-width:1071px){ .funds{margin:0 16px} }
+@media (max-width:420px){ .funds{margin:0 8px} }
+.funds a{flex:1 1 0;min-width:0;min-height:48px;margin-right:-1px;padding:5px 10px;border:1px solid var(--rule);border-bottom:0;background:var(--paper-2);color:var(--act);text-decoration:none;display:flex;flex-direction:column;justify-content:center;line-height:1.25}
+.funds a:last-child{margin-right:0}
+.funds a:hover{background:var(--paper)}
+.funds a .t{font:700 var(--fs-m)/1.25 var(--num);font-variant-numeric:tabular-nums}
+.funds a .s{font-size:var(--fs-s);color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.funds a[aria-current="page"]{position:relative;z-index:1;margin-bottom:-1px;padding-bottom:6px;background:var(--bar);border-color:var(--bar);color:var(--bar-ink)}
+.funds a[aria-current="page"] .s{color:var(--bar-ink);opacity:.86}
 
 /* the sheet */
 .sheet{max-width:1040px;margin:0 auto 36px;background:var(--paper);border:1px solid var(--rule);box-shadow:var(--lift)}
@@ -131,6 +143,7 @@ ol.items{list-style:none;margin:0;padding:0}
 .tr .stk button[aria-expanded="true"]{text-decoration:underline;text-underline-offset:4px}
 .tr .code{font:400 var(--fs-s)/1 var(--num);color:var(--ink-2)}
 .tr .sub{display:block;font-size:var(--fs-s);color:var(--ink-2);line-height:1.35}
+.tr .cy{display:block;font:400 var(--fs-s)/1.2 var(--num);color:var(--ink-2)}
 .tr .strong{font-weight:700}
 .tr .m{display:none}
 .tb .none{margin:0;padding:12px 10px;color:var(--ink-2)}
@@ -313,11 +326,18 @@ ol.items{list-style:none;margin:0;padding:0}
   <button id="themeBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg><span id="themeLab">配色：自動</span></button>
 </nav>
 
+<nav class="funds" aria-label="基金">
+  <a href="etf-00981a.html" data-f="00981A"><span class="t">00981A</span><span class="s">台股增長</span></a>
+  <a href="etf-00981a.html?f=00403A" data-f="00403A"><span class="t">00403A</span><span class="s">升級50</span></a>
+  <a href="etf-00981a.html?f=00988A" data-f="00988A"><span class="t">00988A</span><span class="s">全球創新</span></a>
+  <a href="etf-00981a.html?f=00411A" data-f="00411A"><span class="t">00411A</span><span class="s">前沿科技</span></a>
+</nav>
+
 <main class="sheet" id="main">
   <header>
     <div class="titlebar">
-      <h1>00981A 持股異動日報</h1>
-      <p>統一台股增長主動式ETF・整理自統一投信公開的申購買回清單，不是官方公告</p>
+      <h1 id="title">00981A 持股異動日報</h1>
+      <p id="titleSub">統一台股增長主動式ETF・整理自統一投信公開的申購買回清單，不是官方公告</p>
     </div>
     <div class="hdr">
       <div class="hc"><span>資料日期</span><span class="big n" id="hDate">讀取中…</span></div>
@@ -369,7 +389,7 @@ ol.items{list-style:none;margin:0;padding:0}
           <dl class="kv" id="kv"></dl>
         </li>
         <li class="it">
-          <div class="it-h"><h2><span class="kai">四、</span>誰拉、誰拖</h2><p>前一日權重 × 當日漲跌 = 對淨值的影響，1 bp = 0.01%</p></div>
+          <div class="it-h"><h2><span class="kai">四、</span>誰拉、誰拖</h2><p id="ctbNote">前一日權重 × 當日漲跌 = 對淨值的影響，1 bp = 0.01%</p></div>
           <div id="contrib"></div>
         </li>
       </ol>
@@ -391,8 +411,8 @@ ol.items{list-style:none;margin:0;padding:0}
             <span class="sel"><select id="sort" aria-label="排序">
               <option value="w">依權重</option>
               <option value="dw">依權重變化</option>
-              <option value="s">依持有張數</option>
-              <option value="ds">依張數變化</option>
+              <option value="s" data-u="依持有{U}">依持有張數</option>
+              <option value="ds" data-u="依{U}變化">依張數變化</option>
               <option value="px">依收盤價</option>
               <option value="chg">依當日漲跌</option>
               <option value="ctb">依貢獻</option>
@@ -406,8 +426,8 @@ ol.items{list-style:none;margin:0;padding:0}
               <span role="columnheader"><button class="l" data-k="code" type="button">股票</button></span>
               <span role="columnheader"><button data-k="w" type="button">權重</button></span>
               <span role="columnheader"><button data-k="dw" type="button">權重變化</button></span>
-              <span role="columnheader"><button data-k="s" type="button">持有張數</button></span>
-              <span role="columnheader"><button data-k="ds" type="button">張數變化</button></span>
+              <span role="columnheader"><button data-k="s" type="button" data-u="持有{U}">持有張數</button></span>
+              <span role="columnheader"><button data-k="ds" type="button" data-u="{U}變化">張數變化</button></span>
               <span role="columnheader"><button data-k="px" type="button">收盤</button></span>
               <span role="columnheader"><button data-k="chg" type="button">當日漲跌</button></span>
               <span role="columnheader"><button data-k="ctb" type="button">貢獻</button></span>
@@ -424,9 +444,9 @@ ol.items{list-style:none;margin:0;padding:0}
     <div class="lab kai" id="noteLab">備註</div>
     <div class="body">
       <ol class="notes">
-        <li>持股來自統一投信「申購買回清單」：每個交易日約 16:30 公布當天收盤後的投資組合。本頁每個交易日晚上自動抓取存檔，資料從 114/5/26（上市前一日）開始。編號是本頁自己編的：第幾份清單。</li>
-        <li>收盤價與漲跌來自臺灣證券交易所、證券櫃檯買賣中心的每日收盤行情。</li>
-        <li>買賣是比較兩天的持有股數。張數變化 × 當日收盤價只是估計金額，實際成交價不公開。基金常在賣光後留下 1 張左右、權重 0.00% 的零星部位，本頁算成已賣出，買回來時算新增；零星部位自己的張數變動不算買賣。</li>
+        <li id="note1">持股來自統一投信「申購買回清單」：每個交易日約 16:30 公布當天收盤後的投資組合。本頁每個交易日晚上自動抓取存檔。編號是本頁自己編的：第幾份清單。</li>
+        <li id="note2">收盤價與漲跌來自臺灣證券交易所、證券櫃檯買賣中心的每日收盤行情。</li>
+        <li><span id="note3">買賣是比較兩天的持有股數（股票分割以分割後的股數比較，不算買賣）。張數變化 × 當日收盤價只是估計金額，實際成交價不公開。</span>基金常在賣光後留下 1 張左右、權重 0.00% 的零星部位，本頁算成已賣出，買回來時算新增；零星部位自己的張數變動不算買賣。</li>
         <li>買賣用框線區分：<span class="st st-new">新增</span>雙線、<span class="st st-add">加碼</span>實心、<span class="st st-cut">減碼</span>虛線、<span class="st st-out">剔除</span>劃線。漲跌依台股習慣<span class="up">紅漲</span>、<span class="down">綠跌</span>，數字前都有正負號。</li>
         <li>只整理公開資料，不是投資建議。</li>
       </ol>
@@ -438,7 +458,12 @@ ol.items{list-style:none;margin:0;padding:0}
 <script>
 (() => {
 'use strict';
-const DATA_URL = 'data/etf-00981a.json';
+/* Each fund is one data file; the page shows the fund named by ?f= (00981A without it). */
+const FUND_IDS = ['00981A', '00403A', '00988A', '00411A'];
+const FID = (() => { const f = (new URLSearchParams(location.search).get('f') || '').toUpperCase(); return FUND_IDS.includes(f) ? f : '00981A'; })();
+const DATA_URL = 'data/etf-' + FID.toLowerCase() + '.json';
+let GLOBAL = false;   // a global fund: foreign holdings priced in their own currency
+const U = () => GLOBAL ? '數量' : '張數';
 const WD = ['日','一','二','三','四','五','六'];
 const $ = id => document.getElementById(id);
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
@@ -461,11 +486,12 @@ const sign = v => v > 0 ? '+' : v < 0 ? '−' : '';
 const dirCls = v => v == null ? 'flat' : v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
 const arrow = v => v > 0 ? '▲ ' : v < 0 ? '▼ ' : '';
 function pctTxt(v, d = 2){ return v == null ? '—' : sign(v) + Math.abs(v).toFixed(d) + '%'; }
-function lots(s){ return s >= 1000 ? fmtInt(s / 1000) + ' 張' : fmtInt(s) + ' 股'; }
-function dLots(ds){
+/* Foreign codes carry a market suffix ("NVDA US"); they are counted in shares, Taiwan stocks in lots. */
+const foreign = c => /\s/.test(c);
+function lots(s, c){ return s >= 1000 && !foreign(c) ? fmtInt(s / 1000) + ' 張' : fmtInt(s) + ' 股'; }
+function dLots(ds, c){
   if (!ds) return '0';
-  const a = Math.abs(ds);
-  return sign(ds) + (a >= 1000 ? fmtInt(a / 1000) + ' 張' : fmtInt(a) + ' 股');
+  return sign(ds) + lots(Math.abs(ds), c);
 }
 function money(v){
   const a = Math.abs(v);
@@ -502,10 +528,28 @@ paintTheme();
 /* ---------- data ---------- */
 let DB, DAYS = [], NAMES = new Map();
 const HCACHE = new Map();
+/* Foreign holdings come as "NVIDIA CORP(<Chinese name>)" or "BLOOM ENERGY CORP- A": show the Chinese
+   name in brackets when there is one, else the name without its corporate suffixes and share-class
+   text, words longer than four letters (or all lower case) in title case ("Bloom Energy"); the
+   full name stays in FULL. */
+const FULL = new Map();
+const SUFFIX = /^(INC|CORP|CORPORATION|CO|COMPANY|LTD|LIMITED|PLC|NV|SA|AG|SE|ASA|AB|SPA|HOLDINGS?|HLDGS|GROUP|GRP|TECHN|TECH|CL|A|B|C|THE|AND|OF|&|ADR|SHS|REG|NY|SPON)$/i;
+function shortName(n, c){
+  if (!foreign(c)) return n;
+  const zh = n.match(/\(([^)]*[\u4e00-\u9fff][^)]*)\)/);
+  if (zh) return zh[1].replace(/(股份有限公司|控股公司|公司|集團)$/, '') || n;
+  const w = n.replace(/\(.*?\)/g, ' ').replace(/\.[a-z]+\s+[a-z]+\s*$/, ' ')
+    .replace(/(?:\b[A-Z]\.){2,}[A-Z]?\.?/g, m => m.replace(/\./g, ''))
+    .replace(/\s*-\s*(SPON\s+ADR|ADR|NY\s+REG\b).*$/i, ' ')
+    .replace(/\s*-\s*((CLASS|CL)\s*)?[A-Z]\s*$/, ' ').replace(/[.,]/g, ' ').split(/\s+/).filter(Boolean);
+  while (w.length > 1 && SUFFIX.test(w[w.length - 1])) w.pop();
+  const tc = x => (x.length > 4 && /^[A-Z]+$/.test(x)) || /^[a-z]+$/.test(x) ? x[0].toUpperCase() + x.slice(1).toLowerCase() : x;
+  return w.map(x => x.split('-').map(tc).join('-')).join(' ') || n;
+}
 function hmap(i){
   if (HCACHE.has(i)) return HCACHE.get(i);
   const m = new Map();
-  for (const [c, n, s, a, w] of DAYS[i].h) m.set(c, {c, n, s, a, w});
+  for (const [c, n, s, a, w] of DAYS[i].h) m.set(c, {c, n: shortName(n, c), s, a, w});
   HCACHE.set(i, m);
   return m;
 }
@@ -516,6 +560,25 @@ function chgPct(i, c){
   return p[1] / (p[0] - p[1]) * 100;
 }
 function close(i, c){ const p = DAYS[i].px && DAYS[i].px[c]; return p ? p[0] : null; }
+const curOf = (i, c) => (DAYS[i].cur && DAYS[i].cur[c]) || '';
+/* NTD per unit of the stock's currency on day i (1 for Taiwan stocks, null when unknown). */
+function fxOf(i, c){ const k = curOf(i, c); return !k ? 1 : (DAYS[i].fx && DAYS[i].fx[k]) || null; }
+function pxTxt(v){ return v == null ? '—' : v.toLocaleString('en-US', {maximumFractionDigits: 2}); }
+/* Yahoo quote page for a holding: Taiwan stocks on tw.stock.yahoo.com, foreign ones on Yahoo Finance. */
+function quoteUrl(c){
+  if (!foreign(c)) return 'https://tw.stock.yahoo.com/quote/' + encodeURIComponent(c);
+  const [sym, mk] = c.split(/\s+/), t = sym.replace(/\/$/, '').replace('/', '-');
+  const sfx = {US: '', JP: '.T', KS: '.KS', KQ: '.KQ', GY: '.DE', GR: '.DE', FP: '.PA', NA: '.AS', LN: '.L', SW: '.SW', AU: '.AX', CN: '.TO'}[mk];
+  const y = mk === 'HK' ? t.padStart(4, '0') + '.HK' : mk === 'CH' || mk === 'C1' || mk === 'C2' ? t + (t[0] === '6' ? '.SS' : '.SZ') : sfx != null ? t + sfx : null;
+  return y ? 'https://finance.yahoo.com/quote/' + encodeURIComponent(y) : 'https://www.google.com/search?q=' + encodeURIComponent(c + ' stock');
+}
+
+/* Shares one share of day `from` became by day `to` through splits recorded in each day's sp. */
+function splitK(c, from, to){
+  let k = 1;
+  for (let j = from + 1; j <= to; j++){ const sp = DAYS[j].sp; if (sp && sp[c]) k *= sp[c]; }
+  return k;
+}
 
 let cur = 0, vsN = 1, sortK = 'w', sortDir = -1, showParked = false, lastRows = [];
 
@@ -525,7 +588,8 @@ function compare(i, b){
   const rows = [];
   for (const c of new Set([...now.keys(), ...base.keys()])){
     const x = now.get(c), y = base.get(c);
-    const s1 = x ? x.s : 0, s0 = y ? y.s : 0, w1 = x ? x.w : 0, w0 = y ? y.w : 0;
+    /* the base day's shares are counted in today's units, so a split is not a trade */
+    const s1 = x ? x.s : 0, s0 = y ? Math.round(y.s * splitK(c, b, i)) : 0, w1 = x ? x.w : 0, w0 = y ? y.w : 0;
     const chg = chgPct(i, c), pw = prev.get(c);
     /* A position the fund reports at 0.00% (usually a single lot kept after selling out) is
        "parked": going from parked to a real weight is a new buy, the reverse a sell-out, and
@@ -542,7 +606,7 @@ function compare(i, b){
       parked: !!x && !real1, parked0: !!y && !real0,
       px: close(i, c), chg,
       ctb: pw && chg != null ? pw.w * chg : null,
-      amt: close(i, c) != null ? (s1 - s0) * close(i, c) : null,
+      amt: close(i, c) != null && fxOf(i, c) != null ? (s1 - s0) * close(i, c) * fxOf(i, c) : null,
     });
   }
   return rows;
@@ -564,7 +628,7 @@ function render(){
   $('prev').disabled = cur === 0;
   $('next').disabled = last;
   $('latest').hidden = last;
-  document.title = '00981A 持股異動日報 · ' + dLabel(d.d);
+  document.title = FID + ' 持股異動日報 · ' + dLabel(d.d);
   renderSubject(rows, b);
   renderMoves(rows, b);
   renderMarket(d, b);
@@ -606,7 +670,7 @@ function renderSubject(rows, b){
   const sell = rows.filter(r => r.kind === 'out' || r.kind === 'cut').reduce((a, r) => a + (r.amt || 0), 0);
   const priced = rows.some(r => r.kind && r.amt != null);
   $('subjectNote').textContent = !clauses.length ? '' : priced
-    ? '估計買進約 ' + money(buy) + '、賣出約 ' + money(sell) + '（張數變化 × ' + dLabel(DAYS[cur].d) + ' 收盤價）。'
+    ? '估計買進約 ' + money(buy) + '、賣出約 ' + money(sell) + '（' + U() + '變化 × ' + dLabel(DAYS[cur].d) + ' 收盤價' + (GLOBAL ? '，換算新台幣' : '') + '）。'
     : '這一天還沒有收盤價，無法估計金額。';
 }
 
@@ -615,15 +679,16 @@ function moveTable(box, list, side){
   box.replaceChildren();
   if (!list.length){ box.append(h('p', {class: 'none', text: side === 'buy' ? '這段期間沒有買進。' : '這段期間沒有賣出。'})); return; }
   box.append(h('div', {class: 'th', 'aria-hidden': 'true'},
-    h('span', {class: 'l', text: '股票'}), h('span', {text: '張數變化'}), h('span', {text: '估計金額'}), h('span', {text: '當日漲跌'})));
+    h('span', {class: 'l', text: '股票'}), h('span', {text: U() + '變化'}), h('span', {text: '估計金額'}), h('span', {text: '當日漲跌'})));
   list.forEach((r, j) => {
-    const sharesTxt = r.kind === 'out' ? (r.parked ? lots(r.s0) + ' → 留 ' + lots(r.s) : '原有 ' + lots(r.s0))
-      : r.kind === 'new' ? (r.parked0 ? lots(r.s0) + ' → ' + lots(r.s) : '持有 ' + lots(r.s))
-      : lots(r.s0) + ' → ' + lots(r.s);
+    const L = s => lots(s, r.c);
+    const sharesTxt = r.kind === 'out' ? (r.parked ? L(r.s0) + ' → 留 ' + L(r.s) : '原有 ' + L(r.s0))
+      : r.kind === 'new' ? (r.parked0 ? L(r.s0) + ' → ' + L(r.s) : '持有 ' + L(r.s))
+      : L(r.s0) + ' → ' + L(r.s);
     const wTxt = r.kind === 'new' && !r.parked0 ? '權重 ' + r.w.toFixed(2) + '%' : '權重 ' + r.w0.toFixed(2) + ' → ' + r.w.toFixed(2) + '%';
     box.append(h('div', {class: 'tr', hidden: j >= SHOW, 'data-c': r.c},
       h('span', {class: 'stk'}, nameBtn(r), h('span', {class: 'code', text: r.c}), stTag(r.kind), h('span', {class: 'sub n', text: sharesTxt + '・' + wTxt})),
-      h('span', {class: 'c-ds'}, num(dLots(r.ds), 'strong')),
+      h('span', {class: 'c-ds'}, num(dLots(r.ds, r.c), 'strong')),
       h('span', {class: 'c-amt'}, num(r.amt != null ? money(r.amt) : '—')),
       h('span', {class: 'c-chg'}, chgNode(r.chg)),
       h('span', {class: 'm', 'aria-hidden': 'true'}, r.amt != null ? h('span', null, '約 ', num(money(r.amt))) : null, h('span', null, '當日 ', chgNode(r.chg)))));
@@ -672,6 +737,7 @@ function renderMarket(d, b){
     const prem = (d.etf[0] / d.nav - 1) * 100;
     kv(prem >= 0 ? '溢價' : '折價', num(Math.abs(prem).toFixed(2) + '%'), '市價與淨值的差');
   }
+  if (GLOBAL && d.fx && d.fx.USD) kv('美元匯率', num(d.fx.USD.toFixed(3)), '清單附的匯率，換算金額用');
   if (d.ix){
     const [c, df] = d.ix, p = df != null ? df / (c - df) * 100 : null;
     kv('加權指數', num(fmtInt(c)), df == null ? '' : arrow(df) + fmtInt(Math.abs(df)) + '（' + pctTxt(p) + '）', dirCls(df));
@@ -684,7 +750,7 @@ function renderMarket(d, b){
   kv('持股檔數', num(realN(cur) + ' 檔'), [extra ? '另 ' + extra + ' 檔零星' : '', b >= 0 && b !== cur ? '比較日 ' + realN(b) + ' 檔' : ''].filter(Boolean).join('・'));
   const topN = n => d.h.slice(0, n).reduce((a, r) => a + r[4], 0);
   kv('前十大合計', num(topN(10).toFixed(1) + '%'), '前五大 ' + topN(5).toFixed(1) + '%');
-  $('mktNote').textContent = dLabel(d.d) + ' 收盤';
+  $('mktNote').textContent = dLabel(d.d) + ' 收盤' + (GLOBAL ? '（海外持股為當地收盤）' : '');
 }
 
 function renderContrib(rows){
@@ -770,14 +836,14 @@ function paintRows(){
       h('span', {class: 'stk', role: 'cell'}, nameBtn(r), h('span', {class: 'code', text: r.c}), r.kind ? stTag(r.kind) : null),
       h('span', {class: 'c-w', role: 'cell'}, num(r.w.toFixed(2) + '%', 'strong')),
       h('span', {class: 'c-dw', role: 'cell'}, num(r.dw ? sign(r.dw) + Math.abs(r.dw).toFixed(2) : '0', r.dw ? '' : 'flat')),
-      h('span', {class: 'c-s', role: 'cell'}, num(r.held ? lots(r.s) : '—')),
-      h('span', {class: 'c-ds', role: 'cell'}, num(r.ds ? dLots(r.ds) : '0', r.ds ? 'strong' : 'flat')),
-      h('span', {class: 'c-px', role: 'cell'}, num(r.px != null ? r.px.toLocaleString('en-US', {maximumFractionDigits: 2}) : '—')),
+      h('span', {class: 'c-s', role: 'cell'}, num(r.held ? lots(r.s, r.c) : '—')),
+      h('span', {class: 'c-ds', role: 'cell'}, num(r.ds ? dLots(r.ds, r.c) : '0', r.ds ? 'strong' : 'flat')),
+      h('span', {class: 'c-px', role: 'cell'}, num(pxTxt(r.px)), r.px != null && curOf(cur, r.c) ? h('span', {class: 'cy', text: curOf(cur, r.c)}) : null),
       h('span', {class: 'c-chg', role: 'cell'}, chgNode(r.chg)),
       h('span', {class: 'c-ctb', role: 'cell'}, num(r.ctb == null ? '—' : sign(r.ctb) + Math.abs(r.ctb).toFixed(1) + ' bp', dirCls(r.ctb))),
       h('span', {class: 'm', 'aria-hidden': 'true'},
         h('span', null, '權重 ', num(r.w.toFixed(2) + '%')),
-        h('span', null, num(r.held ? lots(r.s) : '—'), r.ds ? h('span', null, '（', num(dLots(r.ds)), '）') : null),
+        h('span', null, num(r.held ? lots(r.s, r.c) : '—'), r.ds ? h('span', null, '（', num(dLots(r.ds, r.c)), '）') : null),
         r.ctb != null ? h('span', null, '貢獻 ', num(sign(r.ctb) + Math.abs(r.ctb).toFixed(1) + ' bp', dirCls(r.ctb))) : null)));
   }
 }
@@ -842,25 +908,30 @@ function detailEl(c){
   const facts = h('dl', {class: 'd-facts'});
   const f = (k, v, cls) => facts.append(h('div', null, h('dt', {text: k}), h('dd', {class: 'n ' + (cls || '')}, v)));
   f('權重', x ? x.w.toFixed(2) + '%' : '—');
-  f('持有張數', x ? lots(x.s) : '—');
+  f('持有' + (foreign(c) ? '股數' : '張數'), x ? lots(x.s, c) : '—');
   f('市值', x ? money(x.a) : '—');
   const chg = chgPct(cur, c), px = close(cur, c);
-  f('收盤', px != null ? px.toLocaleString('en-US', {maximumFractionDigits: 2}) : '—');
+  f(curOf(cur, c) ? '收盤（' + curOf(cur, c) + '）' : '收盤', pxTxt(px));
   f('當日漲跌', chg == null ? '—' : arrow(chg) + pctTxt(chg), dirCls(chg));
   const peak = ser.reduce((m, p) => p.w > m.w ? p : m, ser[0]);
   f('最高權重', peak.w ? peak.w.toFixed(2) + '%（' + (parts(peak.d).y - 1911) + '/' + parts(peak.d).m + '/' + parts(peak.d).d + '）' : '—');
   const ev = [];
   for (let k = 1; k < ser.length; k++){
-    const a = ser[k - 1], z = ser[k], ds = z.s - a.s;
+    const sp = (DAYS[k].sp && DAYS[k].sp[c]) || 1;
+    if (sp !== 1) ev.push({k, t: 'split', sp});
+    const a = ser[k - 1], z = ser[k], ds = z.s - Math.round(a.s * sp);
     const realA = a.held && a.w > 0, realZ = z.held && z.w > 0;
     if (!ds || !(realA || realZ)) continue;
     ev.push({k, ds, t: realZ && !realA ? 'new' : realA && !realZ ? 'out' : ds > 0 ? 'add' : 'cut'});
   }
   ev.sort((a, b) => b.k - a.k);
-  const log = h('div', {class: 'tb d-log'}, h('div', {class: 'lgh', 'aria-hidden': 'true'}, h('span', {text: '日期'}), h('span', {text: '買賣'}), h('span', {text: '張數變化'})));
+  const unitW = foreign(c) ? '股數' : '張數';
+  const log = h('div', {class: 'tb d-log'}, h('div', {class: 'lgh', 'aria-hidden': 'true'}, h('span', {text: '日期'}), h('span', {text: '買賣'}), h('span', {text: unitW + '變化'})));
   const LOG = 12;
   if (!ev.length) log.append(h('p', {class: 'none', text: '資料期間內持有張數沒有變過。'}));
-  ev.forEach((e, j) => log.append(h('div', {class: 'lgr', hidden: j >= LOG}, num(dLabel(DAYS[e.k].d, true)), h('span', null, stTag(e.t)), num(dLots(e.ds)))));
+  ev.forEach((e, j) => log.append(h('div', {class: 'lgr', hidden: j >= LOG}, num(dLabel(DAYS[e.k].d, true)),
+    e.t === 'split' ? h('span', {text: '股票分割'}) : h('span', null, stTag(e.t)),
+    num(e.t === 'split' ? (e.sp >= 1 ? '1 股變 ' + +e.sp.toFixed(4) + ' 股' : Math.round(1 / e.sp) + ' 股併 1 股') : dLots(e.ds, c)))));
   if (ev.length > LOG){
     const more = h('button', {type: 'button', 'aria-expanded': 'false', text: '更早還有 ' + (ev.length - LOG) + ' 筆，全部列出'});
     more.addEventListener('click', () => {
@@ -872,15 +943,15 @@ function detailEl(c){
     });
     log.append(h('div', {class: 'foot'}, more));
   }
-  const modeBtns = [['w', '權重走勢'], ['s', '張數走勢']].map(([m, t]) => h('button', {type: 'button', 'aria-pressed': String(m === 'w'), 'data-m': m, text: t}));
+  const modeBtns = [['w', '權重走勢'], ['s', unitW + '走勢']].map(([m, t]) => h('button', {type: 'button', 'aria-pressed': String(m === 'w'), 'data-m': m, text: t}));
   const el = h('div', {class: 'detail', role: 'region', 'aria-label': name + ' 持有紀錄'},
-    h('div', {class: 'd-h'}, h('div', null, h('h3', null, name, h('span', {class: 'code', text: c})), h('p', {text: sub})),
+    h('div', {class: 'd-h'}, h('div', null, h('h3', null, name, h('span', {class: 'code', text: c})), h('p', {text: (foreign(c) && FULL.get(c) !== name ? FULL.get(c) + '・' : '') + sub})),
       h('button', {class: 'd-x', type: 'button', 'aria-label': '收起 ' + name, onclick: () => closeDetail()}, svgIcon('i-x'))),
     facts,
     h('div', {class: 'd-mode', role: 'group', 'aria-label': '圖表內容'}, modeBtns),
     h('div', {class: 'chart'}),
     log,
-    h('a', {class: 'd-ext', href: 'https://tw.stock.yahoo.com/quote/' + encodeURIComponent(c), target: '_blank', rel: 'noopener'}, '在 Yahoo 股市看走勢', svgIcon('i-out')));
+    h('a', {class: 'd-ext', href: quoteUrl(c), target: '_blank', rel: 'noopener'}, foreign(c) ? '在 Yahoo Finance 看走勢' : '在 Yahoo 股市看走勢', svgIcon('i-out')));
   modeBtns.forEach(bt => bt.addEventListener('click', () => {
     open.mode = bt.dataset.m;
     modeBtns.forEach(x => x.setAttribute('aria-pressed', String(x === bt)));
@@ -895,14 +966,15 @@ function drawChart(){
   const ser = series(open.c), mode = open.mode;
   const W = Math.max(260, box.clientWidth || 600), H = W < 480 ? 180 : 220;
   const L = 52, R = 10, T = 12, B = 26, pw = W - L - R, ph = H - T - B;
-  const val = p => mode === 'w' ? p.w : p.s / 1000;
+  const per = foreign(open.c) ? 1 : 1000;
+  const val = p => mode === 'w' ? p.w : p.s / per;
   const maxV = Math.max(...ser.map(val)) || 1;
   const step = niceStep(maxV / 3), top = Math.ceil(maxV / step) * step;
   const X = k => L + (ser.length < 2 ? pw / 2 : k / (ser.length - 1) * pw);
   const Y = v => T + ph - v / top * ph;
   const NS = 'http://www.w3.org/2000/svg';
   const s = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); return e; };
-  const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': (NAMES.get(open.c) || open.c) + (mode === 'w' ? ' 權重' : ' 持有張數') + '走勢，' + dLabel(ser[0].d, true) + ' 到 ' + dLabel(ser[ser.length - 1].d, true)});
+  const svg = s('svg', {viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': (NAMES.get(open.c) || open.c) + (mode === 'w' ? ' 權重' : per > 1 ? ' 持有張數' : ' 持有股數') + '走勢，' + dLabel(ser[0].d, true) + ' 到 ' + dLabel(ser[ser.length - 1].d, true)});
   const g = s('g', {class: 'grid'}), ax = s('g', {class: 'ax'});
   for (let v = 0; v <= top + 1e-9; v += step){
     g.append(s('line', {x1: L, x2: W - R, y1: Y(v), y2: Y(v)}));
@@ -939,7 +1011,7 @@ function drawChart(){
     const p = ser[k];
     xh.setAttribute('x1', X(k)); xh.setAttribute('x2', X(k)); xh.setAttribute('visibility', 'visible');
     dot.setAttribute('cx', X(k)); dot.setAttribute('cy', Y(val(p))); dot.setAttribute('visibility', 'visible');
-    tip.replaceChildren(dLabel(p.d, true), h('br'), p.held ? num(p.w.toFixed(2) + '%・' + lots(p.s)) : '未持有');
+    tip.replaceChildren(dLabel(p.d, true), h('br'), p.held ? num(p.w.toFixed(2) + '%・' + lots(p.s, open.c)) : '未持有');
     tip.hidden = false;
     tip.style.left = Math.max(64, Math.min(r.width - 64, X(k) / W * r.width)) + 'px';
     tip.style.top = (Y(val(p)) / H * r.height - 54) + 'px';
@@ -1005,6 +1077,27 @@ function openFromHash(c){
   row.scrollIntoView({block: 'start'});
 }
 
+/* ---------- fund ---------- */
+document.querySelectorAll('.funds a').forEach(a => { if (a.dataset.f === FID) a.setAttribute('aria-current', 'page'); });
+/* Title, unit words and notes for the loaded fund. */
+function paintFund(f){
+  GLOBAL = f.kind === 'global';
+  const full = (f.full || '').replace(/基金$/, '');
+  $('title').textContent = FID + ' 持股異動日報';
+  $('titleSub').textContent = (full || FID) + '・整理自統一投信公開的申購買回清單，不是官方公告';
+  document.querySelectorAll('[data-u]').forEach(el => { el.textContent = el.dataset.u.replace('{U}', U()); });
+  const first = parts(DAYS[0].d), since = (first.y - 1911) + '/' + first.m + '/' + first.d;
+  const mkt = f.market === 'tpex' ? '證券櫃檯買賣中心' : '臺灣證券交易所';
+  if (GLOBAL){
+    $('note1').textContent = '持股來自統一投信「申購買回清單」。海外股市在台灣收盤後才收盤，所以全球型基金的清單晚兩個交易日，資料日期是持股估值的那一天。本頁每個交易日晚上自動抓取存檔，資料從 ' + since + ' 開始。編號是本頁自己編的：第幾份清單。';
+    $('note2').textContent = '每檔持股的價格是清單上的估值（金額 ÷ 股數，當地幣別；台股就是當天收盤價），漲跌是和前一份清單相比，不含匯率變動。' + FID + ' 的市價來自' + mkt + '。淨值含台股收盤後的海外漲跌，所以同一天的市價和淨值落差比台股基金大。';
+    $('note3').textContent = '買賣是比較兩天的持有股數，台股以張、海外股票以股計；股票分割以分割後的股數比較，不算買賣，當天漲跌也用分割調整後的價格計算。數量變化 × 當日價格換算新台幣只是估計金額（美元用清單附的匯率，其他幣別用清單權重反推），實際成交價不公開。';
+    $('ctbNote').textContent = '前一日權重 × 當日漲跌（當地幣別）= 對淨值的影響，1 bp = 0.01%';
+  } else {
+    $('note1').textContent = '持股來自統一投信「申購買回清單」：每個交易日約 16:30 公布當天收盤後的投資組合。本頁每個交易日晚上自動抓取存檔，資料從 ' + since + ' 開始。編號是本頁自己編的：第幾份清單。';
+  }
+}
+
 /* ---------- boot ---------- */
 async function boot(){
   try {
@@ -1013,28 +1106,33 @@ async function boot(){
     DB = await r.json();
   } catch (e){ fail(e); return; }
   function fail(e){
-    $('main').replaceChildren(h('div', {class: 'titlebar'}, h('h1', {text: '00981A 持股異動日報'})),
+    $('main').replaceChildren(h('div', {class: 'titlebar'}, h('h1', {text: FID + ' 持股異動日報'})),
       h('div', {class: 'err', role: 'alert'},
         h('h2', {text: '讀不到持股資料'}),
         h('p', {text: e ? '資料檔 ' + DATA_URL + ' 沒有載入（' + e.message + '）。' : '資料檔 ' + DATA_URL + ' 有載入，但裡面沒有任何交易日。'}),
         e && h('p', null, '直接用檔案總管打開本機的 HTML 時，瀏覽器不允許讀資料檔，請改開 ',
-          h('a', {href: 'https://tungyulu.github.io/test/etf-00981a.html', text: 'tungyulu.github.io/test/etf-00981a.html'}), '。')));
+          h('a', {href: 'https://tungyulu.github.io/test/etf-00981a.html' + location.search, text: 'tungyulu.github.io/test/etf-00981a.html' + location.search}), '。')));
   }
   DAYS = (DB.days || []).filter(d => d.h && d.h.length);
   if (!DAYS.length){ fail(null); return; }
-  for (const d of DAYS) for (const r of d.h) NAMES.set(r[0], r[1]);
+  paintFund(DB.fund || {});
+  for (const d of DAYS) for (const r of d.h){ NAMES.set(r[0], shortName(r[1], r[0])); FULL.set(r[0], r[1]); }
   const sel = $('day');
   for (let i = DAYS.length - 1; i >= 0; i--) sel.append(h('option', {value: DAYS[i].d, text: rocLabel(DAYS[i].d)}));
   cur = DAYS.length - 1;
   const s = readHash();
-  // Staleness: the newest portfolio should be today's after ~17:00, or the last weekday's.
+  // Staleness: the newest portfolio should be today's after ~17:00, or the last weekday's;
+  // a global fund's basket is one more business day behind (overseas markets close later).
   const last = DAYS[DAYS.length - 1].d;
   const tw = new Date(Date.now() + 8 * 3600e3), today = tw.toISOString().slice(0, 10);
   const expect = new Date(tw); if (tw.getUTCHours() < 17) expect.setUTCDate(expect.getUTCDate() - 1);
-  while ([0, 6].includes(expect.getUTCDay())) expect.setUTCDate(expect.getUTCDate() - 1);
+  for (let k = GLOBAL ? 2 : 1; k > 0; k--){
+    while ([0, 6].includes(expect.getUTCDay())) expect.setUTCDate(expect.getUTCDate() - 1);
+    if (k > 1) expect.setUTCDate(expect.getUTCDate() - 1);
+  }
   const exp = expect.toISOString().slice(0, 10);
   const st = $('status');
-  st.textContent = '最新資料：' + dLabel(last, true) + ' 收盤' + (last === today ? '（今天）' : '') + '。統一投信約 16:30 公布，本頁每個交易日晚上自動更新。';
+  st.textContent = '最新資料：' + dLabel(last, true) + ' 收盤' + (last === today ? '（今天）' : '') + '。統一投信約 16:30 公布' + (GLOBAL ? '（全球型的清單晚兩個交易日）' : '') + '，本頁每個交易日晚上自動更新。';
   if (last < exp){
     const gap = Math.round((Date.parse(exp) - Date.parse(last)) / 864e5);
     if (gap >= 3){ st.textContent += '已經 ' + gap + ' 天沒有新資料，可能是連假，或自動更新失敗。'; st.classList.add('warn'); }

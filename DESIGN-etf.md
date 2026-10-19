@@ -249,7 +249,7 @@ A near-monochrome document palette (ink, paper, blue-grey rules) with exactly th
 **Character:** A government form's two voices: the brush-derived Kai of the printed form labels, and a plain sans for what is filled in. Numbers line up in tabular columns like a filed schedule.
 
 ### Hierarchy
-- **Title** (900, 24px, 1.3, .02em): the reversed title bar 「00981A 持股異動日報」 only.
+- **Title** (900, 24px, 1.3, .02em): the reversed title bar 「<ticker> 持股異動日報」 only.
 - **Form label** (Kai 700, 24px, 1.35): 主旨 / 說明 / 附表 / 備註 in the left label column. The same face at item size sets the 一、二、 numerals and the 備註 list markers.
 - **Subject** (700, 24px, 1.5, `text-wrap: pretty`): the one 主旨 sentence; its stock names are navy underlined links and its counts are tabular figures.
 - **Item head** (700, 15px, 1.5): 說明 and 附表 item headings, stock names in rows and cells, the detail heading.
@@ -286,6 +286,9 @@ The system is flat. The page's one lift is the sheet itself, which in light mode
 Square everywhere: the sheet, tables, keys, selects, the search field, cells, tags and the detail all have 0 radius. Outer frames and dividers between sections are the 1px strong rule; dividers inside a table or grid are the 1px hairline. Line weight and line style carry meaning only for buy / sell state (double, solid, dashed, struck). The select's chevron is a drawn 2px corner in navy.
 
 ## Components
+
+### Fund tabs
+Four square folder tabs sit on the top edge of the sheet, one per fund (ticker in 15px bold tabular figures over the short name in 13px secondary ink), equal widths, 1px strong-rule frames without a bottom edge, rule-wash ground and navy ticker. The current fund's tab takes the title bar's reversed ground and overlaps the sheet edge by 1px, so tab and bar read as one band. Added 2026-10-19 with the three new funds.
 
 ### Title bar and header grid
 Ink-reversed bar with the 24px title and a 13px line naming the source and saying it is not an official notice. Below it the ruled header grid: each cell has a pale-blue label row and a value row (資料日期 in ROC form with weekday, 編號 第 N 號, the comparison select, the previous / day / next key group). A status line under it reports loading; its warning state is bold.

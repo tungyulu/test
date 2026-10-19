@@ -99,14 +99,14 @@
 
 **Evidence on hand.** The holdings snapshot from the 2026-09-29 broker screenshot, the 9/29 trade records, prices and fund facts from 10/1–10/2 search results (cited on the page). Everything is the owner's personal note, not investment advice, and the page says so. No bank, broker or fund logos; nothing may look like a real bank's or broker's document.
 
-## Active ETF portfolio · 00981A 持股異動日報 (`etf-00981a.html`)
+## Active ETF portfolio · 持股異動日報 (`etf-00981a.html`)
 
-**Users.** The owner, following 統一台股增長主動式 ETF (00981A) — the active ETF named in the October short-term plan — mostly on the phone after the close. Linked from the hub's 理財與筆記 lot.
+**Users.** The owner, following Uni-President's active ETFs — 00981A 台股增長 (the active ETF named in the October short-term plan), 00403A 升級50, 00988A 全球創新 and 00411A 前沿科技 (added 2026-10-19) — one at a time behind fund tabs, mostly on the phone after the close. Linked from the hub's 理財與筆記 lot.
 
 **Purpose.** Answer every trading evening: what did the manager buy and sell today (new, removed, added, cut — in lots and an estimated amount at the close), how did the holdings move today (each stock's change, and which ones pulled or dragged the fund via previous-day weight × change), and how a single stock's position has changed since listing. Any past day can be opened and compared with 1 / 5 / 20 / 60 trading days earlier.
 
 **Content that must survive any redesign.**
-- Data is the fund's own published basket (統一投信 PCF), one snapshot per trading day since 2025-05-26, kept in `data/etf-00981a.json` by a daily GitHub Actions job; prices are TWSE / TPEx closing quotes. Sources and the update time are on the page.
+- Data is each fund's own published basket (統一投信 PCF), one snapshot per trading day since the fund started, kept in `data/etf-<ticker>.json` by a daily GitHub Actions job; Taiwan funds' prices are TWSE / TPEx closing quotes. Global funds' holdings are priced from the basket's own valuation in their own currency (the change is against the previous basket, without FX), amounts are converted to NTD and say so, and the page explains that a global basket is two business days behind. Sources and the update time are on the page.
 - A position the fund reports at 0.00 % (usually one lot kept after selling out) counts as sold; buying it back counts as new; changes that never touch a real weight (parked → gone, parked → parked) are not trades. Trade amounts are estimates at the closing price and say so. On an ex-dividend day a listed stock's change is measured from TWSE's ex-dividend reference price, never shown as 0; OTC ex-dividend days show no change (—).
 - Price changes use the Taiwan quote convention (red up, green down) and always carry a sign and an arrow; buy / sell are never coloured red / green (filled vs outlined tags).
 - Not investment advice, and the page says so. No fund-company or exchange logos.
