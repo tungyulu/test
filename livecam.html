@@ -290,6 +290,13 @@ button{font:inherit; color:inherit}
 .fuji-t td{padding:6px 6px 6px 0; border-top:1px solid var(--plate-rule); vertical-align:top}
 .fuji-t td:first-child{font-weight:700; white-space:nowrap}
 .fuji-t .num{white-space:nowrap}
+.snow-now{display:flex; align-items:flex-start; gap:7px; margin:10px 0 0; padding-top:8px;
+  border-top:1px solid var(--plate-rule); font-size:13.5px; line-height:1.45}
+.snow-now > .pg{font-size:16px; margin-top:1px; flex:none}
+.snow-now .s{display:block; font-size:11.5px; color:var(--plate-2)}
+.snow-box h3:not(:first-child){margin-top:16px}
+.snow-say{font-size:15px}
+.snow-say strong{font-size:17px}
 .pack-l{margin:8px 0 0; display:grid; gap:0}
 .pack-l div{display:grid; grid-template-columns:6.2em minmax(0,1fr); gap:8px; padding:7px 0; border-top:1px solid var(--plate-rule)}
 .pack-l dt{font-weight:700; font-size:13.5px}
@@ -486,6 +493,7 @@ try{ var _t=localStorage.getItem('tk_theme');
   <symbol id="p-star-o" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" d="m12 3.4 2.6 5.4 5.9.8-4.3 4.1 1.1 5.9L12 16.7l-5.3 2.9 1.1-5.9-4.3-4.1 5.9-.8Z"/></symbol>
   <symbol id="p-pin" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7c0 5.3 7 13 7 13s7-7.7 7-13a7 7 0 0 0-7-7Zm0 4.1a2.9 2.9 0 1 1 0 5.8 2.9 2.9 0 0 1 0-5.8Z"/></symbol>
   <symbol id="p-fuji" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M1.5 20.5 9.2 7.6h5.6l7.7 12.9Zm8.6-10.9-1.5 2.6 1.6-.7 1 1.1 1-1.2 1.1 1.2 1-1.1 1.5.7-1.4-2.6Z"/></symbol>
+  <symbol id="p-snow" viewBox="0 0 24 24"><path d="M13.10 12.00L13.10 1.50L10.90 1.50L10.90 12.00ZM12.61 5.27L9.70 2.83L8.48 4.29L11.39 6.73ZM12.61 6.73L15.52 4.29L14.30 2.83L11.39 5.27ZM12.55 12.95L21.64 7.70L20.54 5.80L11.45 11.05ZM18.13 9.16L18.79 5.42L16.92 5.09L16.26 8.84ZM16.87 9.89L20.44 11.19L21.09 9.41L17.52 8.11ZM11.45 12.95L20.54 18.20L21.64 16.30L12.55 11.05ZM17.52 15.89L21.09 14.59L20.44 12.81L16.87 14.11ZM16.26 15.16L16.92 18.91L18.79 18.58L18.13 14.84ZM10.90 12.00L10.90 22.50L13.10 22.50L13.10 12.00ZM11.39 18.73L14.30 21.17L15.52 19.71L12.61 17.27ZM11.39 17.27L8.48 19.71L9.70 21.17L12.61 18.73ZM11.45 11.05L2.36 16.30L3.46 18.20L12.55 12.95ZM5.87 14.84L5.21 18.58L7.08 18.91L7.74 15.16ZM7.13 14.11L3.56 12.81L2.91 14.59L6.48 15.89ZM12.55 11.05L3.46 5.80L2.36 7.70L11.45 12.95ZM6.48 8.11L2.91 9.41L3.56 11.19L7.13 9.89ZM7.74 8.84L7.08 5.09L5.21 5.42L5.87 9.16Z"/></symbol>
   <symbol id="p-road" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8.4 3h7.2L21.5 21h-19ZM11.3 6v2.6h1.4V6Zm-.2 4.6v3.2h1.8v-3.2Zm-.3 5.4V19h2.4v-3Z"/></symbol>
   <symbol id="p-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.6"/><path d="M11 1.5h2v3.6h-2Zm0 17.4h2v3.6h-2ZM1.5 11h3.6v2H1.5Zm17.4 0h3.6v2h-3.6ZM4.2 5.6l1.4-1.4 2.6 2.6-1.4 1.4Zm11.6 11.6 1.4-1.4 2.6 2.6-1.4 1.4ZM4.2 18.4l2.6-2.6 1.4 1.4-2.6 2.6Zm11.6-11.6 2.6-2.6 1.4 1.4-2.6 2.6Z"/></symbol>
   <symbol id="p-moon" viewBox="0 0 24 24"><path d="M14.6 2.6A9.6 9.6 0 1 0 21.4 16 7.8 7.8 0 0 1 14.6 2.6Z"/></symbol>
@@ -541,14 +549,17 @@ try{ var _t=localStorage.getItem('tk_theme');
             <div class="wx-led" id="wxTrack"><span class="led" id="wxRun"></span><span class="sr" id="wxText"></span></div>
             <div class="wxgrid" id="wxGrid" hidden></div>
           </div>
+          <p class="snow-now" id="snowNow" hidden></p>
           <!-- The pack list does not depend on the weather, so it stays reachable when the forecast cannot load. -->
           <div class="tools">
             <button class="tool" type="button" id="gridBtn" aria-expanded="false" aria-controls="wxGrid" hidden><svg class="pg" aria-hidden="true"><use href="#p-grid"/></svg><span>展開比較</span></button>
             <button class="tool" type="button" id="fujiBtn" aria-expanded="false" aria-controls="fujiBox" hidden><svg class="pg" aria-hidden="true"><use href="#p-fuji"/></svg><span>富士山看得到嗎</span></button>
+            <button class="tool" type="button" id="snowBtn" aria-expanded="false" aria-controls="snowBox"><svg class="pg" aria-hidden="true"><use href="#p-snow"/></svg><span>山頂下雪了沒</span></button>
             <button class="tool" type="button" id="packBtn" aria-expanded="false" aria-controls="packBox"><svg class="pg" aria-hidden="true"><use href="#p-bag"/></svg><span>帶什麼</span></button>
             <span class="src">天氣 <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · <a href="https://weathernews.jp/clothes/kanto/" target="_blank" rel="noopener">穿衣指數<svg class="pg" aria-hidden="true"><use href="#p-ext"/></svg></a></span>
           </div>
           <div class="drop" id="fujiBox" hidden></div>
+          <div class="drop snow-box" id="snowBox" hidden></div>
           <div class="drop" id="packBox" hidden>
               <h3>十一月的關東・箱根・富士五湖，帶什麼</h3>
               <p>同一天裡，<b>東京市區、熱海海邊、河口湖湖畔</b>可以差 8～10 度。
@@ -597,7 +608,7 @@ try{ var _t=localStorage.getItem('tk_theme');
           <li><b>看螢幕左上角的標示。</b>LIVE ＝畫面已經抓到；<b>夜間</b>＝那邊天黑了，畫面暗是正常的，不是故障；無畫面＝抓不到畫格，可能直播停了或換了網址，點進去可以確認；載入中＝正在抓畫面；<b>停格</b>＝目前離線，看到的是最後一張。</li>
           <li><b>螢幕上緣</b>有兩個鍵：星號把常看的收起來，之後用篩選列的「收藏」就能只看那幾支；圖釘開 Google 地圖看那個地點在哪。</li>
           <li><b>站牌兩端的箭頭</b>走到前一站、下一站；每條線上方的路線圖也可以直接點站名。</li>
-          <li><b>「展開比較」</b>把天氣跑馬燈換成表格，各地氣溫、該穿什麼一次看完。<b>「富士山看得到嗎」</b>用河口湖、山中湖、御殿場、箱根的雲量判斷今天能不能看到富士山。</li>
+          <li><b>「展開比較」</b>把天氣跑馬燈換成表格，各地氣溫、該穿什麼一次看完。<b>「富士山看得到嗎」</b>用河口湖、山中湖、御殿場、箱根的雲量判斷今天能不能看到富士山。<b>「山頂下雪了沒」</b>看氣象廳判定的山頂積雪、今季初冠雪了沒、山頂實測氣溫，以及接下來哪幾天可能下雪。</li>
           <li><b>要開車就點「自駕・路面」。</b>只留拍路面的攝影機，另外給各區的路面判讀，以及日本 9/1 起「沒有中央線的路速限 30」的新制說明。<b>「富士山」</b>則只留拍得到富士山的機位。</li>
         </ol>
       </div>
@@ -663,7 +674,7 @@ try{ var _t=localStorage.getItem('tk_theme');
     <div class="sig"><b>東京近郊即時影像</b>
       <span>做法參考 <a href="https://hokkaido-livecam-hubaco.netlify.app/" target="_blank" rel="noopener">北海道各地即時影像（虎拔）</a>，攝影機清單依 <a href="trip.html">關東秋季紅葉巡航</a> 行程重新蒐集</span></div>
     <!-- Bump this line on every revision: date = edit date, +0.1 minor / +1.0 major -->
-    <div class="ver">2026-10-06　Ver 2.1</div>
+    <div class="ver">2026-10-19　Ver 2.2</div>
 
     <section class="legal">
       <h2>版權與資料來源</h2>
@@ -675,6 +686,10 @@ try{ var _t=localStorage.getItem('tk_theme');
             （<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。
             穿著建議、推薦順序、富士山能見度與路面判讀皆為依氣溫、天氣代碼、雲量與能見度自行換算，
             <b>非官方預報、非官方路況</b>，僅供參考。</li>
+        <li><b>富士山頂積雪</b>　山頂積雪與初冠雪取自
+            <a href="https://www.data.jma.go.jp/stats/data/mdrr/fsn_cap/" target="_blank" rel="noopener">氣象廳 初冠雪の記録等</a>
+            （解析積雪深，每小時更新），山頂氣溫取自氣象廳富士山測站（アメダス），往年初冠雪日為甲府地方氣象台的目視紀錄。
+            「可能下雪」是依 Open-Meteo 的降水與 0°C 線高度自行換算，<b>不是預報</b>。</li>
         <li><b>11 月平年值</b>　出發前看板的「11 月平年」取自
             <a href="https://www.data.jma.go.jp/stats/etrn/index.php" target="_blank" rel="noopener">氣象廳 過去の気象データ</a>
             的平年值（11 月每日最高、最低氣溫的平均；多為 1991–2020 年，成田 2003–2020、辻堂 1992–2020），
@@ -1355,7 +1370,7 @@ function paintOffline(){
   if(window.paintTripWx) paintTripWx();
 }
 addEventListener('offline',paintOffline);
-addEventListener('online',()=>{ NET.down=false; NET.ok=0; NET.bad=0; paintOffline(); reloadFrames(); loadWeather(); });
+addEventListener('online',()=>{ NET.down=false; NET.ok=0; NET.bad=0; paintOffline(); reloadFrames(); loadWeather(); loadSnow(); });
 
 /* Monitor status: LIVE only once a real frame is on the screen; a loading label until then; a
    frozen label for a frame left over from before going offline; night after dark; no-picture for
@@ -1545,6 +1560,7 @@ function toggler(btnId,boxId){
 }
 toggler('packBtn','packBox');
 toggler('fujiBtn','fujiBox');
+toggler('snowBtn','snowBox');
 
 /* Law strip: switch to driving mode, then scroll to the full explanation. */
 document.getElementById('lawBar').addEventListener('click',e=>{
@@ -1791,6 +1807,184 @@ function paintFuji(){
      <p class="small">要看實際畫面，點篩選列的「富士山」只留富士山機位。
        官方：<a href="https://www.fujigoko.tv/" target="_blank" rel="noopener">富士五湖 TV${pg('p-ext')}</a>
        <a href="https://www.fujisan-navi.jp/" target="_blank" rel="noopener">フジヤマ NAVI${pg('p-ext')}</a></p>`;
+}
+
+/* Mt. Fuji summit snow. Three sources, each saved with its own fetch time (tk_snow_v1):
+   - JMA's snow-cap page: since the 2027 cold season (from 2026-08) the official record is the
+     analysed snow depth at the summit, updated hourly. CORS is open; the page is parsed as HTML.
+   - The summit station's measured temperature (AMeDAS 50066, 3,775 m; about ten days kept).
+   - Open-Meteo's freezing level and precipitation over the summit for the coming 16 days.
+     Its own snowfall and its 3,776 m temperature run several degrees colder than the station,
+     so only the freezing level decides: precipitation counts as snow while the 0 °C line is at
+     most SNOW_FZL (snow falls a few hundred metres below the freezing level). */
+const SNOW_URL='https://www.data.jma.go.jp/stats/data/mdrr/fsn_cap/';
+const AMD='https://www.jma.go.jp/bosai/amedas/data/';
+const SNOWKEY='tk_snow_v1', SNOW_FZL=4000;
+const SNOWS={jma:null, obs:null, fc:null, fail:{}, busy:false, tried:false};
+/* JMA's legend: the class of the summit cell is the band of the analysed snow depth */
+const SNOW_BAND={none:'', other:'', ov000:'1～5 cm', ov005:'5～20 cm', ov020:'20～50 cm', ov050:'50～100 cm',
+  ov100:'100～150 cm', ov150:'150～200 cm', ov200:'200 cm 以上'};
+/* JMA's visual snow-cap dates for Fuji (Kofu observatory), the last ten seasons; normal 10/2 */
+const SNOW_PAST=[['2016','10/26'],['2017','10/23'],['2018','9/26'],['2019','10/22'],['2020','9/28'],
+  ['2021','9/26'],['2022','9/30'],['2023','10/5'],['2024','11/7'],['2025','10/23']];
+const pad2=n=>String(n).padStart(2,'0');
+const degOf=v=>v==null?'—':v.toFixed(1).replace('-','−')+'°';
+const mdOf=s=>`${+s.slice(5,7)}/${+s.slice(8,10)}`;
+async function fetchSnowJMA(){
+  const res=await fetch(SNOW_URL);
+  if(!res.ok) throw new Error(res.status);
+  const doc=new DOMParser().parseFromString(await res.text(),'text/html');
+  const m=(doc.body.textContent||'').match(/(\d{4})年(\d{1,2})月(\d{1,2})日(\d{1,2})時\s*時点/);
+  const row=[...doc.querySelectorAll('table.data tr')]
+    .find(tr=>tr.cells.length>=3 && /^富士山/.test(tr.cells[0].textContent.trim()));
+  if(!m || !row) throw new Error('format');
+  const f=row.cells[1].textContent.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+  const c=row.cells[2], band=[...c.classList].find(k=>Object.prototype.hasOwnProperty.call(SNOW_BAND,k));
+  return {asof:Date.UTC(+m[1],+m[2]-1,+m[3],+m[4]-9),
+    first:f?`${f[1]}-${pad2(f[2])}-${pad2(f[3])}`:null, band:band||null, text:c.textContent.trim()};
+}
+async function fetchSnowObs(){
+  const lt=(await (await fetch(AMD+'latest_time.txt')).text()).trim(), t=Date.parse(lt);
+  if(isNaN(t)) throw new Error('time');
+  const ymd=ms=>jstDay(ms).replace(/-/g,''), h=+lt.slice(11,13), lim=lt.slice(0,19).replace(/\D/g,'');
+  /* today's latest three-hour file, then the last file (21–24 h) of each of the six days before */
+  const keys=[ymd(t)+'_'+pad2(h-h%3)];
+  for(let k=1;k<=6;k++) keys.push(ymd(t-k*86400000)+'_21');
+  const got=await Promise.allSettled(keys.map(k=>
+    fetch(AMD+'point/50066/'+k+'.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); })));
+  const val=x=>x && x[1]===0 && x[0]!=null ? x[0] : null;   // quality flag 0 = normal
+  const days=[]; let now=null;
+  got.forEach((g,i)=>{
+    if(g.status!=='fulfilled') return;
+    /* JMA writes the next slot as an all-null placeholder before latest_time reaches it, and the
+       00:00 record still carries the previous day's extremes: skip both */
+    const ks=Object.keys(g.value).filter(k=>k<=lim && !k.endsWith('000000') && val(g.value[k].maxTemp)!=null).sort();
+    if(!ks.length) return;
+    const k=ks[ks.length-1], last=g.value[k];
+    /* maxTemp / minTemp are the running extremes of the Japan-time day */
+    days.push({date:`${k.slice(0,4)}-${k.slice(4,6)}-${k.slice(6,8)}`, hi:val(last.maxTemp), lo:val(last.minTemp)});
+    if(i===0) now={t:val(last.temp),
+      at:Date.parse(`${k.slice(0,4)}-${k.slice(4,6)}-${k.slice(6,8)}T${k.slice(8,10)}:${k.slice(10,12)}:00+09:00`)};
+  });
+  if(!days.length) throw new Error('none');
+  return {now, days};
+}
+async function fetchSnowFc(){
+  const res=await fetch('https://api.open-meteo.com/v1/forecast?latitude=35.3606&longitude=138.7274'
+    + '&hourly=precipitation,freezing_level_height&timezone=Asia%2FTokyo&forecast_days=16');
+  if(!res.ok) throw new Error(res.status);
+  const h=(await res.json()).hourly, by={}, out=[];
+  h.time.forEach((t,i)=>{
+    const k=t.slice(0,10); let e=by[k];
+    if(!e){ e=by[k]={date:k, pr:0, sn:0, fz:null}; out.push(e); }
+    const p=h.precipitation[i]||0, f=h.freezing_level_height[i];
+    e.pr+=p;
+    /* fz = the lowest 0 °C line while it precipitates, the one that decides rain or snow */
+    if(p>=0.1 && f!=null){ if(f<=SNOW_FZL) e.sn+=p; e.fz=e.fz==null?f:Math.min(e.fz,f); }
+  });
+  return {days:out.map(e=>({date:e.date, pr:Math.round(e.pr*10)/10, sn:Math.round(e.sn*10)/10, fz:e.fz}))};
+}
+async function loadSnow(){
+  if(SNOWS.busy) return;
+  SNOWS.busy=true;
+  const jobs=[['jma',fetchSnowJMA],['obs',fetchSnowObs],['fc',fetchSnowFc]];
+  const res=await Promise.allSettled(jobs.map(j=>j[1]())), at=Date.now();
+  res.forEach((r,i)=>{
+    const k=jobs[i][0];
+    SNOWS.fail[k]=r.status!=='fulfilled';
+    if(r.status==='fulfilled') SNOWS[k]=Object.assign(r.value,{at});
+  });
+  SNOWS.busy=false; SNOWS.tried=true;
+  if(jobs.some(j=>!SNOWS.fail[j[0]])){
+    try{ localStorage.setItem(SNOWKEY,JSON.stringify({v:1,jma:SNOWS.jma,obs:SNOWS.obs,fc:SNOWS.fc})); }catch(e){}
+  }
+  paintSnow();
+}
+function bootSnow(){
+  try{
+    const c=JSON.parse(localStorage.getItem(SNOWKEY)||'null');
+    if(c && c.v===1){ SNOWS.jma=c.jma||null; SNOWS.obs=c.obs||null; SNOWS.fc=c.fc||null; }
+  }catch(e){}
+  paintSnow();
+  loadSnow();
+  setInterval(loadSnow, 30*60*1000);
+}
+/* the JMA verdict in words; null when the page could not be read */
+function snowSay(j){
+  if(!j) return null;
+  if(j.band==='none') return '山頂沒有積雪';
+  if(j.band==='other') return null;   // JMA's grey cell: no value for this hour
+  if(j.band) return '山頂積雪 '+SNOW_BAND[j.band];
+  return j.text ? '山頂積雪：'+esc(j.text) : null;
+}
+const jmaStamp=ms=>{ const d=new Date(ms+9*3600000);
+  return `${d.getUTCMonth()+1}/${d.getUTCDate()} ${d.getUTCHours()} 時`; };
+const jstClock=ms=>{ const d=new Date(ms+9*3600000); return `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}`; };
+const tripDayOf=date=>TRIP.days.find(d=>`${TRIP.start.slice(0,4)}-${d.md.replace('/','-')}`===date);
+const snowOld=k=>SNOWS.fail[k] && SNOWS[k] ? `<p class="small">沒有更新成功，下面是 ${stampOf(SNOWS[k].at)} 取得的資料。</p>` : '';
+let snowHTML='';
+function paintSnow(){
+  const j=SNOWS.jma, o=SNOWS.obs, today=jstDay(Date.now());
+  const fc=SNOWS.fc ? SNOWS.fc.days.filter(d=>d.date>=today) : [];
+  const nextSnow=fc.find(d=>d.sn>=1);
+  const say=snowSay(j);
+  /* the summary line under the Fuji lamps */
+  let line='';
+  if(say){
+    const parts=[`<b>${say}</b>`, j.first?`今季初冠雪 ${mdOf(j.first)}`:'今季還沒初冠雪'];
+    if(j.band==='none' && nextSnow) parts.push(`模式估 ${mdOf(nextSnow.date)} 可能下雪`);
+    line=`${pg('p-snow')}<span>富士山頂　${parts.map((x,i,a)=>`<span class="seg">${x}${i<a.length-1?'・':''}</span>`).join('')}`
+      + `<span class="s">氣象廳解析積雪深・${jmaStamp(j.asof)}判定${SNOWS.fail.jma?'（沒有更新成功，這是上次的資料）':''}</span></span>`;
+  }else if(SNOWS.tried){
+    line=`${pg('p-snow')}<span>富士山頂積雪暫時取不到<span class="s">${isOffline()?'目前離線':'氣象廳網頁讀不到'}，按「山頂下雪了沒」看說明與連結</span></span>`;
+  }
+  /* the drop-down */
+  let h='<h3>富士山頂下雪了沒</h3>';
+  if(say){
+    h+=`<p class="snow-say"><strong>${say}</strong>（氣象廳 ${jmaStamp(j.asof)}判定）<br>`
+      + (j.first?`今季初冠雪：<b>${+j.first.slice(0,4)} 年 ${mdOf(j.first)}</b>`:'今季初冠雪：<b>還沒</b>')
+      + '</p>'+snowOld('jma')+'<p>氣象廳 2026 年 8 月起不再由甲府氣象台目視，改用<b>解析積雪深</b>（以觀測與模式推算的積雪深度）'
+      + '判定山頂有沒有積雪，每小時更新，今季第一次判定有積雪就是初冠雪。'
+      + '山頂有積雪，從河口湖、山中湖看到白頭的機會就高，但被雲遮住時一樣看不到，請對照上面的燈號。</p>';
+  }else{
+    h+=`<p class="snow-say"><strong>氣象廳的判定暫時取不到</strong></p><p>${isOffline()?'目前離線。':''}可以直接開下面的氣象廳網頁看「富士山」那一列。</p>`;
+  }
+  if(o){
+    const nowOK=o.now && o.now.t!=null && Date.now()-o.now.at<3*3600000;
+    const rows=o.days.map(d=>`<tr><td>${mdOf(d.date)}${d.date===today?'（今天）':''}</td>`
+      + `<td class="num">${degOf(d.lo)} ～ ${degOf(d.hi)}</td></tr>`).join('');
+    h+=`<h3>山頂實測氣溫</h3>${snowOld('obs')}`
+      + `<p>${nowOK?`現在 <b class="num">${degOf(o.now.t)}</b>（日本 ${jstClock(o.now.at)}）。`:''}`
+      + '氣象廳富士山測站（3,775 m）每天的最低～最高。白天回到 0° 以上，薄雪常常隔天就融掉，從山下看會時白時黑。</p>'
+      + `<table class="fuji-t"><tbody>${rows}</tbody></table>`;
+  }
+  if(SNOWS.fc){
+    const rows=fc.filter(d=>d.pr>=1).map(d=>{
+      const t=tripDayOf(d.date);
+      /* part of the day's precipitation fell with the 0 °C line low enough: snow mixed with rain */
+      const kind=d.sn>=1?'<b>可能下雪</b>':d.sn>0?'可能雨夾雪':'下雨';
+      return `<tr><td>${mdOf(d.date)}${t?` D${t.d}`:''}</td><td class="num">降水 ${Math.round(d.pr)} mm</td>`
+        + `<td>${kind}　0°C 線最低 <span class="num">${d.fz!=null?(Math.round(d.fz/10)*10).toLocaleString()+' m':'—'}</span></td></tr>`;
+    }).join('');
+    h+=`<h3>接下來 16 天山頂會不會下雪</h3>${snowOld('fc')}`
+      + `<p>Open-Meteo 模式估計，<strong>不是預報</strong>：有降水、而且 0°C 線在 ${SNOW_FZL.toLocaleString()} m 以下（比山頂高不到兩三百公尺）才算下雪；`
+      + '只列降水 1 mm 以上的日子，D 編號是旅行的第幾天。</p>'
+      + (rows?`<table class="fuji-t"><tbody>${rows}</tbody></table>`:'<p>這 16 天山頂幾乎沒有降水。</p>');
+  }
+  h+='<h3>往年什麼時候初冠雪</h3>'
+    + `<p>甲府氣象台目視的紀錄，平年 10/2：${SNOW_PAST.map(x=>`<span class="seg">${x[0]} 年 ${x[1]}${x===SNOW_PAST[SNOW_PAST.length-1]?'':'・'}</span>`).join('')}。`
+    + '十年裡只有 2024 年晚到 11/7，正好是這次出發那天。今年起改用解析積雪深，和目視的日子不能直接比。</p>'
+    + `<p class="small">官方：<a href="${SNOW_URL}" target="_blank" rel="noopener">氣象廳 初冠雪の記録等${pg('p-ext')}</a>
+       <a href="https://www.jma.go.jp/bosai/snow/" target="_blank" rel="noopener">解析積雪深地圖${pg('p-ext')}</a>
+       <a href="https://www.jma.go.jp/bosai/amedas/#amdno=50066" target="_blank" rel="noopener">富士山測站${pg('p-ext')}</a>
+       ・要看實際畫面，點篩選列的「富士山」。</p>`;
+  const el=document.getElementById('snowNow');
+  el.hidden=!line;
+  /* rewritten only when something changed, so an open panel keeps keyboard focus */
+  if(line+h===snowHTML) return;
+  snowHTML=line+h;
+  el.innerHTML=line;
+  document.getElementById('snowBox').innerHTML=h;
 }
 
 /* Recommendations: derived from sun position, current weather code and camera tags.
@@ -2310,6 +2504,7 @@ tick(); setInterval(tick,20000);
 applyFilter();
 paintOffline();
 bootWx();
+bootSnow();
 document.fonts && document.fonts.ready.then(()=>LED.refresh());
 
 document.getElementById('foot').innerHTML =

@@ -448,6 +448,8 @@ A `.wx-state` line (info pictogram, message, a 44px 重試 key) above it reports
 ### Fuji Lamps
 A three-column list of status lamps (12px round `go/warn/stop-lamp`, inset rim) beside the place name and an 11.5px `plate-2` reading. After dark a clear reading turns warn: 「雲少・天黑看不清」. The lamps are the only source of a Fuji claim anywhere on the page: a pick may say 富士山露臉 only when its own lamp is go, or, for 鎌倉 and 小田原 (no lamp), when most of the six are go.
 
+Under the lamps, after a 1px `plate-rule`, one 13.5px line with the `p-snow` pictogram reads the summit snow: 富士山頂, the JMA verdict in bold (山頂沒有積雪 / 山頂積雪 5～20 cm), 今季初冠雪 M/D or 今季還沒初冠雪, and, while there is no snow, the first day the model expects snow; an 11.5px `plate-2` sub-line names the source and JMA's hour (and says when it is the last saved answer). It sits outside the weather block, so it stays when Open-Meteo fails. The 山頂下雪了沒 tool opens a drop with the verdict at 17px, the summit station's measured lows～highs (Hind, true minus signs, Japan time), the 16-day model rows (可能下雪 in bold, never red: snow is not a promise or a warning) and the past ten snow-cap dates. The verdict comes only from JMA; the model rows say 不是預報.
+
 ### Speed-Limit Strip
 An enamel strip (10px 12px, 4px radius) with the 46px 30 km/h regulatory sign, the rule in 14.5px 700, its date in 12px `plate-2`, and an underlined 自駕注意事項 link. It switches to driving mode and scrolls to the full law block (110px sign, `stop`-coloured closing line).
 
