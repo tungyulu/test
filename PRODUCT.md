@@ -101,7 +101,7 @@
 
 ## Active ETF portfolio · 持股異動日報 (`etf-00981a.html`)
 
-**Users.** The owner, following Uni-President's active ETFs — 00981A 台股增長 (the active ETF named in the October short-term plan), 00403A 升級50, 00988A 全球創新 and 00411A 前沿科技 (added 2026-10-19) — one at a time behind fund tabs, mostly on the phone after the close. Linked from the hub's 理財與筆記 lot.
+**Users.** The owner, following Uni-President's active ETFs — 00981A 台股增長 (the active ETF named in the October short-term plan), 00403A 升級50, 00988A 全球創新 and 00411A 前沿科技 (added 2026-10-19) — one at a time behind fund tabs, plus an overview tab of what all four bought and sold on the same day (which stocks two or more funds bought or sold together, and where they disagreed), mostly on the phone after the close. Linked from the hub's 理財與筆記 lot.
 
 **Purpose.** Answer every trading evening: what did the manager buy and sell today (new, removed, added, cut — in lots and an estimated amount at the close), how did the holdings move today (each stock's change, and which ones pulled or dragged the fund via previous-day weight × change), and how a single stock's position has changed since listing. Any past day can be opened and compared with 1 / 5 / 20 / 60 trading days earlier.
 

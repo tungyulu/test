@@ -73,6 +73,8 @@ button,select,input{font:inherit;color:inherit}
 @media (max-width:420px){ .funds{margin:0 8px} }
 .funds a{flex:1 1 0;min-width:0;min-height:48px;margin-right:-1px;padding:5px 10px;border:1px solid var(--rule);border-bottom:0;background:var(--paper-2);color:var(--act);text-decoration:none;display:flex;flex-direction:column;justify-content:center;line-height:1.25}
 .funds a:last-child{margin-right:0}
+.funds a.all{flex:0 0 auto}
+@media (max-width:420px){ .funds a{padding:5px 6px} }
 .funds a:hover{background:var(--paper)}
 .funds a .t{font:700 var(--fs-m)/1.25 var(--num);font-variant-numeric:tabular-nums}
 .funds a .s{font-size:var(--fs-s);color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -110,7 +112,7 @@ button,select,input{font:inherit;color:inherit}
 
 /* subject / explanation / attachment / notes rows */
 .row{display:grid;grid-template-columns:5.2em minmax(0,1fr);border-bottom:1px solid var(--rule)}
-.row:last-child{border-bottom:0}
+.row:last-child,.row[aria-labelledby$="oteLab"]{border-bottom:0}
 .row > .lab{padding:14px 0 14px 14px;font-size:var(--fs-l);line-height:1.35;border-right:1px solid var(--hair)}
 .row > .body{padding:14px 16px 18px;min-width:0}
 .subject{margin:0;font:700 var(--fs-l)/1.5 var(--sans);text-wrap:pretty}
@@ -141,6 +143,9 @@ ol.items{list-style:none;margin:0;padding:0}
 .tr .stk button{border:0;background:none;padding:0;font:700 var(--fs-m)/1.35 var(--sans);color:var(--act);cursor:pointer;text-align:left}
 .tr .stk button::after{content:"";position:absolute;inset:0}
 .tr .stk button[aria-expanded="true"]{text-decoration:underline;text-underline-offset:4px}
+.tr .stk a{font:700 var(--fs-m)/1.35 var(--sans);color:var(--act);text-decoration:none}
+.tr .stk a:hover{text-decoration:underline;text-underline-offset:4px}
+.tr .stk a::after{content:"";position:absolute;inset:0}
 .tr .code{font:400 var(--fs-s)/1 var(--num);color:var(--ink-2)}
 .tr .sub{display:block;font-size:var(--fs-s);color:var(--ink-2);line-height:1.35}
 .tr .cy{display:block;font:400 var(--fs-s)/1.2 var(--num);color:var(--ink-2)}
@@ -171,6 +176,20 @@ ol.items{list-style:none;margin:0;padding:0}
 .tb .foot{border-top:1px solid var(--hair)}
 .tb .foot button{min-height:44px;width:100%;border:0;background:none;color:var(--act);font-weight:700;font-size:var(--fs-s);cursor:pointer}
 .tb .foot button:hover{background:var(--paper-2)}
+
+/* overview: stocks two or more funds traded the same day; each fund line links to that fund's page */
+.tb.cx > .th,.tb.cx > .tr{grid-template-columns:minmax(0,1fr) max-content;column-gap:14px}
+.tb.cx > .tr{align-items:start;padding-top:9px;padding-bottom:4px}
+.tb.cx .nm-t{font-weight:700}
+.tb.cx .fl{flex-basis:100%;display:flex;flex-direction:column;margin-top:2px}
+.tb.cx .fl a{display:flex;flex-wrap:wrap;align-items:center;gap:0 8px;min-height:44px;color:var(--ink);text-decoration:none;font-size:var(--fs-s);border-top:1px dashed var(--hair)}
+.tb.cx .fl a:hover{background:var(--paper-2)}
+.tb.cx .fl a::after{content:none}
+.tb.cx .fl .tk{color:var(--act);font:700 var(--fs-s)/1 var(--num);min-width:4.2em}
+.tb.cx .fl a:hover .tk{text-decoration:underline}
+.tb.cx .c-amt{padding-top:2px}
+.ov-go{display:inline-flex;align-items:center;gap:4px;min-height:44px;margin-left:auto;font-size:var(--fs-s);font-weight:700}
+.it-h.ov{align-items:center}
 
 /* market facts */
 .kv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border:1px solid var(--rule);border-bottom:0}
@@ -327,6 +346,7 @@ ol.items{list-style:none;margin:0;padding:0}
 </nav>
 
 <nav class="funds" aria-label="基金">
+  <a href="etf-00981a.html?f=ALL" data-f="ALL" class="all"><span class="t">總覽</span><span class="s">四檔</span></a>
   <a href="etf-00981a.html" data-f="00981A"><span class="t">00981A</span><span class="s">台股增長</span></a>
   <a href="etf-00981a.html?f=00403A" data-f="00403A"><span class="t">00403A</span><span class="s">升級50</span></a>
   <a href="etf-00981a.html?f=00988A" data-f="00988A"><span class="t">00988A</span><span class="s">全球創新</span></a>
@@ -341,7 +361,7 @@ ol.items{list-style:none;margin:0;padding:0}
     </div>
     <div class="hdr">
       <div class="hc"><span>資料日期</span><span class="big n" id="hDate">讀取中…</span></div>
-      <div class="hc"><span>編號</span><span class="big" id="hNo">—</span></div>
+      <div class="hc"><span id="hNoLab">編號</span><span class="big" id="hNo">—</span></div>
       <div class="hc"><span id="vsLab">比較基準</span><span><span class="sel"><select id="vs" aria-labelledby="vsLab">
         <option value="1">前一交易日</option>
         <option value="5">5 個交易日前</option>
@@ -360,7 +380,7 @@ ol.items{list-style:none;margin:0;padding:0}
     <p class="status" id="status" role="status"></p>
   </header>
 
-  <section class="row" aria-labelledby="subjLab">
+  <section class="row one" aria-labelledby="subjLab">
     <div class="lab kai" id="subjLab">主旨</div>
     <div class="body">
       <p class="subject" id="subject"></p>
@@ -368,7 +388,7 @@ ol.items{list-style:none;margin:0;padding:0}
     </div>
   </section>
 
-  <section class="row" aria-labelledby="descLab">
+  <section class="row one" aria-labelledby="descLab">
     <div class="lab kai" id="descLab">說明</div>
     <div class="body">
       <ol class="items">
@@ -396,7 +416,7 @@ ol.items{list-style:none;margin:0;padding:0}
     </div>
   </section>
 
-  <section class="row" aria-labelledby="attLab">
+  <section class="row one" aria-labelledby="attLab">
     <div class="lab kai" id="attLab">附表</div>
     <div class="body">
       <ol class="items">
@@ -440,7 +460,7 @@ ol.items{list-style:none;margin:0;padding:0}
     </div>
   </section>
 
-  <section class="row" aria-labelledby="noteLab">
+  <section class="row one" aria-labelledby="noteLab">
     <div class="lab kai" id="noteLab">備註</div>
     <div class="body">
       <ol class="notes">
@@ -453,6 +473,58 @@ ol.items{list-style:none;margin:0;padding:0}
       <p class="upd" id="upd"></p>
     </div>
   </section>
+
+  <section class="row ovw" aria-labelledby="oSubjLab" hidden>
+    <div class="lab kai" id="oSubjLab">主旨</div>
+    <div class="body">
+      <p class="subject" id="oSubject"></p>
+      <p class="subject-note" id="oSubjectNote"></p>
+    </div>
+  </section>
+
+  <section class="row ovw" aria-labelledby="oDescLab" hidden>
+    <div class="lab kai" id="oDescLab">說明</div>
+    <div class="body">
+      <ol class="items">
+        <li class="it">
+          <div class="halves">
+            <div>
+              <div class="it-h"><h2><span class="kai">一、</span>共同買進</h2><p id="oBuyNote"></p></div>
+              <div class="tb cx" id="oBuyTb"></div>
+            </div>
+            <div>
+              <div class="it-h"><h2><span class="kai">二、</span>共同賣出</h2><p id="oSellNote"></p></div>
+              <div class="tb cx" id="oSellTb"></div>
+            </div>
+          </div>
+        </li>
+        <li class="it">
+          <div class="it-h"><h2><span class="kai">三、</span>看法分歧</h2><p>同一檔股票，有基金買進、也有基金賣出</p></div>
+          <div class="tb cx" id="oMixTb"></div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="row ovw" aria-labelledby="oAttLab" hidden>
+    <div class="lab kai" id="oAttLab">附表</div>
+    <div class="body">
+      <ol class="items" id="oFunds"></ol>
+    </div>
+  </section>
+
+  <section class="row ovw" aria-labelledby="oNoteLab" hidden>
+    <div class="lab kai" id="oNoteLab">備註</div>
+    <div class="body">
+      <ol class="notes">
+        <li>四檔基金的持股都來自統一投信「申購買回清單」，同一個資料日期就是同一天收盤後的投資組合。全球型（00988A、00411A）的清單晚兩個交易日公布，所以預設停在四檔都有清單的最新一天；往後一天可能只有台股型兩檔。</li>
+        <li>共同買進、共同賣出是同一天有兩檔以上基金朝同一個方向買賣同一檔股票；看法分歧是有買有賣。金額是各基金的數量變化 × 當日價格，換算新台幣的估計值，實際成交價不公開。</li>
+        <li>買賣用框線區分：<span class="st st-new">新增</span>雙線、<span class="st st-add">加碼</span>實心、<span class="st st-cut">減碼</span>虛線、<span class="st st-out">剔除</span>劃線。點股票或基金代號，會打開那檔基金當天的完整日報。</li>
+        <li>只整理公開資料，不是投資建議。</li>
+      </ol>
+      <p class="upd" id="oUpd"></p>
+    </div>
+  </section>
 </main>
 
 <script>
@@ -460,7 +532,8 @@ ol.items{list-style:none;margin:0;padding:0}
 'use strict';
 /* Each fund is one data file; the page shows the fund named by ?f= (00981A without it). */
 const FUND_IDS = ['00981A', '00403A', '00988A', '00411A'];
-const FID = (() => { const f = (new URLSearchParams(location.search).get('f') || '').toUpperCase(); return FUND_IDS.includes(f) ? f : '00981A'; })();
+const FID = (() => { const f = (new URLSearchParams(location.search).get('f') || '').toUpperCase(); return FUND_IDS.includes(f) || f === 'ALL' ? f : '00981A'; })();
+const OVW = FID === 'ALL';   // the overview: what all four funds bought and sold on one day
 const DATA_URL = 'data/etf-' + FID.toLowerCase() + '.json';
 let GLOBAL = false;   // a global fund: foreign holdings priced in their own currency
 const U = () => GLOBAL ? '數量' : '張數';
@@ -619,6 +692,7 @@ const nameBtn = r => h('button', {type: 'button', 'aria-expanded': 'false', oncl
 /* ---------- render ---------- */
 function render(){
   closeDetail(true);
+  if (OVW){ renderOverview(); writeHash(); return; }
   const d = DAYS[cur], b = cur - vsN >= 0 ? cur - vsN : (cur > 0 ? 0 : -1);
   const rows = compare(cur, b);
   const last = cur === DAYS.length - 1;
@@ -675,9 +749,9 @@ function renderSubject(rows, b){
 }
 
 const SHOW = 8;
-function moveTable(box, list, side){
+function moveTable(box, list, side, nameEl = nameBtn){
   box.replaceChildren();
-  if (!list.length){ box.append(h('p', {class: 'none', text: side === 'buy' ? '這段期間沒有買進。' : '這段期間沒有賣出。'})); return; }
+  if (!list.length){ box.append(h('p', {class: 'none', text: side === 'buy' ? '這段期間沒有買進。' : side === 'sell' ? '這段期間沒有賣出。' : '這段期間沒有買賣。'})); return; }
   box.append(h('div', {class: 'th', 'aria-hidden': 'true'},
     h('span', {class: 'l', text: '股票'}), h('span', {text: U() + '變化'}), h('span', {text: '估計金額'}), h('span', {text: '當日漲跌'})));
   list.forEach((r, j) => {
@@ -687,7 +761,7 @@ function moveTable(box, list, side){
       : L(r.s0) + ' → ' + L(r.s);
     const wTxt = r.kind === 'new' && !r.parked0 ? '權重 ' + r.w.toFixed(2) + '%' : '權重 ' + r.w0.toFixed(2) + ' → ' + r.w.toFixed(2) + '%';
     box.append(h('div', {class: 'tr', hidden: j >= SHOW, 'data-c': r.c},
-      h('span', {class: 'stk'}, nameBtn(r), h('span', {class: 'code', text: r.c}), stTag(r.kind), h('span', {class: 'sub n', text: sharesTxt + '・' + wTxt})),
+      h('span', {class: 'stk'}, nameEl(r), h('span', {class: 'code', text: r.c}), stTag(r.kind), h('span', {class: 'sub n', text: sharesTxt + '・' + wTxt})),
       h('span', {class: 'c-ds'}, num(dLots(r.ds, r.c), 'strong')),
       h('span', {class: 'c-amt'}, num(r.amt != null ? money(r.amt) : '—')),
       h('span', {class: 'c-chg'}, chgNode(r.chg)),
@@ -1038,11 +1112,11 @@ function go(i){
   if (inDetail){ $(cur > 0 ? 'prev' : 'next').focus({preventScroll: true}); return; }
   if (!host || !box) return;
   const back = document.querySelector('#' + box.id + ' [data-c="' + CSS.escape(host.dataset.c) + '"]');
-  (back ? (back.matches('button') ? back : back.querySelector('.stk button')) : $(cur > 0 ? 'prev' : 'next'))?.focus({preventScroll: true});
+  (back ? (back.matches('button') ? back : back.querySelector('.stk button, .stk a')) : $(cur > 0 ? 'prev' : 'next'))?.focus({preventScroll: true});
 }
 $('prev').addEventListener('click', () => go(cur - 1));
 $('next').addEventListener('click', () => go(cur + 1));
-$('latest').addEventListener('click', () => go(DAYS.length - 1));
+$('latest').addEventListener('click', () => go(DEF >= 0 ? DEF : DAYS.length - 1));
 $('day').addEventListener('change', () => go(DAYS.findIndex(d => d.d === $('day').value)));
 $('vs').addEventListener('change', () => { vsN = +$('vs').value; render(); });
 document.addEventListener('keydown', e => {
@@ -1054,7 +1128,7 @@ document.addEventListener('keydown', e => {
 });
 function writeHash(){
   const p = [];
-  if (cur !== DAYS.length - 1) p.push('d=' + DAYS[cur].d);
+  if (cur !== (DEF >= 0 ? DEF : DAYS.length - 1)) p.push('d=' + DAYS[cur].d);
   if (vsN !== 1) p.push('vs=' + vsN);
   if (open) p.push('s=' + encodeURIComponent(open.c));
   const hs = p.length ? '#' + p.join('&') : '';
@@ -1098,8 +1172,186 @@ function paintFund(f){
   }
 }
 
+/* ---------- overview: all four funds on one day ---------- */
+let FD = [], DEF = -1;   // loaded funds {id, fund, days, idx}; the default day index
+const isBuy = r => r.kind === 'new' || r.kind === 'add', isSell = r => r.kind === 'out' || r.kind === 'cut';
+const fundLink = (id, d, c) => 'etf-00981a.html' + (id === '00981A' ? '' : '?f=' + id) + '#d=' + d + (vsN !== 1 ? '&vs=' + vsN : '') + (c ? '&s=' + encodeURIComponent(c) : '');
+/* The trades of fund F on date d against vsN of its own trading days earlier (null without a basket that day).
+   compare() reads the page-wide DAYS, so it is pointed at F's days for the call. */
+function fundMoves(F, d){
+  const i = F.idx.get(d);
+  if (i == null) return null;
+  const keep = DAYS, keepG = GLOBAL;
+  DAYS = F.days; GLOBAL = F.fund.kind === 'global'; HCACHE.clear();
+  const b = i - vsN >= 0 ? i - vsN : (i > 0 ? 0 : -1);
+  const rows = b < 0 ? [] : compare(i, b).filter(r => r.kind);
+  DAYS = keep; GLOBAL = keepG; HCACHE.clear();
+  return {rows, base: b >= 0 ? F.days[b].d : null, short: i - vsN < 0 && b >= 0};
+}
+function renderOverview(){
+  const d = DAYS[cur].d, last = cur === DAYS.length - 1;
+  const res = FD.map(F => ({F, m: fundMoves(F, d)}));
+  const have = res.filter(x => x.m), miss = res.filter(x => !x.m);
+  $('hDate').textContent = rocLabel(d);
+  $('hNo').textContent = have.length + '／' + FD.length + ' 檔';
+  $('day').value = d;
+  $('prev').disabled = cur === 0;
+  $('next').disabled = last;
+  $('latest').hidden = cur === DEF;
+  $('latest').textContent = '回到四檔都有的最新一天';
+  document.title = '主動 ETF 總覽 · ' + dLabel(d);
+
+  /* group by stock across funds */
+  const by = new Map();
+  for (const {F, m} of have) for (const r of m.rows){
+    if (!by.has(r.c)) by.set(r.c, {c: r.c, n: r.n, list: []});
+    by.get(r.c).list.push({F, r});
+  }
+  const groups = [...by.values()].map(g => ({...g, buy: g.list.filter(x => isBuy(x.r)), sell: g.list.filter(x => isSell(x.r)),
+    amt: g.list.reduce((a, x) => a + Math.abs(x.r.amt || 0), 0)}));
+  const both = groups.filter(g => g.buy.length >= 2 && !g.sell.length).sort((a, b) => b.amt - a.amt);
+  const sold = groups.filter(g => g.sell.length >= 2 && !g.buy.length).sort((a, b) => b.amt - a.amt);
+  const mix = groups.filter(g => g.buy.length && g.sell.length).sort((a, b) => b.amt - a.amt);
+
+  /* subject */
+  const p = $('oSubject'); p.replaceChildren();
+  const who = have.length === FD.length ? (FD.length === 4 ? '四檔基金' : FD.length + ' 檔基金') : have.map(x => x.F.id).join('、');
+  const since = vsN === 1 ? '本日' : '與 ' + vsN + ' 個交易日前相比，';
+  const nb = groups.filter(g => g.buy.length).length, ns = groups.filter(g => g.sell.length).length;
+  const sp = t => /[0-9A-Z]/.test(t) ? ' ' : '';
+  p.append(since + (since.endsWith('，') ? '' : sp(who[0])) + who + sp(who.slice(-1)) + '共買進 ', h('span', {class: 'ct', text: String(nb)}), ' 檔、賣出 ', h('span', {class: 'ct', text: String(ns)}), ' 檔股票');
+  const clause = (label, L, box) => {
+    if (!L.length) return;
+    p.append('；' + label);
+    L.slice(0, 3).forEach((g, j) => {
+      if (j) p.append('、');
+      p.append(h('button', {class: 'nm', type: 'button', text: g.n, onclick: () => {
+        const row = document.querySelector('#' + box + ' .tr[data-c="' + CSS.escape(g.c) + '"]');
+        if (row){ row.hidden = false; row.scrollIntoView({block: 'start', behavior: RM.matches ? 'auto' : 'smooth'}); row.querySelector('a')?.focus({preventScroll: true}); }
+      }}));
+    });
+    p.append(L.length > 3 ? '等 ' : ' ', h('span', {class: 'ct', text: String(L.length)}), ' 檔');
+  };
+  clause('兩檔以上同時買進', both, 'oBuyTb');
+  clause('同時賣出', sold, 'oSellTb');
+  clause('有買有賣', mix, 'oMixTb');
+  if (!both.length && !sold.length && !mix.length) p.append('；沒有兩檔以上同時買賣的股票');
+  p.append('。');
+  const per = have.map(({F, m}) => {
+    const sum = f => m.rows.filter(f).reduce((a, r) => a + (r.amt || 0), 0);
+    return F.id + ' 買 ' + money(sum(isBuy)) + '、賣 ' + money(sum(isSell));
+  });
+  const before = miss.filter(x => d < x.F.days[0].d), late = miss.filter(x => d >= x.F.days[0].d);
+  $('oSubjectNote').textContent = '估計金額：' + per.join('；') + '。' +
+    (late.length ? late.map(x => x.F.id).join('、') + ' 沒有這天的清單' + (late.every(x => x.F.fund.kind === 'global') ? '（全球型晚兩個交易日公布）' : '') + '。' : '') +
+    (before.length ? before.map(x => x.F.id).join('、') + ' 這天還沒成立。' : '');
+
+  /* cross-fund tables */
+  const cross = (box, L, empty) => {
+    box.replaceChildren();
+    if (!L.length){ box.append(h('p', {class: 'none', text: empty})); return; }
+    box.append(h('div', {class: 'th', 'aria-hidden': 'true'}, h('span', {class: 'l', text: '股票・基金'}), h('span', {text: '估計金額'})));
+    L.forEach((g, j) => {
+      const net = g.list.reduce((a, x) => a + (x.r.amt || 0), 0);
+      box.append(h('div', {class: 'tr', hidden: j >= SHOW, 'data-c': g.c},
+        h('span', {class: 'stk'}, h('span', {class: 'nm-t', text: g.n}), h('span', {class: 'code', text: g.c}),
+          h('span', {class: 'fl'}, g.list.map(({F, r}) => h('a', {href: fundLink(F.id, d, g.c)},
+            h('span', {class: 'tk', text: F.id}), stTag(r.kind), num(dLots(r.ds, r.c)), r.amt != null ? num('約 ' + money(r.amt), 'flat') : null)))),
+        h('span', {class: 'c-amt'}, num(g.buy.length && g.sell.length ? (net >= 0 ? '淨買 ' : '淨賣 ') + money(net) : money(g.amt), 'strong'))));
+    });
+    if (L.length > SHOW){
+      const bt = h('button', {type: 'button', 'aria-expanded': 'false', text: '再列 ' + (L.length - SHOW) + ' 檔'});
+      bt.addEventListener('click', () => {
+        const show = bt.getAttribute('aria-expanded') !== 'true';
+        box.querySelectorAll(':scope > .tr').forEach((r, j) => { if (j >= SHOW) r.hidden = !show; });
+        bt.setAttribute('aria-expanded', String(show));
+        bt.textContent = show ? '收起' : '再列 ' + (L.length - SHOW) + ' 檔';
+      });
+      box.append(h('div', {class: 'foot'}, bt));
+    }
+  };
+  const one = have.length < 2 ? '這天只有一檔基金有清單。' : '';
+  cross($('oBuyTb'), both, one || '沒有兩檔以上同時買進的股票。');
+  cross($('oSellTb'), sold, one || '沒有兩檔以上同時賣出的股票。');
+  cross($('oMixTb'), mix, one || '沒有一買一賣的股票。');
+  $('oBuyNote').textContent = both.length ? both.length + ' 檔' : '';
+  $('oSellNote').textContent = sold.length ? sold.length + ' 檔' : '';
+
+  /* each fund's own trades */
+  const ol = $('oFunds'); ol.replaceChildren();
+  const NUM = ['一', '二', '三', '四', '五', '六'];
+  res.forEach(({F, m}, k) => {
+    const name = F.fund.short || F.fund.name || '';
+    const box = h('div', {class: 'tb mv', id: 'oF-' + F.id});
+    let note = '';
+    if (!m){
+      const lastD = F.days[F.days.length - 1].d, firstD = F.days[0].d;
+      box.append(h('p', {class: 'none', text: d < firstD ? '這檔基金的資料從 ' + dLabel(firstD, true) + ' 開始。'
+        : '沒有這天的清單' + (lastD < d ? '，最新是 ' + dLabel(lastD) + (F.fund.kind === 'global' ? '（全球型晚兩個交易日公布）' : '') : '') + '。'}));
+    } else {
+      const cnt = kd => m.rows.filter(r => r.kind === kd).length;
+      note = ['new', 'add', 'cut', 'out'].map(kd => KIND[kd] + ' ' + cnt(kd)).join('、')
+        + (m.short ? '（上市未滿 ' + vsN + ' 個交易日，與資料第一天 ' + dLabel(m.base) + ' 相比）' : '');
+      const list = m.rows.filter(isBuy).sort(byAmt).concat(m.rows.filter(isSell).sort(byAmt));
+      GLOBAL = F.fund.kind === 'global';
+      moveTable(box, list, m.base ? 'all' : 'first', r => h('a', {href: fundLink(F.id, d, r.c)}, r.n));
+      GLOBAL = false;
+      if (!m.base) box.replaceChildren(h('p', {class: 'none', text: '這是這檔基金資料的第一天，沒有更早的持股可以比較。'}));
+    }
+    ol.append(h('li', {class: 'it'},
+      h('div', {class: 'it-h ov'}, h('h2', null, h('span', {class: 'kai', text: NUM[k] + '、'}), F.id + ' ' + name), note ? h('p', {text: note}) : null,
+        h('a', {class: 'ov-go', href: fundLink(F.id, m ? d : F.days[F.days.length - 1].d)}, F.id + ' 完整日報', svgIcon('i-right'))),
+      box));
+  });
+}
+
+async function bootAll(){
+  document.querySelectorAll('.one').forEach(el => { el.hidden = true; });
+  document.querySelectorAll('.ovw').forEach(el => { el.hidden = false; });
+  $('fut').hidden = true;
+  $('title').textContent = '主動 ETF 持股異動總覽';
+  $('titleSub').textContent = '統一投信四檔主動式ETF同一天的買賣・整理自申購買回清單，不是官方公告';
+  $('hNoLab').textContent = '有清單';
+  const ids = FUND_IDS;
+  const got = await Promise.allSettled(ids.map(id => fetch('data/etf-' + id.toLowerCase() + '.json', {cache: 'no-cache'})
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })));
+  got.forEach((g, k) => {
+    if (g.status !== 'fulfilled') return;
+    const days = (g.value.days || []).filter(x => x.h && x.h.length);
+    if (days.length) FD.push({id: ids[k], fund: g.value.fund || {}, days, idx: new Map(days.map((x, i) => [x.d, i]))});
+  });
+  if (!FD.length){
+    $('main').replaceChildren(h('div', {class: 'titlebar'}, h('h1', {text: '主動 ETF 持股異動總覽'})),
+      h('div', {class: 'err', role: 'alert'}, h('h2', {text: '讀不到持股資料'}),
+        h('p', null, '四個資料檔都沒有載入。直接用檔案總管打開本機的 HTML 時，瀏覽器不允許讀資料檔，請改開 ',
+          h('a', {href: 'https://tungyulu.github.io/test/etf-00981a.html?f=ALL', text: 'tungyulu.github.io/test/etf-00981a.html?f=ALL'}), '。')));
+    return;
+  }
+  const dates = [...new Set(FD.flatMap(F => F.days.map(x => x.d)))].sort();
+  DAYS = dates.map(x => ({d: x}));
+  const common = dates.filter(x => FD.every(F => F.idx.has(x)));
+  DEF = dates.indexOf(common.length ? common[common.length - 1] : dates[dates.length - 1]);
+  cur = DEF;
+  const sel = $('day');
+  for (let i = DAYS.length - 1; i >= 0; i--) sel.append(h('option', {value: DAYS[i].d, text: rocLabel(DAYS[i].d)}));
+  readHash();
+  const lastOf = F => F.days[F.days.length - 1].d, newest = dates[dates.length - 1];
+  const ahead = FD.filter(F => lastOf(F) > DAYS[DEF].d);
+  $('status').textContent = (common.length ? '四檔都有清單的最新一天是 ' + dLabel(DAYS[DEF].d, true) + '。' : '')
+    + (ahead.length ? ahead.map(F => F.id).join('、') + ' 已有 ' + dLabel(newest) + ' 的清單；全球型的清單晚兩個交易日。' : '')
+    + (FD.length < ids.length ? ids.filter(id => !FD.some(F => F.id === id)).join('、') + ' 的資料檔沒有載入。' : '');
+  if (FD.length < ids.length) $('status').classList.add('warn');
+  const newestUpd = got.map(g => g.status === 'fulfilled' && g.value.updated).filter(Boolean).sort().pop();
+  if (newestUpd){
+    const u = new Date(Date.parse(newestUpd) + 8 * 3600e3);
+    $('oUpd').textContent = '資料檔最後更新於 ' + (u.getUTCFullYear() - 1911) + '/' + (u.getUTCMonth() + 1) + '/' + u.getUTCDate() + ' ' + String(u.getUTCHours()).padStart(2, '0') + ':' + String(u.getUTCMinutes()).padStart(2, '0') + '（台灣時間）。';
+  }
+  render();
+}
+
 /* ---------- boot ---------- */
 async function boot(){
+  if (OVW) return bootAll();
   try {
     const r = await fetch(DATA_URL, {cache: 'no-cache'});
     if (!r.ok) throw new Error('HTTP ' + r.status);

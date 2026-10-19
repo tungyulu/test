@@ -288,7 +288,10 @@ Square everywhere: the sheet, tables, keys, selects, the search field, cells, ta
 ## Components
 
 ### Fund tabs
-Four square folder tabs sit on the top edge of the sheet, one per fund (ticker in 15px bold tabular figures over the short name in 13px secondary ink), equal widths, 1px strong-rule frames without a bottom edge, rule-wash ground and navy ticker. The current fund's tab takes the title bar's reversed ground and overlaps the sheet edge by 1px, so tab and bar read as one band. Added 2026-10-19 with the three new funds.
+Four square folder tabs sit on the top edge of the sheet, one per fund (ticker in 15px bold tabular figures over the short name in 13px secondary ink), equal widths, 1px strong-rule frames without a bottom edge, rule-wash ground and navy ticker. The current fund's tab takes the title bar's reversed ground and overlaps the sheet edge by 1px, so tab and bar read as one band. Added 2026-10-19 with the three new funds. The first tab, 總覽 over 四檔, takes only its content width.
+
+### Overview cross tables
+The overview (`?f=ALL`) keeps the same form rows. Its 說明 tables list one stock per row: the name in bold ink (not a link) with its code, then one line per fund, each a 44px link separated by a dashed hairline: the ticker in navy tabular figures, the line-form trade tag, the quantity change and the estimated amount. The right column is the combined amount, or 淨買 / 淨賣 for a stock the funds disagreed on. 附表 repeats each fund's buys and sells in the 說明一 table form, names linking to that fund's page, with a navy 完整日報 link and chevron at the right of each item heading.
 
 ### Title bar and header grid
 Ink-reversed bar with the 24px title and a 13px line naming the source and saying it is not an official notice. Below it the ruled header grid: each cell has a pale-blue label row and a value row (資料日期 in ROC form with weekday, 編號 第 N 號, the comparison select, the previous / day / next key group). A status line under it reports loading; its warning state is bold.

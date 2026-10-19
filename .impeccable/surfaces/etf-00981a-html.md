@@ -7,7 +7,7 @@ related_targets: []
 
 # etf-00981a.html — 持股異動日報 (00981A, 00403A, 00988A, 00411A)
 
-2026-10-19: the page now serves four Uni-President active ETFs behind folder tabs above the sheet (`?f=TICKER`). The contract below still holds for each fund; global funds (00988A, 00411A) count foreign stocks in shares, print prices with their currency and convert amounts to NTD.
+2026-10-19: the page now serves four Uni-President active ETFs behind folder tabs above the sheet (`?f=TICKER`). The contract below still holds for each fund; global funds (00988A, 00411A) count foreign stocks in shares, print prices with their currency and convert amounts to NTD. An overview tab (`?f=ALL`) uses the same notice form for all four funds on one day: 主旨, 說明 共同買進 / 共同賣出 / 看法分歧, 附表 per fund.
 
 Scope: one page, Operate mode. Audience: the owner, mostly on a phone after the close (evening, indoors), checking what the 00981A manager bought and sold today. Job: today's buys and sells first, then the holdings' day change, then any stock's history. Constraints: every existing function stays (day picker, 1/5/20/60-day comparison, contribution, sortable/searchable holdings, parked rule, per-stock history and trade log, hash state, theme); the user rejects "too fancy / hard to read" and "information hidden behind taps". Not an official notice: the page names its source and says it is a personal summary.
 
