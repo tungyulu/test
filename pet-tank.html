@@ -439,7 +439,7 @@ footer .reset.armed{background:#5a2a24;color:#fff;border-color:#8a3a30}
     <ol>
       <li><b>蛋</b>放進箱子 1 分鐘後孵化。<b>寶寶期</b>約 1 小時：待在同一個箱子，每 15 分鐘長 1 個場地細胞，長滿 4 個就變成這個箱子的兒童。中途換箱子，細胞重新算。</li>
       <li><b>兒童期 1 天</b>：這段時間吃的食物會累積食物細胞，同一種細胞的食物加到 5 點（每份 +1、+2 或 +4）就長出來。只長出一種，就變成那一種的青少年；一種都沒有或兩種都長了，就是雜食。</li>
-      <li><b>青少年期 1 天</b>：這段時間的龍捲風次數決定成年的樣子，分 0–1 次、2–5 次、6 次以上三種。龍捲風 0 次、餵到全飽 5 次（飯糰）、心情滿 5 次（太陽），而且不是雜食，就會長成這個箱子的隱藏角色。</li>
+      <li><b>青少年期 1 天</b>：這段時間的龍捲風次數決定成年的樣子，分 0–1 次、2–5 次、6 次以上三種。龍捲風 0 次、餵到全飽 5 次（飯糰）、心情滿 5 次（太陽），而且不是雜食，就會長成這個箱子的隱藏角色。飯糰和太陽每小時最多各算 1 次。</li>
       <li><b>龍捲風</b>：肚子或心情空了、或睡著了燈還開著，牠會叫你。15 分鐘內沒處理就 +1，之後每拖 2 小時再 +1。</li>
       <li><b>便便</b>放超過 2 小時會變黑；箱子髒（3 坨以上或有黑掉的）又心情低，或餓超過 3 小時，就會生病。生病 12 小時沒吃藥會變成小惡魔，24 小時就離開了。超過一天沒保養，心情會掉得比較快。</li>
       <li><b>飼料盒</b>：+1、+2 的食物隨時有；+4 的每天早上 6 點補 2 份。一般飼料只填肚子，點心最能讓心情變好。</li>
@@ -1039,7 +1039,7 @@ function step(t) {
   } else if (!S.asleep) {
     if (h >= 22 || h < 6) { sleepNow(); ev('slept'); }
     else if (h >= 19 && !S.light) { sleepNow(); ev('slept'); }
-  } else if (h >= 10 && h < 19) wakeNow(true);
+  } else if ((h >= 10 && h < 19) || (S.light && h >= 6 && h < 10)) wakeNow(h >= 10);
   // drain
   if (!S.asleep) {
     const base = S.stage === 'baby' ? 100 / 45 : 100 / 270;
@@ -1056,14 +1056,14 @@ function step(t) {
     }
   }
   // illness
-  if (S.hunger <= 0) { if (!S.hzSince) S.hzSince = t; } else S.hzSince = 0;
+  if (S.hunger <= 0) { if (!S.hzSince) S.hzSince = t; else if (S.asleep) S.hzSince += MIN; } else S.hzSince = 0;
   if (!S.sick && S.stage !== 'baby' && !S.asleep && ((dirtyTank(t) && S.mood < 40) || (S.hzSince && t - S.hzSince >= 3 * HOUR))) { S.sick = true; S.sickAt = t; ev('sick'); }
   if (S.sick) {
     if (!S.devil && t - S.sickAt >= 12 * HOUR) { S.devil = true; ev('devil'); }
     if (S.devil && t - S.sickAt >= 24 * HOUR) { leave(t, 'sick'); return; }
   }
   // calls and care misses
-  const need = !S.asleep ? (S.hunger <= 0 ? 'hunger' : S.mood <= 0 ? 'mood' : null) : (S.light ? 'light' : null);
+  const need = !S.asleep ? (S.hunger <= 0 ? 'hunger' : S.mood <= 0 ? 'mood' : null) : (S.light && S.stage !== 'baby' ? 'light' : null);
   if (!need) S.call = null;
   else {
     if (!S.call || S.call.k !== need) { S.call = { k: need, at: t, miss: 0 }; ev('calls'); }
@@ -1085,12 +1085,13 @@ function simulate(to) {
 function leave(t, why) {
   S.memorial.unshift({ char: S.char, field: S.field, born: S.born, left: t, why });
   S.memorial = S.memorial.slice(0, 12);
-  S.stage = 'gone'; S.call = null; S.asleep = false; ev('left');
+  S.stage = 'gone'; S.call = null; S.asleep = false; S.sick = false; S.devil = false; ev('left');
 }
 function retire(t) {
   const list = S.residents[S.field];
   list.push({ char: S.char, born: S.born, left: t });
   while (list.length > 4) S.memorial.unshift(Object.assign({ field: S.field, why: 'moved' }, list.shift()));
+  S.memorial = S.memorial.slice(0, 12);
 }
 function newEgg(field) {
   const t = now();
@@ -1108,6 +1109,11 @@ function moveTank(field) {
 }
 
 /* ---------- care actions; each returns { ok, msg } ---------- */
+// a full stomach (rice ball) or full mood (sun) counts at most once an hour
+function award(kind, t) {
+  if (S.stage !== 'young' || t - (S[kind + 'At'] || 0) < HOUR) return false;
+  S[kind + 'At'] = t; S[kind]++; return true;
+}
 function feedable() {
   if (!awakeStage()) return '還沒孵出來';
   if (S.asleep) return '牠在睡覺';
@@ -1116,22 +1122,25 @@ function feedable() {
 function act(kind, arg) {
   const t = now(); simulate(t);
   const nm = CH[S.char]?.name || '';
+  if (!alive()) return { ok: false, msg: '箱子裡現在沒有電子雞' };
   let r;
   switch (kind) {
     case 'feed': {
       const F = FOODS[arg]; const why = feedable();
+      if (!F) { r = { ok: false, msg: '沒有這種食物' }; break; }
       if (why) { r = { ok: false, msg: why }; break; }
       if (S.stage === 'baby' && !F.baby) { r = { ok: false, msg: '寶寶只喝奶' }; break; }
       if (S.stage !== 'baby' && F.baby) { r = { ok: false, msg: '牠已經不喝奶了' }; break; }
-      if (S.hunger >= 99.5 && F.h >= 20) { r = { ok: false, msg: `${nm}吃不下了，搖搖頭`, no: 1 }; break; }
+      if (!F || (F.field && F.field !== S.field)) { r = { ok: false, msg: '這個箱子沒有這種食物' }; break; }
+      if (S.hunger >= 99.5) { r = { ok: false, msg: `${nm}吃不下了，搖搖頭`, no: 1 }; break; }
       if (F.stocked && !(S.stock[F.id] > 0)) { r = { ok: false, msg: `${F.name}賣完了，明天早上 6 點補貨` }; break; }
       if (F.stocked) S.stock[F.id]--;
       const h0 = S.hunger, m0 = S.mood;
       S.hunger = clamp(S.hunger + F.h, 0, 100);
       S.mood = clamp(S.mood + (S.stage === 'adult' || F.id !== 'pellet' ? F.m : 0), 0, 100);
       let extra = '';
-      if (h0 < 100 && S.hunger >= 100) { if (S.stage === 'young') S.rice++; extra += '，吃到全飽（飯糰 +1）'; }
-      if (m0 < 100 && S.mood >= 100) { if (S.stage === 'young') S.sun++; extra += '，心情滿了（太陽 +1）'; }
+      if (h0 < 100 && S.hunger >= 100) extra += award('rice', t) ? '，吃到全飽（飯糰 +1）' : '，吃到全飽';
+      if (m0 < 100 && S.mood >= 100) extra += award('sun', t) ? '，心情滿了（太陽 +1）' : '，心情滿了';
       if (S.stage === 'kid' && F.cell) {
         const before = S.pts[F.cell] || 0;
         S.pts[F.cell] = Math.min(5, before + F.p);
@@ -1143,10 +1152,11 @@ function act(kind, arg) {
       break;
     }
     case 'play': {
+      const why = feedable(); if (why) { r = { ok: false, msg: why }; break; }
       const win = arg;
       const m0 = S.mood; S.mood = clamp(S.mood + (win ? 50 : 20), 0, 100);
       let extra = '';
-      if (m0 < 100 && S.mood >= 100) { if (S.stage === 'young') S.sun++; extra = '（太陽 +1）'; }
+      if (m0 < 100 && S.mood >= 100 && award('sun', t)) extra = '（太陽 +1）';
       if (S.call && S.call.k === 'mood') S.call = null;
       r = { ok: true, msg: win ? `贏了！${nm}心情大好${extra}` : `輸了，不過${nm}還是玩得很開心${extra}` };
       break;
@@ -1161,7 +1171,7 @@ function act(kind, arg) {
       if (S.asleep) { r = { ok: false, msg: '牠在睡覺，明天再噴' }; break; }
       const m0 = S.mood; S.groomAt = t; S.mood = clamp(S.mood + 15, 0, 100);
       let extra = '';
-      if (m0 < 100 && S.mood >= 100) { if (S.stage === 'young') S.sun++; extra = '（太陽 +1）'; }
+      if (m0 < 100 && S.mood >= 100 && award('sun', t)) extra = '（太陽 +1）';
       r = { ok: true, msg: `幫${nm}噴水梳毛，牠舒服地抖了抖${extra}` }; break;
     }
     case 'light': {
@@ -1192,7 +1202,8 @@ function act(kind, arg) {
   return r;
 }
 function step0() {
-  const need = !S.asleep ? (S.hunger <= 0 ? 'hunger' : S.mood <= 0 ? 'mood' : null) : (S.light ? 'light' : null);
+  if (!alive()) { S.call = null; return; }
+  const need = !S.asleep ? (S.hunger <= 0 ? 'hunger' : S.mood <= 0 ? 'mood' : null) : (S.light && S.stage !== 'baby' ? 'light' : null);
   if (!need || (S.call && S.call.k !== need)) S.call = need ? { k: need, at: now(), miss: 0 } : null;
 }
 
@@ -1527,7 +1538,7 @@ function openLens() {
   if (S.stage === 'egg') body = '<p class="row">蛋裡面還看不清楚。</p>';
   if (S.stage === 'baby') body = `<div class="cellslots" style="--fc:${F.fc}">${[0, 1, 2, 3].map(i => `<span class="${i < S.cells ? 'on' : ''}"><svg viewBox="0 0 24 24" aria-hidden="true">${CELL_ICON[F.cell]}</svg></span>`).join('')}</div><p class="row">${F.cell}細胞 <b>${S.cells}/4</b></p><p class="row muted">每 15 分鐘長 1 個，長滿 4 個就變成${F.name}的兒童</p>`;
   if (S.stage === 'kid') body = CELLS[S.field].map(([k, nm, col]) => { const v = S.pts[k] || 0; return `<p class="row" style="--cc:${col}"><b>${nm}細胞</b><span class="dots">${[0, 1, 2, 3, 4].map(i => `<i class="${i < v ? 'on' : ''}"></i>`).join('')}</span>${S.grown.includes(k) ? '長出來了' : `${v}/5`}</p>`; }).join('') + '<p class="row muted">只長一種，就變成那種青少年；沒長或兩種都長，就是雜食。</p>';
-  if (S.stage === 'young') body = `<p class="row"><b>${S.line === 'omni' ? '雜食' : CELL[S.line].name + '細胞'}</b></p><p class="row">龍捲風 <b>${S.tor}</b> 次・飯糰 <b>${S.rice}</b>/5・太陽 <b>${S.sun}</b>/5</p><p class="row muted">${S.line === 'omni' ? '0–1 次、2–5 次、6 次以上各長成不同的樣子' : '龍捲風 0 次，飯糰和太陽都滿 5，就是隱藏角色'}</p>`;
+  if (S.stage === 'young') body = `<p class="row"><b>${S.line === 'omni' ? '雜食' : CELL[S.line].name + '細胞'}</b></p><p class="row">龍捲風 <b>${S.tor}</b> 次・飯糰 <b>${S.rice}</b>/5・太陽 <b>${S.sun}</b>/5</p><p class="row muted">${S.line === 'omni' ? '0–1 次、2–5 次、6 次以上各長成不同的樣子' : '龍捲風 0 次，飯糰和太陽都滿 5（每小時最多各 1），就是隱藏角色'}</p>`;
   if (S.stage === 'adult') body = `<p class="row"><b>${c.name}</b></p><p class="row muted">${route(S.char)}</p><p class="row muted">${c.desc}</p>`;
   const left = S.stage === 'baby' || NEXT[S.stage] ? `<p class="row muted">${timeLeft()}</p>` : '';
   const meters = awakeStage() ? `<p class="row">肚子 ${boxes(S.hunger, 3)}<span class="sr">${Math.round(S.hunger)}%</span></p><p class="row">心情 ${boxes(S.mood, 9)}<span class="sr">${Math.round(S.mood)}%</span></p>` : '';
@@ -1608,7 +1619,7 @@ function tick(fromHidden) {
     setTimeout(() => { tank.classList.remove('evolving'); lastSprKey = ''; renderAll(true); say(`長成「${CH[S.char].name}」了！`); }, 1300);
     return;
   }
-  if (!wasCall && S.call && !document.hidden) navigator.vibrate?.(120);
+  if (!wasCall && S.call && !document.hidden && navigator.userActivation?.hasBeenActive) navigator.vibrate?.(120);
   renderAll(e.evolved);
 }
 function clock() { const d = new Date(now()); $('#clock').textContent = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`; }
