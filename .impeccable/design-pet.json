@@ -1,0 +1,943 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T09:45:55+00:00",
+  "title": "Design System: 電子雞飼養箱 · Pet-Shop Tank",
+  "extensions": {
+    "colorMeta": {
+      "wall": {
+        "role": "neutral",
+        "displayName": "Shop Wall",
+        "canonical": "#162024",
+        "tonalRamp": [
+          "#0c1113",
+          "#1b272c",
+          "#2e444c",
+          "#466572",
+          "#618d9e",
+          "#8dadb9",
+          "#c0d1d8",
+          "#e9eff1"
+        ]
+      },
+      "wall-2": {
+        "role": "neutral",
+        "displayName": "Shop Wall 2",
+        "canonical": "#1d2a2f",
+        "tonalRamp": [
+          "#0c1113",
+          "#1b272c",
+          "#2f444c",
+          "#466572",
+          "#618d9e",
+          "#8dadb9",
+          "#c0d1d8",
+          "#e9eff1"
+        ]
+      },
+      "wall-3": {
+        "role": "neutral",
+        "displayName": "Wall Tile",
+        "canonical": "#273840",
+        "tonalRamp": [
+          "#0c1113",
+          "#1b272c",
+          "#2e434c",
+          "#466472",
+          "#618b9e",
+          "#8dabb9",
+          "#c0d0d8",
+          "#e9eff1"
+        ]
+      },
+      "peg": {
+        "role": "neutral",
+        "displayName": "Peg Dot",
+        "canonical": "#0d1518",
+        "tonalRamp": [
+          "#0b1114",
+          "#19292e",
+          "#2b454f",
+          "#416877",
+          "#5a91a5",
+          "#88b0be",
+          "#bdd3db",
+          "#e8f0f2"
+        ]
+      },
+      "wall-dark": {
+        "role": "neutral",
+        "displayName": "Wall, Lamp Off",
+        "canonical": "#0c1215",
+        "tonalRamp": [
+          "#0b1113",
+          "#1a272d",
+          "#2d434e",
+          "#436475",
+          "#5d8ba2",
+          "#8aacbc",
+          "#bed1da",
+          "#e8eff2"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Wall Ink",
+        "canonical": "#eaf2ef",
+        "tonalRamp": [
+          "#0c1310",
+          "#1b2c26",
+          "#2f4c41",
+          "#467161",
+          "#629e87",
+          "#8eb9a9",
+          "#c0d8cf",
+          "#e9f1ee"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Wall Ink 2",
+        "canonical": "#b3c7c1",
+        "tonalRamp": [
+          "#0d1210",
+          "#1e2926",
+          "#344641",
+          "#4e6a61",
+          "#6c9387",
+          "#95b1a9",
+          "#c4d4cf",
+          "#eaf0ee"
+        ]
+      },
+      "ink-disabled": {
+        "role": "neutral",
+        "displayName": "Disabled Ink",
+        "canonical": "#7d8f8a",
+        "tonalRamp": [
+          "#0e1010",
+          "#212625",
+          "#39423f",
+          "#55635f",
+          "#768984",
+          "#9caaa6",
+          "#c8d0ce",
+          "#eceeee"
+        ]
+      },
+      "rim": {
+        "role": "neutral",
+        "displayName": "Tank Plastic",
+        "canonical": "#131618",
+        "tonalRamp": [
+          "#0e1011",
+          "#202528",
+          "#363f44",
+          "#515e66",
+          "#71828e",
+          "#99a5ae",
+          "#c6cdd2",
+          "#ebeeef"
+        ]
+      },
+      "rim-2": {
+        "role": "neutral",
+        "displayName": "Tank Plastic 2",
+        "canonical": "#2a3034",
+        "tonalRamp": [
+          "#0e1011",
+          "#202427",
+          "#373f44",
+          "#525e66",
+          "#72828d",
+          "#99a5ad",
+          "#c7cdd1",
+          "#ebeeef"
+        ]
+      },
+      "rim-3": {
+        "role": "neutral",
+        "displayName": "Tank Plastic 3",
+        "canonical": "#3b4348",
+        "tonalRamp": [
+          "#0e1011",
+          "#202527",
+          "#373f43",
+          "#535e65",
+          "#73828c",
+          "#9aa5ac",
+          "#c7cdd1",
+          "#ebeeef"
+        ]
+      },
+      "shelf": {
+        "role": "neutral",
+        "displayName": "Shelf Board",
+        "canonical": "#3a4348",
+        "tonalRamp": [
+          "#0e1011",
+          "#202528",
+          "#373f44",
+          "#525f66",
+          "#72838d",
+          "#99a6ad",
+          "#c7ced1",
+          "#ebeeef"
+        ]
+      },
+      "shelf-edge": {
+        "role": "neutral",
+        "displayName": "Shelf Front Edge",
+        "canonical": "#20272b",
+        "tonalRamp": [
+          "#0d1012",
+          "#1e2529",
+          "#344046",
+          "#4e5f69",
+          "#6d8592",
+          "#96a7b1",
+          "#c5ced3",
+          "#ebeef0"
+        ]
+      },
+      "tank-black": {
+        "role": "neutral",
+        "displayName": "Tank Interior",
+        "canonical": "#0b1114",
+        "tonalRamp": [
+          "#0b1114",
+          "#19272e",
+          "#2b434f",
+          "#416576",
+          "#5a8ca5",
+          "#89acbe",
+          "#bdd1db",
+          "#e8eff2"
+        ]
+      },
+      "glass": {
+        "role": "neutral",
+        "displayName": "Glass Edge",
+        "canonical": "#9fd6c9",
+        "tonalRamp": [
+          "#091513",
+          "#15322b",
+          "#25564a",
+          "#37816f",
+          "#4cb39a",
+          "#7ec8b7",
+          "#b8e0d7",
+          "#e6f4f1"
+        ]
+      },
+      "lamp": {
+        "role": "neutral",
+        "displayName": "Lamp Tube",
+        "canonical": "#f2fff7",
+        "tonalRamp": [
+          "#001f0c",
+          "#00471b",
+          "#007a2f",
+          "#00b847",
+          "#00ff62",
+          "#47ff8e",
+          "#99ffc0",
+          "#dbffe9"
+        ]
+      },
+      "lamp-off": {
+        "role": "neutral",
+        "displayName": "Lamp Tube Off",
+        "canonical": "#2b3236",
+        "tonalRamp": [
+          "#0e1011",
+          "#202528",
+          "#363f44",
+          "#515f66",
+          "#71838e",
+          "#99a6ae",
+          "#c6ced2",
+          "#ebeeef"
+        ]
+      },
+      "night-light": {
+        "role": "tertiary",
+        "displayName": "Night Light",
+        "canonical": "#ffd98c",
+        "tonalRamp": [
+          "#1f1400",
+          "#473000",
+          "#7a5200",
+          "#b87b00",
+          "#ffab00",
+          "#ffc247",
+          "#ffdd99",
+          "#fff3db"
+        ]
+      },
+      "sticker": {
+        "role": "primary",
+        "displayName": "Price-Sticker Orange",
+        "canonical": "#ff6a1a",
+        "tonalRamp": [
+          "#1f0b00",
+          "#471900",
+          "#7a2b00",
+          "#b84000",
+          "#ff5900",
+          "#ff8847",
+          "#ffbd99",
+          "#ffe8db"
+        ]
+      },
+      "sticker-ink": {
+        "role": "primary",
+        "displayName": "Sticker Ink",
+        "canonical": "#1b1006",
+        "tonalRamp": [
+          "#190f06",
+          "#3a230d",
+          "#643b16",
+          "#965921",
+          "#d17c2e",
+          "#dea069",
+          "#eccaac",
+          "#f9ede2"
+        ]
+      },
+      "card": {
+        "role": "secondary",
+        "displayName": "Index-Card Yellow",
+        "canonical": "#fff2a8",
+        "tonalRamp": [
+          "#1f1a00",
+          "#473d00",
+          "#7a6800",
+          "#b89c00",
+          "#ffd900",
+          "#ffe447",
+          "#fff099",
+          "#fffadb"
+        ]
+      },
+      "card-rule": {
+        "role": "secondary",
+        "displayName": "Card Rule Blue",
+        "canonical": "#8eb3df",
+        "tonalRamp": [
+          "#070f18",
+          "#102238",
+          "#1b3a5f",
+          "#29578f",
+          "#3879c7",
+          "#709fd6",
+          "#b0cae8",
+          "#e3ecf7"
+        ]
+      },
+      "card-red": {
+        "role": "secondary",
+        "displayName": "Card Red",
+        "canonical": "#e2584d",
+        "tonalRamp": [
+          "#1a0604",
+          "#3d0e0a",
+          "#691811",
+          "#9e231a",
+          "#db3124",
+          "#e56b61",
+          "#f1ada7",
+          "#fae2e0"
+        ]
+      },
+      "pencil": {
+        "role": "secondary",
+        "displayName": "Pencil",
+        "canonical": "#2f2b28",
+        "tonalRamp": [
+          "#110f0e",
+          "#272321",
+          "#423c38",
+          "#635b54",
+          "#8a7e75",
+          "#aba29c",
+          "#d0cbc8",
+          "#efedec"
+        ]
+      },
+      "act": {
+        "role": "secondary",
+        "displayName": "Switch Yellow",
+        "canonical": "#ffe14d",
+        "tonalRamp": [
+          "#1f1900",
+          "#473b00",
+          "#7a6600",
+          "#b89900",
+          "#ffd400",
+          "#ffe047",
+          "#ffee99",
+          "#fff9db"
+        ]
+      },
+      "poster": {
+        "role": "neutral",
+        "displayName": "Poster White",
+        "canonical": "#f5f7f4",
+        "tonalRamp": [
+          "#0e120d",
+          "#22291e",
+          "#3a4734",
+          "#576a4d",
+          "#79946b",
+          "#9eb295",
+          "#c9d4c4",
+          "#ecf0ea"
+        ]
+      },
+      "poster-ink": {
+        "role": "neutral",
+        "displayName": "Poster Ink",
+        "canonical": "#1d282c",
+        "tonalRamp": [
+          "#0c1112",
+          "#1c272b",
+          "#31434a",
+          "#49656f",
+          "#658c9a",
+          "#90acb6",
+          "#c2d1d6",
+          "#e9eff1"
+        ]
+      },
+      "poster-ink-2": {
+        "role": "neutral",
+        "displayName": "Poster Ink 2",
+        "canonical": "#465559",
+        "tonalRamp": [
+          "#0d1011",
+          "#1f2628",
+          "#364145",
+          "#516267",
+          "#70888f",
+          "#98aaae",
+          "#c6d0d2",
+          "#ebeeef"
+        ]
+      },
+      "lens-glass": {
+        "role": "neutral",
+        "displayName": "Lens Glass",
+        "canonical": "#f2f7f4",
+        "tonalRamp": [
+          "#0c130f",
+          "#1b2c22",
+          "#2f4c3a",
+          "#467257",
+          "#619e79",
+          "#8db99f",
+          "#c0d8ca",
+          "#e9f1ec"
+        ]
+      },
+      "hidden-tint": {
+        "role": "neutral",
+        "displayName": "Hidden Character Tint",
+        "canonical": "#fff6cf",
+        "tonalRamp": [
+          "#1f1900",
+          "#473a00",
+          "#7a6300",
+          "#b89500",
+          "#ffcf00",
+          "#ffdd47",
+          "#ffec99",
+          "#fff8db"
+        ]
+      },
+      "reset-armed": {
+        "role": "neutral",
+        "displayName": "Reset Armed",
+        "canonical": "#5a2a24",
+        "tonalRamp": [
+          "#160a09",
+          "#331814",
+          "#572923",
+          "#833d34",
+          "#b65549",
+          "#cb857c",
+          "#e2bbb6",
+          "#f5e7e6"
+        ]
+      },
+      "land-band": {
+        "role": "tertiary",
+        "displayName": "Land Band",
+        "canonical": "#ae1f5b",
+        "tonalRamp": [
+          "#1a050e",
+          "#3d0b20",
+          "#681336",
+          "#9c1c52",
+          "#d82771",
+          "#e36399",
+          "#f0a8c6",
+          "#fae1eb"
+        ]
+      },
+      "water-band": {
+        "role": "tertiary",
+        "displayName": "Water Band",
+        "canonical": "#17599f",
+        "tonalRamp": [
+          "#040f1b",
+          "#09233e",
+          "#0f3c6b",
+          "#175aa0",
+          "#207ddf",
+          "#5fa1e8",
+          "#a6cbf2",
+          "#e0edfa"
+        ]
+      },
+      "sky-band": {
+        "role": "tertiary",
+        "displayName": "Sky Band",
+        "canonical": "#6231a8",
+        "tonalRamp": [
+          "#0e0718",
+          "#201037",
+          "#371c5f",
+          "#53298e",
+          "#733ac5",
+          "#9a71d6",
+          "#c7b0e8",
+          "#ebe3f7"
+        ]
+      },
+      "forest-band": {
+        "role": "tertiary",
+        "displayName": "Forest Band",
+        "canonical": "#0d6b5b",
+        "tonalRamp": [
+          "#031b17",
+          "#084036",
+          "#0d6d5d",
+          "#14a48b",
+          "#1ce3c1",
+          "#5bebd3",
+          "#a4f4e6",
+          "#dffbf6"
+        ]
+      },
+      "trop-band": {
+        "role": "tertiary",
+        "displayName": "Tropical Band",
+        "canonical": "#9e470c",
+        "tonalRamp": [
+          "#1c0d02",
+          "#421e05",
+          "#723309",
+          "#ab4d0d",
+          "#ed6a12",
+          "#f29454",
+          "#f8c4a0",
+          "#fceade"
+        ]
+      },
+      "ice-band": {
+        "role": "tertiary",
+        "displayName": "Ice Band",
+        "canonical": "#1a6585",
+        "tonalRamp": [
+          "#05131a",
+          "#0c2d3c",
+          "#144e66",
+          "#1e759a",
+          "#2aa2d5",
+          "#65bce1",
+          "#aadaee",
+          "#e1f2f9"
+        ]
+      },
+      "land-cell": {
+        "role": "tertiary",
+        "displayName": "Land Cell",
+        "canonical": "#e8508e",
+        "tonalRamp": [
+          "#1b040d",
+          "#3f081f",
+          "#6c0e35",
+          "#a2154f",
+          "#e11e6d",
+          "#ea5d96",
+          "#f3a5c5",
+          "#fbdfeb"
+        ]
+      },
+      "water-cell": {
+        "role": "tertiary",
+        "displayName": "Water Cell",
+        "canonical": "#2f86e0",
+        "tonalRamp": [
+          "#040f1b",
+          "#09233e",
+          "#103c6b",
+          "#185ba0",
+          "#217ede",
+          "#5fa2e7",
+          "#a6cbf2",
+          "#e0edfa"
+        ]
+      },
+      "sky-cell": {
+        "role": "tertiary",
+        "displayName": "Sky Cell",
+        "canonical": "#9363da",
+        "tonalRamp": [
+          "#0d0619",
+          "#1f0e3a",
+          "#361763",
+          "#512394",
+          "#7031ce",
+          "#986bdc",
+          "#c6adeb",
+          "#ebe2f8"
+        ]
+      },
+      "forest-cell": {
+        "role": "tertiary",
+        "displayName": "Forest Cell",
+        "canonical": "#1fa38b",
+        "tonalRamp": [
+          "#051a16",
+          "#0b3c33",
+          "#146758",
+          "#1d9a84",
+          "#29d6b7",
+          "#65e2cb",
+          "#a9efe2",
+          "#e1f9f5"
+        ]
+      },
+      "trop-cell": {
+        "role": "tertiary",
+        "displayName": "Tropical Cell",
+        "canonical": "#ee7a2e",
+        "tonalRamp": [
+          "#1c0d02",
+          "#421d05",
+          "#713209",
+          "#aa4c0e",
+          "#ec6913",
+          "#f19355",
+          "#f7c3a1",
+          "#fceade"
+        ]
+      },
+      "ice-cell": {
+        "role": "tertiary",
+        "displayName": "Ice Cell",
+        "canonical": "#5db6de",
+        "tonalRamp": [
+          "#051319",
+          "#0c2d3b",
+          "#154d66",
+          "#1f7399",
+          "#2ba0d4",
+          "#66bae0",
+          "#aad9ee",
+          "#e1f2f9"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "bar-title": {
+        "displayName": "Bar Title",
+        "purpose": "The page title in the top strip; 22px at >= 900px."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Wall section headings and the tank-pick heading."
+      },
+      "sticker-name": {
+        "displayName": "Sticker Name",
+        "purpose": "The pet's name on the price sticker; 19px at <= 360px."
+      },
+      "sticker-age": {
+        "displayName": "Sticker Age",
+        "purpose": "The day number on the price sticker."
+      },
+      "sticker-small": {
+        "displayName": "Sticker Small",
+        "purpose": "The sticker kind line (tank and stage) and the age words."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Tray, magnifier and poster headings (16-17px)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Page text; the care sheet runs 15px / 1.7."
+      },
+      "tool-label": {
+        "displayName": "Tool Label",
+        "purpose": "The word under each drawn tool on the shelf."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tray notes, food sub-lines, binder descriptions."
+      },
+      "card-head": {
+        "displayName": "Card Head",
+        "purpose": "The index card heading, on the 28px rule."
+      },
+      "card-row": {
+        "displayName": "Card Row",
+        "purpose": "Index card rows and notes, on the 28px rule."
+      },
+      "say": {
+        "displayName": "Say Line",
+        "purpose": "The handwritten line under the tools saying what just happened; 17px at >= 900px."
+      }
+    },
+    "shadows": [
+      {
+        "name": "tank-on-wall",
+        "value": "filter: drop-shadow(0 18px 22px rgba(0,0,0,.45))",
+        "purpose": "The whole tank, lid to base, on the wall."
+      },
+      {
+        "name": "shelf-edge",
+        "value": "0 7px 0 #20272b, 0 14px 14px rgba(0,0,0,.35)",
+        "purpose": "The shelf board's front face and shadow under the tools (0 6px 0 under the tank, 0 5px 0 under each shelf tank). The shelf's thickness, not a card shadow."
+      },
+      {
+        "name": "taped-paper",
+        "value": "0 2px 4px rgba(0,0,0,.25)",
+        "purpose": "Price sticker, call flag and play score slip."
+      },
+      {
+        "name": "index-card",
+        "value": "0 6px 12px rgba(0,0,0,.35)",
+        "purpose": "The index card, with two clear tape strips rgba(255,255,255,.42)."
+      },
+      {
+        "name": "tray",
+        "value": "0 10px 18px rgba(0,0,0,.4)",
+        "purpose": "The feed tray dropped from the lid."
+      },
+      {
+        "name": "lens",
+        "value": "0 0 0 9px #131618, 0 0 0 12px #3b4348, 0 18px 28px rgba(0,0,0,.45)",
+        "purpose": "The magnifier rim and its shadow."
+      },
+      {
+        "name": "poster",
+        "value": "0 10px 22px rgba(0,0,0,.35)",
+        "purpose": "Binder and care-sheet posters on the wall."
+      }
+    ],
+    "motion": [
+      {
+        "name": "lamp-dim",
+        "value": "opacity / filter / background-color .9s",
+        "purpose": "Lamp off: night overlay in, wall, card, tools and strip dimmed together."
+      },
+      {
+        "name": "lamp-flicker",
+        "value": ".7s steps(1,end), tube 0/12/22/38/46/60 %",
+        "purpose": "Lamp on: fluorescent start-up of the tube and the night overlay."
+      },
+      {
+        "name": "food-drop",
+        "value": "900ms: fall cubic-bezier(.55,0,1,.45) to 72 %, one bounce, rotate 250deg",
+        "purpose": "Food through the lid; the pet then walks over at 120px/s and chomps for 1.3s."
+      },
+      {
+        "name": "hatch",
+        "value": "rotate(-24deg) .35s cubic-bezier(.2,.8,.2,1)",
+        "purpose": "The lid hatch tips open while something comes through the lid."
+      },
+      {
+        "name": "tray-drop",
+        "value": "scaleY .4 -> 1, .28s cubic-bezier(.2,.8,.2,1)",
+        "purpose": "The feed tray coming down from the lid."
+      },
+      {
+        "name": "knock",
+        "value": "650ms cubic-bezier(.2,.8,.3,1)",
+        "purpose": "A knuckle knock on the glass when play starts."
+      },
+      {
+        "name": "scoop",
+        "value": "1100ms ease-in-out",
+        "purpose": "The scoop sweeping the substrate; each poop flicks away over 260ms as it passes."
+      },
+      {
+        "name": "spray",
+        "value": "1300ms bottle, 14 mist dots 700-1100ms",
+        "purpose": "Grooming mist drifting onto the pet."
+      },
+      {
+        "name": "sticker-slap",
+        "value": ".5s cubic-bezier(.2,1.4,.4,1), from rotate(-14deg) scale(1.5)",
+        "purpose": "A new price sticker after hatching or evolving."
+      },
+      {
+        "name": "evolve-fog",
+        "value": "1.3s, fog .9 and the pet brightness(4)",
+        "purpose": "The glass fogs and the pet whites out before the new sticker."
+      },
+      {
+        "name": "lens-open",
+        "value": "scale .5 -> 1, .32s cubic-bezier(.2,.9,.3,1)",
+        "purpose": "The magnifier opening in the glass."
+      },
+      {
+        "name": "pet-walk",
+        "value": "hop .42s steps(2,jump-none); distance / 64px per s linear",
+        "purpose": "The pet wandering every 2.6s when free."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation and transition durations .01ms",
+        "purpose": "Every effect is skipped or placed instantly."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "desktop",
+        "value": "900px"
+      },
+      {
+        "name": "narrow",
+        "value": "360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Price Sticker",
+      "kind": "custom",
+      "refersTo": "sticker",
+      "description": "The orange price sticker on the glass: tank and stage, name, age in days.",
+      "html": "<div class=\"ds-tag\"><div class=\"ds-k\"><span>水族箱</span><span>兒童期</span></div><div class=\"ds-n\">泡泡丸</div><div class=\"ds-a\">出生第 <b>2</b> 天</div></div>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-tag{width:156px;padding:7px 10px 8px;background:var(--sticker);color:var(--sticker-ink);border-radius:4px;transform:rotate(-3deg);box-shadow:0 2px 4px rgba(0,0,0,.25);line-height:1.25} .ds-k{font-size:12px;font-weight:700;display:flex;justify-content:space-between;gap:6px} .ds-n{font-size:21px;font-weight:900;letter-spacing:.02em;margin:1px 0 2px} .ds-a{display:flex;align-items:baseline;gap:4px;font-size:12px;font-weight:700} .ds-a b{font-size:30px;font-weight:900;line-height:.9;font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Index Card",
+      "kind": "card",
+      "refersTo": "index-card",
+      "description": "The yellow ruled card taped under the tank, in pencil: ticked boxes for hunger and mood, a tally for tornadoes, and the call flag.",
+      "html": "<div class=\"ds-card\"><h2>飼育紀錄　泡泡丸 <small>兒童期</small></h2><dl><dt>肚子</dt><dd><svg width=\"92\" height=\"22\" viewBox=\"0 0 92 22\"><g fill=\"none\" stroke=\"#2f2b28\" stroke-width=\"1.3\"><path d=\"M2 4h15v15H2Z\"/><path d=\"M24 4h15v15H24Z\"/><path d=\"M46 4h15v15H46Z\"/><path d=\"M68 4h15v15H68Z\"/></g><g fill=\"none\" stroke=\"#2f2b28\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M5 12l4 4l7-10\"/><path d=\"M27 12l4 4l7-10\"/></g></svg></dd><dt>龍捲風</dt><dd><svg width=\"24\" height=\"22\" viewBox=\"0 0 24 22\"><g fill=\"none\" stroke=\"#2f2b28\" stroke-width=\"1.8\" stroke-linecap=\"round\"><path d=\"M2 3.5h14\"/><path d=\"M9 3.5v15\"/><path d=\"M9 10.5h6\"/></g></svg></dd></dl><p>食物細胞：海鮮 3/5、海藻 0/5。</p><div class=\"ds-flag\">在叫你：肚子餓</div></div>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-card{position:relative;margin:14px 8px;padding:12px 16px;background-color:var(--card);background-image:linear-gradient(var(--card-red),var(--card-red)),repeating-linear-gradient(to bottom,transparent 0 27px,var(--card-rule) 27px 28px);background-size:100% 2px,100% 100%;background-position:0 40px,0 41px;background-repeat:no-repeat,repeat;color:var(--pencil);font-family:var(--hand);transform:rotate(-.6deg);box-shadow:0 6px 12px rgba(0,0,0,.35);border-radius:2px} .ds-card::before,.ds-card::after{content:'';position:absolute;top:-10px;width:70px;height:24px;background:rgba(255,255,255,.42)} .ds-card::before{left:22px;transform:rotate(-6deg)} .ds-card::after{right:22px;transform:rotate(5deg)} .ds-card h2{margin:0;font-size:19px;font-weight:400;line-height:28px;height:28px} .ds-card h2 small{font-size:14px} .ds-card dl{margin:1px 0 0;display:grid;grid-template-columns:auto 1fr;column-gap:12px} .ds-card dt,.ds-card dd{margin:0;line-height:28px;height:28px;font-size:16px} .ds-card dd{display:flex;align-items:center} .ds-card p{margin:0;line-height:28px;font-size:15px} .ds-flag{position:absolute;right:-8px;top:46px;background:var(--sticker);color:var(--sticker-ink);font:700 14px/1.25 var(--sans);padding:6px 12px 6px 14px;border-radius:3px 0 0 3px;transform:rotate(4deg);box-shadow:0 2px 4px rgba(0,0,0,.25)}"
+    },
+    {
+      "name": "Tool on the Shelf",
+      "kind": "button",
+      "refersTo": "tool",
+      "description": "One of the seven care tools: a drawn object over its label, standing on the shelf board; pressed lifts and tilts it with a yellow underline.",
+      "html": "<nav class=\"ds-tools\"><button class=\"ds-tool\" aria-pressed=\"true\"><svg class=\"ds-obj\" viewBox=\"0 0 32 32\"><rect x=\"8\" y=\"9\" width=\"16\" height=\"19\" rx=\"2.5\" fill=\"#ff8a3d\"/><rect x=\"7\" y=\"6\" width=\"18\" height=\"5\" rx=\"1.6\" fill=\"#c9601c\"/><rect x=\"8\" y=\"15\" width=\"16\" height=\"7\" fill=\"#fff4e6\"/></svg>餵食</button><button class=\"ds-tool\"><svg class=\"ds-obj\" viewBox=\"0 0 32 32\"><circle cx=\"16\" cy=\"18\" r=\"10\" fill=\"#f2c230\"/><path d=\"M6.3 15.6A10 10 0 0 1 25.7 15.6Q16 20 6.3 15.6Z\" fill=\"#e8505b\"/></svg>陪玩</button><button class=\"ds-tool\" disabled><svg class=\"ds-obj\" viewBox=\"0 0 32 32\"><rect x=\"9\" y=\"10\" width=\"14\" height=\"18\" rx=\"2.6\" fill=\"#f4f7f5\"/><rect x=\"8\" y=\"5\" width=\"16\" height=\"6\" rx=\"1.6\" fill=\"#2f9a6e\"/></svg>吃藥</button></nav>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-tools{display:grid;grid-template-columns:repeat(3,72px);background:var(--wall);border-bottom:12px solid #3a4348;box-shadow:0 7px 0 #20272b,0 14px 14px rgba(0,0,0,.35)} .ds-tool{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:1px;min-height:64px;padding:4px 0 3px;border:0;border-radius:8px 8px 0 0;background:transparent;cursor:pointer;font:700 13px var(--sans);color:var(--ink);transition:background .15s} .ds-obj{width:34px;height:34px;transition:transform .18s cubic-bezier(.2,.8,.2,1)} .ds-tool:hover:not(:disabled){background:rgba(255,255,255,.04)} .ds-tool:hover:not(:disabled) .ds-obj{transform:translateY(-3px)} .ds-tool[aria-pressed=true]{box-shadow:inset 0 -3px 0 var(--act)} .ds-tool[aria-pressed=true] .ds-obj{transform:translateY(-5px) rotate(-6deg)} .ds-tool:disabled{color:#7d8f8a;cursor:not-allowed} .ds-tool:disabled .ds-obj{filter:grayscale(1) brightness(.6)} .ds-tool:focus-visible{outline:3px solid var(--act);outline-offset:2px}"
+    },
+    {
+      "name": "Food Tile",
+      "kind": "button",
+      "refersTo": "food-tile",
+      "description": "A food in the feed tray: icon, name, its cell and +points as yellow dots, remaining stock for +4 foods.",
+      "html": "<div class=\"ds-tray\"><button class=\"ds-food\"><svg class=\"ds-fi\" viewBox=\"0 0 30 30\"><ellipse cx=\"15\" cy=\"16\" rx=\"10\" ry=\"8\" fill=\"#d9604e\"/></svg><span><b>蛤蜊</b><small>海鮮細胞 <i></i><i></i></small></span></button><button class=\"ds-food\" disabled><svg class=\"ds-fi\" viewBox=\"0 0 30 30\"><rect x=\"7\" y=\"9\" width=\"16\" height=\"11\" rx=\"5\" fill=\"#d9604e\"/></svg><span><b>生魚片</b><small>海鮮細胞 <i></i><i></i><i></i><i></i></small></span><em>剩 0</em></button></div>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-tray{display:grid;grid-template-columns:repeat(2,minmax(132px,1fr));gap:6px;padding:12px;background:var(--rim);font-family:var(--sans);color:var(--ink)} .ds-food{display:flex;align-items:center;gap:8px;min-height:52px;padding:6px 8px;border:0;border-radius:8px;background:var(--rim-2);color:inherit;font:inherit;text-align:left;cursor:pointer} .ds-food:hover:not(:disabled){background:var(--rim-3)} .ds-food:disabled{opacity:.55;cursor:not-allowed} .ds-food:focus-visible{outline:3px solid var(--act);outline-offset:2px} .ds-fi{width:30px;height:30px;flex:none} .ds-food b{display:block;font-size:14.5px;line-height:1.25} .ds-food small{display:flex;align-items:center;gap:3px;font-size:12px;color:var(--ink-2)} .ds-food i{width:6px;height:6px;border-radius:50%;background:var(--act)} .ds-food em{margin-left:auto;font-style:normal;font-size:12px;color:var(--ink-2)}"
+    },
+    {
+      "name": "Shelf Tank",
+      "kind": "card",
+      "refersTo": "shelf-tank-band",
+      "description": "A miniature tank on the wall shelf with its field band and the 現在 sticker.",
+      "html": "<button class=\"ds-slot\"><div class=\"ds-mt\"><span class=\"ds-here\">現在</span></div><div class=\"ds-band\"><span>水邊</span><small>水族箱 · 1/4</small></div></button>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-slot{position:relative;display:block;width:220px;padding:0;border:0;background:transparent;text-align:left;cursor:pointer;color:var(--ink);font-family:var(--sans)} .ds-slot::after{content:\"\";display:block;height:10px;margin:0 -8px;background:#3a4348;box-shadow:0 5px 0 #20272b} .ds-mt{position:relative;height:118px;background:#4ea5cf;border-left:4px solid var(--rim);border-right:4px solid var(--rim);border-top:8px solid var(--rim);box-shadow:inset 0 0 0 1px rgba(159,214,201,.35)} .ds-slot:hover .ds-mt,.ds-slot:focus-visible .ds-mt{box-shadow:inset 0 0 0 2px var(--act)} .ds-slot:focus-visible{outline:3px solid var(--act);outline-offset:2px} .ds-band{display:flex;justify-content:space-between;align-items:baseline;gap:6px;padding:4px 8px 5px;background:#17599f;color:#fff;font-size:14px;font-weight:700;border-radius:0 0 4px 4px} .ds-band small{font-size:12px;font-weight:400} .ds-here{position:absolute;top:14px;right:4px;background:var(--sticker);color:var(--sticker-ink);font-size:12px;font-weight:700;padding:2px 7px;border-radius:3px;transform:rotate(3deg)}"
+    },
+    {
+      "name": "Binder Poster",
+      "kind": "card",
+      "refersTo": "poster",
+      "description": "The white binder poster: a field section with its colour rule, seen characters and unseen silhouettes.",
+      "html": "<div class=\"ds-poster\"><div class=\"ds-bf\"><div class=\"ds-bh\"><h3>水邊・水族箱</h3><small>見過 3/15</small></div><div class=\"ds-row\"><div class=\"ds-ch\"><svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"42\" rx=\"17\" ry=\"16\" fill=\"#2f86e0\"/><ellipse cx=\"26\" cy=\"40\" rx=\"2.4\" ry=\"3.2\" fill=\"#1d282c\"/><ellipse cx=\"38\" cy=\"40\" rx=\"2.4\" ry=\"3.2\" fill=\"#1d282c\"/></svg><b>泡泡丸</b><small>愛在水面吐泡泡</small></div><div class=\"ds-ch ds-un\"><svg viewBox=\"0 0 64 64\"><ellipse cx=\"32\" cy=\"42\" rx=\"17\" ry=\"16\" fill=\"#2f86e0\"/></svg><b>？？？</b><small>海藻細胞的青少年</small></div></div></div></div>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-poster{background:var(--poster);color:var(--poster-ink);border-radius:6px;padding:16px 14px 18px;box-shadow:0 10px 22px rgba(0,0,0,.35);font-family:var(--sans);width:300px} .ds-bf{border-top:6px solid #17599f} .ds-bh{display:flex;align-items:center;gap:8px;min-height:48px} .ds-bh h3{flex:1;margin:0;font-size:17px;font-weight:900} .ds-bh small{color:var(--poster-ink-2);font-size:13px} .ds-row{display:grid;grid-template-columns:repeat(2,1fr);gap:4px 6px} .ds-ch{display:flex;flex-direction:column;align-items:center;text-align:center;padding:4px 2px 6px} .ds-ch svg{width:62px;height:62px} .ds-un svg{filter:brightness(0);opacity:.16} .ds-ch b{font-size:14px;line-height:1.3} .ds-un b{color:var(--poster-ink-2)} .ds-ch small{font-size:11.5px;line-height:1.3;color:var(--poster-ink-2)}"
+    },
+    {
+      "name": "Close Key",
+      "kind": "button",
+      "refersTo": "close-key",
+      "description": "The 44px close key of the feed tray and the magnifier.",
+      "html": "<div style=\"background:#131618;padding:8px\"><button class=\"ds-x\" aria-label=\"關上\"><svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><path d=\"M6 6l12 12M18 6L6 18\"/></svg></button></div>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-x{width:44px;height:44px;border:0;border-radius:10px;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink-2)} .ds-x:hover{background:var(--rim-2);color:var(--ink)} .ds-x:focus-visible{outline:3px solid var(--act);outline-offset:2px}"
+    },
+    {
+      "name": "Reset Key",
+      "kind": "button",
+      "refersTo": "reset-key",
+      "description": "The two-step 全部重來 key in the footer; the first press arms it.",
+      "html": "<div style=\"background:#162024;padding:12px;display:flex;gap:8px\"><button class=\"ds-reset\">全部重來</button><button class=\"ds-reset ds-armed\">再按一次確定</button></div>",
+      "css": ":host{--wall:#162024;--ink:#eaf2ef;--ink-2:#b3c7c1;--rim:#131618;--rim-2:#2a3034;--rim-3:#3b4348;--sticker:#ff6a1a;--sticker-ink:#1b1006;--card:#fff2a8;--card-rule:#8eb3df;--card-red:#e2584d;--pencil:#2f2b28;--act:#ffe14d;--poster:#f5f7f4;--poster-ink:#1d282c;--poster-ink-2:#465559;--sans:'Chiron GoRound TC','PingFang TC','Noto Sans TC',sans-serif;--hand:'Iansui','Chiron GoRound TC',sans-serif;font-family:var(--sans)} .ds-reset{min-height:44px;padding:0 14px;border-radius:8px;border:1px solid var(--rim-3);background:transparent;color:var(--ink-2);font:400 15px var(--sans);cursor:pointer} .ds-reset:hover{color:var(--ink);background:#273840} .ds-reset:focus-visible{outline:3px solid var(--act);outline-offset:2px} .ds-armed{background:#5a2a24;color:#fff;border-color:#8a3a30}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tank on the Shop Shelf",
+    "overview": "The pet lives in a real glass tank on a dim pet-shop wall. The tank has a black plastic lid with a fluorescent tube in it, black side rims, a faint green glass edge, two slanted reflection streaks and a black base. Below it runs a grey shelf board. The six fields are six kinds of tank: a sand terrarium, an aquarium, a tall perch cage, a bamboo rainforest tank, a warm-lamp tropical tank and a frosted freezer case. Each tank's habitat is drawn in natural materials. The tank's lamp is the main light on the page: it spills a soft glow onto the wall behind the tank, and switching it off darkens the tank, the wall, the card, the tools and the top strip together, leaving a small amber night light in the corner.\n\nCare is done to the tank, never through stat bars. Food drops through the lid, falls, bounces on the substrate and the pet walks over to eat it. A knuckle knocks on the glass to start play. A scoop comes down through the lid and sweeps out the poop. A spray bottle mists the pet. The lamp is a rocker switch. State is shown as marks and materials. On the yellow index card, pencil ticks fill four boxes for hunger and mood, and 正-stroke tallies count tornadoes, rice balls and suns. Dirt shows as darkened substrate. Illness shows as fogged glass, and a pet turned devil fogs the glass further and gets horns. Evolution fogs the glass, whites out the pet, and then slaps a new price sticker onto the glass.\n\nConfirmed rejections (direction contract): the egg-shaped LCD device with three buttons, and the cartoon-room app with stat bars. The characters are original and drawn as flat colour planes without outlines. No Bandai names, sprites or logos.",
+    "keyCharacteristics": [
+      "One dim teal shop wall with a peg-board dot grid, lit by the tank's own lamp.",
+      "A black-rimmed glass tank about 55 % of the phone screen tall, on a shelf board with a hard front edge.",
+      "A fluorescent-orange price sticker on the glass (tank, stage, name, age) and a yellow ruled index card taped under the tank, written in pencil (Iansui).",
+      "Seven drawn tools standing on the shelf edge: 餵食, 陪玩, 清理, 保養, the lamp switch, 吃藥 and 放大鏡.",
+      "Field colours appear only as label bands (shelf tanks, binder sections) and, in the magnifier, as cell fills.",
+      "Every care act has a physical animation, and every one has an instant path under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The One Lamp Rule",
+        "body": "The tank's lamp is the light source. Turning it off dims everything that sits in its light (wall, card, tools, top strip, sticker) and turns on the amber night light; nothing on the page stays lit on its own.",
+        "section": "colors"
+      },
+      {
+        "name": "The Field Band Rule",
+        "body": "A field colour labels a tank or a binder section. It never fills a panel, a button or text.",
+        "section": "colors"
+      },
+      {
+        "name": "The Orange Means Now Rule",
+        "body": "Sticker orange marks the current pet and what it is asking for. Don't use it for decoration or for a second meaning.",
+        "section": "colors"
+      },
+      {
+        "name": "The Print and Pencil Rule",
+        "body": "What the shop prints (labels, keys, posters) is Chiron GoRound TC. What the keeper writes (the card, the game slip, the say line) is Iansui. Don't mix them on one surface.",
+        "section": "typography"
+      },
+      {
+        "name": "The Card Rule Rule",
+        "body": "Every line on the index card sits on the 28px ruling: headings, rows and notes all use a 28px line height.",
+        "section": "typography"
+      },
+      {
+        "name": "The Real Objects Rule",
+        "body": "Only things that exist in the shop cast shadows: the tank, the shelf, the taped paper, the trays and posters. Text and icons never get glows or shadows.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep every care verb a physical act on the tank (through the lid, on the glass, at the switch), with an instant reduced-motion path.",
+      "**Do** show the pet's state as pencil marks on the card and as material changes in the tank (fog, dark substrate, dark poop), not as bars or warning icons.",
+      "**Do** let the lamp switch darken the tank and everything in its light together, and flicker on in `steps()`.",
+      "**Do** draw new characters with `spr()` as flat colour planes without outlines, in two or three colours.",
+      "**Do** keep field colours to label bands and cell fills, with white text on bands.",
+      "**Do** keep handwriting (Iansui) on the keeper's paper and Chiron GoRound TC on everything printed.",
+      "**Do** open every overlay inside the glass and keep keys at 44px or larger."
+    ],
+    "donts": [
+      "**Don't** add stat bars, percentages on screen, or an egg-shaped LCD device.",
+      "**Don't** use sticker orange for anything but the current pet and its call.",
+      "**Don't** give text or icons glows or shadows; shadows belong to the tank, the shelf, taped paper, trays and posters.",
+      "**Don't** use Bandai names, sprites or logos for any character."
+    ]
+  }
+}

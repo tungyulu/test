@@ -11,7 +11,7 @@ related_targets: []
 
 ## Direction contract
 
-THESIS: The hub is an empty lot (空地) under a blue sky where fifteen pink Anywhere Doors (任意門) stand on the grass, one per tool. Open a door and you are somewhere else. It refuses the category default it replaces: a dark grid of same-size icon cards with eyebrow labels.
+THESIS: The hub is an empty lot (空地) under a blue sky where sixteen pink Anywhere Doors (任意門) stand on the grass, one per tool. Open a door and you are somewhere else. It refuses the category default it replaces: a dark grid of same-size icon cards with eyebrow labels.
 
 OWN-WORLD:
 - Cel-flat cartoon daylight. A flat sky-blue field with authored white SVG clouds, and flat grass green with authored tufts and bare-dirt patches.

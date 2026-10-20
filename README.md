@@ -22,6 +22,7 @@
 | [nba-auction.html](https://tungyulu.github.io/test/nba-auction.html) | NBA Fantasy 拍賣選秀板（2026-27）· 乾淨的 fantasy 數據 app 版面（淺色／深色）· 傳統 9 項、14 隊每隊 $200、11 先發＋3 板凳：約 240 位球員的建議價與推薦指數、九項熱度圖、punt 重算；選秀後改成聯盟模式：我的戰力與弱項、14 隊戰力（每週贏幾類、每週輸贏 $）、交易試算、推薦的一換一與自由球員（存本機） |
 | [yotei.html](https://tungyulu.github.io/test/yotei.html) | 羊蹄山戰鬼（Ghost of Yōtei）收集清單 · 依類別／地區逐項打勾（存本機），未完成的點名稱開對應攻略頁（繁中／簡中／英文可切換）；iPhone 建議 Safari「分享 → 加入主畫面」，進度才不會被 Safari 7 天清除 |
 | [etf-00981a.html](https://tungyulu.github.io/test/etf-00981a.html) | 主動 ETF 持股異動日報 · 統一投信四檔主動式 ETF（00981A、00403A、00988A、00411A，頁籤切換，另有四檔同一天買賣的總覽）每天的投資組合（統一投信申購買回清單，每個交易日晚上自動更新）：一句話講完今天買賣了什麼，加減碼張數與估計金額、持股當天漲跌與對淨值的貢獻、每檔股票的持有歷史，可回看任何一天 |
+| [pet-tank.html](https://tungyulu.github.io/test/pet-tank.html) | 網頁版電子雞（電子雞飼養箱）· 寵物店飼養箱的世界：選一個箱子放蛋，照真實時間餵食、陪玩、清便便、關燈睡覺、生病吃藥；場地、食物細胞與龍捲風次數決定牠長成 86 隻原創角色中的哪一隻，退休後住在架上的箱子裡，圖鑑記錄見過的角色。進度存在本機 |
 | [tamagotchi.html](https://tungyulu.github.io/test/tamagotchi.html) | 塔麻可吉樂園（Tamagotchi Paradise）攻略 · 照機台旋鈕的四個視角排：選機台、行星等級、每月活動日曆、尋蛋、照顧與龍捲風、結婚與隱藏角色，加上六個場地的完整進化表（可搜尋角色）、實驗室碼與商店碼 |
 
 ## golf-tracer.py

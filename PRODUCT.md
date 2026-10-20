@@ -8,11 +8,11 @@
 
 **Users.** The owner (Traditional Chinese, Taiwan), on phone and desktop about equally, opening the hub to jump into one of their tools. The hub link is also shared with friends, who should understand what each tool is from its entry alone.
 
-**Purpose.** The front door to fifteen single-file tools. Success: the owner finds and opens any tool in a couple of seconds, and a friend can tell what each one does and pick one that interests them.
+**Purpose.** The front door to sixteen single-file tools. Success: the owner finds and opens any tool in a couple of seconds, and a friend can tell what each one does and pick one that interests them.
 
 **Content (confirmed grouping, in this order).**
 - 旅行: 關東秋季紅葉巡航 (`trip.html`), 東京近郊即時影像 (`livecam.html`)
-- 遊戲: 快艇骰子 (`yacht.html`), 21點實戰牌桌 (`blackjack-game.html`), 21點機率決策挑戰 (`blackjack.html`), 羊蹄山戰鬼 收集清單 (`yotei.html`), 塔麻可吉樂園攻略 (`tamagotchi.html`)
+- 遊戲: 快艇骰子 (`yacht.html`), 21點實戰牌桌 (`blackjack-game.html`), 21點機率決策挑戰 (`blackjack.html`), 羊蹄山戰鬼 收集清單 (`yotei.html`), 塔麻可吉樂園攻略 (`tamagotchi.html`), 電子雞飼養箱 (`pet-tank.html`)
 - 運動: NBA 拍賣選秀板 (`nba-auction.html`), 高爾夫球軌跡追蹤 (`golf.html`), 運彩投注紀錄 (`betting.html`)
 - 理財與筆記: 投資作戰表 (`invest.html`), 國會交易日報 (`congress-trades.html`), Dyson 選購比對 (`dyson.html`), Usage Dashboard (`usage.html`)
 
@@ -110,6 +110,21 @@
 - A position the fund reports at 0.00 % (usually one lot kept after selling out) counts as sold; buying it back counts as new; changes that never touch a real weight (parked → gone, parked → parked) are not trades. Trade amounts are estimates at the closing price and say so. On an ex-dividend day a listed stock's change is measured from TWSE's ex-dividend reference price, never shown as 0; OTC ex-dividend days show no change (—).
 - Price changes use the Taiwan quote convention (red up, green down) and always carry a sign and an arrow; buy / sell are never coloured red / green (filled vs outlined tags).
 - Not investment advice, and the page says so. No fund-company or exchange logos.
+
+## Virtual pet · 電子雞飼養箱 (`pet-tank.html`)
+
+**Users.** The owner (and friends opening the hub), mostly on the phone in short visits through the day and before bed, sometimes on desktop. Linked from the hub's 遊戲 lot.
+
+**Purpose.** A web virtual pet that lives on the real clock, with rules simplified from Tamagotchi Paradise as documented in `tamagotchi.html`. Opening the page answers "how is it doing and what does it need" first (the pet in its tank, hunger, mood, poop, whether it is calling, asleep or sick), then what it will grow into. Success: in a few seconds the owner knows what to do, does it in one or two taps, and over days watches care choices turn into a different character.
+
+**Content that must survive any redesign.**
+- Real time (owner's choice, 2026-10-20): life goes on while the page is closed and is caught up on reopen (up to 30 days), with a summary of what happened. No fast-forward in the UI.
+- Simplified Paradise rules (owner's choice): six fields as six tanks; egg (1 min) → baby (~1 h, 4 field cells every 15 min in one tank) → kid of that field (1 day; food cells grown from 5 points of one cell's foods) → young (1 day; one food cell = that line, none or two = omnivore) → adult by the young stage's tornado count (0–1 / 2–5 / 6+) or the field's hidden character (0 tornadoes, 5 rice balls, 5 suns, not omnivore). Care: feeding (milk for babies; +1 / +2 foods always, +4 foods restocked to 2 at 06:00; pellets; snacks), play (a best-of-five guessing game), poop, grooming, lamp and the sleep schedule (22–6 asleep, 6–10 wakeable, 19–22 sleeps when the lamp goes off), illness and medicine, calls that turn into tornadoes after 15 minutes. No planet levels, space travel, marriage or shop money.
+- 86 original characters (owner's choice): egg, baby, 6 kids, 18 youngs, 54 adults, 6 hidden, each with an original name and one-line description, drawn as flat colour planes. No Bandai names, sprites or logos; the page says the characters are original.
+- Retired adults live in their tank on the shelf (4 per tank); the binder shows every character, seen ones with name and picture, unseen as silhouettes, each with how to raise it; a care sheet explains the rules.
+- Progress is saved in this browser only (localStorage `pet-tank-v1`); a blocked store is reported; 全部重來 is two-step.
+
+**Evidence on hand.** The Paradise mechanics in `tamagotchi.html` (compiled from two Traditional Chinese guides). Everything else (names, art, foods) is the page's own invention and is labelled as original.
 
 ---
 
