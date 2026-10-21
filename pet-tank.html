@@ -1681,7 +1681,13 @@ $('#shelf').addEventListener('click', e => {
   const names = S.residents[f].map(r => CH[r.char].name);
   say(!VIEW ? `回到${F.tank}，${CH[S.char].name}在這裡${names.length ? `，旁邊還有${names.join('、')}` : ''}。` : `在看${F.tank}，${names.length ? `住著${names.join('、')}` : '還沒有住客'}。`);
   window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+  // the shelf was rebuilt, so a keyboard user's focus moves to the bar under the tank
+  if (e.detail === 0) focusBar();
 });
+function focusBar() {
+  const el = VIEW ? visitEl.querySelector('button') : alive() ? toolsEl.querySelector('.tool:not(:disabled)') : pickEl.querySelector('[data-field]');
+  el?.focus({ preventScroll: true });
+}
 visitEl.addEventListener('click', e => {
   const b = e.target.closest('[data-v]'); if (!b || !VIEW) return;
   const f = VIEW, v = b.dataset.v;
@@ -1689,12 +1695,12 @@ visitEl.addEventListener('click', e => {
   if (v === 'move' && moveTank(f)) { VIEW = null; lastHab = null; renderAll(); say(`把${CH[S.char].name}搬到${FIELDS[f].tank}了${S.stage === 'baby' ? '，場地細胞重新算' : ''}。`); return; }
   view(null);
   say(alive() ? `回到${FIELDS[S.field].tank}了。` : '選一個箱子放蛋。');
-  if (alive()) toolsEl.querySelector('.tool:not(:disabled)')?.focus(); else pickEl.querySelector('[data-field]')?.focus();
+  focusBar();
 });
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   if (overlay && overlay !== 'pick') closeOv(true);
-  else if (VIEW) { view(null); say(alive() ? `回到${FIELDS[S.field].tank}了。` : '選一個箱子放蛋。'); }
+  else if (VIEW) { view(null); say(alive() ? `回到${FIELDS[S.field].tank}了。` : '選一個箱子放蛋。'); focusBar(); }
 });
 let armed = 0;
 $('#reset').addEventListener('click', e => {
@@ -1730,6 +1736,7 @@ function tick(fromHidden) {
     setTimeout(() => { tank.classList.remove('evolving'); lastSprKey = ''; renderAll(true); say(`長成「${CH[S.char].name}」了！`); }, 1300);
     return;
   }
+  if (e.evolved && VIEW) say(`${CH[wasChar]?.name || '牠'}在${FIELDS[S.field].tank}長成「${CH[S.char].name}」了。`);
   if (!wasCall && S.call && !document.hidden && navigator.userActivation?.hasBeenActive) navigator.vibrate?.(120);
   renderAll(e.evolved);
 }
