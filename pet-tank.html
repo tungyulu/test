@@ -271,6 +271,20 @@ body.lamp-off{background-color:#0c1215}
 .mist{position:absolute;z-index:9;width:10px;height:10px;border-radius:50%;background:rgba(235,248,255,.85);pointer-events:none}
 .knock{position:absolute;z-index:9;width:44px;height:44px;margin:-22px 0 0 -22px;pointer-events:none}
 .ov-on .tag{opacity:0;transition:opacity .2s}
+/* visiting another tank: its retired residents, and the shelf board turned into a visit bar */
+.guests{position:absolute;inset:0;z-index:4;pointer-events:none}
+.pet.guest{--g:calc(var(--pet) * .82);width:var(--g);height:var(--g);top:calc(var(--ground) - var(--g) * .94)}
+.guests .none{position:absolute;left:16px;right:16px;top:34%;margin:0;text-align:center;font:400 18px/1.5 var(--hand);color:#24342f}
+.visit{margin:12px -6px 0;padding:10px 12px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;border-bottom:12px solid #3a4348;box-shadow:0 7px 0 #20272b, 0 14px 14px rgba(0,0,0,.35)}
+.visit[hidden],.tools[hidden]{display:none}
+.visit .v-txt{flex:1 1 14em;margin:0;font-size:15px;line-height:1.5;color:var(--ink-2)}
+.visit .v-txt b{display:block;font-size:17px;color:var(--ink)}
+.visit .v-call{display:block;color:var(--sticker);font-weight:700}
+.visit .v-keys{display:flex;flex-wrap:wrap;gap:8px}
+.visit button{min-height:44px;padding:0 14px;border:1px solid var(--rim-3);border-radius:8px;background:var(--wall-3);font-size:15px;font-weight:700;cursor:pointer}
+.visit button:hover{background:var(--rim-3)}
+.visit button.go{background:var(--sticker);border-color:var(--sticker);color:var(--sticker-ink)}
+.visit button.go:hover{background:#ff8a45}
 
 /* sections on the wall */
 .wall{max-width:1040px;margin:0 auto;padding:34px 16px 0}
@@ -289,8 +303,9 @@ body.lamp-off{background-color:#0c1215}
 .slot .band{display:flex;justify-content:space-between;gap:6px;align-items:baseline;padding:4px 8px 5px;background:var(--fi);color:#fff;font-size:14px;font-weight:700;border-radius:0 0 4px 4px}
 .slot .band small{font-size:12px;font-weight:400;opacity:.92}
 .slot .here{position:absolute;top:14px;right:4px;background:var(--sticker);color:var(--sticker-ink);font-size:12px;font-weight:700;padding:2px 7px;border-radius:3px;transform:rotate(3deg)}
-.slot .move{position:absolute;top:14px;left:4px;background:var(--rim);color:var(--ink);font-size:12px;font-weight:700;padding:2px 7px;border-radius:3px}
+.slot .seeing{position:absolute;top:14px;left:4px;background:var(--rim);color:var(--ink);font-size:12px;font-weight:700;padding:2px 7px;border-radius:3px}
 .slot:hover:not(:disabled) .mt{box-shadow:inset 0 0 0 2px var(--act)}
+.slot[aria-pressed="true"] .mt{box-shadow:inset 0 0 0 3px var(--act)}
 .memorial{margin:0 0 6px;color:var(--ink-2);font-size:14.5px}
 
 /* binder poster */
@@ -384,6 +399,7 @@ footer .reset.armed{background:#5a2a24;color:#fff;border-color:#8a3a30}
       <div class="hab" id="hab"></div>
       <div class="dirt"></div>
       <div class="things" id="things"></div>
+      <div class="guests" id="guests" hidden></div>
       <div class="pet" id="pet"><div class="bob"><div class="spr" id="spr"></div></div><div class="horns" aria-hidden="true"><svg viewBox="0 0 40 14"><path d="M4 14 Q2 4 9 0 Q8 7 12 14Z M36 14 Q38 4 31 0 Q32 7 28 14Z" fill="#5a1f2e"/></svg></div><span class="zz" aria-hidden="true">z</span></div>
       <div class="night"><span class="nl"></span></div>
       <div class="fog"><svg viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true"><filter id="fogf"><feTurbulence type="fractalNoise" baseFrequency=".012 .02" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 .93  0 0 0 0 .95  0 0 0 0 .95  0 0 0 1.6 -.45"/></filter><rect width="400" height="300" filter="url(#fogf)"/></svg></div>
@@ -406,6 +422,7 @@ footer .reset.armed{background:#5a2a24;color:#fff;border-color:#8a3a30}
   </div>
 
   <div class="tools-row">
+    <div class="visit" id="visit" hidden></div>
     <nav class="tools" aria-label="照顧動作" id="tools">
       <button class="tool" data-act="feed" aria-pressed="false"><svg class="obj" viewBox="0 0 32 32" aria-hidden="true"><rect x="8" y="9" width="16" height="19" rx="2.5" fill="#ff8a3d"/><rect x="7" y="6" width="18" height="5" rx="1.6" fill="#c9601c"/><rect x="8" y="15" width="16" height="7" fill="#fff4e6"/><circle cx="13" cy="18.5" r="1.4" fill="#c9601c"/><circle cx="17" cy="18.5" r="1.4" fill="#c9601c"/><circle cx="21" cy="18.5" r="1.4" fill="#c9601c"/></svg>餵食</button>
       <button class="tool" data-act="play" aria-pressed="false"><svg class="obj" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="18" r="10" fill="#f2c230"/><path d="M6.3 15.6A10 10 0 0 1 25.7 15.6Q16 20 6.3 15.6Z" fill="#e8505b"/><path d="M8 24A10 10 0 0 0 24 24Q16 20.5 8 24Z" fill="#3e8fe0"/><ellipse cx="12" cy="13" rx="2.4" ry="1.4" fill="#fff" opacity=".7" transform="rotate(-30 12 13)"/></svg>陪玩</button>
@@ -421,7 +438,7 @@ footer .reset.armed{background:#5a2a24;color:#fff;border-color:#8a3a30}
 
 <section class="wall" aria-labelledby="shelfH">
   <h2 class="sec" id="shelfH">架上的六個箱子</h2>
-  <p class="sec-note" id="shelfNote">每個箱子最多住 4 隻長大後退休的電子雞。蛋和寶寶還沒長出第 4 個場地細胞前，可以點一個箱子搬過去。</p>
+  <p class="sec-note" id="shelfNote">點一個箱子，上面的大箱子就換成它，看看住在裡面的電子雞。每個箱子最多住 4 隻長大後退休的電子雞。蛋和寶寶還沒長出第 4 個場地細胞前，可以搬到正在看的箱子。</p>
   <div class="shelf" id="shelf"></div>
   <p class="memorial" id="memorial"></p>
 </section>
@@ -1215,7 +1232,9 @@ const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const STAGE_NAME = { egg: '蛋', baby: '寶寶期', kid: '兒童期', young: '青少年期', adult: '成年期' };
 const NEXT = { baby: null, kid: DAY, young: DAY };
 let overlay = null;          // 'pick' | 'tray' | 'game' | 'lens'
-let lastHab = null, lastSprKey = '', lastSeenN = -1, lastShelfKey = '';
+let lastHab = null, lastSprKey = '', lastSeenN = -1, lastShelfKey = '', lastGuestKey = '', lastVisitKey = '';
+let VIEW = null;             // field key of another tank being looked at, null = the pet's own tank
+const guestsEl = $('#guests'), visitEl = $('#visit'), toolsEl = $('#tools');
 const PM = { x: 30, face: 1, busy: false, wt: 0 };
 
 const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -1243,9 +1262,10 @@ function walkTo(x, cb, speed = 64) {
   petEl.style.setProperty('--dur', `${dur}s`); petEl.style.setProperty('--x', `${x}px`); PM.x = x;
   PM.wt = setTimeout(() => { petEl.classList.remove('walking'); cb && cb(); }, dur * 1000 + 30);
 }
-function canWander() { return awakeStage() && !S.asleep && !PM.busy && !overlay && !S.call; }
+function canWander() { return !VIEW && awakeStage() && !S.asleep && !PM.busy && !overlay && !S.call; }
 setInterval(() => {
   if (document.hidden) return;
+  if (VIEW) { if (Math.random() < .6) wanderGuest(); return; }
   if (S.call && awakeStage() && !S.asleep && !PM.busy && !overlay) { const W = tank.clientWidth; walkTo(W / 2 - (petEl.offsetWidth / 2)); return; }
   if (canWander() && Math.random() < .6) { const [a, b] = bounds(); walkTo(a + Math.random() * (b - a)); }
 }, 2600);
@@ -1320,12 +1340,12 @@ function dropFood(F, done) {
 
 /* ---------- render ---------- */
 function renderHab() {
-  const f = S.field || 'land';
+  const f = VIEW || S.field || 'land';
   if (lastHab !== f) { $('#hab').innerHTML = habSVG(f); lastHab = f; }
 }
 function petState() { return S.asleep ? 'sleep' : S.call || S.sick ? 'sad' : ''; }
 function renderPet() {
-  const show = alive();
+  const show = alive() && !VIEW;
   petEl.hidden = !show;
   if (!show) return;
   const key = S.char + '|' + petState();
@@ -1337,6 +1357,7 @@ function renderPet() {
   petEl.classList.toggle('devil-pet', S.devil);
 }
 function renderThings() {
+  things.hidden = !!VIEW;
   const W = tank.clientWidth;
   const have = new Set();
   for (const p of S.poops) {
@@ -1350,6 +1371,11 @@ function renderThings() {
 }
 function ageDays() { return Math.floor((now() - S.born) / DAY) + 1; }
 function renderTag(slap) {
+  if (VIEW) {
+    tagEl.hidden = false;
+    tagEl.innerHTML = `<div class="t-kind"><span>${FIELDS[VIEW].tank}</span><span>參觀中</span></div><div class="t-name">${FIELDS[VIEW].name}</div><div class="t-age"><span>住客</span><b>${S.residents[VIEW].length}</b><span>/ 4</span></div>`;
+    return;
+  }
   if (!alive()) { tagEl.hidden = true; return; }
   const F = FIELDS[S.field], c = CH[S.char];
   tagEl.hidden = false;
@@ -1368,6 +1394,13 @@ function timeLeft() {
 function renderCard() {
   const c = CH[S.char];
   const head = $('#cHead'), rows = $('#cRows'), note = $('#cNote');
+  if (VIEW) {
+    const list = S.residents[VIEW];
+    head.innerHTML = `${FIELDS[VIEW].tank}的住客`;
+    rows.innerHTML = list.map(r => `<dt>${CH[r.char].name}</dt><dd>養了 ${Math.max(1, Math.round((r.left - r.born) / DAY))} 天，${fmtDay(r.left)}退休</dd>`).join('');
+    note.innerHTML = segs(list.length ? '長大後孵新蛋的電子雞，會退休住進自己長大的箱子。' : '還沒有住客。電子雞長大後孵新蛋，牠就會退休住進自己長大的箱子。');
+    flagEl.hidden = true; return;
+  }
   if (!alive()) {
     head.innerHTML = '飼育紀錄';
     rows.innerHTML = '';
@@ -1397,6 +1430,7 @@ function renderCard() {
 }
 function renderTools() {
   const live = alive(), born = awakeStage();
+  toolsEl.hidden = !!VIEW; renderVisit();
   document.querySelectorAll('.tool').forEach(b => {
     const a = b.dataset.act;
     b.disabled = !live || (['feed', 'play', 'groom'].includes(a) && !born);
@@ -1406,26 +1440,27 @@ function renderTools() {
   tank.classList.toggle('ov-on', overlay === 'game' || overlay === 'lens');
 }
 function renderScene() {
-  wrap.classList.toggle('dark', !S.light && alive());
-  document.body.classList.toggle('lamp-off', !S.light && alive());
-  tank.classList.toggle('sick', S.sick && !S.devil);
-  tank.classList.toggle('devil', S.devil);
-  tank.classList.toggle('dirty', alive() && dirtyTank(now()));
-  const c = CH[S.char];
-  tank.setAttribute('aria-label', !alive() ? '空的飼養箱' :
+  const home = alive() && !VIEW;
+  wrap.classList.toggle('dark', !S.light && home);
+  document.body.classList.toggle('lamp-off', !S.light && home);
+  tank.classList.toggle('sick', S.sick && !S.devil && home);
+  tank.classList.toggle('devil', S.devil && home);
+  tank.classList.toggle('dirty', home && dirtyTank(now()));
+  const c = CH[S.char], names = VIEW && S.residents[VIEW].map(r => CH[r.char].name).join('、');
+  tank.setAttribute('aria-label', VIEW ? `${FIELDS[VIEW].tank}${names ? `，住著${names}` : '，沒有住客'}` : !alive() ? '空的飼養箱' :
     `${FIELDS[S.field].tank}裡的${c.name}（${STAGE_NAME[S.stage]}）${S.asleep ? '，正在睡覺' : ''}${S.sick ? '，生病了' : ''}${S.poops.length ? `，有 ${S.poops.length} 坨便便` : ''}${S.light ? '' : '，燈關著'}`);
   document.title = (S.call ? '（叫你）' : '') + '電子雞飼養箱';
 }
 function renderShelf() {
-  const key = JSON.stringify([S.field, S.stage, S.char, S.cells >= 4, S.residents, S.memorial.length]);
+  const key = JSON.stringify([S.field, S.stage, S.char, VIEW, S.residents, S.memorial.length]);
   if (key === lastShelfKey) return; lastShelfKey = key;
-  const canMove = (S.stage === 'egg' || S.stage === 'baby') && S.cells < 4;
+  const shown = VIEW || (alive() ? S.field : null);
   $('#shelf').innerHTML = FIELD_KEYS.map(f => {
-    const F = FIELDS[f], here = alive() && S.field === f;
+    const F = FIELDS[f], here = alive() && S.field === f, seeing = f === shown;
     const res = S.residents[f].map(r => `<span title="${CH[r.char].name}">${spr(r.char)}</span>`).join('') + (here ? `<span class="cur">${spr(S.char)}</span>` : '');
-    const tagx = here ? '<span class="here">現在</span>' : canMove ? '<span class="move">搬過來</span>' : '';
+    const tagx = (here ? '<span class="here">養在這</span>' : '') + (seeing ? '<span class="seeing">在看</span>' : '');
     const names = S.residents[f].map(r => CH[r.char].name).join('、');
-    return `<button type="button" class="slot" data-tank="${f}" style="--fi:${F.fi}" aria-label="${F.tank}${here ? '，現在養在這裡' : ''}${names ? `，住著${names}` : '，沒有退休的電子雞'}${canMove && !here ? '，點一下把牠搬過來' : ''}">
+    return `<button type="button" class="slot" data-tank="${f}" style="--fi:${F.fi}" aria-pressed="${seeing}" aria-label="${F.tank}${here ? '，現在養在這裡' : ''}${names ? `，住著${names}` : '，沒有退休的電子雞'}，點一下在上面的大箱子裡看">
       <div class="mt">${habSVG(f)}<div class="res">${res}</div>${tagx}</div>
       <div class="band"><span>${F.name}</span><small>${F.tank} · ${S.residents[f].length}/4</small></div></button>`;
   }).join('');
@@ -1459,9 +1494,63 @@ function renderBinder() {
   $('#binder').innerHTML = h;
 }
 function renderAll(slap) {
-  renderHab(); renderPet(); renderThings(); renderTag(slap); renderCard(); renderTools(); renderScene(); renderShelf(); renderBinder();
-  if (!alive() && overlay !== 'pick') openPick();
-  if (alive() && overlay === 'pick') closeOv();
+  renderHab(); renderPet(); renderGuests(); renderThings(); renderTag(slap); renderCard(); renderTools(); renderScene(); renderShelf(); renderBinder();
+  if (!alive() && !VIEW && overlay !== 'pick') openPick();
+  if ((alive() || VIEW) && overlay === 'pick') closeOv();
+}
+
+/* ---------- visiting another tank ---------- */
+const nightNow = () => { const h = new Date(now()).getHours(); return h >= 22 || h < 6; };
+function renderGuests() {
+  guestsEl.hidden = !VIEW;
+  if (!VIEW) { lastGuestKey = ''; guestsEl.innerHTML = ''; return; }
+  const list = S.residents[VIEW], night = nightNow();
+  const key = JSON.stringify([VIEW, list.map(r => r.char), night]);
+  if (key === lastGuestKey) return; lastGuestKey = key;
+  if (!list.length) { guestsEl.innerHTML = `<p class="none">${segs('這個箱子還沒有住客。')}</p>`; return; }
+  const W = tank.clientWidth, sz = (parseFloat(getComputedStyle(tank).getPropertyValue('--pet')) || 104) * .82;
+  guestsEl.innerHTML = list.map((r, i) => {
+    const x = Math.round(6 + (W - sz - 12) * (i + .5) / list.length), face = i % 2 ? -1 : 1;
+    return `<div class="pet guest${night ? ' sleeping' : ''}" data-i="${i}" style="--x:${x}px"><div class="bob"><div class="spr" style="--face:${face}">${spr(r.char, { state: night ? 'sleep' : '' })}</div></div><span class="zz" aria-hidden="true">z</span></div>`;
+  }).join('');
+}
+function guestTo(el, x) {
+  const sz = el.offsetWidth, W = tank.clientWidth;
+  x = clamp(x, 6, Math.max(6, W - sz - 6));
+  const from = parseFloat(el.style.getPropertyValue('--x')) || 0, d = Math.abs(x - from);
+  if (d < 2) return;
+  el.querySelector('.spr').style.setProperty('--face', x < from ? -1 : 1);
+  const dur = REDUCED ? 0 : d / 56;
+  el.classList.add('walking'); el.style.setProperty('--dur', `${dur}s`); el.style.setProperty('--x', `${x}px`);
+  clearTimeout(el._wt); el._wt = setTimeout(() => el.classList.remove('walking'), dur * 1000 + 30);
+}
+function wanderGuest() {
+  if (REDUCED) return;
+  const awake = [...guestsEl.querySelectorAll('.guest:not(.sleeping)')];
+  if (!awake.length) return;
+  const el = awake[Math.random() * awake.length | 0];
+  guestTo(el, Math.random() * tank.clientWidth);
+}
+function renderVisit() {
+  visitEl.hidden = !VIEW;
+  if (!VIEW) { lastVisitKey = ''; visitEl.innerHTML = ''; return; }
+  const live = alive(), canMove = live && (S.stage === 'egg' || S.stage === 'baby') && S.cells < 4;
+  const key = JSON.stringify([VIEW, live, S.char, canMove, S.call && S.call.k, S.residents[VIEW].length]);
+  if (key === lastVisitKey) return; lastVisitKey = key;
+  const names = S.residents[VIEW].map(r => CH[r.char].name).join('、');
+  const keys = (canMove ? `<button type="button" data-v="move">把${CH[S.char].name}搬過來</button>` : '') +
+    (live ? '' : '<button type="button" data-v="egg">在這裡放蛋</button>') +
+    `<button type="button" class="go" data-v="home">${live ? `回到${FIELDS[S.field].tank}` : '回去選箱子'}</button>`;
+  visitEl.innerHTML = `<p class="v-txt"><b>正在看${FIELDS[VIEW].tank}</b>${segs(names ? `住著${names}。` : '還沒有住客。')}${live && S.call ? `<span class="v-call">${segs(`${CH[S.char].name}在${FIELDS[S.field].tank}叫你。`)}</span>` : ''}</p><div class="v-keys">${keys}</div>`;
+}
+function view(f) {
+  if (f && alive() && f === S.field) f = null;
+  VIEW = f || null; closeOv(); renderAll();
+}
+function placeEgg(f) {
+  VIEW = null; newEgg(f); closeOv(); lastSprKey = '';
+  PM.x = tank.clientWidth / 2 - petEl.offsetWidth / 2; petEl.style.setProperty('--dur', '0s'); petEl.style.setProperty('--x', `${PM.x}px`);
+  say(`把蛋放進${FIELDS[S.field].tank}了，1 分鐘後孵化。`); renderAll(true);
 }
 
 /* ---------- overlays ---------- */
@@ -1565,10 +1654,17 @@ document.getElementById('tools').addEventListener('click', e => {
 });
 tank.addEventListener('click', e => {
   const pk = e.target.closest('[data-field]');
-  if (pk) { newEgg(pk.dataset.field); closeOv(); lastSprKey = ''; PM.x = tank.clientWidth / 2 - petEl.offsetWidth / 2; petEl.style.setProperty('--dur', '0s'); petEl.style.setProperty('--x', `${PM.x}px`); say(`把蛋放進${FIELDS[S.field].tank}了，1 分鐘後孵化。`); renderAll(true); return; }
+  if (pk) { placeEgg(pk.dataset.field); return; }
   if (e.target.closest('[data-close]')) { closeOv(true); return; }
   const fd = e.target.closest('[data-food]'); if (fd) { feed(fd.dataset.food); return; }
   const sd = e.target.closest('[data-side]'); if (sd) { guess(+sd.dataset.side); return; }
+  if (VIEW) {
+    const rect = tank.getBoundingClientRect(), x = e.clientX - rect.left, y = e.clientY - rect.top;
+    ripple(x, y);
+    const near = [...guestsEl.querySelectorAll('.guest:not(.sleeping)')].sort((a, b) => Math.abs(a.getBoundingClientRect().left - e.clientX) - Math.abs(b.getBoundingClientRect().left - e.clientX))[0];
+    if (near) guestTo(near, x - near.offsetWidth / 2);
+    return;
+  }
   if (!overlay && canWander()) {
     const rect = tank.getBoundingClientRect(), x = e.clientX - rect.left, y = e.clientY - rect.top;
     ripple(x, y); walkTo(x - petEl.offsetWidth / 2, null, 150);
@@ -1581,11 +1677,25 @@ document.addEventListener('click', e => {
 $('#shelf').addEventListener('click', e => {
   const s = e.target.closest('.slot'); if (!s) return;
   const f = s.dataset.tank, F = FIELDS[f];
-  if (moveTank(f)) { say(`把${CH[S.char].name}搬到${F.tank}了${S.stage === 'baby' ? '，場地細胞重新算' : ''}。`); lastHab = null; renderAll(); window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' }); return; }
+  view(f);
   const names = S.residents[f].map(r => CH[r.char].name);
-  say(alive() && S.field === f ? `${CH[S.char].name}現在住在${F.tank}${names.length ? `，旁邊還有${names.join('、')}` : ''}。` : names.length ? `${F.tank}住著${names.join('、')}。` : `${F.tank}現在是空的。`);
+  say(!VIEW ? `回到${F.tank}，${CH[S.char].name}在這裡${names.length ? `，旁邊還有${names.join('、')}` : ''}。` : `在看${F.tank}，${names.length ? `住著${names.join('、')}` : '還沒有住客'}。`);
+  window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay && overlay !== 'pick') closeOv(true); });
+visitEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-v]'); if (!b || !VIEW) return;
+  const f = VIEW, v = b.dataset.v;
+  if (v === 'egg') { placeEgg(f); return; }
+  if (v === 'move' && moveTank(f)) { VIEW = null; lastHab = null; renderAll(); say(`把${CH[S.char].name}搬到${FIELDS[f].tank}了${S.stage === 'baby' ? '，場地細胞重新算' : ''}。`); return; }
+  view(null);
+  say(alive() ? `回到${FIELDS[S.field].tank}了。` : '選一個箱子放蛋。');
+  if (alive()) toolsEl.querySelector('.tool:not(:disabled)')?.focus(); else pickEl.querySelector('[data-field]')?.focus();
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (overlay && overlay !== 'pick') closeOv(true);
+  else if (VIEW) { view(null); say(alive() ? `回到${FIELDS[S.field].tank}了。` : '選一個箱子放蛋。'); }
+});
 let armed = 0;
 $('#reset').addEventListener('click', e => {
   const b = e.currentTarget;
@@ -1597,6 +1707,7 @@ $('#reset').addEventListener('click', e => {
 });
 
 /* ---------- time ---------- */
+const fmtDay = t => { const d = new Date(t); return `${d.getMonth() + 1}/${d.getDate()} `; };
 function summary(ms, e) {
   const parts = [];
   if (e.poop) parts.push(`拉了 ${e.poop} 次便便`);
@@ -1614,7 +1725,7 @@ function tick(fromHidden) {
   EV = {}; simulate(t); const e = EV; EV = null;
   if (canStore) save();
   if (fromHidden && gap >= 20 * MIN && (alive() || e.left)) say(summary(gap, e));
-  if (e.evolved && !fromHidden && !REDUCED) {
+  if (e.evolved && !fromHidden && !REDUCED && !VIEW) {
     tank.classList.add('evolving'); say(`${CH[wasChar]?.name || ''}長大了……`);
     setTimeout(() => { tank.classList.remove('evolving'); lastSprKey = ''; renderAll(true); say(`長成「${CH[S.char].name}」了！`); }, 1300);
     return;
@@ -1626,7 +1737,7 @@ function clock() { const d = new Date(now()); $('#clock').textContent = `${Strin
 setInterval(() => { clock(); if (!document.hidden) tick(false); }, 15000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { clock(); tick(true); } });
 window.addEventListener('pageshow', e => { if (e.persisted) { clock(); tick(true); } });
-new ResizeObserver(() => { layout(); renderThings(); }).observe(tank);
+new ResizeObserver(() => { layout(); renderThings(); lastGuestKey = ''; renderGuests(); }).observe(tank);
 
 /* ---------- boot ---------- */
 $('#band24').innerHTML = Array.from({ length: 24 }, (_, h) => `<i class="${h >= 22 || h < 6 ? 's' : h < 10 ? 'w' : h < 19 ? 'a' : 'b'}"></i>`).join('');
