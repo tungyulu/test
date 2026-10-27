@@ -145,7 +145,7 @@ components:
 
 The handbook is the category standard played straight: it should read like notes and reminders the phone itself ships, at the craft level of Apple Reminders and Apple Health, without their branding. It is read, not operated: there is no checklist, no stored state and nothing to tick. A cool grey grouped ground carries white rounded sections; rows are a bold key over a quieter detail line, separated by inset hairlines; titles are large and bold. The readers are elderly parents opening a LINE link on a phone, so everything is set larger than the platform default (19px body, 20px row keys, 34px title) and nothing important is faint.
 
-The page opens on the title and goes straight into the owner's three requests; there is no summary or status card. Each section is announced the Health way: a coloured line glyph beside a section title in the same colour (the three requests and the daily routine in caramel, food amber, walks green, habits blue, emergency red, the dog's profile a grey glyph under an ink title). Colour identifies a section's glyph and title and nothing else; rows stay white with ink text. Red belongs to 不舒服時 alone. Dark mode is the platform's true-black grouped scheme, not a tinted variant.
+The page opens on the title and goes straight into the owner's four requests; there is no summary or status card. Each section is announced the Health way: a coloured line glyph beside a section title in the same colour (the four requests and the daily routine in caramel, food amber, walks green, habits blue, emergency red, the dog's profile a grey glyph under an ink title). Colour identifies a section's glyph and title and nothing else; rows stay white with ink text. Red belongs to 不舒服時 alone. Dark mode is the platform's true-black grouped scheme, not a tinted variant.
 
 The single illustration is a small drawn avatar of the dog in a 64px circle beside the title, made of flat filled planes and following the owner's photo (chocolate tricolour long coat, white blaze and muzzle, tan brows and cheeks, yellow harness). The photo itself is not published. The page is still: apart from the browser's default anchor jump, nothing moves.
 
@@ -163,8 +163,8 @@ The single illustration is a small drawn avatar of the dog in a 64px circle besi
 A neutral platform palette with one warm accent and four section hues, each hue paired with a darker (light mode) or lighter (dark mode) "-ink" variant wherever it sets text.
 
 ### Primary
-- **Caramel** (accent): the star glyph of 最重要的三件事, the clock glyph of 每天的作息, the focus outline and the caret.
-- **Deep Caramel** (accent-ink): every piece of caramel text: the titles 最重要的三件事 and 每天的作息, the current tab label, inline times inside a row (晚上 10–11 點), links. 6.18:1 on white, 5.54:1 on the ground.
+- **Caramel** (accent): the star glyph of 最重要的四件事, the clock glyph of 每天的作息, the focus outline and the caret.
+- **Deep Caramel** (accent-ink): every piece of caramel text: the titles 最重要的四件事 and 每天的作息, the current tab label, inline times inside a row (晚上 10–11 點), links. 6.18:1 on white, 5.54:1 on the ground.
 - **Caramel Wash** (accent-soft): the current tab's pill (accent-ink on it is 5.31:1 light, 6.94:1 dark) and text selection.
 
 ### Secondary
@@ -186,7 +186,7 @@ A neutral platform palette with one warm accent and four section hues, each hue 
 - **Avatar Cream** (avatar-disc): the avatar's backing disc, fixed in both themes on purpose so the chocolate coat reads against true black (checked in a dark-mode capture).
 
 ### Named Rules
-**The One Warm Accent Rule.** Caramel is the only accent. It marks what leads (the three requests, the routine), where you are (the current tab's pill) and focus; no second accent is introduced.
+**The One Warm Accent Rule.** Caramel is the only accent. It marks what leads (the four requests, the routine), where you are (the current tab's pill) and focus; no second accent is introduced.
 
 **The Red Is Unwell Rule.** Red appears only in the 不舒服時 section and its tab. It never marks a meal, a request or a forbidden food (the 不能給他吃 bullets are grey).
 
@@ -219,7 +219,7 @@ A neutral platform palette with one warm accent and four section hues, each hue 
 
 ## Layout
 
-One centred column, max 600px, 16px side gutter, bottom padding of 104px plus the safe-area inset so the last content clears the tab bar. Order: title with avatar, then 最重要的三件事 directly below (8px top margin instead of the usual 28px), 每天的作息 (早上 / 晚上 / 需要的話), 吃飯, 散步和上廁所, 欸哩的習慣, 不舒服時, 欸哩的資料 (breed, sex, age, weight, microchip, vaccines, last vet visit), and a centred closing line. Later groups are separated by 28px; section headers and group headers sit inset 4px from the list edge, group headers with 18px above and 8px below. Rows are 14px × 16px; key-value rows are at least 56px tall with the value right-aligned. A detail line that starts a new rule inside a row gets 8px above it.
+One centred column, max 600px, 16px side gutter, bottom padding of 104px plus the safe-area inset so the last content clears the tab bar. Order: title with avatar, then 最重要的四件事 directly below (8px top margin instead of the usual 28px), 每天的作息 (早上 / 晚上 / 需要的話), 吃飯, 散步和上廁所, 欸哩的習慣, 不舒服時, 欸哩的資料 (breed, sex, age, weight, microchip, vaccines, last vet visit), and a centred closing line. Later groups are separated by 28px; section headers and group headers sit inset 4px from the list edge, group headers with 18px above and 8px below. Rows are 14px × 16px; key-value rows are at least 56px tall with the value right-aligned. A detail line that starts a new rule inside a row gets 8px above it.
 
 The bottom tab bar is fixed, full width, with its five items constrained to the same 600px column. Scroll padding (12px top, 96px bottom) keeps anchored sections clear of the bar. Print hides the tab bar, prints on white and keeps groups unbroken.
 
