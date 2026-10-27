@@ -138,7 +138,7 @@
 - Walks 10–20 minutes morning and evening; he recently toilets at home before bed, and 22–23 h he can go out once more. Hold the leash tight. Wipe his paws and his pee / poop area after every walk. Restless and agitated = he wants to go out to toilet.
 - Commands 坐下, 趴下, 握手, give me five, 等等 (before eating). Not afraid of anything. He begs with his paws (拜拜): ignore it. Dig out anything he picks up and eats. Stop him barking at people outside the door.
 - Japan is one hour ahead; contact the owner on LINE first.
-- No vet, emergency-vet, microchip or vaccination details on the page (owner, 2026-10-27).
+- Records (owner, 2026-10-27): microchip 900073001044172; 2026-10-01 10-in-1 and rabies vaccines; 2026-10-19 an injection for conjunctivitis. No vet or emergency-vet contacts on the page.
 - General (not Eri-specific) go-to-the-vet signs and the common toxic foods may be listed as general guidance; nothing else about Eri may be invented.
 
 **Constraints.** Static single HTML file on public GitHub Pages: no home address, no private phone numbers. Large type and high contrast for elderly readers; phone first.

@@ -219,7 +219,7 @@ A neutral platform palette with one warm accent and four section hues, each hue 
 
 ## Layout
 
-One centred column, max 600px, 16px side gutter, bottom padding of 104px plus the safe-area inset so the last content clears the tab bar. Order: title with avatar, then 最重要的三件事 directly below (8px top margin instead of the usual 28px), 每天的作息 (早上 / 晚上 / 需要的話), 吃飯, 散步和上廁所, 欸哩的習慣, 不舒服時, 欸哩的資料 (breed, sex, age, weight), and a centred closing line. Later groups are separated by 28px; section headers and group headers sit inset 4px from the list edge, group headers with 18px above and 8px below. Rows are 14px × 16px; key-value rows are at least 56px tall with the value right-aligned. A detail line that starts a new rule inside a row gets 8px above it.
+One centred column, max 600px, 16px side gutter, bottom padding of 104px plus the safe-area inset so the last content clears the tab bar. Order: title with avatar, then 最重要的三件事 directly below (8px top margin instead of the usual 28px), 每天的作息 (早上 / 晚上 / 需要的話), 吃飯, 散步和上廁所, 欸哩的習慣, 不舒服時, 欸哩的資料 (breed, sex, age, weight, microchip, vaccines, last vet visit), and a centred closing line. Later groups are separated by 28px; section headers and group headers sit inset 4px from the list edge, group headers with 18px above and 8px below. Rows are 14px × 16px; key-value rows are at least 56px tall with the value right-aligned. A detail line that starts a new rule inside a row gets 8px above it.
 
 The bottom tab bar is fixed, full width, with its five items constrained to the same 600px column. Scroll padding (12px top, 96px bottom) keeps anchored sections clear of the bar. Print hides the tab bar, prints on white and keeps groups unbroken.
 
