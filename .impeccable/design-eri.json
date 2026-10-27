@@ -1,0 +1,728 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-27T06:55:45+00:00",
+  "title": "Design System: 欸哩照顧手冊 · Grouped Care Notes",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Grouped Grey",
+        "canonical": "#F2F2F7",
+        "tonalRamp": [
+          "#0b0b0e",
+          "#26262a",
+          "#454548",
+          "#66666a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d5",
+          "#eeeef3"
+        ]
+      },
+      "cell": {
+        "role": "neutral",
+        "displayName": "Cell White",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#111114",
+        "tonalRamp": [
+          "#0b0b0e",
+          "#262629",
+          "#454548",
+          "#666669",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d5",
+          "#eeeef2"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "canonical": "#4A4A52",
+        "tonalRamp": [
+          "#0b0a11",
+          "#26262d",
+          "#44444c",
+          "#65656e",
+          "#888891",
+          "#adadb6",
+          "#d0d0da",
+          "#ededf7"
+        ]
+      },
+      "separator": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#C6C6CB",
+        "tonalRamp": [
+          "#0b0b0e",
+          "#26262a",
+          "#454449",
+          "#66656a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d5",
+          "#eeeef3"
+        ]
+      },
+      "bar": {
+        "role": "neutral",
+        "displayName": "Frosted Bar",
+        "canonical": "rgba(249,249,251,.88)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#262628",
+          "#454546",
+          "#666667",
+          "#89898b",
+          "#aeaeaf",
+          "#d1d1d3",
+          "#eeeef0"
+        ]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Caramel",
+        "canonical": "#B85A0A",
+        "tonalRamp": [
+          "#2b0000",
+          "#4f0500",
+          "#7c2200",
+          "#a34700",
+          "#cb6c27",
+          "#f59151",
+          "#ffb474",
+          "#ffd8a3"
+        ]
+      },
+      "accent-ink": {
+        "role": "primary",
+        "displayName": "Deep Caramel",
+        "canonical": "#9C4A06",
+        "tonalRamp": [
+          "#2b0000",
+          "#4f0400",
+          "#772800",
+          "#9e4c09",
+          "#c57039",
+          "#ee955e",
+          "#ffb881",
+          "#ffd7a4"
+        ]
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "Caramel Wash",
+        "canonical": "#FBEBDC",
+        "tonalRamp": [
+          "#130902",
+          "#2f2419",
+          "#4f4236",
+          "#716356",
+          "#958679",
+          "#baab9d",
+          "#decebf",
+          "#fbebdc"
+        ]
+      },
+      "food": {
+        "role": "secondary",
+        "displayName": "Food Amber",
+        "canonical": "#B85A0A",
+        "tonalRamp": [
+          "#2b0000",
+          "#4f0500",
+          "#7c2200",
+          "#a34700",
+          "#cb6c27",
+          "#f59151",
+          "#ffb474",
+          "#ffd8a3"
+        ]
+      },
+      "food-ink": {
+        "role": "secondary",
+        "displayName": "Food Amber Ink",
+        "canonical": "#9C4A06",
+        "tonalRamp": [
+          "#2b0000",
+          "#4f0400",
+          "#772800",
+          "#9e4c09",
+          "#c57039",
+          "#ee955e",
+          "#ffb881",
+          "#ffd7a4"
+        ]
+      },
+      "walk": {
+        "role": "secondary",
+        "displayName": "Leash Green",
+        "canonical": "#2E7D32",
+        "tonalRamp": [
+          "#001400",
+          "#003300",
+          "#005604",
+          "#29792e",
+          "#509e52",
+          "#75c476",
+          "#98e898",
+          "#bdffbb"
+        ]
+      },
+      "habit": {
+        "role": "secondary",
+        "displayName": "Habit Blue",
+        "canonical": "#3557C4",
+        "tonalRamp": [
+          "#02003c",
+          "#0c1d60",
+          "#1b36a0",
+          "#385bc9",
+          "#5981f2",
+          "#7ba7ff",
+          "#9dcbff",
+          "#caedff"
+        ]
+      },
+      "habit-ink": {
+        "role": "secondary",
+        "displayName": "Habit Blue Ink",
+        "canonical": "#3557C4",
+        "tonalRamp": [
+          "#02003c",
+          "#0c1d60",
+          "#1b36a0",
+          "#385bc9",
+          "#5981f2",
+          "#7ba7ff",
+          "#9dcbff",
+          "#caedff"
+        ]
+      },
+      "sos": {
+        "role": "tertiary",
+        "displayName": "Alarm Red",
+        "canonical": "#C62828",
+        "tonalRamp": [
+          "#2d0000",
+          "#520000",
+          "#910000",
+          "#bc1a1f",
+          "#e74b44",
+          "#ff7368",
+          "#ff988a",
+          "#ffcfc3"
+        ]
+      },
+      "sos-ink": {
+        "role": "tertiary",
+        "displayName": "Alarm Red Ink",
+        "canonical": "#B71C1C",
+        "tonalRamp": [
+          "#2d0000",
+          "#520000",
+          "#900000",
+          "#ba201f",
+          "#e54e44",
+          "#ff7668",
+          "#ff9a8a",
+          "#ffcfc2"
+        ]
+      },
+      "sos-soft": {
+        "role": "tertiary",
+        "displayName": "Alarm Wash",
+        "canonical": "#FDECEC",
+        "tonalRamp": [
+          "#120808",
+          "#2f2323",
+          "#4f4141",
+          "#706262",
+          "#948585",
+          "#b9aaaa",
+          "#ddcccc",
+          "#fbeaea"
+        ]
+      },
+      "doc": {
+        "role": "neutral",
+        "displayName": "Doc Grey",
+        "canonical": "#5E5E66",
+        "tonalRamp": [
+          "#0b0a10",
+          "#26262d",
+          "#44444c",
+          "#65656d",
+          "#888891",
+          "#adadb6",
+          "#d0d0d9",
+          "#ededf7"
+        ]
+      },
+      "avatar-disc": {
+        "role": "neutral",
+        "displayName": "Avatar Cream",
+        "canonical": "#EFE4D6",
+        "tonalRamp": [
+          "#110a03",
+          "#2d251a",
+          "#4c4338",
+          "#6e6458",
+          "#91877b",
+          "#b7ac9f",
+          "#dacfc1",
+          "#f8eddf"
+        ]
+      },
+      "dark-ground": {
+        "role": "neutral",
+        "displayName": "Grouped Grey (dark)",
+        "canonical": "#000000",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#aeaeae",
+          "#d1d1d1",
+          "#eeeeee"
+        ]
+      },
+      "dark-cell": {
+        "role": "neutral",
+        "displayName": "Cell White (dark)",
+        "canonical": "#1C1C1E",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#adadb0",
+          "#d1d1d3",
+          "#eeeef1"
+        ]
+      },
+      "dark-ink": {
+        "role": "neutral",
+        "displayName": "Ink (dark)",
+        "canonical": "#F2F2F7",
+        "tonalRamp": [
+          "#0b0b0e",
+          "#26262a",
+          "#454548",
+          "#66666a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d5",
+          "#eeeef3"
+        ]
+      },
+      "dark-ink-2": {
+        "role": "neutral",
+        "displayName": "Secondary Ink (dark)",
+        "canonical": "#C2C2C8",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#26262a",
+          "#444449",
+          "#65656b",
+          "#88888e",
+          "#adadb3",
+          "#d0d0d6",
+          "#eeeef4"
+        ]
+      },
+      "dark-separator": {
+        "role": "neutral",
+        "displayName": "Hairline (dark)",
+        "canonical": "#3A3A3E",
+        "tonalRamp": [
+          "#0b0b0e",
+          "#26262a",
+          "#444449",
+          "#65666a",
+          "#89898d",
+          "#adadb2",
+          "#d0d0d5",
+          "#eeeef3"
+        ]
+      },
+      "dark-bar": {
+        "role": "neutral",
+        "displayName": "Frosted Bar (dark)",
+        "canonical": "rgba(22,22,24,.88)",
+        "tonalRamp": [
+          "#0b0b0d",
+          "#262628",
+          "#454547",
+          "#666668",
+          "#89898b",
+          "#adadb0",
+          "#d0d1d3",
+          "#eeeef1"
+        ]
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "Caramel (dark)",
+        "canonical": "#D9782A",
+        "tonalRamp": [
+          "#2a0000",
+          "#4e0700",
+          "#7c2200",
+          "#a44700",
+          "#cc6c18",
+          "#f59148",
+          "#ffb56c",
+          "#ffd9a0"
+        ]
+      },
+      "dark-accent-ink": {
+        "role": "primary",
+        "displayName": "Deep Caramel (dark)",
+        "canonical": "#F2A35E",
+        "tonalRamp": [
+          "#290000",
+          "#4c0c00",
+          "#732e00",
+          "#995100",
+          "#c0752c",
+          "#e89a54",
+          "#ffbd78",
+          "#ffdc9a"
+        ]
+      },
+      "dark-accent-soft": {
+        "role": "primary",
+        "displayName": "Caramel Wash (dark)",
+        "canonical": "#3A2614",
+        "tonalRamp": [
+          "#170600",
+          "#35210f",
+          "#56402d",
+          "#78614d",
+          "#9c846f",
+          "#c2a993",
+          "#e6cbb6",
+          "#ffe9d2"
+        ]
+      },
+      "dark-food": {
+        "role": "secondary",
+        "displayName": "Food Amber (dark)",
+        "canonical": "#C96A1C",
+        "tonalRamp": [
+          "#2b0000",
+          "#4f0600",
+          "#7c2200",
+          "#a34800",
+          "#cb6c1f",
+          "#f4924c",
+          "#ffb570",
+          "#ffd8a1"
+        ]
+      },
+      "dark-food-ink": {
+        "role": "secondary",
+        "displayName": "Food Amber Ink (dark)",
+        "canonical": "#F2A35E",
+        "tonalRamp": [
+          "#290000",
+          "#4c0c00",
+          "#732e00",
+          "#995100",
+          "#c0752c",
+          "#e89a54",
+          "#ffbd78",
+          "#ffdc9a"
+        ]
+      },
+      "dark-walk": {
+        "role": "secondary",
+        "displayName": "Leash Green (dark)",
+        "canonical": "#2F8A3A",
+        "tonalRamp": [
+          "#001500",
+          "#003400",
+          "#005700",
+          "#1b7a2a",
+          "#469f4f",
+          "#6dc673",
+          "#90ea95",
+          "#bbffbd"
+        ]
+      },
+      "dark-habit": {
+        "role": "secondary",
+        "displayName": "Habit Blue (dark)",
+        "canonical": "#3E63D6",
+        "tonalRamp": [
+          "#02003c",
+          "#0c1d60",
+          "#1a34a4",
+          "#375acc",
+          "#5780f6",
+          "#79a6ff",
+          "#9bcbff",
+          "#caedff"
+        ]
+      },
+      "dark-habit-ink": {
+        "role": "secondary",
+        "displayName": "Habit Blue Ink (dark)",
+        "canonical": "#93AAF7",
+        "tonalRamp": [
+          "#05003a",
+          "#141c5d",
+          "#2f3e81",
+          "#4e61a7",
+          "#6f84ce",
+          "#93aaf7",
+          "#b5cdff",
+          "#d2ebff"
+        ]
+      },
+      "dark-sos": {
+        "role": "tertiary",
+        "displayName": "Alarm Red (dark)",
+        "canonical": "#D64040",
+        "tonalRamp": [
+          "#2d0000",
+          "#520003",
+          "#8f0000",
+          "#b92028",
+          "#e44e4c",
+          "#ff766f",
+          "#ff9a91",
+          "#ffcfc6"
+        ]
+      },
+      "dark-sos-ink": {
+        "role": "tertiary",
+        "displayName": "Alarm Red Ink (dark)",
+        "canonical": "#FF8A80",
+        "tonalRamp": [
+          "#2d0000",
+          "#520001",
+          "#811316",
+          "#a93d38",
+          "#d2625a",
+          "#fc877d",
+          "#ffaa9f",
+          "#ffcfc4"
+        ]
+      },
+      "dark-sos-soft": {
+        "role": "tertiary",
+        "displayName": "Alarm Wash (dark)",
+        "canonical": "#3A1717",
+        "tonalRamp": [
+          "#1d0103",
+          "#3e1a1a",
+          "#603938",
+          "#835958",
+          "#a97c7a",
+          "#cfa19e",
+          "#f4c3c1",
+          "#ffe1de"
+        ]
+      },
+      "dark-doc": {
+        "role": "neutral",
+        "displayName": "Doc Grey (dark)",
+        "canonical": "#636369",
+        "tonalRamp": [
+          "#0b0b0f",
+          "#26262b",
+          "#44444a",
+          "#65656b",
+          "#88888f",
+          "#adadb4",
+          "#d0d0d7",
+          "#eeeef5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "large-title": {
+        "displayName": "Large Title",
+        "purpose": "The dog's name, once, beside the avatar."
+      },
+      "section-title": {
+        "displayName": "Section Title",
+        "purpose": "Section headings in the section's colour; the emergency first row at 800."
+      },
+      "closing": {
+        "displayName": "Closing",
+        "purpose": "The thank-you line at the end of the page."
+      },
+      "row-key": {
+        "displayName": "Row Key",
+        "purpose": "First line of every row (500 in key-value rows)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Base size and bulleted lists."
+      },
+      "detail": {
+        "displayName": "Detail",
+        "purpose": "Second line of a row and key-value values; in ink when it is the instruction itself."
+      },
+      "group-header": {
+        "displayName": "Group Header",
+        "purpose": "In-section group labels in secondary ink."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Tab labels at 15px (800 on the current tab); the smallest size."
+      }
+    },
+    "shadows": [
+      {
+        "name": "frosted-bar",
+        "value": "backdrop-filter: saturate(180%) blur(20px)",
+        "purpose": "Translucent bottom tab bar over content; the only depth effect. No box-shadows on the page."
+      }
+    ],
+    "motion": [
+      {
+        "name": "none",
+        "value": "no transitions or animations",
+        "purpose": "The page is still; tab taps use the browser default anchor jump, no smooth scroll."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "column",
+        "value": "600px",
+        "purpose": "Single centred column max width; the tab bar items share it. No other breakpoints."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Grouped Section List",
+      "kind": "card",
+      "refersTo": "section-list",
+      "description": "White 14px section on the grouped ground; key over detail rows with hairlines inset 16px, plus a key-value row.",
+      "html": "<div class=\"ds-ground\"><ul class=\"ds-list\"><li class=\"ds-row\"><span class=\"ds-k\">早晚各一次</span><span class=\"ds-d\">每次 10–20 分鐘就夠了。</span></li><li class=\"ds-row\"><span class=\"ds-k\">繩子</span><span class=\"ds-d\">拉緊、握好就可以。</span></li><li class=\"ds-row ds-kv\"><span class=\"ds-k\">體重</span><span class=\"ds-v\">3.3 公斤</span></li></ul></div>",
+      "css": ":host{--bg:#F2F2F7;--cell:#FFFFFF;--ink:#111114;--ink-2:#4A4A52;--sep:#C6C6CB;--acc:#B85A0A;--acc-ink:#9C4A06;--acc-soft:#FBEBDC;--on-acc:#FFFFFF;--sos:#C62828;--sos-ink:#B71C1C;--sos-soft:#FDECEC;--walk:#2E7D32;--food:#B85A0A;--food-ink:#9C4A06;--seg-on:#FFFFFF;--ring:#8E8E96;--bar:rgba(249,249,251,.88);--sans:-apple-system,BlinkMacSystemFont,\"PingFang TC\",\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif} .ds-ground{background:var(--bg);padding:16px;font-family:var(--sans)} .ds-list{list-style:none;margin:0;padding:0;background:var(--cell);border-radius:14px;overflow:hidden} .ds-row{position:relative;padding:14px 16px} .ds-row+.ds-row::before{content:\"\";position:absolute;top:0;left:16px;right:0;border-top:1px solid var(--sep)} .ds-k{display:block;font-size:20px;font-weight:600;line-height:1.35;color:var(--ink)} .ds-d{display:block;font-size:18px;line-height:1.55;color:var(--ink-2);margin-top:2px} .ds-kv{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:56px} .ds-kv .ds-k{font-weight:500} .ds-v{font-size:18px;color:var(--ink-2);text-align:right}"
+    },
+    {
+      "name": "Section Header",
+      "kind": "custom",
+      "refersTo": "section-title",
+      "description": "Health-style header: a coloured line glyph and a 24px title in the same colour.",
+      "html": "<div class=\"ds-ghead ds-acc\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8Z\"/></svg><h2>最重要的三件事</h2></div><div class=\"ds-ghead ds-food\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 11h18a9 9 0 0 1-18 0Z\"/><path d=\"M8 7.5c.8-1 2-1.5 4-1.5s3.2.5 4 1.5\"/></svg><h2>吃飯</h2></div><div class=\"ds-ghead ds-sos\"><svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M9 3.5h6v5.5h5.5v6H15v5.5H9V15H3.5V9H9Z\"/></svg><h2>不舒服時</h2></div>",
+      "css": ":host{--bg:#F2F2F7;--cell:#FFFFFF;--ink:#111114;--ink-2:#4A4A52;--sep:#C6C6CB;--acc:#B85A0A;--acc-ink:#9C4A06;--acc-soft:#FBEBDC;--on-acc:#FFFFFF;--sos:#C62828;--sos-ink:#B71C1C;--sos-soft:#FDECEC;--walk:#2E7D32;--food:#B85A0A;--food-ink:#9C4A06;--seg-on:#FFFFFF;--ring:#8E8E96;--bar:rgba(249,249,251,.88);--sans:-apple-system,BlinkMacSystemFont,\"PingFang TC\",\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif} .ds-ghead{display:flex;align-items:center;gap:10px;padding:8px 4px;font-family:var(--sans)} .ds-ghead h2{margin:0;font-size:24px;font-weight:700;line-height:1.25} .ds-ghead svg{flex:none} .ds-acc svg{color:var(--acc)} .ds-acc h2{color:var(--acc-ink)} .ds-food svg{color:var(--food)} .ds-food h2{color:var(--food-ink)} .ds-sos svg{color:var(--sos)} .ds-sos h2{color:var(--sos-ink)}"
+    },
+    {
+      "name": "Evening Meal Row",
+      "kind": "custom",
+      "refersTo": "list-row",
+      "description": "One row carrying both evening rules as ink detail lines with bold lead-ins, so both cases are always visible.",
+      "html": "<ul class=\"ds-list\"><li class=\"ds-row\"><span class=\"ds-k\">吃飯：看早上那份有沒有吃完</span><span class=\"ds-d\"><b>有吃完</b>　照樣給 25–30 克飼料，可以再加 1/3 到半罐罐頭。</span><span class=\"ds-d\"><b>沒吃</b>　只給早上剩下的那份，不加罐頭。這天不給零食。</span></li></ul>",
+      "css": ":host{--bg:#F2F2F7;--cell:#FFFFFF;--ink:#111114;--ink-2:#4A4A52;--sep:#C6C6CB;--acc:#B85A0A;--acc-ink:#9C4A06;--acc-soft:#FBEBDC;--on-acc:#FFFFFF;--sos:#C62828;--sos-ink:#B71C1C;--sos-soft:#FDECEC;--walk:#2E7D32;--food:#B85A0A;--food-ink:#9C4A06;--seg-on:#FFFFFF;--ring:#8E8E96;--bar:rgba(249,249,251,.88);--sans:-apple-system,BlinkMacSystemFont,\"PingFang TC\",\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif} .ds-list{list-style:none;margin:0;padding:0;background:var(--cell);border-radius:14px;overflow:hidden;font-family:var(--sans)} .ds-row{padding:14px 16px} .ds-k{display:block;font-size:20px;font-weight:600;line-height:1.35;color:var(--ink)} .ds-d{display:block;font-size:18px;line-height:1.55;color:var(--ink);margin-top:8px} .ds-d b{font-weight:700}"
+    },
+    {
+      "name": "Emergency First Row",
+      "kind": "card",
+      "refersTo": "sos-first-row",
+      "description": "The first row of 不舒服時: contact step in 800 red on a pale red wash, instructions in ink.",
+      "html": "<ul class=\"ds-list\"><li class=\"ds-sos\"><span class=\"k\">先 LINE 我</span><span class=\"d\">日本比台灣快 1 小時，日本現在 <b class=\"n\">10:24</b>。</span></li></ul>",
+      "css": ":host{--bg:#F2F2F7;--cell:#FFFFFF;--ink:#111114;--ink-2:#4A4A52;--sep:#C6C6CB;--acc:#B85A0A;--acc-ink:#9C4A06;--acc-soft:#FBEBDC;--on-acc:#FFFFFF;--sos:#C62828;--sos-ink:#B71C1C;--sos-soft:#FDECEC;--walk:#2E7D32;--food:#B85A0A;--food-ink:#9C4A06;--seg-on:#FFFFFF;--ring:#8E8E96;--bar:rgba(249,249,251,.88);--sans:-apple-system,BlinkMacSystemFont,\"PingFang TC\",\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif} .ds-list{list-style:none;margin:0;padding:0;border-radius:14px;overflow:hidden;font-family:var(--sans)} .ds-sos{background:var(--sos-soft);padding:14px 16px} .ds-sos .k{display:block;color:var(--sos-ink);font-size:24px;font-weight:800;line-height:1.35} .ds-sos .d{display:block;font-size:18px;line-height:1.55;color:var(--ink);margin-top:2px} .ds-sos .n{font-variant-numeric:tabular-nums}"
+    },
+    {
+      "name": "Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-bar",
+      "description": "Fixed frosted bottom bar, five glyph-over-label items; the current item is a tinted pill at 800 (caramel, or red wash for 不舒服).",
+      "html": "<nav class=\"ds-tabs\"><a href=\"#\" aria-current=\"true\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"M12 7.5V12l3 2\"/></svg>作息</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 11h18a9 9 0 0 1-18 0Z\"/><path d=\"M8 7.5c.8-1 2-1.5 4-1.5s3.2.5 4 1.5\"/></svg>吃飯</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 12.5c-3 0-6 3.6-6 6 0 1.7 1.4 2.3 3 2l3-.8 3 .8c1.6.3 3-.3 3-2 0-2.4-3-6-6-6Z\"/><ellipse cx=\"5\" cy=\"10\" rx=\"1.9\" ry=\"2.4\"/><ellipse cx=\"9.2\" cy=\"5.6\" rx=\"1.9\" ry=\"2.5\"/><ellipse cx=\"14.8\" cy=\"5.6\" rx=\"1.9\" ry=\"2.5\"/><ellipse cx=\"19\" cy=\"10\" rx=\"1.9\" ry=\"2.4\"/></svg>散步</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z\"/></svg>習慣</a><a href=\"#\" class=\"sos\"><svg viewBox=\"0 0 24 24\" width=\"26\" height=\"26\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M9 3.5h6v5.5h5.5v6H15v5.5H9V15H3.5V9H9Z\"/></svg>不舒服</a></nav>",
+      "css": ":host{--bg:#F2F2F7;--cell:#FFFFFF;--ink:#111114;--ink-2:#4A4A52;--sep:#C6C6CB;--acc:#B85A0A;--acc-ink:#9C4A06;--acc-soft:#FBEBDC;--on-acc:#FFFFFF;--sos:#C62828;--sos-ink:#B71C1C;--sos-soft:#FDECEC;--walk:#2E7D32;--food:#B85A0A;--food-ink:#9C4A06;--seg-on:#FFFFFF;--ring:#8E8E96;--bar:rgba(249,249,251,.88);--sans:-apple-system,BlinkMacSystemFont,\"PingFang TC\",\"Noto Sans TC\",\"Microsoft JhengHei\",sans-serif} .ds-tabs{display:grid;grid-template-columns:repeat(5,1fr);background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--sep);padding:6px 4px;font-family:var(--sans)} .ds-tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:56px;text-decoration:none;color:var(--ink-2);font-size:15px;font-weight:600;border-radius:12px;margin:0 2px} .ds-tabs a.sos{color:var(--sos-ink)} .ds-tabs a[aria-current=\"true\"]{color:var(--acc-ink);background:var(--acc-soft);font-weight:800} .ds-tabs a.sos[aria-current=\"true\"]{color:var(--sos-ink);background:var(--sos-soft)} .ds-tabs a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Phone's Own Notes",
+    "overview": "The handbook is the category standard played straight: it should read like notes and reminders the phone itself ships, at the craft level of Apple Reminders and Apple Health, without their branding. It is read, not operated: there is no checklist, no stored state and nothing to tick. A cool grey grouped ground carries white rounded sections; rows are a bold key over a quieter detail line, separated by inset hairlines; titles are large and bold. The readers are elderly parents opening a LINE link on a phone, so everything is set larger than the platform default (19px body, 20px row keys, 34px title) and nothing important is faint.\n\nThe page opens on the title and goes straight into the owner's three requests; there is no summary or status card. Each section is announced the Health way: a coloured line glyph beside a section title in the same colour (the three requests and the daily routine in caramel, food amber, walks green, habits blue, emergency red, the dog's profile a grey glyph under an ink title). Colour identifies a section's glyph and title and nothing else; rows stay white with ink text. Red belongs to 不舒服時 alone. Dark mode is the platform's true-black grouped scheme, not a tinted variant.\n\nThe single illustration is a small drawn avatar of the dog in a 64px circle beside the title, made of flat filled planes and following the owner's photo (chocolate tricolour long coat, white blaze and muzzle, tan brows and cheeks, yellow harness). The photo itself is not published. The page is still: apart from the browser's default anchor jump, nothing moves.",
+    "keyCharacteristics": [
+      "Grouped-inset system UI: grey ground, white 14px-radius sections, hairlines inset 16px from the leading edge.",
+      "Notes, not tasks: key-over-detail rows, written-out rules, no checkboxes, counts, status cards or stored state.",
+      "One warm caramel accent for the two leading sections, the current tab (tinted pill + 800 weight), inline times and focus.",
+      "Section identity by coloured glyph + coloured title only (Health manner), never colour-square tiles.",
+      "System sans at enlarged sizes; secondary text is a dark grey that keeps ≥7.8:1.",
+      "A fixed translucent bottom tab bar with five destinations; emergency always reachable in one tap.",
+      "No motion."
+    ],
+    "rules": [
+      {
+        "name": "The One Warm Accent Rule",
+        "body": "Caramel is the only accent. It marks what leads (the three requests, the routine), where you are (the current tab's pill) and focus; no second accent is introduced.",
+        "section": "colors"
+      },
+      {
+        "name": "The Red Is Unwell Rule",
+        "body": "Red appears only in the 不舒服時 section and its tab. It never marks a meal, a request or a forbidden food (the 不能給他吃 bullets are grey).",
+        "section": "colors"
+      },
+      {
+        "name": "The Title-Not-Tile Rule",
+        "body": "A section's colour lives in its line glyph and its title text. Never put the glyph on a filled colour square; that reads as Settings, which the owner rejected.",
+        "section": "colors"
+      },
+      {
+        "name": "The Nothing Small Rule",
+        "body": "No text below 15px, row content at 18px or larger, and no faint tint for content a parent must read; secondary text is a dark grey, never a lowered opacity.",
+        "section": "typography"
+      },
+      {
+        "name": "The Phrase Break Rule",
+        "body": "Chinese lines break between phrases: running text is wrapped in inline-block phrase spans (`.seg`) so a line never splits mid-phrase.",
+        "section": "typography"
+      },
+      {
+        "name": "The Bold Lead-In Rule",
+        "body": "When one row carries alternative rules, each rule is its own detail line in ink, opened by a bold condition word and a full-width space (**有吃完**　… / **沒吃**　…). The cases are written out; the reader never has to answer a control to see them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Sections Rule",
+        "body": "Sections never float. Depth is the grey/white step; nothing on the page casts a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** put every new block of content in a white 14px-radius section on the grouped ground, with inset hairline separators between rows.",
+      "**Do** announce a new section with a line glyph from the sprite (24-unit grid, 2px round stroke) and a title in the same colour.",
+      "**Do** write alternative rules out in full as ink detail lines with a bold lead-in, rather than hiding one behind a control.",
+      "**Do** use the accent for what leads, where you are and focus, and accent-ink whenever caramel sets text; mark the current place with fill and weight as well as colour.",
+      "**Do** keep body text at 19px, details at 18px and nothing below 15px; secondary text in ink-2, never by opacity.",
+      "**Do** wrap Chinese phrases in `.seg` spans so lines break between phrases.",
+      "**Do** define every new colour in both the light and the true-black dark set, and keep text pairs at 4.5:1 or better."
+    ],
+    "donts": [
+      "**Don't** place a section glyph on a filled colour square or build Settings-style rows (the owner rejected anything settings-like).",
+      "**Don't** use red outside 不舒服時 and its tab.",
+      "**Don't** add checkboxes, progress counts, a summary or status card, or saved state; the owner asked for notes and reminders only.",
+      "**Don't** add decorated pet-app cuteness (stickers, paw-print patterns, cartoon type) or dashboard stat cards; the owner named childish, sticker-like, busy and cold-app-like as wrong.",
+      "**Don't** add shadows, gradients or motion; the page is still.",
+      "**Don't** publish the owner's photo of the dog; the drawn avatar stands in for it."
+    ]
+  }
+}

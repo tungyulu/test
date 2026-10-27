@@ -126,6 +126,25 @@
 
 **Evidence on hand.** The Paradise mechanics in `tamagotchi.html` (compiled from two Traditional Chinese guides). Everything else (names, art, foods) is the page's own invention and is labelled as original.
 
+## Dog-sitting handbook · 欸哩照顧手冊 (`eri.html`)
+
+**Users.** The owner's parents (Traditional Chinese, Taiwan, elderly), who keep the owner's dog Eri (欸哩, long-haired Chihuahua, male, 1.5 years, 3.3 kg, not neutered) while the owner is in Japan 2026-11-07 to 11-14. They open the page from a link in LINE, on their phones, at home, morning and evening while caring for him. Not linked from the hub.
+
+**Purpose.** Hand over how Eri is raised and what his habits are. The owner's real worry (2026-10-27): on weekend visits the father dotes on Eri — long walks of about 2 km and mountain hikes, frequent snacks, snacks mixed into the kibble — so the page leads with three requests, kindly worded: walks of 10–20 minutes only (no hiking, no 2 km), very few snacks and never mixed into the food, ignore the paw-begging. Opening the page answers "what matters most" first (the three requests), then the daily routine (walks and meals, the evening portion written out for both cases), feeding rules, walks, habits and what to do when he is unwell. Notes and reminders only: no checklist to tick (owner, 2026-10-27). Success: either parent knows the routine and the three requests in a few seconds and never has to call to ask how much to feed.
+
+**Content that must survive any redesign (owner's facts, 2026-10-27).**
+- Looks (owner's photo, 2026-10-27; the photo itself is not published): chocolate tricolour long coat — dark chocolate head and ears with long ear fringes, a white blaze down the forehead, white muzzle and chest ruff, tan eyebrow spots and cheeks, pinkish-brown nose, big round dark eyes — and a yellow harness. The page's drawn avatar follows this.
+- Food: Hill's, 25–30 g (0.8–0.9 scoop) a meal, two meals. If he did not eat the morning meal (e.g. he was out), the evening gets only that leftover portion, no can, and no snacks that day; if he ate, the evening may add 1/3 to half a can. Occasionally a bottle cap of milk in the food. Snacks small, never on demand; a little more as a reward for toileting in the right spot at home. No special allergies.
+- Walks 10–20 minutes morning and evening; he recently toilets at home before bed, and 22–23 h he can go out once more. Hold the leash tight. Wipe his paws and his pee / poop area after every walk. Restless and agitated = he wants to go out to toilet.
+- Commands 坐下, 趴下, 握手, give me five, 等等 (before eating). Not afraid of anything. He begs with his paws (拜拜): ignore it. Dig out anything he picks up and eats. Stop him barking at people outside the door.
+- Japan is one hour ahead; contact the owner on LINE first.
+- No vet, emergency-vet, microchip or vaccination details on the page (owner, 2026-10-27).
+- General (not Eri-specific) go-to-the-vet signs and the common toxic foods may be listed as general guidance; nothing else about Eri may be invented.
+
+**Constraints.** Static single HTML file on public GitHub Pages: no home address, no private phone numbers. Large type and high contrast for elderly readers; phone first.
+
+**Brand commitment (2026-10-27).** The owner chose the category standard: a clean care checklist in the native-app manner, at the craft level of Apple Reminders and Apple Health (their finish, not their branding). No metaphor costume; nothing childish or sticker-like, nothing cold or settings-like, nothing busy, nothing small or faint.
+
 ---
 
 # Trip itinerary (`trip.html`)

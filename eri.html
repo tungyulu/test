@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="欸哩的照顧手冊：11/7–11/14 我在日本時，給爸媽看的每天要做的事、吃飯、散步、習慣和不舒服時怎麼辦。">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<title>欸哩照顧手冊</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --bg:#F2F2F7; --cell:#FFFFFF; --ink:#111114; --ink-2:#4A4A52; --sep:#C6C6CB; --bar:rgba(249,249,251,.88);
+  --acc:#B85A0A; --acc-ink:#9C4A06; --acc-soft:#FBEBDC;
+  --food:#B85A0A; --walk:#2E7D32; --habit:#3557C4; --sos:#C62828; --doc:#5E5E66; --today:#B85A0A;
+  --sos-ink:#B71C1C; --sos-soft:#FDECEC; --food-ink:#9C4A06; --habit-ink:#3557C4;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --cell:#1C1C1E; --ink:#F2F2F7; --ink-2:#C2C2C8; --sep:#3A3A3E; --bar:rgba(22,22,24,.88);
+    --acc:#D9782A; --acc-ink:#F2A35E; --acc-soft:#3A2614;
+    --food:#C96A1C; --walk:#2F8A3A; --habit:#3E63D6; --sos:#D64040; --doc:#636369; --today:#C96A1C;
+    --sos-ink:#FF8A80; --sos-soft:#3A1717; --food-ink:#F2A35E; --habit-ink:#93AAF7;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --cell:#1C1C1E; --ink:#F2F2F7; --ink-2:#C2C2C8; --sep:#3A3A3E; --bar:rgba(22,22,24,.88);
+  --acc:#D9782A; --acc-ink:#F2A35E; --acc-soft:#3A2614;
+  --food:#C96A1C; --walk:#2F8A3A; --habit:#3E63D6; --sos:#D64040; --doc:#636369; --today:#C96A1C;
+  --sos-ink:#FF8A80; --sos-soft:#3A1717; --food-ink:#F2A35E; --habit-ink:#93AAF7;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:12px;scroll-padding-bottom:96px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 19px/1.55 var(--sans);caret-color:var(--acc);-webkit-tap-highlight-color:transparent}
+::selection{background:var(--acc-soft);color:var(--ink)}
+.wrap{max-width:600px;margin:0 auto;padding:0 16px calc(104px + env(safe-area-inset-bottom))}
+h1,h2,h3,p{margin:0}
+.seg{display:inline-block}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--acc-ink);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:10px}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+/* title */
+.top{display:flex;align-items:center;gap:14px;padding:28px 4px 18px}
+.avatar{width:64px;height:64px;border-radius:50%;background:#EFE4D6;flex:none;overflow:hidden}
+.avatar svg{width:100%;height:100%;display:block}
+.top h1{font-size:34px;font-weight:800;letter-spacing:-.01em;line-height:1.15}
+.top p{font-size:17px;color:var(--ink-2);margin-top:2px}
+
+/* grouped sections */
+.group{margin-top:28px}
+.group.first{margin-top:8px}
+.ghead{display:flex;align-items:center;gap:10px;padding:0 4px 10px}
+.ghead h2{font-size:24px;font-weight:700;line-height:1.25}
+.ic{flex:none;display:block}
+.ic svg.i{width:28px;height:28px;stroke-width:2.2}
+.ic.food{color:var(--food)} .ic.walk{color:var(--walk)} .ic.habit{color:var(--habit)}
+.ic.sos{color:var(--sos)} .ic.doc{color:var(--doc)} .ic.today{color:var(--today)}
+#today h2,#ask h2{color:var(--acc-ink)} #food h2{color:var(--food-ink)} #walk h2{color:var(--walk)} #habit h2{color:var(--habit-ink)} #sos h2{color:var(--sos-ink)}
+.sub-h{font-size:17px;font-weight:600;color:var(--ink-2);padding:18px 4px 8px}
+.sub-h.first{padding-top:0}
+.list{list-style:none;margin:0;padding:0;background:var(--cell);border-radius:14px;overflow:hidden}
+.row{position:relative;padding:14px 16px}
+.row + .row::before{content:"";position:absolute;top:0;left:16px;right:0;border-top:1px solid var(--sep)}
+.row .k{display:block;font-size:20px;font-weight:600;line-height:1.35}
+.row .d{display:block;font-size:18px;color:var(--ink-2);margin-top:2px}
+.row .d.ink{color:var(--ink)}
+.row .d.gap{margin-top:8px}
+.row.kv{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:56px}
+.row.kv .k{font-weight:500}
+.row.kv .v{color:var(--ink-2);font-size:18px;text-align:right}
+
+.when{color:var(--acc-ink);font-weight:700}
+
+/* reference lists */
+ul.dots{margin:0;padding-left:1.15em;list-style:disc}
+ul.dots li{margin:4px 0;font-size:19px}
+ul.dots li::marker{color:var(--sos)}
+ul.dots.plain li::marker{color:var(--ink-2)}
+.sos-first{background:var(--sos-soft)}
+.sos-first .k{color:var(--sos-ink);font-size:24px;font-weight:800}
+
+.end{text-align:center;padding:36px 0 8px}
+.end p{font-size:22px;font-weight:700}
+.end .d{font-size:17px;font-weight:400;color:var(--ink-2);margin-top:4px}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--sep);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+.tabs ul{list-style:none;margin:0 auto;padding:0;max-width:600px;display:grid;grid-template-columns:repeat(5,1fr)}
+.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:56px;justify-content:center;text-decoration:none;color:var(--ink-2);font-size:15px;font-weight:600;border-radius:12px;margin:0 2px}
+.tabs a svg.i{width:26px;height:26px}
+.tabs a.t-sos{color:var(--sos-ink)}
+.tabs a[aria-current="true"]{color:var(--acc-ink);background:var(--acc-soft);font-weight:800}
+.tabs a.t-sos[aria-current="true"]{color:var(--sos-ink);background:var(--sos-soft)}
+
+@media print{
+  .tabs{display:none}
+  body{background:#fff}
+  .group{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-bowl" viewBox="0 0 24 24"><path d="M3 11h18a9 9 0 0 1-18 0Z"/><path d="M8 7.5c.8-1 2-1.5 4-1.5s3.2.5 4 1.5"/></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><path d="M12 12.5c-3 0-6 3.6-6 6 0 1.7 1.4 2.3 3 2l3-.8 3 .8c1.6.3 3-.3 3-2 0-2.4-3-6-6-6Z"/><ellipse cx="5" cy="10" rx="1.9" ry="2.4"/><ellipse cx="9.2" cy="5.6" rx="1.9" ry="2.5"/><ellipse cx="14.8" cy="5.6" rx="1.9" ry="2.5"/><ellipse cx="19" cy="10" rx="1.9" ry="2.4"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10Z"/></symbol>
+  <symbol id="i-cross" viewBox="0 0 24 24"><path d="M9 3.5h6v5.5h5.5v6H15v5.5H9V15H3.5V9H9Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8Z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></symbol>
+</svg>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="avatar" aria-hidden="true">
+    <svg viewBox="0 0 120 120">
+      <path d="M34 110 H86 L88 120 H32 Z" fill="#E2B21F"/>
+      <path d="M27 88 Q30 108 40 103 Q45 115 53 107 Q60 118 67 107 Q75 115 80 103 Q90 108 93 88 Z" fill="#F6F2EC"/>
+      <path d="M33 48 L23 10 L52 38 Z" fill="#3B2218"/>
+      <path d="M87 48 L97 10 L68 38 Z" fill="#3B2218"/>
+      <path d="M34 41 L27 20 L45 36 Z" fill="#B98568"/>
+      <path d="M86 41 L93 20 L75 36 Z" fill="#B98568"/>
+      <path d="M23 10 C15 20 11 32 12 43 Q17 41 15 48 Q20 46 20 53 Q25 50 27 56 Q31 53 33 48 Z" fill="#4C2C1F"/>
+      <path d="M97 10 C105 20 109 32 108 43 Q103 41 105 48 Q100 46 100 53 Q95 50 93 56 Q89 53 87 48 Z" fill="#4C2C1F"/>
+      <circle cx="60" cy="70" r="30" fill="#3B2218"/>
+      <path d="M60 41 C56.5 50 55.5 58 56.5 66 H63.5 C64.5 58 63.5 50 60 41 Z" fill="#F6F2EC"/>
+      <ellipse cx="44" cy="85" rx="7" ry="5" fill="#C27C3A"/>
+      <ellipse cx="76" cy="85" rx="7" ry="5" fill="#C27C3A"/>
+      <ellipse cx="60" cy="85" rx="14" ry="10.5" fill="#F6F2EC"/>
+      <ellipse cx="46.5" cy="60" rx="4" ry="2.5" fill="#C27C3A"/>
+      <ellipse cx="73.5" cy="60" rx="4" ry="2.5" fill="#C27C3A"/>
+      <circle cx="47" cy="68.5" r="5.4" fill="#1C0E08"/>
+      <circle cx="73" cy="68.5" r="5.4" fill="#1C0E08"/>
+      <path d="M55.5 78.5h9a1.8 1.8 0 0 1 1.4 2.9L61.4 86a1.8 1.8 0 0 1-2.8 0l-4.5-4.6a1.8 1.8 0 0 1 1.4-2.9Z" fill="#8A5446"/>
+    </svg>
+  </div>
+  <div>
+    <h1>欸哩</h1>
+    <p><span class="seg">照顧手冊 ·</span> <span class="seg">11/7–11/14</span></p>
+  </div>
+</header>
+
+<section class="group first" id="ask" aria-labelledby="askH">
+  <div class="ghead">
+    <span class="ic today" aria-hidden="true"><svg class="i"><use href="#i-star"/></svg></span>
+    <h2 id="askH">最重要的三件事</h2>
+  </div>
+  <ul class="list">
+    <li class="row"><span class="k">散步 10–20 分鐘就好</span><span class="d"><span class="seg">不要帶去爬山，</span><span class="seg">也不用走到兩公里。</span></span></li>
+    <li class="row"><span class="k">零食只給一點點</span><span class="d"><span class="seg">不要把零食拌進飼料裡，</span><span class="seg">飼料照份量給就好。</span></span></li>
+    <li class="row"><span class="k">他拜拜討吃，不要理他</span><span class="d"><span class="seg">很可愛，</span><span class="seg">但請忍住不要給。</span></span></li>
+  </ul>
+</section>
+
+<section class="group" id="today" aria-labelledby="todayH">
+  <div class="ghead">
+    <span class="ic today" aria-hidden="true"><svg class="i"><use href="#i-clock"/></svg></span>
+    <h2 id="todayH">每天的作息</h2>
+  </div>
+  <p class="sub-h first">早上</p>
+  <ul class="list">
+    <li class="row"><span class="k">出去散步 10–20 分鐘</span><span class="d"><span class="seg">不用走遠。</span><span class="seg">回家擦四隻腳，</span><span class="seg">也擦尿尿、便便的地方。</span></span></li>
+    <li class="row"><span class="k">吃飯 25–30 克</span><span class="d"><span class="seg">Hill's 飼料，</span><span class="seg">約 0.8–0.9 匙。</span><span class="seg">不要拌零食。</span></span></li>
+  </ul>
+  <p class="sub-h">晚上</p>
+  <ul class="list">
+    <li class="row"><span class="k">出去散步 10–20 分鐘</span><span class="d"><span class="seg">不用走遠。</span><span class="seg">回家一樣擦腳、</span><span class="seg">擦尿尿便便的地方。</span></span></li>
+    <li class="row"><span class="k">吃飯：看早上那份有沒有吃完</span>
+      <span class="d ink gap"><b>有吃完</b>　<span class="seg">照樣給 25–30 克飼料，</span><span class="seg">可以再加 1/3 到半罐罐頭。</span></span>
+      <span class="d ink gap"><b>沒吃</b>　<span class="seg">只給早上剩下的那份，</span><span class="seg">不加罐頭。</span><span class="seg">這天不給零食。</span></span></li>
+  </ul>
+  <p class="sub-h">需要的話</p>
+  <ul class="list">
+    <li class="row"><span class="k"><span class="when">晚上 10–11 點</span> 再出去晃一圈</span><span class="d"><span class="seg">他最近習慣睡前在家上廁所，</span><span class="seg">不出去也可以。</span></span></li>
+  </ul>
+</section>
+
+<section class="group" id="food" aria-labelledby="foodH">
+  <div class="ghead">
+    <span class="ic food" aria-hidden="true"><svg class="i"><use href="#i-bowl"/></svg></span>
+    <h2 id="foodH">吃飯</h2>
+  </div>
+  <ul class="list">
+    <li class="row"><span class="k">一天 2 餐，每餐 25–30 克</span><span class="d"><span class="seg">Hill's 飼料，</span><span class="seg">約 0.8–0.9 匙。</span></span></li>
+    <li class="row"><span class="k">早上有吃完</span><span class="d"><span class="seg">晚上照樣給飼料，</span><span class="seg">可以再加 1/3 到半罐罐頭。</span></span></li>
+    <li class="row"><span class="k">早上沒吃（例如出門了）</span><span class="d"><span class="seg">晚上只給早上剩下的那份，</span><span class="seg">不加罐頭。</span><span class="seg">這天不給零食。</span></span></li>
+    <li class="row"><span class="k">牛奶</span><span class="d">偶爾可以在飯裡加一瓶蓋。</span></li>
+  </ul>
+  <p class="sub-h">零食</p>
+  <ul class="list">
+    <li class="row"><span class="k">只給一點點</span><span class="d">不是他要就給。</span></li>
+    <li class="row"><span class="k">不要拌進飼料裡</span><span class="d"><span class="seg">飯就照上面的份量給，</span><span class="seg">零食另外、少少的給。</span></span></li>
+    <li class="row"><span class="k">上廁所的獎勵</span><span class="d"><span class="seg">在家有在對的位置上廁所，</span><span class="seg">可以多給一點。</span></span></li>
+  </ul>
+  <p class="sub-h">不能給他吃</p>
+  <ul class="list">
+    <li class="row">
+      <ul class="dots plain">
+        <li>巧克力</li>
+        <li>葡萄、葡萄乾</li>
+        <li>洋蔥、大蒜、蔥</li>
+        <li><span class="seg">木糖醇</span><span class="seg">（口香糖、無糖糖果）</span></li>
+        <li>酒、咖啡、茶</li>
+        <li>骨頭（尤其是雞骨頭）</li>
+        <li>人吃的藥</li>
+      </ul>
+      <span class="d gap"><span class="seg">這些是所有狗狗都不能吃的。</span><span class="seg">欸哩沒有特別的過敏。</span></span>
+    </li>
+  </ul>
+</section>
+
+<section class="group" id="walk" aria-labelledby="walkH">
+  <div class="ghead">
+    <span class="ic walk" aria-hidden="true"><svg class="i"><use href="#i-walk"/></svg></span>
+    <h2 id="walkH">散步和上廁所</h2>
+  </div>
+  <ul class="list">
+    <li class="row"><span class="k">早晚各一次</span><span class="d"><span class="seg">每次 10–20 分鐘就夠了。</span><span class="seg">不要爬山，</span><span class="seg">也不用走到兩公里。</span></span></li>
+    <li class="row"><span class="k">晚上 10–11 點</span><span class="d">需要的話可以再出去晃一圈。</span></li>
+    <li class="row"><span class="k">牽繩</span><span class="d">要握緊，不要放長。</span></li>
+    <li class="row"><span class="k">回家後</span><span class="d"><span class="seg">擦四隻腳，</span><span class="seg">還有尿尿、便便的地方。</span></span></li>
+    <li class="row"><span class="k">想上廁所時</span><span class="d"><span class="seg">他會坐立難安、有點躁動。</span><span class="seg">看到就帶他出去。</span></span></li>
+  </ul>
+</section>
+
+<section class="group" id="habit" aria-labelledby="habitH">
+  <div class="ghead">
+    <span class="ic habit" aria-hidden="true"><svg class="i"><use href="#i-heart"/></svg></span>
+    <h2 id="habitH">欸哩的習慣</h2>
+  </div>
+  <ul class="list">
+    <li class="row"><span class="k">他聽得懂的口令</span><span class="d ink"><span class="seg">坐下、</span><span class="seg">趴下、</span><span class="seg">握手、</span><span class="seg">Give me five、「等等」。</span></span><span class="d"><span class="seg">「等等」是吃飯前用的。</span></span></li>
+    <li class="row"><span class="k">會怕的東西</span><span class="d">沒什麼會怕的。</span></li>
+  </ul>
+  <p class="sub-h">這幾件事請這樣做</p>
+  <ul class="list">
+    <li class="row"><span class="k">雙手拜拜討吃的</span><span class="d"><span class="seg">很可愛，</span><span class="seg">但請不要理他。</span></span></li>
+    <li class="row"><span class="k">撿到東西亂吃</span><span class="d">請從嘴巴裡挖出來。</span></li>
+    <li class="row"><span class="k">門外有人時亂叫</span><span class="d">要制止他。</span></li>
+  </ul>
+</section>
+
+<section class="group" id="sos" aria-labelledby="sosH">
+  <div class="ghead">
+    <span class="ic sos" aria-hidden="true"><svg class="i"><use href="#i-cross"/></svg></span>
+    <h2 id="sosH">不舒服時</h2>
+  </div>
+  <ul class="list">
+    <li class="row sos-first"><span class="k">先 LINE 我</span><span class="d ink"><span class="seg">日本比台灣快 1 小時，</span><span class="seg">日本現在 <b class="num jst">--:--</b>。</span></span><span class="d ink"><span class="seg">有下面的情況，</span><span class="seg">請直接帶去看醫生。</span></span></li>
+  </ul>
+  <p class="sub-h">直接帶去看醫生</p>
+  <ul class="list">
+    <li class="row">
+      <ul class="dots">
+        <li><span class="seg">一天吐 2 次以上，</span><span class="seg">或吐出血</span></li>
+        <li><span class="seg">一直拉肚子、拉水，</span><span class="seg">或便便有血、變黑色</span></li>
+        <li><span class="seg">早餐晚餐都不吃，</span><span class="seg">一整天沒吃東西</span></li>
+        <li><span class="seg">一直用力想尿，</span><span class="seg">卻尿不出來</span></li>
+        <li><span class="seg">沒精神、叫不起來、</span><span class="seg">走路搖晃</span></li>
+        <li>保暖後還是一直發抖</li>
+        <li><span class="seg">很喘、呼吸困難，</span><span class="seg">牙齦變白或變紫</span></li>
+        <li>抽筋、抽搐</li>
+        <li><span class="seg">摔到或被踩到、</span><span class="seg">走路跛腳、</span><span class="seg">一碰就叫</span></li>
+        <li><span class="seg">吃到「不能給他吃」的東西</span><span class="seg">或人吃的藥</span></li>
+      </ul>
+      <span class="d gap"><span class="seg">這些是小型犬共通的警訊，</span><span class="seg">不是欸哩特有的毛病。</span></span>
+    </li>
+  </ul>
+</section>
+
+<section class="group" id="doc" aria-labelledby="docH">
+  <div class="ghead">
+    <span class="ic doc" aria-hidden="true"><svg class="i"><use href="#i-doc"/></svg></span>
+    <h2 id="docH">欸哩的資料</h2>
+  </div>
+  <ul class="list">
+    <li class="row kv"><span class="k">品種</span><span class="v">長毛吉娃娃</span></li>
+    <li class="row kv"><span class="k">性別</span><span class="v">男生，沒結紮</span></li>
+    <li class="row kv"><span class="k">年紀</span><span class="v">1 歲半</span></li>
+    <li class="row kv"><span class="k">體重</span><span class="v">3.3 公斤</span></li>
+  </ul>
+</section>
+
+<div class="end">
+  <p>謝謝爸媽！</p>
+  <p class="d">11/14（六）我就回來了。</p>
+</div>
+
+</div>
+
+<nav class="tabs" aria-label="跳到">
+  <ul>
+    <li><a href="#today" data-t="today" aria-current="true"><svg class="i" aria-hidden="true"><use href="#i-clock"/></svg>作息</a></li>
+    <li><a href="#food" data-t="food"><svg class="i" aria-hidden="true"><use href="#i-bowl"/></svg>吃飯</a></li>
+    <li><a href="#walk" data-t="walk"><svg class="i" aria-hidden="true"><use href="#i-walk"/></svg>散步</a></li>
+    <li><a href="#habit" data-t="habit"><svg class="i" aria-hidden="true"><use href="#i-heart"/></svg>習慣</a></li>
+    <li><a href="#sos" data-t="sos" class="t-sos"><svg class="i" aria-hidden="true"><use href="#i-cross"/></svg>不舒服</a></li>
+  </ul>
+</nav>
+
+<script>
+(function () {
+  'use strict';
+  function hhmm(d) { return String(d.getUTCHours()).padStart(2, '0') + ':' + String(d.getUTCMinutes()).padStart(2, '0'); }
+
+  // Japan clock (UTC+9)
+  function clock() {
+    var t = hhmm(new Date(Date.now() + 9 * 3600e3));
+    [].forEach.call(document.querySelectorAll('.jst'), function (el) { el.textContent = t; });
+  }
+  clock();
+  setInterval(clock, 30e3);
+
+  // Tab bar follows the section in view
+  var tabs = [].slice.call(document.querySelectorAll('.tabs a'));
+  var secs = tabs.map(function (a) { return document.getElementById(a.dataset.t); });
+  function spy() {
+    var cur = secs[0], line = window.innerHeight * 0.35;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= line) cur = s; });
+    tabs.forEach(function (a) {
+      if (a.dataset.t === cur.id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+  }
+  window.addEventListener('scroll', spy, { passive: true });
+  spy();
+})();
+</script>
+</body>
+</html>
